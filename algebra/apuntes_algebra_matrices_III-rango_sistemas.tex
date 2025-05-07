@@ -1,0 +1,930 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de álgebra de matrices III.\\Rango de una matriz. Aplicaciones a la resolución de sistemas.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\section{Rango de una matriz.}
+\subsection{Repaso de combinaciones lineales.}
+Repasemos que es esto de la dependencia e independencia lineal. Cojamos la siguiente matriz:
+\[A=\left(\begin{array}{rrr}
+	1&1&0\\
+	1&0&0
+\end{array}\right)\]
+Y construyamos una matriz $B$ a partir de $A$ con tres filas, de manera que la tercera fila de $B$ es el doble de la primera menos la segunda ($F_3 = 2*F_1 - F_2$). A esto se le llama \textbf{combinación lineal}). De esta manera queda:
+\[B=\left(\begin{array}{rrr}
+	1&1&0\\
+	1&0&0\\
+	1&2&0
+\end{array}\right)\]
+
+Con lo cual en la matriz $B$ tenemos una fila que es una combinación lineal de las otras dos, mientras que en la matriz $A$ ninguna de las filas se puede construir con la otra.\\
+O dicho de otro modo: en ambas matrices hay dos filas linealmente independientes.\\
+
+Vamos a ver esto de una manera más formal (hablaremos de filas pero también es válido para columnas):\\
+\begin{itemize}
+	\item Se llama \textbf{combinación lineal} de filas a cualquier operación de la forma $a_1*F_1 + a_2*F_2 + \cdots + a_n*F_n$, donde $a_i \in \mathbb{R}$.
+	\item Si podemos obtener una \textbf{fila como combinación lineal de otras} diremos que es \textbf{linealmente dependiente}.
+	\item \textbf{Si no} podemos hacer lo anterior será \textbf{linealmente independiente}.
+\end{itemize}
+
+\subsection{Definición del rango de una matriz.}
+Se define el rango de una matriz como \textbf{el número de filas o columnas linealmente independientes.}.\\
+
+En los ejemplos del apartado anterior tenemos que el rango de las dos matrices es dos. Esto se escribe de la siguiente manera:
+\begin{multicols}{2}
+$\boldsymbol{\rango{A} = 2}$\\$\boldsymbol{\rango{B} = 2}$
+\end{multicols}
+\subsection{Propiedades del rango de una matriz.}
+\begin{itemize}
+	\item $\rango{A} = \rango{A^t}$
+	\item El rango no cambia si intercambiamos dos filas o columnas entre sí.
+	\item El rango no cambia si multiplicamos una fila o una columna por un número distinto de 0.
+	\item El rango de una matriz no varía si sumamos a una fila o columna una combinación lineal de las otras.
+	\item El rango no cambia si suprimimos una fila o columna de ceros.
+	\item Si dos filas, o columnas, son iguales o proporcionales el rango no cambia si quitamos una de ellas.
+	\item La única matriz que tiene rango 0 es aquella en la que todos sus elementos son 0. Cualquier otra matriz tiene un rango mayor o igual que 1.
+\end{itemize}
+\subsection{Cálculo del rango de una matriz.}
+\subsubsection{Método de Gauss.}
+Tal y como está definido el rango que una matriz, así como por sus propiedades, no va a cambiar haciendo combinaciones lineales de filas o columnas, con lo cual vamos a hacer ceros por debajo de la diagonal principal (como en el método de Gauss para sistemas que se ve en 1º de bachillerato). \textbf{Al finalizar el proceso el rango será el número de filas que no sean todo ceros.}\\
+
+Vamos a verlo con un \textbf{ejemplo}, aunque no entraña mayor dificultad.\\
+\begin{small}
+	\textbf{NOTA}: \emph{Las transformaciones que usemos las vamos a indicar de la siguiente manera:}
+	\begin{itemize}
+		\item $F_i \leftarrow a*F_i + b*F_j$
+		\emph{Indica que en el lugar de la fila $i$ vamos a poner la suma de la fila $i$ multiplicada por $a$ más la fila $j$ multiplicada por $b$.}
+		\item $F_i \rightleftarrows F_j$ \emph{indica que intercambiamos la fila $i$ con la fila $j$.}
+	\end{itemize}
+\end{small}
+\begin{flalign*}&\left(\begin{array}{rrr}
+	2&3&4\\
+	-1&5&3\\
+	3&-2&1
+\end{array}\right) \xrightarrow{\scriptstyle F_1 \rightleftarrows F_2  }
+\left(\begin{array}{rrr}
+-1&5&3\\
+2&3&4\\
+3&-2&1
+\end{array}\right) \xrightarrow{ \begin{array}{c}
+	\scriptstyle F_2 \leftarrow F_2 + 2*F_1\\
+	\scriptstyle F_3 \leftarrow F_3 + 3*F_1
+\end{array} } \left(\begin{array}{rrr}
+-1&5&3\\
+0&13&10\\
+0&13&10
+\end{array}\right)\\ &\xrightarrow{\scriptstyle F_3 \leftarrow F_3 - F_2}
+\left(\begin{array}{rrr}
+	-1&5&3\\
+	0&13&10\\
+	0&0&0
+\end{array}\right)
+\end{flalign*}
+Con lo que el rango de la matriz del ejemplo es 2.\\
+
+Por las propiedades que hemos visto podíamos haber llegado a la misma conclusión al hacer la segunda transformación, ya que las filas 2 y 3 son iguales y podríamos haber quitado una de ellas.
+
+\subsubsection{Método de los menores.}
+Como vimos en el cálculo de determinantes, un determinante es 0 si hay una fila o columna que es combinación lineal de las demás.\\
+Es decir, \textbf{si un determinante no es 0 todas sus filas, o columnas son linealmente independientes} o lo que es lo mismo \textbf{si un determinante no es 0 el rango de la matriz coincide con su orden}.\\
+
+Esto sería aplicable al caso de matrices cuadradas ya que en otro caso no podemos calcular el determinante, así que para extenderlo al caso general lo que haremos será utilizar \emph{menores}, de manera que \textbf{el rango de una matriz coincide con el orden de su mayor menor no nulo}.\\
+
+Vamos a ver esto con unos \textbf{ejemplos}:\\
+\begin{questions}
+\question Calcular el rango de 
+\[A= \left(\begin{array}{rr}
+2&1\\
+3&0
+\end{array}\right)\]
+\begin{solution}
+Como es una matriz cuadrada podemos calcular su determinante:
+\[\left|\begin{array}{rr}
+2&1\\
+3&0
+\end{array}\right| = -3\]
+Y como el determinante es distinto de 0 el rango de $A$ coincide con el orden de la matriz:
+\[\rango{A} = 2\]
+\end{solution}
+
+\question Calcular el rango de
+\[A = \left(\begin{array}{rrr}
+2&1&-1\\
+3&0&2\\
+1&-1&3
+\end{array}\right)\]
+\begin{solution}
+Nos encontramos en el mismo caso de antes, que la matriz es cuadrada. Así que hacemos el determinante:
+\[\left|\begin{array}{rrr}
+2&1&-1\\
+3&0&2\\
+1&-1&3
+\end{array}\right| = 0+4+2-9+3 = 0\]
+Entonces, al ser cero el determinante, el rango de $A$ no puede ser 3. Tendrá que ser 2 ó 1 (para ser cero todos los elementos tendrían que valer 0).\\
+
+Elegimos un menor de orden 2 al azar y si es distinto de 0 el rango valdrá 2. Si es 0 tendremos que coger otro menor de orden 2 y repetir hasta que nos salga alguno distinto de 0, en cuyo caso el rango es 2, y si ninguno de ellos es distinto de 0 el rango es 1.\\
+En este caso vamos a empezar por el menor $M_{1\,1}$ (el que se obtiene al eliminar la fila 1 y la columna 1)
+\[M_{1\,1} = \left|\begin{array}{rr}
+0&2\\
+-1&3
+\end{array}\right| = 2\]
+Y como hemos encontrado un menor de orden 2 distinto de 0 la conclusión es que:
+\[\rango{A} = 2\]
+\end{solution}
+
+\question Calcula el rango de la siguiente matriz:
+\[A=\left(\begin{array}{rrrr}
+2&-1&4&7\\
+1&0&1&3\\
+3&2&7&7
+\end{array}\right)\]
+\begin{solution}
+Cuando la matriz no es cuadrada suele ser más sencillo utilizar el método de Gauss, pero vamos a hacerlo con el de los menores para que se ver cómo se hace por este método.\\
+
+Primero seleccionamos una submatriz cuadrada dentro de la matriz que tenga el mayor orden posible:
+
+\[\begin{pNiceMatrix}
+2&-1&0&7\\
+1&0&1&3\\
+3&2&7&7
+\CodeAfter
+\begin{tikzpicture}
+  \node[ draw=black, thick, dashed,rounded corners=.5mm, inner sep=1pt,
+    fit={(1-1)(1-3)(3-1)(3-3)}](rect) {};
+\end{tikzpicture}
+\end{pNiceMatrix}\]
+Y calculamos el determinante de este menor y si es distinto de cero el rango es 3, y si es 0 habrá que buscar otro menor.\\
+\[\left|\begin{array}{rrr}
+2&-1&0\\
+1&0&1\\
+3&2&7
+\end{array}\right|=-4+7-3=0\]
+Esto nos dice que tenemos que coger otro menor, por ejemplo:
+\[\begin{pNiceMatrix}
+2&-1&0&7\\
+1&0&1&3\\
+3&2&7&7
+\CodeAfter
+\begin{tikzpicture}
+  \node[ draw=black, thick, dashed,rounded corners=.5mm, inner sep=1pt,
+    fit={(1-2)(1-4)(3-2)(3-4)}](rect) {};
+\end{tikzpicture}
+\end{pNiceMatrix}\]
+Hacemos el determinante:
+\[\left|\begin{array}{rrr}
+-1&0&7\\
+0&1&3\\
+2&7&7
+\end{array}\right|=-7+21-14 =0\]
+Como cualquier otro menor de orden 3 que cojamos va a ser combinación de columnas de los dos anteriores
+el resultado va a seguir siendo cero, así que pasamos a menores de orden 2 (si hubiese alguna columna que no hubiésemos incorporado tendríamos que hacer los menores que incorporen esas columnas).\\
+
+Entonces pasamos a los menores de orden 2:
+\[\begin{pNiceMatrix}
+2&-1&0&7\\
+1&0&1&3\\
+3&2&7&7
+\CodeAfter
+\begin{tikzpicture}
+  \node[ draw=black, thick, dashed,rounded corners=.5mm, inner sep=1pt,
+    fit={(1-1)(1-2)(2-1)(2-2)}](rect) {};
+\end{tikzpicture}
+\end{pNiceMatrix}\]
+Y es fácil ver que el menor elegido es distinto de 0:
+\[\left|\begin{array}{rr}
+	2&-1\\
+	1&0
+\end{array}\right|=0 + 1 = 1\]
+Con lo cual el rango de la matriz $A$ es 2.
+\end{solution}
+
+Y por último vamos a ver cómo se hace un ejercicio típico de rangos:
+\question Discutir el rango de $A$ según los valores de $m$:
+\[A=\left(\begin{array}{rrr}
+	m&-3&0\\
+	0&-1&1\\
+	2&-m&5
+\end{array}\right)\]
+\begin{solution}
+	Como es una matriz cuadrada lo mejor es empezar haciendo el determinante para ver si es distinto de 0:
+	\[\left|\begin{array}{rrr}
+		m&-3&0\\
+		0&-1&1\\
+		2&-m&5\end{array}
+		\right| = m^2 - 5m -6\]
+	Si resolvemos la ecuación $m^2 - 5m + 6=0$ obtendremos las soluciones $m_1 = -1$ y $m_2 = 6$, lo cual quiere decir que si $m$ no toma ninguno de esos dos valores el rango va a ser 3.\\
+	
+	Vamos a ver que pasa si $m$ toma alguno de esos valores:\\
+	\begin{itemize}
+		\item $\boldsymbol{m=-1}$. En ese caso tendremos:
+		\[\left(\begin{array}{rrr}
+			-1&-3&0\\
+			0&-1&1\\
+			2&1&5
+		\end{array}\right) \xrightarrow{F3 \leftarrow F_3 + 2F_1} \left(\begin{array}{rrr}
+		2&-3&0\\
+		0&-1&1\\
+		0&-5&5
+	\end{array}\right)\]
+	Y se ve claramente que las filas 2 y 3 son proporcionales, con lo que el rango va a ser 2.\\
+	(En este caso también podríamos haber cogido el menor $M_{3\,1}$ que se ve claramente que es distinto de 0).
+	\item $\boldsymbol{m = 6}$:
+	\[\left(\begin{array}{rrr}
+		6&-3&0\\
+		0&-1&1\\
+		2&-6&5
+	\end{array}\right) \xrightarrow{F_1 \rightleftarrows F_3} \left(\begin{array}{rrr}
+	2&-6&5\\
+	0&-1&1\\
+	6&-3&0
+	\end{array}\right) \xrightarrow{F3 \leftarrow F_3 - 3F_1} \left(\begin{array}{rrr}
+	2&-6&5\\
+	0&-1&1\\
+	0&15&-15
+	\end{array}\right)\]
+	Y observamos la misma situación que en el caso anterior, con lo que el rango será 2.\\
+	(también podríamos haber hecho el método de los menores con el mismo menor que en el caso anterior).
+	\end{itemize}
+
+Recopilamos todo lo hecho y nos queda:
+\begin{itemize}
+	\item Si $m = -1 \rightarrow \rango{A} = 2$.
+	\item Si $m = 6 \rightarrow \rango{A} = 2$.
+	\item En cualquier otro caso $\rango{A} = 3$.
+\end{itemize}
+\end{solution}
+\end{questions}
+\section{Aplicaciones de las matrices al estudio de sistemas de ecuaciones lineales.}
+Para empezar recordemos que \textbf{un sistema de ecuaciones lineales es un conjunto de ecuaciones con varias incógnitas en el que éstas últimas no tienen ningún exponente ni están multiplicadas o divididas entre sí}.\\
+
+La forma genérica de un sistema que tiene $n$ ecuaciones y $m$ incógnitas ($x_1,\ x_2, \cdots,\ x_m$) es:
+\[\left\lbrace
+\begin{array}{ccccr}
+	a_{1\,1}x_1 &+ a_{1\,2} x_ 2&\cdots&+a_{1\,m}x_m &= b_1\\
+	a_{2\,1}x_1 &+ a_{2\,2} x_ 2&\cdots&+a_{2\,m}x_m &= b_2\\
+	\vdots&&&&\vdots\\
+	a_{n\,1}x_1 &+ a_{n\,2} x_ 2&\cdots&+a_{n\,m}x_m &= b_n\\
+\end{array}
+\right.\]
+
+\subsection{Propiedades de los sistemas de ecuaciones.}
+\begin{itemize}
+	\item Si cambiamos de orden las ecuaciones del sistema la solución no cambia. Tampoco cambia si variamos el orden de las incógnitas en todas las ecuaciones.
+	\item Si a una de las ecuaciones la sumamos otra la solución no cambia.
+	\item Si multiplicamos una ecuación por un valor distinto de 0 la solución no cambia.
+\end{itemize}
+
+Todas estas propiedades se parecen bastante a algunas de las del rango de matrices, con lo que podríamos utilizar el cálculo de rangos para estudiar las propiedades de los sistemas de ecuaciones.\\
+Y eso es lo que vamos a hacer.
+
+\subsection{Representación de un sistema lineal mediante matrices.}
+Tomando el caso genérico que hemos visto antes y eliminando las incógnitas y la parte derecha de las ecuaciones nos quedaría:
+\[A= \left(
+\begin{array}{cccc}
+	a_{1\,1}& a_{1\,2}&\cdots&a_{1\,m}\\
+	a_{2\,1}&a_{2\,2}&\cdots&a_{2\,m}\\
+	\vdots&&&\vdots\\
+	a_{n\,1}& a_{n\,2}&\cdots&a_{n\,m}
+\end{array}
+\right)\]
+A la cual vamos a llamar \textbf{matriz de coeficientes}.\\
+
+Podemos formar también otra matriz con los términos independientes:
+\[b=\left(\begin{array}{c}
+	b_1\\
+	b_2\\
+	\vdots\\
+	b_n
+\end{array}\right)\quad\text{\small (Éste es de los pocos casos en los que una matriz se nombra con minúscula)}\]
+
+Y si unimos ambas matrices:
+\[A^+= \left(
+\begin{array}{cccc:c}%el : pone la linea punteada separando la última columna
+	a_{1\,1}& a_{1\,2}&\cdots&a_{1\,m}&b_1\\
+	a_{2\,1}&a_{2\,2}&\cdots&a_{2\,m}&b_2\\
+	\vdots&&&&\vdots\\
+	a_{n\,1}& a_{n\,2}&\cdots&a_{n\,m}&b_n
+\end{array}
+\right)\]
+A la cual llamaremos \textbf{matriz ampliada} (en muchos sitios también la nombran $\boldsymbol{(A|b)}$ en lugar de $\boldsymbol{A^+}$).\\
+
+La relación entre la \textbf{matriz de coeficientes} y la \textbf{matriz ampliada} nos va a dar información sobre el sistema y la forma en la que lo podremos resolver.
+
+\subsection{Teorema de Rouché-Frobenius.}
+Dado un sistema de $n$ ecuaciones lineales con $m$ incógnitas cuyas matrices de coeficientes y ampliada son $A$ y $A^+$ respectivamente tenemos los siguientes casos:
+\begin{itemize}
+	\item Si $\boldsymbol{\rango{A} = \rango{A^+} = m}$ el sistema tiene \textbf{solución única}. Se dice que es un \textbf{sistema compatible indeterminado}.
+	\item Si $\boldsymbol{\rango{A} = \rango{A^+} < m}$ el sistema tiene \textbf{infinitas soluciones}. Se dice que es un \textbf{sistema compatible indeterminado}.\\
+	En este caso el valor $\boldsymbol{m-\rango{A}}$ es el grado de libertad y tiene interpretaciones geométricas que veremos más adelante.
+	\item Si $\boldsymbol{\rango{A} \neq \rango{A^+}}$ el sistema \textbf{no tiene solución}. Se dice que es un \textbf{sistema incompatible}.
+\end{itemize}
+
+\subsection{Resolución de sistemas compatibles determinados.}
+Aparte de intentar resolverlos por fuerza bruta utilizando las técnicas que se aprenden en la ESO, existen otras maneras más eficientes y rápidas para resolver sistemas lineales en los que aparecen más de dos incógnitas.
+\subsubsection{Regla de Cramer.}
+Dado un sistema compatible determinado de $n$ ecuaciones y $n$ incógnitas ($x_1,\ x_2,\ \cdots,\ x_n$), cuya matriz de coeficientes es $A$ y cuya matriz de términos independientes es $b$, llamaremos $A_i$ a la matriz que se obtiene al cambiar la columna que corresponde a la incógnita $x_i$ por la de términos independientes:
+\[A_i = \left(\begin{array}{rrrrr}
+	a_{1\,1}&\cdots&b_1&\cdots&a_{1\,n}\\
+	a_{2\,1}&\cdots&b_2&\cdots&a_{2\,n}\\
+	\vdots&&\vdots&&\vdots\\
+	a_{n\,1}&\cdots&b_n&\cdots&a_{n\,n}\\
+\end{array}\right)\]
+
+Entonces la solución de cada incógnita viene dada por:
+\[x_i = \frac{|A_i|}{|A|}\]
+
+Vamos a ver un par de \textbf{ejemplos} de esto:
+\begin{questions}
+\question Resolver el sistema:
+\[\left\lbrace\begin{array}{lll}
+	5x-3y = 1\\
+	4x+2y =14
+\end{array}\right.\]
+\begin{solution}
+	Lo primero que hacemos es construir las matrices de coeficientes y de términos independientes:
+	\[A=\left(\begin{array}{rr}
+		5&-3\\
+		4&2
+	\end{array}\right)\quad\quad b=\left(\begin{array}{r}
+	1\\14
+\end{array}\right)\]
+
+Calculamos el determinante $|A|$, que nos dirá si el sistema es compatible determinado para poder utilizar la regla de Cramer:
+\[|A| = \left|\begin{array}{rr}
+		5&-3\\
+		4&2
+\end{array}\right| = 10 +12 = 22\]
+
+Como es distinto de 0 $\rango{A} = 2$, que coincide con el número de incógnitas y entonces es compatible determinado.\\
+
+Con esto ya podemos aplicar la regla de Cramer:
+\begin{itemize}
+	\item $x = \frac{|A_x|}{|A|} = \frac{\left|\begin{array}{rr}
+			1&-3\\
+			14&2
+		\end{array}\right|}{22} = \frac{2+42}{22} = 2$
+	\item $y = \frac{|A_y|}{|A|} = \frac{\left|\begin{array}{rr}
+			5&1\\
+			4&14
+		\end{array}\right|}{22} = \frac{70-4}{22} = 3$
+\end{itemize}
+
+La solución es $x=2$ e $y=3$.
+\end{solution}
+
+\question Resuelve el sistema:
+\[\left\lbrace\begin{array}{lll}
+	2x - y + z &=&3\\
+	2y - z &=& 1\\
+	-x + y &=& 1
+\end{array}\right.\]
+\begin{solution}
+	Construimos las matrices de coeficientes y la de términos independientes:
+	\[A=\left(\begin{array}{rrr}
+		2&-1&1\\
+		0&2&-1\\
+		-1&1&0
+	\end{array}\right)\quad\quad b= \left(\begin{array}{r}
+	3\\1\\1
+\end{array}\right)\]
+Calculamos el determinante de la matriz de coeficientes:
+\[|A| = \left|\begin{array}{rrr}
+	2&-1&1\\
+	0&2&-1\\
+	-1&1&0
+\end{array}\right| = 3\]
+Como no es cero y es del mismo orden que el número de incógnitas podemos aplicar Cramer:
+\begin{itemize}
+	\item $x = \frac{|A_x|}{|A|} = \frac{\left|\begin{array}{rrr}
+		3&-1&1\\
+		1&2&-1\\
+		1&1&0
+	\end{array}\right|}{3} = \frac{3}{3} = 1$
+
+	\item $y = \frac{|A_y|}{|A|} = \frac{\left|\begin{array}{rrr}
+			2&3&1\\
+			0&1&-1\\
+			-1&1&0
+		\end{array}\right|}{3} = \frac{6}{3} = 2$
+	\item $z = \frac{|A_z|}{|A|} = \frac{\left|\begin{array}{rrr}
+			2&-1&3\\
+			0&2&1\\
+			-1&1&1
+		\end{array}\right|}{3} = \frac{9}{3} = 3$
+\end{itemize}
+\end{solution}
+\end{questions}
+
+\subsubsection{Método de Gauss.}
+El método de Gauss para resolver sistemas es idéntico al que se utiliza para calcular el rango. Consiste en hacer el triángulo inferior de la matriz sea todo ceros y así poder ir despejando las incógnitas una a una.\\
+
+Lo mejor es verlo con un \textbf{ejemplo}:\\
+Resolver el sistema 
+\[\left\lbrace\begin{array}{lll}
+	2x - y + z &=&3\\
+	2y - z &=& 1\\
+	-x + y &=& 1
+\end{array}\right.\]
+\begin{solution}
+	Este sistema es el mismo que el del ejemplo anterior, con lo que ya sabemos las soluciones y así sabremos que lo resolvemos bien.\\
+	
+	Para el método de Gauss vamos a trabajar con la matriz ampliada y todas las transformaciones se van a ir indicando y comentando despues:
+	\begin{flalign*}
+	&\left(\begin{array}{rrr:r}
+		2&-1&1&3\\
+		0&2&-1&1\\
+		-1&1&0&1
+	\end{array}\right) \xrightarrow{F_1 \leftrightarrows F_3}
+	\left(\begin{array}{rrr:r}
+		-1&1&0&1\\
+		0&2&-1&1\\
+		2&-1&1&3
+	\end{array}\right) \xrightarrow{F_3 \leftarrow F_3 + 2F_1}
+	\left(\begin{array}{rrr:r}
+		-1&1&0&1\\
+		0&2&-1&1\\
+		0&1&1&5
+	\end{array}\right)\\
+	&\xrightarrow{F_3 \leftarrow 2F_3 - F_2}
+	\left(\begin{array}{rrr:r}
+		-1&1&0&1\\
+		0&2&-1&1\\
+		0&0&3&9
+	\end{array}\right)
+	\end{flalign*}
+\begin{itemize}
+	\item El cambio $F_1 \leftrightarrows F_3$ es para tener el el elemento (1, 1) el valor más sencillo posible, pero no es estrictamente necesario.
+	\item Tal y como queda la matriz con el cambio anterior, sumando la la fila 3 el doble de la fila 1 ($F_3 \leftarrow F_3 + 2F_1$) hacemos ceros en la primera columna.
+	\item Y por último, sumando al doble de la fila 3 la fila 2 ($F_3 \leftarrow 2F_3 - F_2$) ya tenemos el triángulo inferior a 0.
+\end{itemize}
+Ahora traducimos la matriz que nos ha quedado a un sistema:
+\[\left\lbrace\begin{array}{lll}
+	-x + y &=& 1\\
+	2y-z&=&1\\
+	3z&=& 9
+\end{array}\right.\]
+Y este sistema es inmediato:
+\begin{itemize}
+	\item De la tercera ecuación tenemos $z=3$.
+	\item Sustituyendo en la segunda queda $2y -3 = 1$, de donde obtenemos que $y = 2$.
+	\item Y sustituyendo en la primera la ecuación que queda es $-x + 2 = 1 \rightarrow x = 1$.
+\end{itemize}
+\end{solution}
+
+\subsection{Resolución de sistemas compatibles indeterminados.}
+Para resolver los sistemas indeterminados solo existe el método de Gauss, aunque el final ya no es tan intuitivo como antes.\\
+
+Por lo que se ha comentado al explicar el teorema de Rouché-Frobenuis, un sistema es compatible indeterminado cuando el rango de la matriz de coeficientes es menor que el número de incógnitas.\\
+Esto significa que al hacer Gauss solo nos va a quedar un número de ecuaciones igual al rango porque las demás van a acabar siendo cero enteras.\\
+Y cuando sucede tendremos que tomar como parámetros tantas incógnitas como ecuaciones nos falten. Esto se puede hacer de dos maneras, dando un nombre nuevo a los parámetros o conservando el nombre de las incógnitas que tenemos.\\
+
+Vamos a verlo con un \textbf{ejemplo}:\\
+Resuelve el sistema:
+\[\left\lbrace\begin{array}{lll}
+	x + y - z &=& 2\\
+	5x + 3y + 3z &=& 0\\
+	6x + 4 y + 2z &=& 2
+\end{array}\right.\]
+\begin{solution}
+	Escribimos la matriz ampliada y hacemos Gauss:
+	\begin{flalign*}
+		\left(\begin{array}{rrr:r}
+			1&1&-1&2\\
+			5&3&3&0\\
+			6&4&2&2
+		\end{array}\right) \xrightarrow{\begin{scriptsize}
+			\begin{array}{c}
+			F_2 \leftarrow F_2 - 5F_1\\
+			F_3 \leftarrow F_3 - 6F_1
+	\end{array}\end{scriptsize} } \left(\begin{array}{rrr:r}
+		1&1&-1&2\\
+		0&-2&8&-10\\
+		0&-2&8&-10
+	\end{array}\right) \xrightarrow{F_3\leftarrow F_3 - F2} \left(\begin{array}{rrr:r}
+		1&1&-1&2\\
+		0&-2&8&-10\\
+		0&0&0&0
+	\end{array}\right)
+	\end{flalign*}
+Con lo cual al hacer el Gauss el sistema se nos ha quedado reducido a:
+\[\left\lbrace\begin{array}{lll}
+	x + y - z &=& 2\\
+	-2y + 8z &=& -10
+\end{array}\right.\]
+
+Y como tenemos 2 ecuaciones con 3 incógnitas hay una que no podemos resolver con lo cual tenemos que elegir una para dejarla como parámetro y escogemos la $z$:
+\begin{itemize}
+	\item Despejamos $y$ en la segunda ecuación $y = 4z + 5$.
+	\item Sustituimos en la primera y queda $x + 4z + 5 -z = 2 \rightarrow x= -3z -3$
+\end{itemize}
+De esta manera la solución es $\left\lbrace\begin{array}{l}
+	x=-3z-3\\
+	y=4z+5
+\end{array}\right.$\\
+
+En otras ocasiones se hace $z=t$ y la solución quedaría:
+\[\left\lbrace\begin{array}{l}
+	x=-3t-3\\
+	y=4t+5\\
+	z=t
+\end{array}\right.\]
+\end{solution}
+
+\subsection{Discusión de un sistema de ecuaciones.}
+Son los ejercicios típicos de aplicación de matrices a los sistemas de ecuaciones. Consisten en aplicar todo lo que hemos visto en estos apuntes, así que la mejor manera de qué es exactamente es con ejemplos:
+\begin{questions}
+\question Sea el sistema:
+\[\left\lbrace\begin{array}{lll}
+	x + my + 2z &=& m\\
+	2x + my -z &=& 2\\
+	mx + y + 2z &=& m
+\end{array}\right.\]
+\begin{parts}
+	\part Discutir el sistema para los distintos valores de $m$.
+	\part Resolver el sistema cuando $m=-1$ y cuando $m=2$.
+\end{parts}
+\begin{solution}
+Para saber cómo va a ser el sistema tenemos que ver cual va a ser su rango en función de $m$, así que lo mejor que primero hagamos el determinante de la matriz de coeficientes que nos dirá cuando el rango es 3 ($|A| \neq 0$) y cuando es menor que 3 ($|A| = 0$).
+\[\left|\begin{array}{rrr}
+	-1&m&2\\
+	2&m&-1\\
+	m&1&2
+\end{array}\right| = -3m^2 -6m -3\]
+
+Si lo igualamos a cero ($-3m^2 -6m -3 = 0$) tenemos una ecuación cuya solución es $m=-1$.\\
+De aquí sacamos una conclusión: que si $m\neq - 1$ el sistema es compatible determinado.\\
+
+Vamos a ver qué pasa cuando $m=-1$, que además es uno de los valores para el que nos piden solucionarlo en la segunda pregunta.\\
+Como sabemos que no es determinado no podemos hacer Cramer, así que hacemos Gauss con la matriz ampliada:
+\begin{flalign*}
+	\left(\begin{array}{rrr:r}
+		-1&-1&2&-1\\
+		2&-1&-1&2\\
+		-1&-1&2&-1
+	\end{array}\right) \xrightarrow{\begin{scriptsize}
+		\begin{array}{c}
+			F_2 \leftarrow F_2 + 2F_1\\
+			F_3 \leftarrow F_3 - F_1
+		\end{array}
+\end{scriptsize}} \left(\begin{array}{rrr:r}
+-1&-1&2&-1\\
+0&-3&3&0\\
+0&0&0&0
+\end{array}\right)
+\end{flalign*}
+Es fácil ver que $\rango{A} = \rango{A^+} = 2 < 3$, con lo que es un sistema compatible indeterminado y la solución la obtenemos traduciéndolo a sistema y utilizando $z$ como parámetro:
+\[\left\lbrace\begin{array}{lll}
+	-x-y+2z&=&-1\\
+	-3z + 3z &=& 0
+\end{array}
+\right.\]
+Y es fácil obtener $\left\lbrace\begin{array}{l}
+	y = z\\
+	x = z + 1
+\end{array}\right.$\\
+
+En el caso en el que $m=2$ sabemos que es compatible determinado, con lo que vamos a usar Cramer.\\
+Para calcular el determinante de la matriz de coeficientes utilizamos el que ya hemos calculado sustituyendo $m$ por 2:
+\[|A| = -3*2^2 - 6*2 - 3 = -27\]
+Y ya solo tenemos que calcular las incógnitas:
+\begin{itemize}
+	\item $x = \frac{\left|\begin{array}{rrr}
+			2&2&2\\
+			2&2&-1\\
+			2&-1&2
+		\end{array}\right|}{-27} = \frac{-18}{-27} = \frac{2}{3}$.
+	\item $y = \frac{\left|\begin{array}{rrr}
+			-1&2&2\\
+			2&2&-1\\
+			2&2&2
+		\end{array}\right|}{-27} = \frac{-18}{-27} = \frac{2}{3}$.
+	\item $y = \frac{\left|\begin{array}{rrr}
+			-1&2&2\\
+			2&2&2\\
+			2&-1&2
+		\end{array}\right|}{-27} = \frac{-18}{-27} = \frac{2}{3}$.
+\end{itemize}
+
+Resumiendo:
+\begin{itemize}
+	\item El sistema es compatible determinado para todos los valores de $m$ excepto en -1.
+	\item En el caso $m=-1$ el sistema es compatible indeterminado y su solución es:
+	\[\left\lbrace\begin{array}{l}
+		y = z\\
+		x = z + 1
+	\end{array}\right.\]
+	\item La solución para el caso $m=2$ es $\left\lbrace
+		x=\frac{2}{3},\ 
+		y=\frac{2}{3},\ 
+		z=\frac{2}{3}\right\rbrace$
+\end{itemize}
+
+Con esto el ejercicio está terminado.
+\end{solution}
+
+\question Discute y resuelve el siguiente sistema homogéneo en todos los casos:
+\[\left\lbrace\begin{array}{lll}
+	x +ky -z &=& 0\\
+	kx -y +z &=& 0\\
+	(k+1)x + y &=& 0
+\end{array}
+\right.\]
+
+\begin{solution}
+	Un \textbf{sistema homogéneo es aquel en el que todos los términos independientes valen cero}, y cuando es compatible determinado la solución son todo ceros. A esta solución se la conoce como \emph{solución trivial}.\\
+	Además ocurre que este tipo de sistemas nunca es incompatible, ya que para hacer la matriz ampliada añadimos una columna de ceros, con lo que $\rango{A} = \rango{A^+}$ siempre.
+	Todo esto nos dice que solo tendremos que resolver el sistema en el caso en el que sea incompatible determinado.
+	
+	Calculamos entonces el determinante de la matriz de coeficientes:
+	\[\left|\begin{array}{rrr}
+		1&k&-1\\
+		k&-1&1\\
+		k+1&1&0
+	\end{array}\right| = k^2 -k -2\]
+	Y las soluciones de la ecuación $k^2 - k -2 =0$ son $k_1 = -1$ y $k_2=2$.
+	\begin{itemize}
+	\item Vamos a ver qué pasa cuando $\boldsymbol{k_1=-1}$. Resolvemos con la matriz ampliada:
+	\[\left(\begin{array}{ccc:c}
+		1&-1&-1&0\\
+		-1&-1&1&0\\
+		0&1&0&0
+	\end{array}\right) \xrightarrow{\begin{scriptsize}
+	\begin{array}{c}
+	F_2 \leftarrow F_2 + F_1
+	%F_3 \leftarrow F_3 - 2F_1
+	\end{array}
+	\end{scriptsize}} \left(\begin{array}{ccc:c}
+		1&1&-1&0\\
+		0&-2&0&0\\
+		0&1&0&0
+	\end{array}\right)\]
+	Y ya vemos que la segunda y la tercera ecuación son iguales, con lo que el sistema queda reducido a:
+	\[\left\lbrace\begin{array}{lll}
+	x -y -z &=& 0\\
+	 y &=& 0
+	\end{array}
+	\right.\]
+	Tomando $z$ como parámetro la solución es:
+	\[\left\lbrace\begin{array}{l}
+	x = z\\
+	 y = 0
+	\end{array}
+	\right.\]
+	
+	\item En el caso de $\boldsymbol{k_2=2}$:
+	\[\left(\begin{array}{ccc:c}
+		1&2&-1&0\\
+		2&-1&1&0\\
+		3&1&0&0
+	\end{array}\right) \xrightarrow{\begin{scriptsize}
+	\begin{array}{c}
+	F_2 \leftarrow F_2 - 2F_1\\
+	F_3 \leftarrow F_3 - 3F_1
+	\end{array}
+	\end{scriptsize}} \left(\begin{array}{ccc:c}
+		1&2&-1&0\\
+		0&-5&3&0\\
+		0&-5&3&0
+	\end{array}\right)\]
+	Y ya vemos que la segunda y la tercera ecuación son iguales, con lo que el sistema queda reducido a:
+	\[\left\lbrace\begin{array}{lll}
+	x +2y -z &=& 0\\
+	 -5y + 3z &=& 0
+	\end{array}
+	\right.\]
+	Tomando $z$ como parámetro la solución es:
+	\[\left\lbrace\begin{array}{l}
+	x = -\frac{1}{5}z\\
+	 y = \frac{3}{5}z
+	\end{array}
+	\right.\]
+	O de otra manera:
+	\[\left\lbrace\begin{array}{l}
+		x = -\frac{1}{5}t\\
+		y = \frac{3}{5}t\\
+		z = t
+	\end{array}
+	\right.\]
+	\end{itemize}
+	
+	Resumiendo:
+	\begin{itemize}
+		\item Cuando $k\neq -1$ y $k \neq 2$ el sistema es compatible determinado y al ser además homogéneo la solución es $x=y=z=0$.
+		\item Cuando $k=-1$ es compatible indeterminado y la solución es
+		$\lbrace x=z,\ y=0 \rbrace$.
+		\item Cuando $k=2$ es compatible indeterminado y la solución es 
+		$\lbrace x=-\frac{1}{5}z,\ y=\frac{3}{5}z \rbrace$.
+	\end{itemize}
+\end{solution}
+
+\question Discute y resuelve el siguiente sistema:
+\[\left\lbrace\begin{array}{lll}
+	ax + (a+1)z &=& a\\
+	ay + z &=& a\\
+	y + az &=& a
+\end{array}
+\right.\]
+\begin{solution}
+	Como en los anteriores hacemos el determinante de la matriz de coeficientes:
+	\[\left|\begin{array}{rrr}
+		a&0&a+1\\
+		0&a&1\\
+		0&1&a
+	\end{array}\right| = a^3 - a\]
+	Resolvemos la ecuación:
+	\[a^3 - a = 0\]
+	\[a(a^2 - 1) = 0\]
+	Y tiene de soluciones $a \in \{-1, 0, 1\}$
+	
+	Con lo que ya sabemos que si $a \notin \{-1, 0, 1\}$ el sistema es compatible determinado, y vamos a calcular sus soluciones por Cramer:\\
+	\begin{flalign*}
+		x =& \frac{\left|\begin{array}{rrr}
+		a&0&a+1\\
+		a&a&1\\
+		a&1&a
+	\end{array}\right|}{a^3 - a} = 0\\
+	y =& \frac{\left|\begin{array}{rrr}
+			a&a&a+1\\
+			0&a&1\\
+			0&a&a
+		\end{array}\right|}{a^3 - a} = \frac{a^3 - a^2}{a^3 - a} = \frac{a^2(a-1)}{a(a+1)(a-1)} = \frac{a}{a+1}\\
+	z =& \frac{\left|\begin{array}{rrr}
+			a&0&a\\
+			0&a&a\\
+			0&1&a
+		\end{array}\right|}{a^3 - a} =  \frac{a^3 - a^2}{a^3 - a} = \frac{a^2(a-1)}{a(a+1)(a-1)} = \frac{a}{a+1}
+	\end{flalign*}
+
+	Con eso ya estaría resuelto para el caso compatible determinado. Ahora tenemos que ver qué pasa en los otros casos.
+	\begin{itemize}
+		\item Cuando $\boldsymbol{a=0}$:
+		\[\left(\begin{array}{rrr:r}
+			0&0&1&0\\
+			0&0&1&0\\
+			0&1&0&0
+		\end{array}\right)\]
+	En este caso no necesitamos hacer Gauss, porque se ve que la primera y la segunda ecuación son iguales. De ellas sale que $y=0$ y $z=0$ y como $x$ no aparece significa que puede tomar cualquier valor.\\
+	Esto se suele escribir de la siguiente manera:
+	\[\left\lbrace \begin{array}{l}
+		x=t\\
+		y=0\\
+		z=0
+	\end{array}\right.\]
+      \item Cuando $\boldsymbol{a=-1}$
+        La matriz ampliada es:
+        \[\left(\begin{array}{rrr:r}
+		-1&0&0&-1\\
+		0&-1&1&-1\\
+		0&1&-1&-1
+	\end{array}\right) \xrightarrow{F_3 \leftarrow F_3 + F_2}
+        \left(\begin{array}{rrr:r}
+		-1&0&0&-1\\
+		0&-1&1&-1\\
+		0&0&0&-2
+	\end{array}\right)\]
+        En este caso se ve que el rango de la matiz de coeficientes y de la ampliada es distinto ($\rango{A}=2$ y $\rango{A^+} = 3$) con lo que el \textbf{sistema es incompatible}.
+
+      \item Cuando $\boldsymbol{a=1}$:
+        \[\left(\begin{array}{rrr:r}
+		1&0&2&1\\
+		0&1&1&1\\
+		0&1&1&1
+	\end{array}\right) \xrightarrow{F_3 \leftarrow F_3 - F_2} \left(\begin{array}{rrr:r}
+		1&0&2&1\\
+		0&1&1&1\\
+		0&0&0&0
+	\end{array}\right) 
+        \]
+        Aunque no hubieramos realizado ninguna operación se ve que la fila 2 y la 3 son iguales, con lo que el sistema queda reducido a:
+        \[\left\lbrace\begin{array}{lll}
+        x+2z &=& 1\\
+        y+z &=& 1
+        \end{array}\right.\]
+        Tomaremos $z$ como parámetro y nos queda:
+        \[\left\lbrace\begin{array}{l}
+        y=1-z\\
+        x=1-2z
+        \end{array}\right.\]
+        O, con un parámetro adicional:
+        \[\left\lbrace\begin{array}{l}
+        y=1-t\\
+        x=1-2t\\
+        z=t
+        \end{array}\right.\]
+        \end{itemize}
+\end{solution}
+\end{questions}
+\end{document}

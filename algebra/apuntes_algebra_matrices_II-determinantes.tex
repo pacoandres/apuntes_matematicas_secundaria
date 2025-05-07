@@ -1,0 +1,733 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de álgebra de matrices II. Determinantes y aplicaciones.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\section{Determinante de una matriz cuadrada.}
+El determinante es una operación que se realiza sobre una matriz cuadrada y que nos da como resultado un número real. No existe el determinante de
+matrices no cuadradas.\\
+
+La definición formal de determinante no es sencilla y en algunos aspectos supera el nivel de bachillerato, pero las operaciones que hay que realizar son
+sencillas y lo que vamos a ver es como se calcula con matrices $2\times 2$, $3 \times 3$ y sus propiedades para aplicarlos a matrices de dimensiones superiores.\\
+
+Antes de empezar el cálculo recordemos dos definiciones que en esta parte van a salir mucho:
+\begin{itemize}
+	\item \textbf{Diagonal principal}: la que va desde el extremo superior izquierdo al extremo inferior derecho (\textbackslash).
+	\item \textbf{Diagonal secundaria}: la que va desde el extremo inferior izquierdo al superior derecho (/).
+\end{itemize}
+
+
+Ahora ya podemos empezar con el \textbf{determinante de una matriz $2 \times 2$}. El determinante se indica con dos barras verticales, y si la matriz $A$ es:
+\[A= \left(\begin{array}{rr}
+	3&5\\
+	2&-1
+\end{array}\right)\]
+El determinante de $A$ es el producto de la diagonal principal menos el de la secundaria:
+\[|A| = \left| \begin{array}{rr}
+	3&5\\
+	2&-1
+\end{array}\right| = 3*(-1) - 5*2 = -13\]
+
+El cálculo para calcular el \textbf{determinante de una matriz $3 \times 3$} es algo más complejo. El mecanismo que se utiliza se llama \emph{regla de Sarrus} y consiste en lo siguiente:\\
+Si tenemos una matriz
+\[A = \left(\begin{array}{rrr}
+	a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+	a_{2\,1}&a_{2\,2}&a_{2\,3}\\
+	a_{3\,1}&a_{3\,2}&a_{3\,3}
+\end{array}\right)\]
+\begin{enumerate}
+	\item Copiamos las dos primeras filas debajo, de manera que tengamos 5 filas:
+	\[\left(\begin{array}{rrr}
+		a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+		a_{2\,1}&a_{2\,2}&a_{2\,3}\\
+		a_{3\,1}&a_{3\,2}&a_{3\,3}\\
+		a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+		a_{2\,1}&a_{2\,2}&a_{2\,3}
+	\end{array}\right)\]
+	\item El producto de las paralelas a la diagonal principal que tienen tres elementos suma.
+	\[\begin{pNiceMatrix}
+		a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+		a_{2\,1}&a_{2\,2}&a_{2\,3}\\
+		a_{3\,1}&a_{3\,2}&a_{3\,3}\\
+		a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+		a_{2\,1}&a_{2\,2}&a_{2\,3}
+		\CodeAfter
+		\line{1-1}{2-2}
+		\line{2-2}{3-3}
+		\line{2-1}{3-2}
+		\line{3-2}{4-3}
+		\line{3-1}{4-2}
+		\line{4-2}{5-3}
+	\end{pNiceMatrix}\longrightarrow a_{1\,1}*a_{2\,2}*a_{3\,3}+a_{2\,1}*a_{3\,2}*a_{1\,3} + a_{3\,1}*a_{1\,2}*a_{2\,3}\]
+	\item Y el producto de las paralelas a la diagonal secundaria que tienen tres elementos resta.
+		\[\begin{pNiceMatrix}
+		a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+		a_{2\,1}&a_{2\,2}&a_{2\,3}\\
+		a_{3\,1}&a_{3\,2}&a_{3\,3}\\
+		a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+		a_{2\,1}&a_{2\,2}&a_{2\,3}
+		\CodeAfter
+		\line{3-1}{2-2}
+		\line{2-2}{1-3}
+		\line{4-1}{3-2}
+		\line{3-2}{2-3}
+		\line{5-1}{4-2}
+		\line{4-2}{3-3}
+	\end{pNiceMatrix}\longrightarrow -a_{3\,1}*a_{2\,2}*a_{1\,3}-a_{1\,1}*a_{3\,2}*a_{2\,3} - a_{2\,1}*a_{1\,2}*a_{3\,3}\]
+	\item Y juntando las dos partes tenemos el determinante:
+	\begin{flalign*}|A| = \left|\begin{array}{rrr}
+		a_{1\,1}&a_{1\,2}&a_{1\,3}\\
+		a_{2\,1}&a_{2\,2}&a_{2\,3}\\
+		a_{3\,1}&a_{3\,2}&a_{3\,3}\\
+	\end{array}\right|=& a_{1\,1}*a_{2\,2}*a_{3\,3}+a_{2\,1}*a_{3\,2}*a_{1\,3} + a_{3\,1}*a_{1\,2}*a_{2\,3}-a_{3\,1}*a_{2\,2}*a_{1\,3}\\
+	&-a_{1\,1}*a_{3\,2}*a_{2\,3} - a_{2\,1}*a_{1\,2}*a_{3\,3}
+	\end{flalign*}
+\end{enumerate}
+Lógicamente, los pasos 1, 2 y 3 se hacen en sucio y únicamente se pasa a limpio el paso 4. Además, con la práctica, terminaremos aprendiéndonos
+de memoria qué productos suman y qué productos restan de manera que escribiremos directamente la operación del paso 4 con cada término calculado
+mentalmente.\\
+
+Vamos a verlo con un \textbf{ejemplo}: calcular el determinante de $A=\left(\begin{array}{rrr}
+	3&-2& 0\\
+	-2&-4&2\\
+	5&1&-1
+\end{array} \right)$
+\begin{solution}
+	Vamos a hacerlo por pasos como en la explicación.
+	\begin{enumerate}
+		\item Copiamos las dos primeras filas debajo, de manera que tengamos 5 filas:
+		\[\left(\begin{array}{rrr}
+			3&-2& 0\\
+			-2&-4&2\\
+			5&1&-1\\
+			3&-2& 0\\
+			-2&-4&2
+		\end{array}\right)\]
+		\item El producto de las paralelas a la diagonal principal que tienen tres elementos suma.
+		\[\begin{pNiceMatrix}
+			3&-2& 0\\
+			-2&-4&2\\
+			5&1&-1\\
+			3&-2& 0\\
+			-2&-4&2
+			\CodeAfter
+			\line{1-1}{2-2}
+			\line{2-2}{3-3}
+			\line{2-1}{3-2}
+			\line{3-2}{4-3}
+			\line{3-1}{4-2}
+			\line{4-2}{5-3}
+		\end{pNiceMatrix}\longrightarrow 3*(-4)*(-1) + (-2)*1*0 + 5*(-2)*2\]
+		\item Y el producto de las paralelas a la diagonal secundaria que tienen tres elementos resta.
+		\[\begin{pNiceMatrix}
+			3&-2& 0\\
+			-2&-4&2\\
+			5&1&-1\\
+			3&-2& 0\\
+			-2&-4&2
+			\CodeAfter
+			\line{3-1}{2-2}
+			\line{2-2}{1-3}
+			\line{4-1}{3-2}
+			\line{3-2}{2-3}
+			\line{5-1}{4-2}
+			\line{4-2}{3-3}
+		\end{pNiceMatrix}\longrightarrow -5*(-4)*0 - 3*1*2 - (-2)*(-2)*(-1)\]
+		\item Y juntando las dos partes tenemos el determinante:
+		\begin{flalign*}|A| = \left|\begin{array}{rrr}
+				3&-2& 0\\
+				-2&-4&2\\
+				5&1&-1
+			\end{array}\right|=&3*(-4)*(-1) + (-2)*1*0 + 5*(-2)*2\\
+			&-5*(-4)*0 - 3*1*2 - (-2)*(-2)*(-1) = -10
+		\end{flalign*}
+	\end{enumerate}
+\end{solution}
+
+Para calcular el \textbf{determinante de una matriz $4\times4$} no existe una regla sencilla (aunque parezca que Sarrus es complicado), de manera que lo
+calcularemos utilizando las propiedades de los determinantes que veremos más adelante.
+\subsection{Menores y adjuntos.}
+Dada una matriz cuadrada $A$ se define el \textbf{menor} $\boldsymbol{M_{i\,j}}$ como el \textbf{determinante de la matriz que se obtiene al suprimir la fila $i$ y la columna $i$}.\\
+
+Y el \textbf{adjunto es} $\boldsymbol{\adjunto{a_{i\,j}}= (-1)^{i+j}*M_{i\,j}}$.\\
+Al adjunto a veces se le llama cofactor.\\
+
+\section{Propiedades de los determinantes.}
+\subsection{Determinante de una matriz triangular.}
+El \textbf{determinante de una matriz triangular} (superior o inferior, da lo mismo) \textbf{es el producto de los elementos de su diagonal principal}.\\
+Esto es fácil de comprobar, ya que en este caso el único término del determinante en el que no aparece algún factor que sea 0 es el de la diagonal principal.
+Esta propiedad se utiliza en el cálculo de determinantes por el método de Gauss.\\
+
+De esta propiedad también se saca una conclusión importante: \textbf{el determinante de la matriz identidad vale 1}, independientemente de la dimensión de la matriz.
+\[|I_n| = 1\]
+\subsection{Cambios de filas o columnas.}
+\textbf{Si intercambiamos entre sí dos filas o dos columnas de la matriz, el determinante cambia de signo.}
+
+\subsection{Filas o Columnas de ceros}
+Si una matriz tiene \textbf{una fila o una columna de ceros su determinante vale 0}.\\
+
+Si una matriz tiene una fila o columna con \textbf{todo ceros excepto un elemento el determinante es igual a ese elemento por su adjunto}. Por ejemplo:
+\[\left|\begin{array}{rrr}
+	0&2&0\\
+	4&-1&3\\
+	1&-1&-5
+\end{array}\right| = 2 * (-1)^{1 + 2} *\left|\begin{array}{rr}
+4&3\\
+1&-5
+\end{array}\right| = 2* (-1) * (4*(-5) - 3*1) = 46\]
+
+\subsection{Combinaciones lineales de filas y columnas.}
+Vamos a empezar recordando lo que es una \emph{combinación lineal} con vectores, que es con lo que se ve en 4º de E.S.O.\\
+Dados dos vectores $\vec{v}$ y $\vec{w}$, una combinación lineal es $a*\vec{v} + b*\vec{w}$ donde $a, b \in \mathbb{R}$\\
+
+Cuando hablamos de filas o columnas de una matriz podemos decir que son vectores, ya que la suma de matrices se realiza por la posición del elemento como en los vectores.\\
+
+Con lo que podemos hacer una combinación lineal de filas de la siguiente manera:
+\[\left(\begin{array}{rrr}
+	0&1&0\\
+	3&2&-2\\
+	2&3&1
+\end{array}\right) \xrightarrow{\quad F_2 \leftarrow 2*F_1 + 3*F_2\quad} 
+\left(\begin{array}{rrr}
+	0&1&0\\
+	9&8&-6\\
+	2&3&1
+\end{array}\right)\]
+Con \small{$\xrightarrow{\quad F_2 \leftarrow 2*F_1 + 3*F_2\quad}$} indicamos que hemos sustituido la fila 2 ($F_2$) por una combinación lineal de ella misma y la fila 1 ($F_1$).\\
+
+Una vez aclarado lo que es una combinación lineal de filas, para columnas sería similar, podemos enunciar qué consecuencias tiene esto para los determinantes:
+\begin{itemize}
+	\item \textbf{Si en una matriz una fila (o columna) es combinación lineal de las otras su determinante vale 0.} Por ejemplo:
+	\[\left|\begin{array}{rrr}
+		3&4&-5\\
+		1&-4&7\\
+		2&0&1\\
+	\end{array}\right| = 0\quad \text{\parbox{.6\linewidth}{Porque la fila 2 es igual al doble de la fila 3 menos la fila 1.\\Es decir, la fila 2 es combinación lineal de otras dos filas.}}\]
+	Esto es porque es como si tuviésemos una fila (o columna) de ceros.
+	\item \textbf{Si a una fila (o columna) le sumamos una combinación lineal de las otras el determinante no cambia.} Vamos a verlo:
+	\[\left|\begin{array}{rrr}
+		0&1&0\\
+		3&2&-2\\
+		2&3&1
+	\end{array}\right| = -7 \quad\text{Ahora sumo a la fila 1 las otras dos}\quad\left|\begin{array}{rrr}
+	5&6&-1\\
+	3&2&-2\\
+	2&3&1
+\end{array}\right| = -7
+	\]
+\end{itemize}
+
+\subsection{Determinante de un producto de matrices.}
+\textbf{El determinante de un producto es igual al producto de los determinantes.}
+\[|A*B| = |A|*|B|\]
+
+\subsection{Determinante de la matriz inversa.}
+Sabemos que la matriz inversa cumple que:
+\[A*A^{-1} = I\]
+Y como hemos visto que $|I| = 1$, aplicamos la propiedad del determinante del producto y resulta:
+\[|A|*|A^{-1}| = 1\]
+
+Con lo que:
+\[\boldsymbol{|A^{-1}| = \frac{1}{|A|} = |A|^{-1}}\]
+De donde sacamos la conclusión que \textbf{para que exista $\boldsymbol{A^{-1}}$ tiene que ocurrir que $\boldsymbol{|A| \neq 0}$}.
+
+\subsection{Determinante de la traspuesta.}
+El \textbf{determinante de la matriz traspuesta es el mismo} que el de la matriz original:
+\[\boldsymbol{|A^t| = |A|}\]
+
+\subsection{Determinante del producto por un escalar.}
+Esta propiedad va a tener dos partes:\\
+
+Si \textbf{multiplicamos una fila }(o una columna) \textbf{por un valor el determinante queda multiplicado por ese valor}.
+\[\left|\begin{array}{cccc}
+a_{1\,1}&a_{1\,2}&\cdots&a_{1\,n}\\
+\vdots&\vdots&&\vdots\\
+k*a_{i\,1}&k*a_{i\,2}&\cdots&k*a_{i\,n}\\
+\vdots&\vdots&&\vdots\\
+a_{n\,1}&a_{n\,2}&\cdots&a_{n\,n}\\
+\end{array}\right| = k*\left|\begin{array}{cccc}
+a_{1\,1}&a_{1\,2}&\cdots&a_{1\,n}\\
+\vdots&\vdots&&\vdots\\
+a_{i\,1}&a_{i\,2}&\cdots&a_{i\,n}\\
+\vdots&\vdots&&\vdots\\
+a_{n\,1}&a_{n\,2}&\cdots&a_{n\,n}\\
+\end{array}\right|\]
+
+Y ahora la segunda parte que es conclusión de la primera: \textbf{el determinante de una matriz por un escalar es igual al determinante de la matriz por el escalar elevado a la dimensión de la matriz}:
+\[\left|k*\left(\begin{array}{cccc}
+a_{1\,1}&a_{1\,2}&\cdots&a_{1\,n}\\
+\vdots&\vdots&&\vdots\\
+a_{i\,1}&a_{i\,2}&\cdots&a_{i\,n}\\
+\vdots&\vdots&&\vdots\\
+a_{n\,1}&a_{n\,2}&\cdots&a_{n\,n}\\
+\end{array}\right)\right| = \left|\begin{array}{cccc}
+k*a_{1\,1}&k*a_{1\,2}&\cdots&k*a_{1\,n}\\
+\vdots&\vdots&&\vdots\\
+k*a_{i\,1}&k*a_{i\,2}&\cdots&k*a_{i\,n}\\
+\vdots&\vdots&&\vdots\\
+k*a_{n\,1}&k*a_{n\,2}&\cdots&k*a_{n\,n}\\
+\end{array}\right|= k^n*\left|\begin{array}{cccc}
+a_{1\,1}&a_{1\,2}&\cdots&a_{1\,n}\\
+\vdots&\vdots&&\vdots\\
+a_{i\,1}&a_{i\,2}&\cdots&a_{i\,n}\\
+\vdots&\vdots&&\vdots\\
+a_{n\,1}&a_{n\,2}&\cdots&a_{n\,n}\\
+\end{array}\right|\]
+
+\subsection{Transformación en suma de determinantes.}
+Esta propiedad es un poco difícil de describir con palabra, así que lo que haremos será enunciar el caso general y luego haremos un caso de ejemplo.\\
+
+El caso general:
+\[\left|\begin{array}{ccccc}
+a_{1\,1}&\cdots&a_{1\,j} + b_{1\,j}&\cdots&a_{1\,n}\\
+a_{2\,1}&\cdots&a_{2\,j} + b_{2\,j}&\cdots&a_{2\,n}\\
+\vdots&&\vdots&&\vdots\\
+a_{i\,1}&\cdots&a_{i\,j} + b_{i\,j}&\cdots&a_{i\,n}\\
+\vdots&&\vdots&&\vdots\\
+a_{n\,1}&\cdots&a_{n\,2}+b_{n\,j}&\cdots&a_{n\,n}\\
+\end{array}\right| = \left|\begin{array}{ccccc}
+a_{1\,1}&\cdots&a_{1\,j}&\cdots&a_{1\,n}\\
+a_{2\,1}&\cdots&a_{2\,j}&\cdots&a_{2\,n}\\
+\vdots&&\vdots&&\vdots\\
+a_{i\,1}&\cdots&a_{i\,j}&\cdots&a_{i\,n}\\
+\vdots&&\vdots&&\vdots\\
+a_{n\,1}&\cdots&a_{n\,2}&\cdots&a_{n\,n}\\
+\end{array}\right| + \left|\begin{array}{ccccc}
+a_{1\,1}&\cdots&b_{1\,j}&\cdots&a_{1\,n}\\
+a_{2\,1}&\cdots&b_{2\,j}&\cdots&a_{2\,n}\\
+\vdots&&\vdots&&\vdots\\
+a_{i\,1}&\cdots&b_{i\,j}&\cdots&a_{i\,n}\\
+\vdots&&\vdots&&\vdots\\
+a_{n\,1}&\cdots&b_{n\,j}&\cdots&a_{n\,n}\\
+\end{array}\right| \]
+
+Con un \textbf{ejemplo}:
+\[\left|\begin{array}{rrr}
+1&3&5\\
+3&0&-1\\
+0&-4&2
+\end{array}\right| = \left|\begin{array}{rrr}
+1&3&5\\
+0&0&-1\\
+0&-4&2
+\end{array}\right| + \left|\begin{array}{rrr}
+0&3&5\\
+3&0&-1\\
+0&-4&2
+\end{array}\right|\]
+Y por las propiedades que hemos visto, esos determinantes se pueden reducir al producto del valor de la primera columna que está entre ceros por su adjunto:
+\[=1*(-1)^{1+1}\left|\begin{array}{rr}
+0&-1\\
+-4&2
+\end{array}\right| + 3*(-1)^{2+1}\left|\begin{array}{rr}
+3&5\\
+-4&2
+\end{array}\right| = -4 -78 = -82\]
+
+\section{Métodos para calcular determinantes.}
+\subsection{Desarrollo por filas o columnas.}
+Por lo visto en las propiedades, el determinante.
+\[\left|\begin{array}{rrrr}
+a_{1\,1}&\cdots&a_{1\,n}\\
+\vdots&&\vdots\\
+a_{n\,1}&\cdots&a_{n\,n}
+\end{array}\right|\]
+Lo podemos calcular como:
+\[\left|\begin{array}{rrrr}
+a_{1\,1}&\cdots&a_{1\,n}\\
+\vdots&&\vdots\\
+a_{n\,1}&\cdots&a_{n\,n}
+\end{array}\right| = a_{i\,1}*\adjunto{a_{i\,1}} + a_{i\,2}*\adjunto{a_{i\,2}} + \cdots
++ a_{i\,n}*\adjunto{a_{i\,n}} = \sum_{j=1}^n a_{i\,j}*\adjunto{a_{i\,j}}\]
+Y esto sería el desarrollo del determinante por la fila $i$.\\
+
+Si lo que queremos es desarrollar el determinante por la columna $i$ quedaría:
+\[\left|\begin{array}{rrrr}
+a_{1\,1}&\cdots&a_{1\,n}\\
+\vdots&&\vdots\\
+a_{n\,1}&\cdots&a_{n\,n}
+\end{array}\right| = a_{1\,i}*\adjunto{a_{1\,i}} + a_{2\,i}*\adjunto{a_{2\,i}} + \cdots
++ a_{n\,i}*\adjunto{a_{n\,i}} = \sum_{j=1}^n a_{j\,i}*\adjunto{a_{j\,i}}\]
+
+
+Vamos con un \textbf{ejemplo al más grande}:\\
+Calcula el determinante:
+\[\left|\begin{array}{rrrr}
+1&3&0&-1\\
+-2&0&4&3\\
+-1&-1&2&-2\\
+2&1&3&0
+\end{array}\right|\]
+\begin{solution}
+  Lo más lógico es desarrollarlo a través de una fila o una columna que tenga ceros, ya que
+  eso nos va a eliminar términos y nos evitará el calcular algunos determinantes.
+  Así que vamos a escoger la primera fila que tiene un 0 en la posición 1,3:
+  \begin{small}
+  \begin{flalign*}\left|\begin{array}{rrrr}
+1&3&0&-1\\
+-2&0&4&3\\
+-1&-1&2&-2\\
+2&1&3&0
+  \end{array} \right| &= 1*(-1)^{1+1}*\left|\begin{array}{rrr}
+  0&4&3\\
+  -1&2&-2\\
+  1&3&0
+  \end{array}\right| + 3*(-1)^{1+2}\left|\begin{array}{rrr}
+  -2&4&3\\
+  -1&2&-2\\
+  2&3&0
+  \end{array}\right|\\& -1 * (-1)^{1+4}\left|\begin{array}{rrr}
+  -2&0&4\\
+  -1&-1&2\\
+  2&1&3
+  \end{array}\right|\end{flalign*}
+  \begin{center}
+    Como el término correspondiente al elemento 1,3 va a dar cero no lo hemos tenido en cuenta.
+  \end{center}
+  \end{small}
+  Y ya solo tenemos que calcular esos tres determinantes, de manera que:
+\begin{flalign*}
+  1*(-1)^{1+1}*\left|\begin{array}{rrr}
+  0&4&3\\
+  -1&2&-2\\
+  1&3&0
+  \end{array}\right| + 3*(-1)^{1+2}\left|\begin{array}{rrr}
+  -2&4&3\\
+  -1&2&-2\\
+  2&3&0
+  \end{array}\right| -1 * (-1)^{1+4}\left|\begin{array}{rrr}
+  -2&0&4\\
+  -1&-1&2\\
+  2&1&3
+  \end{array}\right|=\\ 1*(-1)^{1+1}*(-23) + 3*(-1)^{1+2}*(-49) -1*(-1)^{1+4}*14 = 138
+  \end{flalign*}
+\end{solution}
+
+\subsection{Cálculo por reducción de orden.}
+Basándonos en el método anterior podemos concluir que si en un determinante todos los elementos de una fila, o columna, son ceros excepto uno de ellos el determinante es igual a ese elemento por su adjunto (esto ya lo habíamos visto como propiedad).\\
+
+Como las propiedades también nos dicen que si a una fila (o columna) le añadimos una combinación lineal de otras el valor del determinante no cambia, podemos ir haciendo ceros utilizando estas combinaciones lineales.\\
+
+Vamos a verlo con un \textbf{ejemplo}:
+\[\left| \begin{array}{rrrr}
+	3&1&-1&2\\
+	-2&-2&2&1\\
+	1&3&-1&-1\\
+	2&4&-3&2
+\end{array} \right|\]
+\begin{solution}
+	Para que nos resulte sencillo hacer ceros vamos a utilizar un elemento que valga 1 y haremos ceros en toda su fila o columna. Y para que sea aún más sencillo lo vamos a poner el primero.\\
+	Elegimos el elemento 1,\,3, que vale 1, y vamos a cambiar toda su fila por la primera. Tenemos que recordar que al cambiar dos filas el determinante cambia de signo, con lo que:
+	\[\left| \begin{array}{rrrr}
+		3&1&-1&2\\
+		-2&-2&2&1\\
+		1&3&-1&-1\\
+		2&4&-3&2
+	\end{array} \right| \stackrel{F_1 \rightleftarrows F_3}{=} - \left| \begin{array}{rrrr}
+	1&3&-1&-1\\
+	-2&-2&2&1\\
+	3&1&-1&2\\
+	2&4&-3&2
+\end{array}\right|\]
+Y ahora vamos restando la primera fila a las demás multiplicándola por el valor adecuado para lograr los ceros. Vamos a verlo con la segunda fila:
+\[- \left| \begin{array}{rrrr}
+	1&3&-1&-1\\
+	-2&-2&2&1\\
+	3&1&-1&2\\
+	2&4&-3&2
+\end{array}\right| \stackrel{F_2  \leftarrow F_2 + 2*F_1}{=}
+- \left| \begin{array}{rrrr}
+	1&3&-1&-1\\
+	0&4&0&-1\\
+	3&1&-1&2\\
+	2&4&-3&2
+\end{array}\right|\]
+Y hacemos lo mismo con la tercera y la cuarta fila:
+\[- \left| \begin{array}{rrrr}
+	1&3&-1&-1\\
+	0&4&0&-1\\
+	3&1&-1&2\\
+	2&4&-3&2
+\end{array}\right| \stackrel{\tiny \begin{array}{c}
+	F_3 \leftarrow F_3 - 3*F_1\\
+	F_4 \leftarrow F_4 - 2*F_1
+\end{array}}{=} - \left| \begin{array}{rrrr}
+1&3&-1&-1\\
+0&4&0&-1\\
+0&-8&2&5\\
+0&-2&-1&4
+\end{array}\right|\]
+
+Y ahora, como en la primera columna todos los elementos son 0 excepto el primero, el determinante será igual a ese elemento por su adjunto:
+\[- \left| \begin{array}{rrrr}
+	1&3&-1&-1\\
+	0&4&0&-1\\
+	0&-8&2&5\\
+	0&-2&-1&4
+\end{array}\right| =- 1 * (-1)^{1+1}*
+\left| \begin{array}{rrr}
+	4&0&-1\\
+	-8&2&5\\
+	-2&-1&4
+\end{array}\right| = -1*(40) = -40\]
+\end{solution}
+
+\section{Aplicación de los determinantes al cálculo de la inversa.}
+Calcular la matriz inversa mediante el uso de los determinantes es relativamente sencillo. Para ello vamos a hacer primero una definición:
+\subsection{Matriz adjunta.}
+La matriz adjunta de $A$ (se llama $\adjunto{A}$) \textbf{es la matriz formada por los adjuntos de $A$}. Es decir:
+\[\adjunto{A} =\left( \begin{array}{rrr}
+	\adjunto{a_{1\,1}}&\cdots&\adjunto{a_{1\,n}}\\
+	\vdots&&\vdots\\
+	\adjunto{a_{n\,1}}&\cdots&\adjunto{a_{n\,n}}
+\end{array} \right)\]
+\subsection{Cálculo de la matriz inversa.}
+La matriz inversa de $A$ es igual a \textbf{la traspuesta de la adjunta partida por el determinante} de $A$:
+\[A^{-1} = \frac{\left(\adjunto{A}\right)^t}{|A|}\]
+
+Vamos a ver un par de \textbf{ejemplos}, primero con una de orden 2 y luego con otra de orden 3.
+\begin{questions}
+	\question Calcular la inversa de $\left(\begin{array}{rr}
+		1&3\\
+		1&2
+	\end{array}\right)$.
+\begin{solution}
+\begin{small}
+Lo primero que tenemos que hacer es calcular el determinante de la matriz, ya que si es 0 entonces no tiene inversa y no tiene sentido seguir haciendo ningún cálculo.
+\[\left|\begin{array}{rr}
+	1&3\\
+	1&2
+\end{array}\right| = -1\]
+Con lo que la matriz tiene inversa. Calculemos ahora la adjunta:
+\begin{itemize}
+	\item $\adjunto{a_{1\,1}} = 2$
+	\item $\adjunto{a_{1\,2}} = -1$
+	\item $\adjunto{a_{2\,1}} = -3$
+	\item $\adjunto{a_{1\,1}} = 1$
+\end{itemize}
+Con lo que la matriz adjunta es:
+\[\adjunto{A} = \left(\begin{array}{rr}
+	2&-1\\
+	-3&1
+\end{array}\right)\]
+Y ya es sencillo calcular la inversa:
+\[A^{-1} = \frac{\left(\begin{array}{rr}
+		2&-1\\
+		-3&1
+	\end{array}\right)^t}{-1} = \left(\begin{array}{rr}
+-2&3\\
+1&-1
+\end{array}\right)\]
+Y es fácil comprobar que es la inversa:
+\[\left(\begin{array}{rr}
+	1&3\\
+	1&2
+\end{array}\right) * \left(\begin{array}{rr}
+-2&3\\
+1&-1
+\end{array}\right) = \left(\begin{array}{rr}
+1&0\\
+0&1
+\end{array}\right) \]
+\end{small}
+\end{solution}
+
+\question Calcular la inversa de $\left(\begin{array}{rrr}
+	1&-1&0\\
+	0&1&0\\
+	2&0&1
+\end{array}\right)$.
+\begin{solution}
+\begin{small}
+Empezamos por calcular el determinante para ver si tiene inversa:
+\[\left|\begin{array}{rrr}
+	1&-1&0\\
+	0&1&0\\
+	2&0&1
+\end{array}\right| = 1\]
+Como sí que tiene inversa calculamos los adjuntos:
+\begin{multicols}{3}
+	\begin{itemize}
+		\item $\adjunto{a_{1\,1}} = \left|\begin{array}{rr}
+			1&0\\
+			0&1
+		\end{array}\right| = 1$
+		\item $\adjunto{a_{2\,1}} = -\left|\begin{array}{rr}
+		-1&0\\
+		0&1
+	\end{array}\right| = 1$
+		\item $\adjunto{a_{3\,1}} = \left|\begin{array}{rr}
+			-1&0\\
+			1&0
+		\end{array}\right| = 0$
+		\item $\adjunto{a_{1\,2}} = -\left|\begin{array}{rr}
+			0&0\\
+			2&1
+		\end{array}\right| = 0$
+		\item $\adjunto{a_{2\,2}} = \left|\begin{array}{rr}
+			1&0\\
+			2&1
+		\end{array}\right| = 1$
+		\item $\adjunto{a_{3\,2}} = -\left|\begin{array}{rr}
+			1&0\\
+			0&0
+		\end{array}\right| = 0$
+		\item $\adjunto{a_{1\,3}} = \left|\begin{array}{rr}
+			0&1\\
+			2&0
+		\end{array}\right| = -2$
+		\item $\adjunto{a_{2\,3}} = -\left|\begin{array}{rr}
+			1&-1\\
+			2&0
+		\end{array}\right| = -2$
+		\item $\adjunto{a_{3\,3}} = \left|\begin{array}{rr}
+			1&-1\\
+			0&1
+		\end{array}\right| = 1$
+	\end{itemize}
+\end{multicols}
+Con lo que:
+\[\adjunto{A} = \left(\begin{array}{rrr}
+	1&0&-2\\
+	1&1&-2\\
+	0&0&1
+\end{array}\right)\]
+Y la inversa:
+\[A^{-1} = \frac{\left(\begin{array}{rrr}
+		1&0&-2\\
+		1&1&-2\\
+		0&0&1
+	\end{array}\right)^t}{1} = \left(\begin{array}{rrr}
+1&1&0\\
+0&1&0\\
+-2&-2&1
+\end{array}\right)\]
+Y se comprueba que su producto por la matriz del enunciado es la identidad:
+\[\left(\begin{array}{rrr}
+	1&1&0\\
+	0&1&0\\
+	-2&-2&1
+\end{array}\right) * \left(\begin{array}{rrr}
+1&-1&0\\
+0&1&0\\
+2&0&1
+\end{array}\right) = \left(\begin{array}{rrr}
+1&0&0\\
+0&1&0\\
+0&0&1
+\end{array}\right)\]
+\end{small}
+\end{solution}
+\end{questions}
+
+\end{document}

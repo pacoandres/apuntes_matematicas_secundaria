@@ -1,0 +1,1133 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+\usepackage{hyperref} %Normalmente no hay que incluirlo, pero aquí si no lo incluyo da error de orden de paquetes.
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+%\pgfplotsset{compat=1.18}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de análisis III. Derivadas y aplicaciones.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\begin{document}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+
+\section{Antecedentes, Tasa de Variación media.}
+Muchas veces necesitamos saber cómo varía una función en un determinado intervalo, y el ejemplo más sencillo de entender es el cálculo de la velocidad media entre dos tiempos $t_1$ y $t_2$:
+\[\bar{v} = \frac{s_2 - s_1}{t_2 - t_1}\]
+Donde $s_2$ es la posición en el momento $t_2$ y $s_1$ en el momento $t_1$.\\
+Si lo vemos gráficamente:
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+compat=1.12,
+/pgf/declare function={f(\x) = ln(\x);}
+}
+\pgfmathsetmacro\suno{f(10.0)}
+\pgfmathsetmacro\sdos{f(60.0)}
+\pgfmathsetmacro\pend{(f(60.0)-f(10.0))/(50.0)}
+\begin{axis}[title={$v(t)$}, xmin=-5,ymin=0,xtick={10, 60}, ytick={\suno, \sdos}, xticklabels={$t_1$, $t_2$}, yticklabels={$s_1$, $s_2$} ] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = 1:100,
+        samples = 200,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+    \addplot[
+    	domain = 0:10,
+    	samples = 2,
+    	dashed,
+    	thick,
+    ] (x, \suno);
+    \addplot[
+    	domain = 0:60,
+    	samples = 2,
+    	dashed,
+    	thick,
+    ] (x, \sdos);
+    \draw[dashed, thick] (10, 0)--(10, \suno);
+    \draw[dashed, thick] (60, 0)--(60, \sdos);
+        \addplot[
+    	domain = 0:100,
+    	samples = 2,
+    	dashed,
+    	thick,
+    ] (x, {\pend*(x -10) + \suno});
+\end{axis}
+ 
+\end{tikzpicture}
+\end{center}
+
+En la anterior gráfica se ha dibujado también la recta que une los puntos $(t_1, s_1)$ y $(t_2, s_2)$ y por lo que sabemos sobre la ecuación de una recta, la pendiente de esa recta es $m = \frac{s_2 - s_1}{t_2 - t_1}$ que coincide con la velocidad media del móvil descrito.\\
+Es decir, la \textbf{tasa de variación media} entre dos puntos de una función coincide con la pendiente de la recta que une esos dos puntos.
+
+\section{Derivada de una función en un punto.}
+A lo largo de la historia de la física se ha utilizado la tasa de variación media para muchos cálculos y conforme la física avanzaba se hacía necesario reducir el tamaño de los intervalos para los que se calculaba esa tasa hasta hacerlos de una anchura de prácticamente cero. Esa reducción progresiva lleva a la siguiente situación geométrica:
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+compat=1.12,
+/pgf/declare function={f(\x) = ln(\x);}
+}
+\pgfmathsetmacro\suno{f(10.0)}
+\pgfmathsetmacro\sdos{f(60.0)}
+\pgfmathsetmacro\stres{f(40.0)}
+\pgfmathsetmacro\scua{f(20.0)}
+\pgfmathsetmacro\pend{(f(60.0)-f(10.0))/(50.0)}
+\pgfmathsetmacro\pendtres{(f(40.0)-f(10.0))/(30.0)}
+\pgfmathsetmacro\pendcua{(f(20.0)-f(10.0))/(10.0)}
+\begin{axis}[width=.8\linewidth, height=.4\linewidth, title={$v(t)$}, xmin=-5,ymin=0,xtick={10, 20, 40, 60}, ytick={\suno, \sdos}, xticklabels={$t_1$, $t_4$, $t_3$,$t_2$}, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = 1:100,
+        samples = 200,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+
+    \draw[loosely dashed, thick] (10, 0)--(10, \suno);
+    \draw[loosely dashed, thick] (60, 0)--(60, \sdos);
+     \addplot[
+    	domain = 0:100,
+    	samples = 2,
+    	dashed,
+    	thick,
+    ] (x, {\pend*(x -10) + \suno}); \label{pgfplots:primera}
+
+    
+
+     \draw[loosely dashed, thick] (40, 0)--(40, \stres);
+      \addplot[
+    	domain = 0:60,
+    	samples = 2,
+    	dotted,
+    	thick,
+    ] (x, {\pendtres*(x -10) + \suno}); \label{pgfplots:segunda}
+
+
+     \draw[loosely dashed, thick] (20, 0)--(20, \scua);
+      \addplot[
+    	domain = 0:50,
+    	samples = 2,
+    	densely dotted,
+    	thick,
+    ] (x, {\pendcua*(x -10) + \suno}); \label{pgfplots:tercera}
+
+	\node[draw,fill=white,inner sep=0pt,above left=0.5em] at (110,0) {\small
+	\begin{tabular}{cl}
+    \ref*{pgfplots:primera} & recta de $t_1$ a $t_2$\\
+    \ref*{pgfplots:segunda} & recta de $t_1$ a $t_3$\\
+    \ref*{pgfplots:tercera} & recta de $t_1$ a $t_4$
+    \end{tabular}
+};
+\end{axis}
+ 
+\end{tikzpicture}
+\end{center}
+Donde se ve que la recta se va aproximando a la tangente en $t_1$ según el intervalo es más pequeño.\\
+
+Si llamamos $a$ al primer punto (que antes hemos llamado $t_1$), la tasa de variación media para un intervalo de anchura $h$ será:
+\[TVM = \frac{f(a+h) - f(a)}{(x+h) -x} = \frac{f(a+h) - f(a)}{h}\]
+Y al reducir cada vez más el intervalo el valor de $h$ estará cada vez más cercano a cero sin poder serlo porque está dividiendo. Esto nos lleva a tener que calcular el límite y este límite es la \textbf{derivada de la función en el punto $\boldsymbol{a}$}:
+\[f'(a) = \lim_{h \to 0} \frac{f(a+h) - f(a)}{h}\]
+\begin{quote}
+\begin{small}
+(\textit{$f'$ es una de las maneras de escribir la derivada. Hay algunas más y dependiendo de la situación utilizaremos una u otra})
+\end{small}
+\end{quote}
+Y por lo que hemos visto en la interpretación geométrica $\boldsymbol{f'(a)}$ \textbf{coincide con la pendiente de la recta tangente a la función en el punto $\boldsymbol{a}$}. Es decir, nos da la dirección en la que crece (o decrece si es negativa) la función.\\
+
+Vamos a ver algunos ejemplos de cálculo de derivadas:
+\begin{questions}
+\question Calcula la derivada de $f(x) = x^2 + 1$ en el punto $x=1$.
+\begin{solution}
+Por la definición de derivada tendríamos que:
+\[f'(2) = \lim_{h \to 0} \frac{((1+h)^2 + 1) - (1^2 + 1)}{h}\]
+Que es un límite $\frac{0}{0}$ (las derivadas siempre son ese tipo de límite por cómo están definidas), así que vamos a desarrollar y a tratar de simplificar:
+\begin{flalign*}
+f'(2) &= \lim_{h \to 0} \frac{(1^2 + 2*h +h^2 + 1) - (1 + 1)}{h} = \lim_{h \to 0} \frac{1 + 2h + h^2  + 1 - 1 - 1}{h} \\
+&=\lim_{h \to 0} \frac{2h+h^2}{h} = \lim_{h \to 0} (2 + h) = 2
+\end{flalign*}
+\end{solution}
+
+\question Calcula la derivada de $f(x) = \frac{1}{x}$ en $x= -3$.
+\begin{solution}
+Volvemos a aplicar la definición de derivada:
+\begin{flalign*}
+f'(-3) &= \lim_{h \to 0} \ddfrac{\frac{1}{-3+h} - \frac{1}{-3}}{h} = \lim_{h \to 0} \ddfrac{\ \frac{3+(h - 3)}{3(h-3)}\ }{h} =
+\lim_{h \to 0} \ddfrac{\ \frac{h}{3(h-3)}\ }{h} = \lim_{h \to 0} \frac{h}{3h(h-3)} \\
+&=\lim_{h \to 0} \frac{1}{3h - 9} = -\frac{1}{9}
+\end{flalign*}
+(Para entender bien el ejemplo ten en cuenta que $-\frac{1}{-3} = \frac{1}{3}$ al dar el primer paso)
+\end{solution}
+\end{questions}
+\subsection{Notación de derivada.}
+Como se ha indicado en la definición, hay diversas maneras de escribir la derivada dependiendo de la situación y vamos a ver cuales son esas formas.\\
+
+Pero primero tenemos que entender un par de cosas importantes:\\
+Tenemos la siguiente función:
+\[f(x,a) = 3a + x^2\]
+Esta función depende de los valores que le demos a $x$ y a $a$ y, por las operaciones en las que están involucradas, no afectan igual los cambios en $a$ que los cambios en $x$.\\
+Por esto a la hora de hacer la derivada no va a ser lo mismo aplicar la definición de derivada a la $a$ que aplicársela a la $x$ y tendremos que poder indicarlo de alguna manera.\\
+
+La manera más estandarizada es la notación de Leibniz. Vamos a verla partiendo de la definición de derivada:
+\[\lim_{h \to 0} \frac{f(x+h) - f(x)}{(x+h) -x} = 
+\ddfrac{\lim_{h \to 0} (f(x+h) - f(x))}{\lim_{h \to 0}((x+h) -x)}\]
+Y lo que hizo Leibniz fue llamar diferenciales al numerador y al denominador, de manera que:
+\begin{itemize}
+	\item $\boldsymbol{ \lim_{h \to 0} ((x+h) -x) = dx}$ (diferencial de $x$)
+	\item $\boldsymbol{\lim_{h \to 0} (f(x+h) - f(x)) = df}$ (diferencial de $f$)
+\end{itemize}
+Y de esta manera nos queda que la derivada con respecto a $x$ se escribe $\frac{df}{dx}$ y si es la derivada con respecto a $a$ se escribe $\frac{df}{da}$.\\
+Esto se puede escribir de otras maneras:
+\[\frac{df}{dx} = \frac{d}{dx}f = D_x f\]
+
+Además, para economizar, como hay variables con respecto a las que se deriva mucho (como la $x$ para la posición, o la $t$ para el tiempo) esto se suele abreviar aún más:
+\begin{itemize}
+	\item $\frac{df}{dx} = f'$ se utiliza fundamentalmente en física y matemáticas.
+	\item $\frac{df}{dt} = \dot{f}$ se utiliza fundamentalmente en física.
+\end{itemize}
+
+A lo largo del bachillerato las dos más utilizadas en matemáticas son $\frac{df}{dx}$ y $f'$
+
+
+\section{Función derivada. Derivadas sucesivas.}
+Se ve calcular las derivadas con la definición es un poco tedioso (y puede llegar a ser muy complicado), pero como sabemos operar algebraicamente sin problemas podemos intentar hacer una derivada en un valor indefinido ($x$) de manera que sustituyendo el valor posteriormente obtengamos el valor derivada en cualquier punto. A esto es a lo que se llama función derivada y vamos a ver un ejemplo de cómo se calcula.\\
+
+Vamos a calcular la función derivada de $f(x) = x^2$, y como la estamos calculando en un valor cualquiera no vamos a cambiar la $x$ por nada, de manera que queda:
+\[f'(x) = \lim_{h \to 0} \frac{(x+h)^2 - x^2}{h}\]
+Y simplemente tenemos que desarrollar y simplificar:
+\[f'(x) = \lim_{h \to 0} \frac{x^2 + 2xh + h^2 - x^2}{h} = f'(x) = \lim_{h \to 0} \frac{2xh + h^2}{h} =
+\lim_{h \to 0} (2x + h) = 2x\]
+Con esto podemos calcular la derivada de $f(x) = x^2$ en cualquier punto ya que hemos obtenido que $f'(x) = 2x$, con lo que si queremos calcular la derivada en $x=1$ tendremos que $f'(1) = 2*1 = 2$.\\
+
+Esto nos simplifica bastante la vida, ya que una vez que está calculada una función derivada no hay que volverla a calcular. Como sabemos cuales son las funciones elementales, y las operaciones que se utilizan para combinarlas entre ellas, para derivar cualquier función solo tenemos que sabernos esas derivadas y que pasa cuando hacemos alguna de las operaciones con funciones que hemos visto.
+
+\subsection{Funciones derivadas de las funciones elementales.}
+Vamos una tabla con las derivadas de las funciones elementales. Esta tabla hay que sabérsela para poder derivar cualquier función.
+\begin{small}
+\begin{center}
+\begin{longtable}{|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{$\boldsymbol{f(x)}$} &\multicolumn{1}{|c|}{$\boldsymbol{f'(x)}$}&
+\multicolumn{1}{|c|}{\textbf{Comentarios}}\\ \hline
+\endhead
+\hline
+\endfoot
+$k$ (constante)& 0&\\ \hline
+$x^n$& $n*x^{n-1}$&Es válida para cualquier $n \in \mathbb{R}$\\ \hline
+$\sqrt{x}$& $\frac{1}{2\sqrt{x}}$&\begin{tabular}[c]{@{}l@{}}Se puede hacer con la anterior\\ pero como aparece muchas veces\\ es mucho mejor sabérsela.\end{tabular}\\ \hline
+$a^x$&$a^x * \ln a$&\\ \hline
+$\e^x$& $\e^x$& \begin{tabular}[c]{@{}l@{}}Se puede hacer con la anterior\\ pero como aparece muchas veces\\ es mucho mejor sabérsela.\end{tabular}\\ \hline
+$\log_a x$& $\frac{1}{x*\ln a}$&\begin{tabular}[c]{@{}l@{}} \\ \\\end{tabular}\\ \hline
+$\ln x$& $\frac{1}{x}$&\begin{tabular}[c]{@{}l@{}}Se puede hacer con la anterior\\ pero como aparece muchas veces\\ es mucho mejor sabérsela.\end{tabular}\\ \hline
+$\sen x$&$\cos x$&\\ \hline
+$\cos x$& $-\sen x$&\\ \hline
+$\tg x$& $1 + \tg^2 x = \frac{1}{\cos^2 x}$ & \begin{tabular}[c]{@{}l@{}}Dependiendo de la situación escribiremos\\ una u otra, pero es una identidad.\end{tabular}\\ \hline
+$\asen x$&$\frac{1}{\sqrt{1-x^2}}$&\begin{tabular}[c]{@{}l@{}} \\ \\\end{tabular}\\ \hline
+$\acos x$&$\frac{-1}{\sqrt{1-x^2}}$&\begin{tabular}[c]{@{}l@{}} \\ \\\end{tabular}\\ \hline
+$\atg x$&$\frac{1}{1+x^2}$&\begin{tabular}[c]{@{}l@{}}Ésta va a ser muy importante más adelante.\\ \\\end{tabular}\\ \hline
+\end{longtable}
+\end{center}
+\end{small}
+
+\subsection{Derivadas sucesivas.}
+Al poder realizar una función derivada, $f'(x)$, es evidente que ésta también la podemos derivar con lo que obtendríamos la \textbf{segunda derivada}, $\boldsymbol{f''(x)}$, y ésta también podríamos derivarla obteniendo la tercera derivada y así sucesivamente. Por ejemplo:
+\[f(x) = x^5 + \cos x\]
+\[f'(x) = 5x^4 - \sen x\]
+\[f''(x) = 20x^3 - \cos x\]
+\[f'''(x) = 60x^2 + \sen x\]
+\[f^{IV}(x) = 120x + \cos x\]
+\[\vdots\]
+
+Como veremos más adelante, las derivadas sucesivas también tienen sus aplicaciones.
+\section{Reglas de derivación.}
+Una vez que nos sabemos la tabla de derivadas de las funciones elementales tenemos que saber como afectan las operaciones con funciones a estas derivadas, para poder derivar cualquier función.\\
+Vamos a ver que reglas tenemos que seguir para cada operación que hemos visto con las funciones elementales (y alguna que se añadirá para simplificar el cálculo de derivadas).
+
+\subsection{Derivada de una suma.}
+\textbf{La derivada de una suma es la suma de las derivadas}. De manera simbólica:\\
+\begin{center}
+Si $\boldsymbol{h(x) = f(x) + g(x)}$ entonces $\boldsymbol{h'(x) = f'(x) + g'(x)}$.
+\end{center}
+
+Vamos a verlo con un ejemplo:
+\begin{questions}
+\question Escribe la función derivada de $f(x) = x^3 + x^2$.
+\begin{solution}
+Vemos que $f(x)$ es la suma de dos funciones cuya derivada aparece en la tabla: $x^3$ y $x^2$.\\
+
+Según la tabla $(x^3)' = 3x^2$ y $(x^2)' = 2x$, con lo que
+\[f'(x) = 3x^2 + 2x\]
+\end{solution}
+\end{questions}
+
+\subsection{Derivada de una constante por una función.}
+\textbf{La derivada de una constante por una función es la constante por la derivada de la función}. De manera formal:
+\begin{center}
+Si $\boldsymbol{g(x) = a*f(x)}$ entonces $\boldsymbol{g'(x) = a*f'(x)}$.
+\end{center}
+
+Con está regla y la anterior ya podemos derivar cualquier polinomio. Un ejemplo:
+\begin{questions}
+\question Calcular la derivada de $f(x) = 3x^3 - 4x^2 + 5 x -9$.
+\begin{solution}
+Derivamos cada uno de los monomios del polinomio utilizando la tabla y la regla que acabamos de ver de la constante:
+\begin{itemize}
+	\item $(3x^3)' = 3 * 3x^2$
+	\item $(-4x^2)' = -4 * 2x^1$
+	\item $(5x)' = 5*x^0 = 5$
+	\item $(-9)' = 0$
+\end{itemize}
+Y como un polinomio es una suma y la derivada de la suma es la suma de las derivadas, el resultado es:
+\[f'(x) = 9x^2 -8x+ 5\]
+\end{solution}
+\end{questions}
+\textbf{NOTA: esta regla también es aplicable a la derivada de una función entre una constante, ya que $\boldsymbol{\frac{f(x)}{a} = \frac{1}{a}*f(x)}$.}
+\subsection{Derivada de un producto de funciones.}
+Aquí se empieza a complicar un poquito la cosa, pero tampoco en exceso: \textbf{La derivada del producto de dos funciones es igual a la derivada de la primera por la segunda sin derivar más la derivada de la segunda por la primera sin derivar}.\\
+De manera simbólica esta regla es más sencilla de ver:
+\begin{center}
+Si $\boldsymbol{h(x) = f(x) *g(x)}$ entonces $\boldsymbol{h'(x) = f'(x)*g(x) + f(x) * g'(x)}$.
+\end{center}
+
+Vamos a verlo con un ejemplo:
+\begin{questions}
+\question Calcular la derivada de $f(x) = x^2 * \sen x$.
+\begin{solution}
+Ésta función es el producto de dos elementales, las derivamos por separado:
+\begin{itemize}
+	\item $(x^2)' = 2x$
+	\item $(\sen x)' = \cos x$
+\end{itemize}
+
+Aplicamos la regla del producto y nos queda:
+\[f'(x) = 2x*\sen x + x^2 *\cos x\]
+\end{solution}
+\end{questions}
+
+\section{Derivada de un cociente.}
+Como para escribir cocientes de funciones utilizamos la notación de fracción vamos a explicar como se deriva hablando de numerador y denominador: \textbf{la derivada de un cociente es la derivada del numerador por el denominador sin derivar menos la derivada del denominador por el numerador sin derivar y todo ello partido por el denominador sin derivar al cuadrado}.\\
+De manera simbólica:
+\begin{center}
+Si $\boldsymbol{h(x) = \frac{f(x)}{g(x)}}$ entonces $\boldsymbol{h'(x) = \frac{f'(x)*g(x) - f(x)*g'(x)}{g^2(x)}}$.
+\end{center}
+
+Con un ejemplo:
+\begin{questions}
+\question Derivar la función $f(x) = \frac{\e^x - 1}{x^2 + 1}$
+\begin{solution}
+\begin{itemize}
+	\item La derivada del numerador es $(\e^x -1)' = \e^x$.
+	\item Y la del denominador es $(x^2 + 1)' = 2x$.
+\end{itemize}
+Con lo que al aplicar la regla del cociente queda:
+\[f'(x) = \frac{\e^x (x^2+ 1) - 2x(\e^x-1)}{(x^2 + 1)^2}\]
+\end{solution}
+\end{questions}
+\section{Derivada de una composición.}
+La derivada de una composición ($(f \circ g)(x)$) se hace de la siguiente manera: \textbf{la derivada de la primera compuesta con la segunda sin derivad por la derivada de la segunda}.
+\begin{center}
+Si $\boldsymbol{h(x) = (f \circ g)(x)}$ entonces $\boldsymbol{h'(x) = (f' \circ g)(x) * g'(x)}$.
+\end{center}
+Y un ejemplo:
+\begin{questions}
+\question Calcula la derivada de $f(x) = \sqrt{x + \sen x}$.
+\begin{solution}
+Tenemos la composición de dos funciones: $\boldsymbol{\sqrt{x}}$ y $\boldsymbol{x + \sen x}$ en el mismo orden en el que aparecen. Por tanto tenemos que:
+\begin{itemize}
+	\item La derivada de la primera $(\sqrt{x})' = \frac{1}{2\sqrt{x}}$.
+	\item La derivada de la segunda $(x + \sen x)' = 1 + \cos x$
+\end{itemize}
+Y la derivada de la composición:
+\[f'(x) = \frac{1}{2\sqrt{x + \sen x}}*(1 + \cos x) = \frac{1 + \cos x}{2\sqrt{x + \sen x}}\]
+\end{solution}
+\end{questions}
+
+Si escribimos esta regla con notación de Leibniz, o con diferenciales como se dice algunas veces, nos queda lo siguiente:
+\[\frac{d h(x)}{dx} = \frac{d f(g(x))}{d g(x)} * \frac{d g(x)}{dx}\]
+Y esto es algo que vamos a utilizar cuando hagamos integración.
+
+\section{Aplicaciones de las derivadas.}
+Con todo lo anterior ya hemos visto lo que es una derivada, su significado geométrico y cómo calcular la derivada de una función. Y todo esto nos tiene que servir de algo.\\
+En los siguientes puntos se van a desarrollar algunas de las aplicaciones de las derivadas y comprenderemos porque es una herramienta tan importante en cualquier conocimiento que implique el uso de las matemáticas.\\
+
+Pero antes de empezar con las aplicaciones vamos a por una definición y un teorema que vamos a necesitar en varias de las aplicaciones.
+
+\subsection{Definición de función derivable.}
+$f(x)$ es derivable en un intervalo $(a, b)$ si tanto $f(x)$ como $f'(x)$ son continuas en $(a, b)$.
+
+\subsection{Teorema de Bolzano.}
+Si $f(x)$ es continua en un intervalo $(a, b)$ y se cumple que $f(a)*f(b) < 0$ entonces $\exists\,c \in (a, b) / f(c) = 0$.\\
+\begin{small}(\textit{La barra / significa``tal que'' o ``para el que'' y todo junto se lee ``existe c en $(a, b)$ para el que $f(c) = 0$'' })\end{small}\\
+Que es lo mismo que decir que si una función es continua y su imagen cambia de signo, tiene que existir por lo menos un punto en el que el valor de la función sea 0.\\
+
+Una vez hechas la definición y el teorema, vamos a por las aplicaciones.
+
+\subsection{Regla de l'Hôpital.}
+Sean $f(x)$ y $g(x)$ derivables en un intervalo $(a, b)$ y sea $c \in (a, b)$ un punto para el que $f(c) = g(c) = 0$. Entonces:
+\[\lim_{x \to c} \frac{f(x)}{g(x)} = \lim_{x \to c} \frac{f'(x)}{g'(x)}\]
+
+Esta regla es muy útil, ya que simplifica bastante el cálculo de límites. Y no solo es aplicable para límites del tipo $\frac{0}{0}$ o con las condiciones dadas, también se puede utilizar en límites del tipo $\frac{\infty}{\infty}$ y para limites con $x \to \pm\infty$ y límites laterales.\\
+
+Unos ejemplos:
+\begin{questions}
+\question Calcular $\lim_{x \to 0} \frac{\sen x}{x}$.
+\begin{solution}
+Este es un límite del tipo $\frac{0}{0}$ y con lo que sabíamos antes de aprender a derivar no es un límite nada fácil.\\ Comprobamos que haya un entorno de 0 donde tanto $f(x)$ como $g(x)$ sean derivables, y esto es así ya que tanto $\sen x$ como $x$ son continuas para todo $\mathbb{R}$ y sus derivadas ($\cos x$ y 1) también lo son.\\
+Entonces estamos en condiciones de aplicar la regla de l'Hôpital:
+\[\lim_{x \to 0} \frac{\sen x}{x} = \lim_{x \to 0} \frac{\cos x}{1} = 1\]
+\end{solution}
+
+\question Calcular $\lim_{x \to 1} \frac{\ln x}{x - 1}$.
+\begin{solution}
+Este límite también es del tipo $\frac{0}{0}$.\\
+Comprobamos las condiciones:
+\begin{itemize}
+	\item ¿$\ln x$ y su derivada, $\frac{1}{x}$, son continuas en un entorno de 1? Sí, porque no tenemos porqué coger el 0 que es donde dan problemas.
+	\item ¿$x -1$ y su derivada son continuas en un entorno de 1? Sí, porque son continuas en todo $\mathbb{R}$
+\end{itemize}
+Entonces estamos en condiciones de aplicar la regla:
+\[\lim_{x \to 1} \frac{\ln x}{x - 1} = \lim_{x \to 1} \ddfrac{\ \frac{1}{x}\ }{1} = 1\]
+\end{solution}
+\question Calcular $\lim_{x \to \infty} x*\left(\atg x - \frac{\pi}{2}\right)$
+\begin{solution}
+Este límite es muy muy complicado de calcular sin utilizar l'Hôpital.\\
+Empecemos viendo de que tipo es:\\
+Hay una multiplicación, y tenemos que $\lim_{x \to \infty} x = \infty$ mientras que $\lim_{x \to \infty} \left(\atg x - \frac{\pi}{2}\right) = 0$ porque $\lim_{x \to \infty} \atg x = \frac{\pi}{2}$. Con lo que nos encontramos con un caso de $0*\infty$\\
+Lo transformamos en $\frac{0}{0}$ haciendo:
+\[\lim_{x \to \infty} x*\left(\atg x - \frac{\pi}{2}\right) = \lim_{x \to \infty} \ddfrac{\atg x - \frac{\pi}{2}}{x^{-1}}\]
+Comprobamos las condiciones y vemos que se cumplen, porque $\atg x $ es derivable en todo $\mathbb{R}$ y $x^{-1}$ solo tiene problemas en 0 y no es el caso.\\
+Aplicamos l'Hôpital:
+\[ \lim_{x \to \infty} \ddfrac{\atg x - \frac{\pi}{2}}{x^{-1}} =  \lim_{x \to \infty} \ddfrac{\frac{1}{x^2 + 1}}{-x^{-2}} = 
+ \lim_{x \to \infty} -\frac{x^2}{x^2 + 1} = -1\]
+\end{solution}
+\end{questions}
+\subsection{Calculo de la recta tangente.}
+Como hemos visto en la definición de derivada, el valor de ésta en un punto coincide con la pendiente de la recta tangente a la función en ese punto.\\
+
+Como sabemos que la \textbf{ecuación de una recta} es:
+\[\boldsymbol{y = mx + n}\]
+\textbf{Para escribir una recta concreta no tenemos más que calcular el valor de $m$ y $n$}, así que vamos a ver como hacerlo.\\
+
+Queremos escribir la ecuación de la recta tangente a una función $f(x)$ en un punto $x=a$ y por lo que ya hemos dicho \textbf{la derivada en ese punto coincide con la pendiente de la tangente}. Por lo que:
+\[\boldsymbol{m = f'(a)}\]
+Y ya solo nos quedaría calcular cuanto vale el parámetro $n$, que es la ordenada en el origen. Para ello \textbf{necesitamos conocer un punto por el que pase la recta} y, como es tangente a la función en $x=a$, ese punto es $\boldsymbol{(a, f(a))}$. Con lo que \textbf{sustituyendo y despejando}:
+\[\boldsymbol{f(a) = m *a + n}\]
+\[f(a) = f'(a) * a + n\]
+\[n = f(a) - f'(a)*a\]
+Y con esto tendíamos que la \textbf{ecuación de la recta tangente a $f(x)$ en $x=a$ es}:
+\[\boldsymbol{y} = f'(a)*x + f(a) - f'(a)*a \boldsymbol{= f'(a)*(x-a) + f(a)}\]
+
+Vamos a hacer algún ejemplo:
+\begin{questions}
+\question Escribe la ecuación de la tangente a $f(x) = x\e^x$ cuando $x=1$.
+\begin{solution}
+Empezamos por calcular la derivada, y tenemos que utilizar la regla del producto:
+\[f'(x) = \e^x + x*\e^x \]
+Y ahora calculamos los valores de la función y de la derivada en $x=1$:
+\begin{itemize}
+	\item $f(1) = \e$.
+	\item $f'(1) = 2\e$.
+\end{itemize}
+Sustituimos en la ecuación de la recta:
+\[\e = 2\e*1 + n\]
+\[n = \e - 2\e = -\e\]
+Con lo que la ecuación de la tangente queda:
+\[y = 2\e*x - \e\]
+\end{solution}
+
+\question Escribe la ecuación de la recta tangente a la curva $f(x) = \frac{x}{x-1}$ cuando ésta es paralela a la recta $y=-x$.
+\begin{solution}
+En este caso no nos piden un punto en concreto, sino que tenemos que averiguar qué punto es.\\
+Lo que si nos dicen es que la pendiente de la tangente, o la derivada de la función, tiene que valer $-1$ para ser paralela a $y=-x$.\\
+
+Calculamos la derivada:
+\[f'(x) = \frac{(x-1)-x}{(x-1)^2} = \frac{-1}{(x-1)^2}\]
+E igualamos a la pendiente que nos piden:
+\[\frac{-1}{(x-1)^2} = -1\]
+\[-1 = -1*(x-1)^2\]
+\[x^2 - 2x = 0\]
+Y sus soluciones son $x_1 = 0$, $x_2=2$, con lo cual vamos a tener dos puntos en los que la tangente es paralela a $y=-x$ así que escribiremos la ecuación de la recta en cada punto.
+\begin{itemize}
+	\item Para $x=0$ tenemos que $f(0) = \frac{0}{0 - 1}= 0$. Obtenemos $n$:
+	\[0 = -1*0 + n\]
+	\[n = 0\]
+	\textbf{Con lo que la ecuación de la recta tangente en $x=0$ es}:
+	\[\boldsymbol{y = -x}\]
+	\item Para $x=2$ tenemos que $f(2) = \frac{2}{2-1} = 2$. Calculamos la ordenada en el origen:
+	\[2 = -1*2 + n\]
+	\[n = 4\]
+	\textbf{Y la ecuación de la recta tangente en $x=2$ es}:
+	\[\boldsymbol{y = -x + 4}\]
+\end{itemize}
+
+\end{solution}
+
+\end{questions}
+
+\subsection{Análisis de la monotonía y extremos.} \label{monotonia}
+Cuando definimos el \textbf{criterio para decidir si una función era creciente o decreciente en un intervalo} $(a,b)$ dijimos lo siguiente:
+\begin{itemize}
+	\item Es creciente si $\frac{f(x_2) - f(x_1)}{x_2- x_1}>0\ \forall\,x_1, x_2 \in (a,b)$.
+	\item Es decreciente si $\frac{f(x_2) - f(x_1)}{x_2- x_1}<0\ \forall\,x_1, x_2 \in (a,b)$.
+\end{itemize}
+
+La operación que aparecen en estas definiciones es exactamente iguale que la que utilizamos para definir la tasa de variación media. Y la derivada no es más que la tasa de variación media llevada al límite de un único punto, con lo que podemos decir que una función es:
+\begin{itemize}
+	\item Creciente en $x=a$ si $f'(a) > 0$.
+	\item Decreciente en $x=a$ si $f'(a) < 0$.
+\end{itemize}
+Y podemos extenderlo y decir que una función es creciente (o decreciente) en un intervalo si lo es en todos los puntos del intervalo.\\
+
+También definimos los \textbf{extremos como los puntos en los que pasa de creciente a decreciente y viceversa}, que con lo que hemos visto son los puntos donde la derivada cambiaría de signo.\\
+
+Por el teorema de Bolzano podemos decir que \textbf{siendo $f(x)$ continua y derivable en un intervalo $(a, b)$  y $\exists\,c \in (a,b)/f'(c) = 0$ entonces la función tiene un extremo (máximo o mínimo) en $x=c$}.\\
+
+Entonces para buscar los extremos tenemos que encontrar los puntos donde la derivada sea 0, aunque no todos los puntos donde esto ocurra van a ser extremos. Por ejemplo $f(x) = x^3$ cuya derivada es $f'(x) = x^2$, que se anula en $x=0$, no tiene un extremo en ese punto como se puede ver en la gráfica.
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.3\textwidth, title={$f(x) = x^3$}, xmin=-1,xmax=1, axis x line=center, axis y line=center, xticklabels={},
+yticklabels={}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -1:1,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {x^3});
+\end{axis}
+ 
+\end{tikzpicture}
+\end{center}
+Para que haya un extremo la derivada tiene que valer 0 en el punto y tener un signo distinto a cada lado de éste (cosa que no ocurre con la derivada de $f(x) = x^3$).\\
+
+\begin{questions}
+\question Estudia los intervalos de crecimiento y decrecimiento de la función $f(x) = \frac{1}{x^2 - 1}$.
+\begin{solution}
+Primero calculamos el dominio de la función, que es $D=\mathbb{R}-\{\pm1\}$, con esto ya sabemos que hay discontinuidad en $\pm 1$ tanto en la función como en la derivada, con lo que va a ser derivable en todos los reales excepto en -1 y 1.\\
+Como nos piden el crecimiento y decrecimiento tenemos que hacer la derivada:
+\[f'(x) = \frac{0*(x^2 -1) - 1*2x}{(x^2 - 1)^2} = -\frac{-2x}{(x^2 - 1)^2}\]
+Y calculamos su dominio, que en este caso es el mismo que el de la función primitiva.
+Para obtener los extremos la igualamos a 0 y resolvemos:
+\[-\frac{-2x}{(x^2 - 1)^2} = 0\]
+Que tiene de solución $x=0$, con lo que hay podemos tener un extremo.\\
+
+Por lo que hemos visto \textbf{tenemos que ver qué pasa a cada lado de el posible extremo}. Pero lo que hemos visto solo es válido si la función es derivable (continua y derivada continua) \textbf{y como tenemos discontinuidades también tendremos que ver que pasa a los lados de estas}.\\
+
+Analizamos los intervalos que resultan con esos tres puntos:
+\begin{small}
+\begin{center}
+\begin{tabular}{|Sl|Sl|} %necesita la S para aplicar el padding
+\hline
+\multicolumn{1}{|c|}{$\boldsymbol{(-\infty, -1)}$} & \multicolumn{1}{c|}{$\boldsymbol{(-1, 0)}$}                                                                                    \\ \hline
+Tomamos $x=-2$&Tomamos $x=-\frac{1}{2}$\\
+$f'(-2) =\frac{-2*(-2)}{((-2)^2 - 1)^2}>0$ & $f'(-\frac{1}{2}) =\ddfrac{-2*\frac{-1}{2}}{ \left(\frac{1}{4} - 1 \right)^2} > 0$\\
+En este intervalo es creciente.& En este intervalo es creciente.\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|Sl|Sl|}
+\hline
+\multicolumn{1}{|c|}{$\boldsymbol{(0,1)}$}                                                                                  & \multicolumn{1}{c|}{$\boldsymbol{(1, \infty)}$}\\
+\hline
+ Tomamos $x=\frac{1}{2}$& Tomamos $x=2$                                  \\
+ $f'(\frac{1}{2}) =\ddfrac{-2*\frac{1}{2}}{ \left(\frac{1}{4} - 1 \right)^2} < 0$ & $f'(2) =\frac{-2*2}{(2^2 - 1)^2}<0$\\
+  En este intervalo es decreciente.& En este intervalo es decreciente.\\
+  \hline
+\end{tabular}
+\end{center}
+\end{small}
+Y poniéndolo en orden queda:
+\begin{itemize}
+	\item En $(-\infty, -1)$ es decreciente.
+	\item En $x= -1$ tiene una asíntota vertical por ser división entre 0. Por la izquierda de la asíntota tiende a $\infty$ por ser creciente (también se podría hacer con los signos de la función) y por la derecha tiende a $-\infty$ por la misma razón.
+	\item En $(-1, 0)$ es creciente.
+	\item En $x=0$ tiene un extremo que es un máximo porque a la izquierda es creciente y a la derecha decreciente. Las coordenadas de este máximo son $(0, f(0)) = (0, -1)$.
+	\item En $(0, 1)$ es decreciente.
+	\item En $x=1$ una asíntota vertical. Por la izquierda tiende a $-\infty$ y por la derecha a $\infty$.
+	\item En $(1, \infty)$ es decreciente.
+\end{itemize}
+
+Lo podemos ver en la gráfica:
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+compat=1.12,
+/pgf/declare function={f(\x) = 1/(\x^2 - 1);}
+}
+\pgfmathsetmacro\thetop{f(1.1)}
+\pgfmathsetmacro\thebot{f(0.9)}
+\begin{axis}[title={$f(x) = \frac{1}{x^2 -1}$}, xmin=-2,xmax=2, axis x line=center, axis y line=center, xticklabels={},
+yticklabels={}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -2:-1.1,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+        \addplot[
+        domain = -.9:.9,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+        \addplot[
+        domain = 1.1:2,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+    \draw[dashed] (-1, \thetop)--(-1, \thebot);
+    \draw[dashed] (1, \thetop)--(1, \thebot);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{solution}
+\end{questions}
+
+Resumiendo, \textbf{para analizar los intervalos de crecimiento y decrecimiento de una función} $f(x)$ tenemos que hacer lo siguiente:
+\begin{enumerate}
+	\item Calcular el dominio de $f(x)$.
+	\item Calcular la $f'(x)$.
+	\item Calcular el dominio de $f'(x)$.
+	\item Calcular los extremos resolviendo $f'(x) = 0$.
+	\item Dividir la recta en intervalos con los puntos de discontinuidad y los extremos.
+	\item Elegir un valor de cada intervalo y calcular el signo de $f'(x)$ en ese valor.
+	\item Resumir todo, identificando de que tipo es cada extremo y calculando sus coordenadas $(x, f(x))$.
+\end{enumerate}
+
+\subsection{Análisis de curvatura y puntos de inflexión.} \label{curvatura}
+Para la curvatura utilizaremos el signo de la segunda derivada, y el criterio es el siguiente:
+\begin{itemize}
+	\item Si $f''(x) > 0$ la función es cóncava ($\cup$).
+	\item Si $f''(x) < 0$ la función es convexa ($\cap$).
+\end{itemize}
+
+Al igual que pasaba con los extremos, si la función es derivable dos veces (porque es la segunda derivada) en un intervalo en el que cambia de tipo de curvatura por el teorema de Bolzano tiene que haber al menos un punto donde $\boldsymbol{f''(x)} = 0$ y ese será un \textbf{posible punto de inflexión} (para que lo sea tiene que haber una curvatura distinta a cada lado).
+
+\begin{questions}
+\question Analizar la curvatura de la función $f(x) = \frac{x-1}{x^2 - 2x}$
+\begin{solution}
+Empezamos por el dominio, que nos da problemas en $x=0$ y $x^2$, con lo que $D(f) = \mathbb{R}- \{0, 2\}$.
+
+Calculamos la primera derivada:
+\[f'(x) = \frac{1*(x^2- 2x) - (x-1)(2x - 2)}{(x^2 - 2x)^2} = \frac{x^2 - 2x - 2x^2 + 4x -2}{(x^2 - 2x)^2} =
+\frac{-x^2 + 2x - 2}{(x^2 - 2x)^2}\]
+Y vemos que el dominio sigue siendo el mismo.
+
+Calculamos la segunda derivada:
+\begin{flalign*}
+f''(x) &= \frac{(-2x + 2)(x^2 - 2x)^2 - (-x^2 + 2x -2)*2*(x^2- 2x)(2x -2)}{(x^2- 2x)^4}  \\
+&=\frac{(-2x + 2)(x^2 - 2x) - (-x^2 + 2x -2)*2*(2x -2)}{(x^2- 2x)^3}  \\
+&=\frac{-2x^3 + 4x^2 + 2x^2 -4x +4x^3 -4x^2 -8x^2 +8x +8x -8}{(x^2 - 2x)^3} = 
+\frac{2x^3 -6x^2 +12x -8}{(x^2- 2x)^3}
+\end{flalign*}
+Y tendremos puntos de inflexión cuando $f''(x) = 0$:
+\[\frac{2x^3 -6x^2 +12x -8}{(x^2- 2x)^3} = 0\]
+\[2x^3 -6x^2 +12x -8 = 0\]
+Como es una ecuación cúbica no inmediata tenemos que usar Ruffini:
+\begin{center}
+\begin{tabular}{rrrrr}
+\multicolumn{1}{r|}{}  & 2 & -6 & 12 & -8 \\
+\multicolumn{1}{r|}{1} &   & 2  & -4 & 8  \\ \hline
+                       & 2 & -4 & 8  & 0 
+\end{tabular}
+\end{center}
+Ya tenemos que una solución ex $x=1$, buscamos las demás con la ecuación de segundo grado que nos ha quedado:
+\[2x^2 - 4x + 8 = 0\]
+\[x= \frac{4 \pm \sqrt{16 - 64}}{4}\]
+Que, claramente, no tiene solución. Con lo cual el único candidato a punto de inflexión es  $x=1$.\\
+
+Evaluamos los intervalos que nos quedan al tener en cuenta las discontinuidades y los posibles puntos de inflexión.
+\begin{footnotesize}
+\begin{center}
+\begin{tabular}{|Sl|Sl|} %necesita la S para aplicar el padding
+\hline
+\multicolumn{1}{|c|}{$\boldsymbol{(-\infty, 0)}$} & \multicolumn{1}{c|}{$\boldsymbol{(0, 1)}$}                                                                                    \\ \hline
+Tomamos $x=-1$&Tomamos $x=\frac{1}{2}$\\
+$f''(-1) =\frac{2*(-1)^3 - 6*(-1)^2+12*(-1) - 8}{((-1)^2 - 2*(-1))^3}<0$ &
+$f''\left(\frac{1}{2}\right) =\ddfrac{2*\left(\frac{1}{2}\right)^3 - 6*\left(\frac{1}{2}\right)^2+12*\frac{1}{2} - 8}
+{\left(\left(\frac{1}{2}\right)^2 - 2*\left(\frac{1}{2}\right)\right)^3} > 0$\\
+En este intervalo es convexa.& En este intervalo es cóncava.\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|Sl|Sl|}
+\hline
+\multicolumn{1}{|c|}{$\boldsymbol{(1,2)}$}                                                                                  & \multicolumn{1}{c|}{$\boldsymbol{(2, \infty)}$}\\
+\hline
+ Tomamos $x=\frac{3}{2}$& Tomamos $x=3$                                  \\
+ $f''\left(\frac{3}{2}\right) =\ddfrac{2*\left(\frac{3}{2}\right)^3 - 6*\left(\frac{3}{2}\right)^2+12*\frac{3}{2} - 8}
+{\left(\left(\frac{3}{2}\right)^2 - 2*\left(\frac{3}{2}\right)\right)^3} < 0$ &
+$f''(3) =\frac{2*3^3 - 6*3^2+12*3 - 8}{(3^2 - 2*3)^3}>0$\\
+  En este intervalo es convexa.& En este intervalo es cóncava.\\
+  \hline
+\end{tabular}
+\end{center}
+\end{footnotesize}
+
+Y poniendo todo en orden:
+\begin{itemize}
+	\item En $(-\infty, 0)$ es convexa.
+	\item En 0 tiene una asíntota vertical, tiende a $-\infty$ por la izquierda (por ser convexa) y a $\infty$ por la derecha (por ser cóncava).
+	\item En $(0, 1)$ es cóncava.
+	\item En 1 tiene un punto de inflexión porque a cada lado tiene un tipo de curvatura.
+	\item En $(1, 2)$ es convexa.
+	\item En 2 tiene una asíntota vertical en la que por la izquierda tiende a $-\infty$ y por la derecha a $\infty$.
+	\item En $(2, \infty)$ es cóncava.
+\end{itemize}
+
+Y vamos a verlo gráficamente:
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+compat=1.12,
+/pgf/declare function={f(\x) = (\x-1)/(\x^2 - 2*\x);}
+}
+\pgfmathsetmacro\thetop{f(0.1)}
+\pgfmathsetmacro\thebot{f(1.9)}
+\begin{axis}[title={$f(x) = \frac{x-1}{x^2 -2x}$}, xmin=-3,xmax=3, axis x line=center, axis y line=center, xticklabels={},
+yticklabels={}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -3:-0.1,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+        \addplot[
+        domain = .1:1.9,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+        \addplot[
+        domain = 2.1:3,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+%    \draw[dashed] (0, \thetop)--(0, \thebot);
+    \draw[dashed] (2, \thetop)--(2, \thebot);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{solution}
+
+Como acabamos de ver en el ejemplo los pasos son análogos a los pasos que hay que dar en el caso de la monotonía.
+
+\subsection{Optimización.}
+La optimización consiste en obtener el resultado óptimo de un proceso. Es decir, obtener lo máximo (o lo mínimo según el caso, por ejemplo en la optimización de costes) que se pueda del proceso.\\
+
+Sabemos que estos resultados, máximos o mínimos, son extremos y que en ellos ocurre que la derivada vale 0.\\
+Con lo cual lo que tenemos que hacer es hallar la función que describe un proceso, derivarla e igualarla a 0 para calcular los extremos.\\
+
+El mayor problema en la mayoría de los casos es escribir la función que describe el proceso, por eso vamos a ver unos cuantos ejemplos:
+\begin{questions}
+\question Se sabe que el rendimiento en miles de euros de un una determinada inversión viene dado por la función $R(x) = -0.5x^2 + 4x$, donde $x$ es la cantidad invertida en miles de euros. Calcula la cantidad que hay que invertir para obtener el máximo rendimiento y el valor de éste.
+\begin{solution}
+En este caso no tenemos que averiguar la función, ya que nos la dan. Así que hacemos la derivada y la igualamos a 0:
+\[R'(x) = -x + 4 = 0\]
+La solución de esa ecuación es $x=4$, que tal y como indica el enunciado corresponde a 4\,000\,€.\\
+Comprobamos que es un máximo viendo el signo de la derivada a los lados del extremo, obteniendo que a la izquierda $R'(2) =-2 + 4>0$ (creciente) y a la derecha $R'(5) = -5+4 <0$ (decreciente).\\
+
+Solo nos queda calcular cuanto vale el rendimiento:
+\[R(4) = -0.5*4^2 + 4*4 = 8\]
+
+Con lo que la cantidad a invertir para obtener el máximo rendimiento sería de 4\,000\,€ y el rendimiento obtenido de 8\,000\,€.
+\end{solution}
+\question El coste de producción de un producto en miles de euros viene dado por $C(x) = \frac{x^2}{4} + 35x + 25$, donde $x$ es el número de unidades producidas, mientras que el precio de venta de cada unidad viene dado por $p(x) = 50- \frac{x}{4}$, también en miles de euros. Calcula el número de unidades que se debe producir para obtener el máximo beneficio suponiendo que se vende todo lo que se produce.
+\begin{solution}
+En este caso no nos dan la función a optimizar y tenemos que calcularla con las que nos dan.\\
+
+En cualquier situación el beneficio es siempre lo facturado menos los costes, con lo que tendríamos que restar teniendo en cuenta que $p(x)$ es el precio de venta por unidades y tenemos que multiplicarlo por $x$ para calcular la facturación total:
+\[B(x) = p(x) * x - C(x) = x*\left(50 - \frac{x}{4}\right) - \left(\frac{x^2}{4}+ 35x + 25 \right) = -\frac{x^2}{2} + 15x -25\]
+Y esa sería la función a optimizar. Calculamos la derivada:
+\[B'(x) = -x + 15\]
+Y para que sea cero $x$ tiene que ser 15.\\
+Comprobamos que es un máximo con valores a la izquierda y a la derecha:
+\begin{itemize}
+	\item A la izquierda, $B'(14) = -14 + 15 > 0$, es creciente.
+	\item A la derecha, $B'(16) = -16 + 15 < 0$, es decreciente.
+\end{itemize}
+Por tanto el número de unidades tiene que ser 15 y el beneficio obtenido será $B(15) = -\frac{15^2}{2} + 15*15 - 25 = 97.5$, es decir 97\,500\,€.
+\end{solution}
+
+\question Una empresa tiene 20 viviendas de características similares para alquilar. Realiza un estudio de mercado y los resultados que obtiene son que si alquila cada vivienda por 700\,€ al mes las alquila todas y que por cada 50\,€ que sube el alquiler pierde una inquilina. Calcula cual será el precio optimo para alquilar las viviendas, los ingresos por el alquiler y el número de viviendas que quedarán vacías.
+\begin{solution}
+Este es aún más complejo que el anterior puesto que no nos dan ninguna función y tenemos que escribirlas a partir de los datos del enunciado.\\
+
+De todo lo que aparece en el enunciado lo único que hay variable es el número de veces que sube el alquiler, así que haremos que $x$ sea el número de veces que suben el alquiler.\\
+
+Como los aumentos del alquiler van de 50 en 50 euros el precio de cada vivienda será $p(x) = 700 + 50x$.\\
+El número de alquileres baja en 1 cada vez que lo sube, con lo que el número de alquileres será $n(x) = 20 - x$.\\
+Los ingresos vendrán dados por el número de viviendas alquiladas multiplicado por el precio de cada vivienda, con lo que la función que nos da los ingresos es:
+\[I(x) = p(x)*n(x) = (700 + 50x) (20 - x)\]
+Derivamos para optimizarla. Esta vez lo vamos a hacer con la regla del producto en vez de multiplicando primero:
+\[I'(x) = 50(20 - x) + (700 + 50x)*(-1) = 1\,000 - 50 x -700 -50x = 300 - 100x\]
+Y para anularla tenemos que $x=3$. Comprobamos que sea máximo:
+\begin{itemize}
+	\item A la izquierda, $I'(2) = 50(20 - 2) - (700+ 50*2) > 0$, es creciente.
+	\item A la izquierda, $I'(4) = 50(20 - 4) - (700+ 50*4) < 0$, es decreciente.
+\end{itemize}
+
+Es decir para obtener los máximos ingresos debe subir subir 3 veces de 50\,€, que además coincide con el número de viviendas que quedarán vacías.\\
+Los ingresos máximos serán $I(3) = (700 + 50*3)(20 - 3) = 850*17 = 14\,450$\,€. Es decir obtendrá 450\,€ más al mes que si las alquilase todas por 700\,€.
+\end{solution}
+
+\question En una empresa de envases quieren hacer una lata de aluminio con forma de cilindro y una capacidad de 500\,$\mathrm{cm}^3$. Calcula las dimensiones de la lata para que la cantidad de aluminio utilizada sea mínimo.
+\begin{solution}
+En este caso no queremos obtener un máximo sino un mínimo, pero el procedimiento es el mismo.\\
+
+Tenemos que calcular las dimensiones del cilindro, que son el radio de la base y la altura. Esto nos añade una dificultad más, ahora son dos incógnitas las que tenemos que resolver.\\
+Para ello tenemos que plantear un sistema en el que una de las ecuaciones tiene que ser la función que tenemos que optimizar.\\
+Por lo que nos cuentan el volumen del cilindro es fijo, de 500\,$\mathrm{cm}^3$. De ahí sacamos una ecuación:
+\[500\,\mathrm{cm}^3 = \pi*r^2 *h\]
+La otra propiedad del cilindro es la superficie, que además es la que nos dirá la cantidad de material que tenemos que utilizar ya que la lata está hueca. Y el área de un cilindro es:
+\[A = 2\pi r*h +2*(\pi*r^2)\]
+Y como la superficie no es fija como el volumen está expresión es la que utilizaremos como función para optimizar.
+Con esto ya tenemos las dos ecuaciones. En este tipo de problemas siempre se utiliza sustitución. Despejamos en la que no es función, que es la del volumen:
+\[h = \frac{500\,\mathrm{cm}^3}{\pi * r^2}\]
+Y sustituimos en la superficie, que es la función:
+\[A = \frac{500\,\mathrm{cm}^3 * 2}{r} + 2\pi r^2\]
+Ya tenemos $A(r)$ que es la función que tenemos que optimizar. Así que la derivamos (y simplificamos un poco:
+\[\frac{dA}{dr}(r) = -\frac{1000\,\mathrm{cm}^3}{r^2} + 4\pi r\]
+Igualamos a 0 y resolvemos:
+\[-\frac{1000\,\mathrm{cm}^3}{r^2} + 4\pi r = 0\]
+\[-1000\,\mathrm{cm}^3 + 4\pi r^3 = 0\]
+\[r = \sqrt[3]{\frac{250}{\pi}}\,\mathrm{cm} = 5\sqrt[3]{\frac{2}{\pi}}\,\mathrm{cm}\]
+Esto es aproximadamente 4,30\,cm. Comprobamos que es un mínimo:
+\begin{itemize}
+	\item A la izquierda de 4,30\,cm, $\frac{dA}{dr}(4)=
+	-\frac{1000\,\mathrm{cm}^3}{4^2} + 4\pi * 4< 0$, con lo cual es decreciente.
+	\item A la izquierda de 4,30\,cm, $\frac{dA}{dr}(5)=
+	-\frac{1000\,\mathrm{cm}^3}{5^2} + 4\pi * 5> 0$, con lo cual es creciente.
+\end{itemize}
+Y al pasar de decreciente a creciente tenemos un mínimo.\\
+
+Luego el radio optimo es $r = 5\sqrt[3]{\frac{2}{\pi}}\,\mathrm{cm}$, sustituimos para calcular la altura:
+\[h = \frac{500\,\mathrm{cm}^3}{\pi * r^2} = \frac{20}{\pi} \sqrt[3]{\left(\frac{\pi}{2}\right)^2}\,\mathrm{cm} = 20 \sqrt[3]{\frac{1}{4\pi}}\,\mathrm{cm}\]
+
+Así que las dimensiones aproximadas de la lata cilíndrica son 4,30\,cm de radio y 8,60\,cm de alto.
+\end{solution}
+\end{questions}
+\end{questions}
+
+\subsection{Representación de funciones.}
+Este punto \textbf{es la aplicación de todo lo visto hasta ahora en análisis}. La mejor manera de verlo es enumerando todos los pasos con un ejemplo:\\
+
+Representar $f(x) = \frac{x^3}{(x-1)^2}$.
+\begin{solution}
+\begin{enumerate}
+	\item \textbf{Calculamos el dominio}. Esto es importante, ya que tenemos que tener en cuenta para todo los puntos que no estén en el dominio.\\
+	En este caso el cálculo es sencillo, tenemos problemas cuando se anule el denominador y esto ocurre cuando $x=1$, con lo que:
+	\[D(f) = \mathbb{R} - \{1\}\]
+	\item \textbf{Calculamos los signos de la función}. Es decir, los intervalos en los que es positiva o negativa. Para ello tenemos que tener en cuenta los puntos en los que puede cambiar de signo (donde $f(x) = 0$, los cortes con el eje $x$) y las discontinuidades.\\
+	Entonces resolvemos $f(x) = 0$:
+	\[\frac{x^3}{(x-1)^2} = 0\]
+	\[x^3 = 0\]
+	\[x = 0\]
+	Con lo que en $x=0$ podemos tener un cambio de signo. Hacemos una tabla de intervalos con los cortes que nos hayan salido (en este caso $x=0$) y las discontinuidades:
+	\begin{small}
+	\begin{center}
+	\begin{tabular}{|Sc|Sc|Sc|}
+	\hline
+	$\boldsymbol{(-\infty, 0)}$&$\boldsymbol{(0, 1)}$&$\boldsymbol{(1,\infty)}$\\
+	\hline
+	$f(-1) = \frac{(-1)^3}{(-1-1)^2} = \frac{-3}{2}<0$&
+	$f\left(\frac{1}{2}\right) = \ddfrac{\left(\frac{1}{2}\right)^3}{\left(\frac{1}{2} - 1\right)^2} = \frac{1}{2}> 0$&$f(2) = \frac{2^3}{(2-1)^2} = 8> 0$\\
+	\hline
+	\begin{tabular}[c]{@{}l@{}}La función está por\\debajo del eje $x$.\end{tabular}
+	&\begin{tabular}[c]{@{}l@{}}La función está por\\encima del eje $x$.\end{tabular}&
+	\begin{tabular}[c]{@{}l@{}}La función está por\\encima del eje $x$.\end{tabular}\\
+	\hline
+	\end{tabular}
+	\end{center}
+	\end{small}
+	\item \textbf{Asíntotas}. Éstas pueden ser de tres tipos: verticales, horizontales u oblicuas. Vamos a ver cada una en detalle.
+	\begin{itemize}
+		\item \textbf{Verticales}: son rectas verticales a las que la función se pega cada vez más sin llegar a tocarlas. Para que esto ocurra la función tiene que irse a $\pm\infty$, con lo que solo podemos tener asíntotas verticales en divisiones entre cero, logaritmos de cero o negativo, o tangentes de $\frac{\pi}{2} + \pi *k$. En cualquiera de los casos tenemos que calcular los límites laterales.\\
+		En el ejemplo que nos ocupa tenemos una división entre 0 cuando $x=1$, así que calculamos los límites laterales:
+		\[\lim_{x \to 1^-}\frac{x^3}{(x - 1)^2} = \infty\]
+		\[\lim_{x \to 1^+}\frac{x^3}{(x - 1)^2} = \infty\]
+		Entonces la función se va a pegar a la recta $x = 1$ yendo hacia $\infty$.
+		\item \textbf{Horizontales}: son rectas horizontales a las que la función se pega cada vez más sin llegar a tocarlas. Esto solo puede ocurrir cuando $\lim_{x \to \pm\infty} f(x)$ sea distinto de $\pm\infty$ (dependiendo del infinito que sea será por la izquierda o por la derecha). Entonces tendremos que calcular esos límites:
+		\[\text{Por la izquierda:}\quad\lim_{x \to -\infty} \frac{x^3}{(x - 1)^2} = -\infty\quad\text{No hay asíntota horizontal.}\]
+		\[\text{Por la derecha:}\quad\lim_{x \to \infty} \frac{x^3}{(x - 1)^2} = -\infty\quad\text{No hay asíntota horizontal.}\]
+		\item \textbf{Oblicuas}: son rectas oblicuas a las que la función se pega cada vez más sin llegar a tocarlas. Al igual que sucede con las horizontales, esto solo puede ocurrir en $\pm\infty$ y por esto si hay horizontal en uno de los lados no puede haber oblicua.\\
+	Para calcular las asíntotas oblicuas vamos a usar la ecuación explícita de la recta, $\boldsymbol{y=m*x +n}$, de manera que solo tenemos que calcular $m$ y $n$ mediante las siguientes relaciones:
+	\[\boldsymbol{m =\lim_{x \to \pm\infty} \frac{f(x)}{x}}\]
+	\[\boldsymbol{n = \lim_{x \to \pm\infty}(f(x) - m*x)}\]
+	\textbf{Y ambos valores tienen que ser distintos de $\pm\infty$}. En otro caso no hay asíntotas oblicuas.
+	En el caso que nos ocupa, al no haber asíntotas horizontales tendremos que ver si hay oblicuas en los dos lados.\\
+	\textbf{Por la izquierda}:
+	\[m = \lim_{x \to -\infty} \ddfrac{\ \frac{x^3}{(x -1)^2}\ }{x} =
+	\lim_{x \to -\infty} \frac{x^3}{x(x-1)^2} = 
+	\lim_{x \to -\infty} \frac{x^3}{x^3 - 2x^2 + x} = 1\]
+	Y ahora que tenemos $m$ vamos a por $n$:
+	\[n = \lim_{x \to -\infty} \left(\frac{x^3}{(x-1)^2} - x\right) =
+	\lim_{x \to -\infty}\frac{x^3 - x(x-1)^2}{(x-1)^2} =
+	\lim_{x \to -\infty} \frac{x^3 -x^3 + 2x^2- x}{x} = 2\]
+	Como ninguno de los dos límites es $\pm\infty$ la función tiene una asíntota oblicua por la izquierda, que es:
+	\[y = x + 2\]
+	\textbf{Por la derecha}:
+	\[m = \lim_{x \to \infty} \ddfrac{\ \frac{x^3}{(x -1)^2}\ }{x} =
+	\lim_{x \to \infty} \frac{x^3}{x(x-1)^2} = 
+	\lim_{x \to \infty} \frac{x^3}{x^3 - 2x^2 + x} = 1\]
+	Calculamos $n$:
+	\[n = \lim_{x \to \infty} \left(\frac{x^3}{(x-1)^2} - x\right) =
+	\lim_{x \to \infty}\frac{x^3 - x(x-1)^2}{(x-1)^2} =
+	\lim_{x \to \infty} \frac{x^3 -x^3 + 2x^2- x}{x} = 2\]
+	Y  al no ser ninguno de los dos límites $\pm\infty$ la función tiene una asíntota oblicua por la izquierda, que es:
+	\[y = x + 2\]
+	
+	Generalmente las asíntotas oblicuas que aparece en este nivel suelen ser iguales.
+	\end{itemize}
+	
+	Y con esto hemos terminado con todo lo que podemos obtener de la función, así que pasamos a la derivada.
+	\item \textbf{Monotonía y extremos}. Para ello tenemos que calcular la derivada y seguir los pasos indicados en \textbf{\ref{monotonia}} (página \pageref{monotonia})\\
+	Calculamos la derivada y simplificamos:
+	\[f'(x) = \frac{3x^2 *(x-1)^2 - x^3*2(x-1)*1}{(x-1)^4} =
+	\frac{3x^2 *(x-1) - 2x^3}{(x-1)^3} = \frac{x^3 - 3x^2}{(x-1)^3}\]
+	Calculamos el dominio, que en este caso coincide con el de la función: $D(f') = \mathbb{R} - \{1\}$.
+	Calculamos los extremos resolviendo $f'(x) = 0$:
+	\[\frac{x^3 - 3x^2}{(x-1)^3} = 0\quad\to\quad x^3 - 3x^2 = 0\quad\to\quad
+	x_1 = 0,\ x_ 2=3\]
+	Analizamos que sucede en los intervalos resultantes teniendo en cuenta las soluciones de $f'(x) = 0$ y las discontinuidades de la derivada:\\
+	\begin{center}
+	\begin{tabular}{|Sc|Sc|}
+	\hline
+	$\boldsymbol{(-\infty, 0)}$&$\boldsymbol{(0,1)}$\\
+	\hline
+	$f'(-2) = \frac{(-2)^3 - 3(-2)^2}{(-2-1)^3} >0$&
+	$f'\left(\frac{-1}{2}\right) = \ddfrac{\left(\frac{-1}{2}\right)^3 - 3\left(\frac{-1}{2}\right)^2}{\left(\frac{-1}{2}-1\right)^3} > 0$\\
+	\hline
+	Creciente ($\nearrow$)&Creciente ($\nearrow$)\\
+	\hline
+	\end{tabular}
+	
+	\begin{tabular}{|Sc|Sc|}
+	\hline
+	$\boldsymbol{(1,3)}$&
+	$\boldsymbol{(3,\infty)}$\\
+	\hline
+	$f'(2) = \frac{2^3 - 3*2^2}{(2-1)^3} < 0$&
+	$f'(4) = \frac{4^3 - 3*4^2}{(4-1)^3} > 0$\\
+	\hline
+	Decreciente ($\searrow$)&Creciente ($\nearrow$)\\
+	\hline
+	\end{tabular}
+	\end{center}
+	A la vista del análisis el único punto en el que cambia la monotonía, sin ser discontinuidad es en $x=3$, con lo que \textbf{tenemos un extremo} en $(3, f(3)) = \left(3, \frac{27}{4}\right)$ que es un mínimo (Para calcular valores de los puntos siempre hay que utilizar la función original).
+	\item \textbf{Curvatura y puntos de inflexión.} Como hemos visto en \ref{curvatura} (página \pageref{curvatura}) tenemos que calcular la segunda derivada y proceder como en el punto anterior, aunque con ligeras diferencias en la interpretación de los resultados.\\
+	Calculamos la segunda derivada y simplificamos:
+	\begin{flalign*}
+	f''(x) =& \frac{(3x^2 - 6x)(x-1)^3 - (x^3 - 3x^2)*3(x-1)^2}{(x-1)^6} =
+	\frac{(3x^2 - 6x)(x-1) -3(x^3 - 3x^2)}{(x-1)^4} \\
+	=& \frac{6x}{(x-1)^4}
+	\end{flalign*}
+	El dominio de la segunda derivada es el mismo que el de las anteriores: $D(f'') = \mathbb{R} - {1}$.
+	Y calculamos los puntos de inflexión haciendo $f''(x) = 0$:
+	\[\frac{6x}{(x-1)^4} = 0\quad\to\quad 6x=0 \quad\to\quad x= 0\]
+	Y ya podemos realizar el análisis de lo que pasa en cada intervalo:\\
+	\begin{small}
+	\begin{center}
+	\begin{tabular}{|Sc|Sc|Sc|}
+	\hline
+	$\boldsymbol{(-\infty, 0)}$&$\boldsymbol{(0, 1)}$&$\boldsymbol{(1, \infty)}$\\
+	\hline
+	$f''(-1) < 0$&$f''\left(\frac{1}{2}\right) > 0$&$f''(2) > 0$\\
+	\hline
+	Convexa ($\frown$)&Cóncava ($\smile$)&Cóncava ($\smile$)\\
+	\hline
+	\end{tabular}
+	\end{center}
+	\end{small}
+	En este caso no es necesario calcular las coordenadas del punto de inflexión porque coincide con el corte con el eje $x$, es el $(0,0)$
+	\item \textbf{Dibujar la función.} Con todo lo anterior ya hemos obtenido toda la información que hace falta para poder dibujar la función. Pero vamos a ver cómo hacerlo poco a poco.\\
+	
+	en primer lugar dibujamos los ejes y las asíntotas:
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+compat=1.12,
+/pgf/declare function={f(\x) = (\x^3)/(\x-1)^2;}
+}
+\begin{axis}[width=.6\textwidth, xmin=-8,xmax = 8, axis x line=center,axis y line=center,xtick={0,1}, ytick={0, 1}, xticklabels={$t_1$, $t_2$}, yticklabels={$s_1$, $s_2$} ] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -8:8,
+        samples = 2,
+        smooth,
+        thick,
+        dashed,
+        %blue,
+    ] (x, {x+2});
+    \draw[dashed, thick] (1, -6)--(1, 10);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Después ponemos los puntos importantes:
+\begin{itemize}
+	\item Corte con el eje $x$: $(0,0)$
+	\item Mínimo: $\left(3,\frac{27}{4}\right)$
+	\item Punto de inflexión, que coincide con el corte
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+compat=1.12,
+/pgf/declare function={f(\x) = (\x^3)/(\x-1)^2;}
+}
+\pgfmathsetmacro\ftres{f(3)}
+\begin{axis}[width=.6\textwidth, xmin=-8,xmax = 8, axis x line=center,axis y line=center,xtick={3}, ytick={\ftres}, xticklabels={3}, yticklabels={$\frac{27}{4}$} ] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -8:8,
+        samples = 2,
+        smooth,
+        thick,
+        dashed,
+        %blue,
+    ] (x, {x+2});
+    \draw[dashed, thick] (1, -6)--(1, 10);
+	\draw (0,0) node{\textbullet};
+    \draw (3,\ftres) node{\textbullet};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Y ya podemos dibujar la función teniendo en cuenta lo siguiente:
+\begin{itemize}
+	\item Desde la izquierda hasta el 1 crece y en el 1 tiene una asíntota vertical hacia $\infty$, es decir se pega a esa recta por la parte de arriba.
+	\item En la izquierda tiene la asíntota oblicua y al ser convexa hasta el 0 tiene que empezar pegada a la recta por debajo de ella.
+	\item En 0 cambia de convexa a cóncava.
+	\item A la derecha de 1 empieza pegada a la parte de arriba de la asíntota vertical y va decreciendo hasta llegar al mínimo.
+	\item Después del mínimo vuelve a crecer y termina pegandose a la asíntota oblicua por encima de ella porque a la derecha del 1 es cóncava.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+compat=1.12,
+/pgf/declare function={f(\x) = (\x^3)/(\x-1)^2;}
+}
+\pgfmathsetmacro\ftres{f(3)}
+\begin{axis}[width=.6\textwidth, xmin=-8,xmax = 8, axis x line=center,axis y line=center,xtick={3}, ytick={\ftres}, xticklabels={3}, yticklabels={$\frac{27}{4}$} ] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -8:8,
+        samples = 2,
+        smooth,
+        thick,
+        dashed,
+        %blue,
+    ] (x, {x+2});
+    \draw[dashed, thick] (1, -6)--(1, 15);
+	\draw (0,0) node{\textbullet};
+    \draw (3,\ftres) node{\textbullet};
+    \addplot[
+        domain = -8:.8,
+        samples = 200,
+        smooth,
+        thick,
+	] (x, {f(x)});
+	    \addplot[
+        domain = 1.5:8,
+        samples = 200,
+        smooth,
+        thick,
+	] (x, {f(x)});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{enumerate}
+\end{solution}
+\end{document}

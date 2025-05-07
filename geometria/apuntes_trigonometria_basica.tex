@@ -1,0 +1,1440 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de trigonometría básica (4º ESO)}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\newcommand{\degree}{^\circ}
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+\newcommand\unidad[1]{\,\text{#1}}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+
+%Colores
+\definecolor{midgray}{rgb}{0.4,0.4,0.4}
+
+
+% Aumenta el interlineado en aligns y demás
+\setlength{\jot}{1.5em}
+
+% Permite poner textos a las etiquetas: \labeltext{texto}{etiqueta}
+\makeatletter
+\newcommand{\labeltext}[2]{%
+  \@bsphack
+  \MakeLinkTarget*{#1}%
+  \def\@currentlabel{#1}{\label{#2}}%
+  \@esphack%
+}\makeatother
+
+% paragraphs como subsubsubsections
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+% display heading, like subsubsection
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+ \setcounter{secnumdepth}{4}
+ \makeatother
+ % \setcounter{tocdepth}{3} %Solo parts, sections y subsections en el índice.
+
+\renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\tableofcontents
+\newpage
+
+\section{Razones trigonométricas.}\label{def_razones}
+Se puede hacer una introducción a la trigonometría a través de la semejanza geométrica
+(teorema de Tales), pero dado el carácter de estos apuntes y el objetivo que persiguen nos
+vamos a centrar en definir las razones trigonométricas de un ángulo directamente:\\
+\vspace*{5mm}
+\begin{center}
+  \begin{tikzpicture}
+    \draw
+    (4,0) coordinate (a)
+    -- (0,0) coordinate (b)
+    -- (4,5) coordinate (c)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=1.2, angle radius=1cm]
+    {angle=a--b--c};
+    \draw (4,0) -- (4,5) node[midway, right] {Cateto opuesto ($c_o$)};
+    \draw(0,0) -- (4,0) node[midway,below] {Cateto adyacente ($c_a$)};
+    \draw (0,0) -- (4,5) node[midway, sloped, above] {Hipotenusa ($h$)};
+    \draw (3.5, 0) -- (3.5, .5) -- (4, .5);
+\end{tikzpicture}
+\end{center}
+
+Para definir las razones trigonométricas se utiliza un triángulo rectángulo en el que todo se nombra en función de la posición de los elementos con respecto al ángulo estudiado:
+\begin{itemize}
+\item \textbf{Cateto adyacente} ($c_a$): es el cateto que se encuentra pegado al ángulo que estamos estudiando (en este caso el ángulo es $\alpha$). Otra forma de decirlo es que es el cateto que forma el ángulo estudiado.
+\item \textbf{Cateto opuesto} ($c_o$): es el cateto que se encuentra enfrente del ángulo estudiado. Otra forma de decirlo es que es el cateto que no forma el ángulo.
+\end{itemize}
+Y con estos elementos podemos empezar a definir las razones trigonométricas:
+\begin{itemize}
+\item \textbf{Seno del ángulo}: se escribe $\boldsymbol{\sen \alpha}$ y se define:
+  \[\sen \alpha = \frac{\text{Cateto opuesto}}{\text{Hipotenusa}} = \frac{c_o}{h}\]
+\item \textbf{Coseno del ángulo}: se escribe $\boldsymbol{\cos \alpha}$ y se define:
+  \[\cos \alpha = \frac{\text{Cateto adyacente}}{\text{Hipotenusa}} = \frac{c_a}{h}\]
+\item \textbf{Tangente del ángulo}: se escribe $\boldsymbol{\tg \alpha}$ y se define:
+  \[\tg \alpha = \frac{c_o}{c_a}\]
+  Si cogemos esta definición y dividimos numerador y denominador entre la hipotenusa queda:
+  \[\tg \alpha = \ddfrac{\ \frac{c_o}{h}\ }{\frac{c_a}{h}} = \frac{\sen \alpha}{\cos \alpha}\]
+  Con lo que
+  \[\tg \alpha = \frac{c_o}{c_a} =\frac{\sen \alpha}{\cos \alpha}\]
+  Y utilizaremos una u otra dependiendo del contexto, los datos que tengamos y los resultados que nos pidan.
+\end{itemize}
+
+Veamos un \textbf{ejemplo de ejercicio}:\\
+\emph{Calcula las razones trigonométricas del ángulo $\alpha$:}
+\begin{center}
+  \begin{tikzpicture}[rotate=50, transform shape, scale=.6]
+    \draw
+    (4,0) coordinate (a)
+    -- (0,0) coordinate (b)
+    -- (4,5) coordinate (c)
+    pic["\LARGE{$\alpha$}", draw=darkgray, angle eccentricity=1.2, angle radius=1cm]
+    {angle=a--b--c};
+    \draw (4,0) -- (4,5) node[midway, right] {\LARGE{4\,cm}};
+    \draw(0,0) -- (4,0) node[midway,below] {\LARGE{3\,cm}};
+    \draw (0,0) -- (4,5) node[midway, sloped, above] {\LARGE{5\,cm}};
+    \draw (3.5, 0) -- (3.5, .5) -- (4, .5);
+\end{tikzpicture}
+\end{center}
+\begin{solution}
+  Lo primero que tenemos que hacer es fijarnos en la posición del ángulo $\alpha$ y la posición del ángulo recto. Una vez que lo tenemos localizado empezamos a identificar los elementos:
+  \begin{itemize}
+  \item Hipotenusa: es el lado opuesto al ángulo recto, en este caso es el que mide 5\,cm. $\boldsymbol{h=5}.$
+  \item Cateto opuesto: es el cateto que no toca al ángulo $\alpha$, que en este caso es el que mide 4\,cm. $\boldsymbol{c_o = 4}$.
+  \item Cateto adyacente: es el cateto que sí toca al ángulo que queremos, y aquí mide 3\,cm. $\boldsymbol{c_a = 3}$.
+  \end{itemize}
+  Y con esto ya podemos calcular las razones:
+  \begin{itemize}
+  \item $\sen \alpha = \frac{c_o}{h} = \frac{4}{5}$
+  \item $\cos \alpha = \frac{c_a}{h} = \frac{3}{5}$
+  \item $\tg \alpha = \frac{c_o}{c_a} = \frac{4}{3}$
+  \end{itemize}
+    
+\end{solution}
+\section{Relación fundamental de la trigonometría.}
+Como en el caso anterior tenemos un triángulo rectángulo con un ángulo en el que estamos interesados:
+\vspace*{5mm}
+\begin{center}
+  \begin{tikzpicture}
+    \draw
+    (4,0) coordinate (a)
+    -- (0,0) coordinate (b)
+    -- (4,5) coordinate (c)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=1.2, angle radius=1cm]
+    {angle=a--b--c};
+    \draw (4,0) -- (4,5) node[midway, right] {$c_o$};
+    \draw(0,0) -- (4,0) node[midway,below] {$c_a$};
+    \draw (0,0) -- (4,5) node[midway, sloped, above] {$h$};
+    \draw (3.5, 0) -- (3.5, .5) -- (4, .5);
+\end{tikzpicture}
+\end{center}
+Por el teorema de Pitágoras sabemos que:
+\[c_o^2 + c_a^2 = h^2\]
+Si dividimos ambos miembros de la ecuación entre $h^2$ nos queda:
+\[\frac{c_o^2 + c_a^2}{h^2} = \frac{h^2}{h^2}\]
+\[\frac{c_o^2}{h^2} + \frac{c_a^2}{h^2} = 1\]
+Por las propiedades de las potencias:
+\[\left(\frac{c_o}{h}\right)^2 + \left(\frac{c_a}{h}\right)^2 = 1\]
+Y teniendo en cuenta las definiciones de seno y coseno (página \pageref{def_razones}) se convierte en:
+\[(\sen \alpha)^2 + (\cos \alpha)^2 =1 \]
+Y esta es la \textbf{relación fundamental de la trigonometría}.\\
+
+Por comodidad se suele escribir así, de manera que no tenemos que poner tanto paréntesis:
+\begin{Large}
+  \[\boldsymbol{\sen^2 \alpha + \cos^2 \alpha = 1}\]
+\end{Large}
+
+Veamos un \textbf{ejemplo de cómo se utiliza}:
+\emph{Sabemos que $\sen \alpha = \frac{1}{5}$, calcula el coseno y la tangente.}
+\begin{solution}
+  Por la relación fundamental tenemos que $\sen^2 \alpha + \cos^2 \alpha = 1$, y como conocemos el seno lo sustituimos y nos quedará una ecuación de segundo grado incompleta:
+  \[\left(\frac{1}{5}\right)^2 + \cos^2 \alpha = 1\]
+  \[\frac{1}{25} + \cos^2 \alpha = 1\]
+  \[\cos^2 \alpha = \frac{24}{25}\]
+  \[\cos \alpha = \pm \sqrt{\frac{24}{25}}\]
+  En principio nos vamos a quedar con la solución positiva (más adelante veremos cuándo hay que tomar la negativa) y además vamos a aplicar todo lo que sabemos de potencias y raíces:
+  \[\cos \alpha = \frac{\sqrt{24}}{5}\]
+  \[\cos \alpha = \frac{\sqrt{2^3 * 3}}{5}\]
+  \[\cos \alpha = \frac{2\sqrt{2*3}}{5}\]
+  \[\cos \alpha = \frac{2\sqrt{6}}{5}\]
+  Y para calcular la tangente utilizamos la definición que contiene al seno y al coseno:
+  \[\tg \alpha = \frac{\sen \alpha}{\cos \alpha} = \ddfrac{\frac{1}{5}}{\frac{2\sqrt{6}}{5}}\]
+  \[\tg \alpha = \frac{1}{{2\sqrt{6}}}\]
+  Y racionalizando:
+  \[\tg \alpha = \frac{\sqrt{6}}{12}\]
+\end{solution}
+
+Y ahora un \textbf{ejemplo más complicado}:
+\emph{Calcula el seno y el coseno de $\beta$ sabiendo que $\tg \beta = 2$.}
+\begin{solution}
+  Por la definición de tangente tenemos que $\frac{\sen \beta}{\cos \beta} = 2$, pero como tenemos dos incógnitas necesitamos otra ecuación y cogemos la relación fundamental. De esta manera el sistema a resolver queda:
+  \[\begin{cases}
+      \frac{\sen \beta}{\cos \beta} = 2\\
+      \sen^2 \beta + \cos^2 \beta = 1
+    \end{cases}
+  \]
+  Despejamos $\sen \beta = 2*\cos \beta$ en la primera y sustituimos en la segunda, de manera que queda:
+  \[(2*\cos \beta)^2 + \cos^2 \beta = 1\]
+  \[4*\cos^2\beta + \cos^2 \beta = 1\]
+  \[5*\cos^2 \beta = 1\]
+  \[\cos \beta = \pm \sqrt{\frac{1}{5}}\]
+  Por la misma razón de antes nos vamos a quedar solo con la positiva y racionalizamos:
+  \[\cos \beta = \sqrt{\frac{1}{5}} = \frac{\sqrt{5}}{5}\]
+  Y para obtener el seno solo hay que utilizar que $\sen \beta = 2*\cos \beta$:
+  \[\sen \beta = \frac{2*\sqrt{5}}{5}\]
+\end{solution}
+
+
+\section{Otras razones trigonométricas.}
+Las razones que acabamos de ver son las principales, existen otras derivadas de ellas que también se utilizan aunque con menor frecuencia.
+\begin{itemize}
+\item Secante del ángulo: $\sec \alpha = \frac{1}{\cos \alpha}$
+\item Cosecante del ángulo: $\cosec \alpha = \frac{1}{\sen \alpha}$
+\item Cotangente del ángulo: $\cotg \alpha = \frac{1}{\tg \alpha} = \frac{\cos \alpha}{\sen \alpha}$
+\end{itemize}
+\section{Razones del ángulo complementario.}
+Dos ángulos son complementarios cuando su suma es $90\degree$. Y esto es lo que ocurre con los ángulos no rectos de un triángulo rectángulo:\\
+Sabemos que $\alpha + \beta + 90\degree = 180\degree$, con lo que:
+\[\alpha + \beta = 90\degree\]
+
+Veamos qué pasa entonces con las razones trigonométricas:
+\vspace*{5mm}
+\begin{center}
+  \begin{tikzpicture}
+    \draw
+    (4,0) coordinate (a)
+    -- (0,0) coordinate (b)
+    -- (4,5) coordinate (c)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=1.2, angle radius=1cm]
+    {angle=a--b--c}
+    pic["$\beta$", draw=darkgray, angle eccentricity=1.3, angle radius=1cm]
+    {angle=b--c--a};
+    \draw (4,0) -- (4,5) node[midway, right] {$c_o$};
+    \draw(0,0) -- (4,0) node[midway,below] {$c_a$};
+    \draw (0,0) -- (4,5) node[midway, sloped, above] {$h$};
+    \draw (3.5, 0) -- (3.5, .5) -- (4, .5);
+\end{tikzpicture}
+\end{center}
+
+En la figura se puede observar que la posición de los catetos con respecto a $\alpha$ y $\beta$ está cambiada:
+\begin{itemize}
+\item $c_a$ es adyacente a $\alpha$ pero opuesto a $\beta$.
+\item $c_o$ es opuesto a $\alpha$ pero adyacente a $\beta$.
+\end{itemize}
+De manera que:
+\begin{itemize}
+\item $\boldsymbol {\sen \alpha = \frac{c_o}{h} = \cos \beta}$
+\item $\boldsymbol{\cos \alpha =  \frac{c_a}{h} = \sen \beta}$
+\item $\boldsymbol{\tg \alpha = \frac{c_o}{c_a} = \cotg \beta}$
+\end{itemize}
+\section{Razones trigonométricas inversas.}
+Al igual que nos ocurre con otras operaciones matemáticas, las razones trigonométricas también tienen su operación opuesta.\\
+Vamos a verlo con un ejemplo:\\
+Sabemos que si $x^2 = 4$ lo que tenemos que hacer es la operación contraria al cuadrado, que es la raíz cuadrada, para calcular $x$:
+\[x = \sqrt{4} = 2\]
+
+Aquí ocurre lo mismo, y hay una contraria para cada una de las razones trigonométricas:
+\begin{itemize}
+\item Arco de seno: $\asen x$.\\
+  Indica cuál es el ángulo cuyo seno vale $x$.
+\item Arco de coseno: $\acos x$.\\
+  Indica cual es el ángulo cuyo coseno vale $x$.
+\item Arco de tangente: $\atg x$\\
+  Indica cual es el ángulo cuya tangente vale $x$.
+\end{itemize}
+Vamos a ver un ejemplo para tratar de entenderlo mejor:\\
+Si tenemos que
+\[\sen 30\degree = \frac{1}{2}\]
+Entonces
+\[\asen \frac{1}{2} = 30\degree\]
+
+\section{Razones de ángulos ``famosos''.} \label{ang_famosos}
+A continuación vamos a ver una tabla con las razones de ángulos que aparecen mucho (por eso lo de famosos) y que es conveniente aprenderse de memoria:
+\begin{center}
+\def\arraystretch{2}
+\begin{tabular}{|r|r|r|r|}
+  \hline
+  \rowcolor{lightgray}
+  \multicolumn{1}{|c|}{$\boldsymbol{\alpha}$} & \multicolumn{1}{c|}{\textbf{seno}}
+  & \multicolumn{1}{c|}{\textbf{coseno}} & \multicolumn{1}{c|}{\textbf{tangente}} \\ \hline
+  \cellcolor{lightgray}$0\degree$&0&1&0\\\hline
+  \cellcolor{lightgray}$30\degree$&$\frac{1}{2}$&$\frac{\sqrt{3}}{2}$&$\frac{\sqrt{3}}{3}$\\\hline
+  \cellcolor{lightgray}$45\degree$&$\frac{\sqrt{2}}{2}$&$\frac{\sqrt{2}}{2}$&1\\\hline
+  \cellcolor{lightgray}$60\degree$&$\frac{\sqrt{3}}{2}$&$\frac{1}{2}$&$\sqrt{3}$\\\hline
+  \cellcolor{lightgray}$90\degree$&1&0&$\nexists$\\\hline
+\end{tabular}
+\end{center}
+\small{(la tangente de $90\degree$ no existe ya que $\tg 90\degree = \frac{\sen 90\degree}{\cos 90\degree} = \frac{1}{0}$ y
+  no podemos dividir entre 0)}
+
+\section{Trigonometría en la circunferencia.}
+\subsection{Razones trigonométricas en la circunferencia.}
+Hasta ahora las razones trigonométricas hacían referencia a los catetos y la hipotenusa de un triángulo rectángulo, pero nos encontramos con el problema de que con el triángulo rectángulo el mayor ángulo que podemos tener es de $90\degree$ mientras que sabemos que existen ángulos mayores.\\
+Para resolver esto lo que se hace es trasladar los conceptos de la trigonometría a una circunferencia de la siguiente manera:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=8cm, height=8cm, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (1.9, 3.52);
+    \coordinate (B) at (1.9, 0);
+    \coordinate (B1) at (1.9, -.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$r$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {\large{$y$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {\large{$x$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+Por simplificar se hace que el radio de la circunferencia valga 1 ($r = 1$), y de esta manera:
+\begin{itemize}
+\item $\sen \alpha = y$
+\item $\cos \alpha = x$
+\end{itemize}
+(Si $r \neq 1$ tendremos que $\sen \alpha = \frac{y}{r}$ y lo mismo para el coseno)
+\subsection{Signos y cuadrantes.}
+Tal y como hemos dibujado la circunferencia, con su centro en el origen de coordenadas, tenemos la circunferencia dividida en \textbf{cuatro partes iguales}. A cada una de estas partes se la llama \textbf{cuadrante}.\\
+Estos cuadrantes se nombran en sentido contrario a las agujas del reloj (o en el sentido de aflojar un tornillo) empezando desde el que se encuentra en la parte superior derecha:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=8cm, height=8cm, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \draw (O) circle (3.5);
+    \node at (2,2) {\Large{I}};
+    \node at (-2,2) {\Large{II}};
+    \node at (-2,-2) {\Large{III}};
+    \node at (2,-2) {\Large{IV}};
+    \node at (4.5,.5) {$0\degree$};
+    \node at (4.5,-.5) {$360\degree$};
+    \node at (-.5, 4.5) {$90\degree$};
+    \node at (-4.5, .5) {$180\degree$};
+    \node at (-.5, -4.5) {$270\degree$};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+De aquí podemos extraer los límites para los ángulos de cada cuadrante:
+\begin{itemize}
+\item Los ángulos del primer cuadrante van de $0\degree$ a $90\degree$ ($0\degree < \alpha < 90\degree$).
+\item Los ángulos del II cuadrante van de $90\degree$ a $180\degree$ ($90\degree < \alpha < 180\degree$).
+\item Los ángulos del III cuadrante van de $180\degree$ a $270\degree$ ($180\degree < \alpha < 270\degree$).
+\item Los ángulos del IV cuadrante van de $270\degree$ a $360\degree$ ($270\degree < \alpha < 360\degree$).
+\end{itemize}
+
+Al utilizar los ejes de coordenadas nos aparece un criterio de signos que ya conocíamos:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=5cm, height=5cm, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \draw (O) circle (3.5);
+    \node at (4.5,.7) {\Large{$+$}};
+    \node at (-.7, 4.5) {\Large{$+$}};
+    \node at (-4.5, .7) {\Large{$-$}};
+    \node at (-.7, -4.5) {\Large{$-$}};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+Es decir:
+\begin{itemize}
+\item Lo que esté a la derecha del eje vertical es positivo, mientras que lo que esté a la izquierda es negativo.
+\item Lo que esté por encima del eje horizontal es positivo, mientras que lo que esté por debajo es negativo.
+\end{itemize}
+De esta manera los signos de las razones según el cuadrante en el que esté el ángulo son como sigue.
+\subsubsection{Signos en el I cuadrante.}
+$\boldsymbol{0\degree < \alpha < 90\degree}$\\
+\begin{minipage}[b]{.4\linewidth}
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=\linewidth, height=\linewidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (1.9, 3.52);
+    \coordinate (B) at (1.9, 0);
+    \coordinate (B1) at (1.9, -.2);
+    \draw (O) circle (4);
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {$y$};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}[b]{.4\linewidth}
+En este caso $x$ está a la derecha del eje vertical e $y$ está por encima del eje horizontal, con lo que:
+\begin{itemize}
+\item $\sen \alpha > 0$
+\item $\cos \alpha > 0$
+\item $\tg \alpha > 0$
+\end{itemize}
+\end{minipage}
+\subsubsection{Signos en el II cuadrante.}
+$\boldsymbol{90\degree < \alpha < 180\degree}$\\
+\begin{minipage}[b]{.4\linewidth}
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=\linewidth, height=\linewidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (OA) at (2,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (-1.9, 3.52);
+    \coordinate (B) at (-1.9, 0);
+    \coordinate (B1) at (-1.9, -.2);
+    \draw (O) circle (4);
+    \draw[dashed, latex-latex] (A)--(B) node[midway, left] {$y$};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+    \draw (OA)--(O)--(A)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=OA--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\begin{minipage}[b]{.4\linewidth}
+En este caso $x$ está a la izquierda del eje vertical e $y$ está por encima del eje horizontal, con lo que:
+\begin{itemize}
+\item $\sen \alpha > 0$
+\item $\cos \alpha < 0$
+\item $\tg \alpha < 0$
+\end{itemize}
+\end{minipage}
+\subsubsection{Signos en el III cuadrante.}
+$\boldsymbol{180\degree < \alpha < 270\degree}$\\
+\begin{minipage}[b]{.4\linewidth}
+\centering
+\begin{tikzpicture}
+  \begin{axis}[width=\textwidth, height=\textwidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (OA) at (2,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (-1.9, -3.52);
+    \coordinate (B) at (-1.9, 0);
+    \coordinate (B1) at (-1.9, -.2);
+    \draw (O) circle (4);
+    \draw[dashed, latex-latex] (A)--(B) node[midway, left] {$y$};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+    \draw (OA)--(O)--(A)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=OA--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}[b]{.4\textwidth}
+En este caso $x$ está a la izquierda del eje vertical e $y$ está por debajo del eje horizontal, con lo que:
+\begin{itemize}
+\item $\sen \alpha < 0$
+\item $\cos \alpha < 0$
+\item $\tg \alpha > 0$
+\end{itemize}
+\end{minipage}
+\subsubsection{Signos en el IV cuadrante.}
+$\boldsymbol{270\degree < \alpha < 360\degree}$\\
+\begin{minipage}[b]{.4\linewidth}
+\centering
+\begin{tikzpicture}
+  \begin{axis}[width=\textwidth, height=\textwidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (OA) at (2,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (1.9, -3.52);
+    \coordinate (B) at (1.9, 0);
+    \coordinate (B1) at (1.9, -.2);
+    \draw (O) circle (4);
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {$y$};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+    \draw (OA)--(O)--(A)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=OA--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}[b]{.4\textwidth}
+En este caso $x$ está a la derecha del eje vertical e $y$ está por debajo del eje horizontal, con lo que:
+\begin{itemize}
+\item $\sen \alpha < 0$
+\item $\cos \alpha > 0$
+\item $\tg \alpha < 0$
+\end{itemize}
+\end{minipage}
+\subsubsection{Ángulos negativos.}
+En todo lo anterior se puede observar que estamos midiendo los ángulos en el mismo sentido que hemos numerado los cuadrantes, en el contrario a las agujas del reloj.\\
+De esta manera podemos definir los ángulos negativos como los que van al revés, en el sentido de las agujas del reloj:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=7cm, height=7cm, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (1.9, 3.52);
+    \coordinate (A2) at (1.9, -3.52);
+    \coordinate (B) at (1.9, 0);
+    \coordinate (B1) at (1.9, -.2);
+    \draw (O) circle (4);
+%    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {$y$};
+%    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+    \draw (A)--(O)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm, ->]
+    {angle=B--O--A};
+    \draw (A2)--(O)
+    pic["$-\alpha$", draw=darkgray, angle eccentricity=1.6, angle radius=.5cm,<-]
+    {angle=A2--O--B};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+\subsection{Relaciones con el I cuadrante.}
+En el apartado \ref{ang_famosos} (página \pageref{ang_famosos}) hemos visto una tabla en la que aparecen las razones trigonométricas de varios ángulos, todos del primer cuadrante.\\
+Lo que vamos a hacer en este apartado es obtener unas relaciones entre las razones trigonométricas de ángulos del primer cuadrante con ángulos de los distintos cuadrantes.\\
+\subsubsection{II con I cuadrante.} \label{cuadrante2}
+% \begin{minipage}[t]{.4\linewidth}
+Aquí hemos dibujado un ángulo $\alpha$ y su reflejo a través del eje vertical, con lo que se obtiene un ángulo al que le falta $\alpha$ para ser $180\degree$.\\
+En estos ángulos es fácil observar que la altura que alcanzan sobre el eje horizontal ($y$) es la misma en los dos, mientras que la distancia horizontal al eje vertical ($x$) es la misma pero de signo contrario.\\
+{
+  \setlength\intextsep{0pt}
+\begin{wrapfigure}{r}{.45\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=\linewidth, height=\linewidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+      \coordinate (O) at (0,0);
+      \coordinate (OA) at (2,0);
+      \coordinate (O1) at (0,-.2);
+      \coordinate (A1) at (3.47, 2);
+      \coordinate (A2) at (-3.47, 2);
+      \coordinate (BO2) at (-3.47, 0);
+      \coordinate (BO1) at (3.47, 0);
+      \coordinate (B2) at (-3.47, -.2);
+      \coordinate (B1) at (3.47, -.2);
+      \draw (O) circle (4);
+      \draw[dashed, latex-latex] (A1)--(BO1) node[midway, left] {$y$};
+      \draw[dashed, latex-latex] (A2)--(BO2) node[midway, right] {$y$};
+      \draw[dashed, latex-latex] (O1)--(B2) node[midway, below] {$-x$};
+      \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+      \draw[dashed, lightgray] (A1)--(A2);
+      \draw (OA)--(O)--(A2)
+      pic["$\scriptstyle 180\degree - \alpha$"{xshift=-.9cm}, draw=darkgray, angle eccentricity=1.2, angle radius=.8cm]
+      {angle=OA--O--A2};
+      \draw (O)--(A1)
+      pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+      {angle=OA--O--A1};
+      \draw pic["$\color{midgray}\alpha$", draw=midgray, angle eccentricity=.7, angle radius=.7cm]
+      {angle=A2--O--BO2};
+    \end{axis}
+  \end{tikzpicture}
+
+\end{wrapfigure}
+Con lo cual concluimos:
+\begin{itemize}
+\item Como la altura que alcanzan es la misma los senos han de ser iguales:
+  $\sen (180\degree - \alpha) = \sen \alpha$.
+\item Como la distancia al eje vertical es la misma pero de sentido contrario los cosenos han de ser opuestos:
+  $\cos (180\degree - \alpha) = -\cos \alpha$.
+\item La tangente, al ser seno entre coseno, cambia también de signo:
+  $\tg (180\degree - \alpha) = -\tg \alpha$.
+\end{itemize}
+% \end{minipage}
+}
+\subsubsection{III con I cuadrante.}
+% \begin{minipage}[t]{.4\linewidth}
+Aquí hemos dibujado un ángulo $\alpha$ y su reflejo a través del origen, con lo que se obtiene un ángulo excede en $\alpha$ a los $180\degree$.\\
+Se observa que la altura que alcanzan sobre el eje horizontal ($y$) es la misma en los dos pero opuesta, y a la distancia horizontal al eje vertical ($x$) le sucede lo mismo.\\
+{
+  \setlength\intextsep{0pt}
+\begin{wrapfigure}{r}{.45\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=\linewidth, height=\linewidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+      \coordinate (O) at (0,0);
+      \coordinate (OA) at (2,0);
+      \coordinate (O1) at (0,-.2);
+      \coordinate (O2) at (0,.2);
+      \coordinate (A1) at (3.47, 2);
+      \coordinate (A2) at (-3.47, -2);
+      \coordinate (BO2) at (-3.47, 0);
+      \coordinate (BO1) at (3.47, 0);
+      \coordinate (B2) at (-3.47, -.2);
+      \coordinate (B3) at (-3.47, .2);
+      \coordinate (B1) at (3.47, -.2);
+      \draw (O) circle (4);
+      \draw[dashed, latex-latex] (A1)--(BO1) node[midway, left] {$y$};
+      \draw[dashed, latex-latex] (A2)--(BO2) node[midway, right] {$-y$};
+      \draw[dashed, latex-latex] (O2)--(B3) node[midway, above] {$-x$};
+      \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+      \draw (OA)--(O)--(A2)
+      pic["$\scriptstyle 180\degree + \alpha$"{xshift=-.5cm}, draw=darkgray,
+      angle eccentricity=1.2, angle radius=.8cm]
+      {angle=OA--O--A2};
+      \draw (O)--(A1)
+      pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+      {angle=OA--O--A1};
+      \draw pic["$\color{midgray}\alpha$", draw=midgray, angle eccentricity=.7, angle radius=.7cm]
+      {angle=BO2--O--A2};
+    \end{axis}
+  \end{tikzpicture}
+
+\end{wrapfigure}
+Con lo cual concluimos:
+\begin{itemize}
+\item Como alcanzan alturas opuestas los senos han de ser opuestos:
+  $\sen (180\degree + \alpha) = -\sen \alpha$.
+\item Como la distancia al eje vertical es la misma pero de sentido contrario los cosenos también han de ser opuestos:
+  $\cos (180\degree + \alpha) = -\cos \alpha$.
+\item Sin embargo la tangente, al ser seno entre coseno, tiene el mismo signo:
+  $\tg (180\degree + \alpha) = \tg \alpha$.
+\end{itemize}
+% \end{minipage}
+}
+
+\subsubsection{IV con I cuadrante.}
+% \begin{minipage}[t]{.4\linewidth}
+Aquí hemos dibujado un ángulo $\alpha$ y su reflejo a través eje horizontal,
+con lo que se obtiene el ángulo $-\alpha$ para el cual el cálculo de las razones va a ser equivalente al calculo de las de $360\degree-\alpha$. \\
+Se observa que la altura que alcanzan sobre el eje horizontal ($y$) es la misma en los dos pero opuesta, mientras que la distancia horizontal al eje vertical ($x$) es exactamente la misma.\\
+{
+  \setlength\intextsep{0pt}
+  \begin{wrapfigure}{r}{.45\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[width=\linewidth, height=\linewidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+        \coordinate (O) at (0,0);
+        \coordinate (OA) at (2,0);
+        \coordinate (O1) at (0,-.2);
+        \coordinate (A1) at (3.47, 2);
+        \coordinate (BO1) at (3.47, 0);
+        \coordinate (A2) at (3.47, -2);
+        \coordinate (B1) at (3.47, -.2);
+        \draw (O) circle (4);
+        \draw[dashed, latex-latex] (A1)--(BO1) node[midway, left] {$y$};
+        \draw[dashed, latex-latex] (A2)--(BO1) node[midway, left] {$-y$};
+        \draw[dashed, latex-latex] (0,-2)--(3.47, -2) node[midway, below] {$x$};
+        \draw (O)--(A2)
+        pic["$\scriptstyle 360\degree - \alpha$"{xshift=-.5cm}, draw=darkgray,
+        angle eccentricity=1.05, angle radius=.8cm]
+        {angle=OA--O--A2};
+        \draw (O)--(A1)
+        pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+        {angle=OA--O--A1};
+        \draw pic["$\color{midgray}-\alpha$", draw=midgray, angle eccentricity=1.4, angle radius=.6cm]
+        {angle=A2--O--BO1};
+      \end{axis}
+    \end{tikzpicture}
+    
+  \end{wrapfigure}
+Con lo cual concluimos:
+\begin{itemize}
+\item Como alcanzan alturas opuestas los senos han de ser opuestos:
+  $\sen (360\degree - \alpha) = -\sen \alpha$.
+\item Como la distancia al eje vertical es la misma:
+  $\cos (360\degree - \alpha) = \cos \alpha$.
+\item Sin embargo la tangente, al ser seno entre coseno, tiene que ser opuesta:
+  $\tg (360\degree - \alpha) = \tg \alpha$.
+\end{itemize}
+}
+% \end{minipage}
+\section{Resolución de triángulos.} \label{resolucion_triangulos}
+Resolver un triángulo consiste en calcular sus tres lados y sus tres ángulos a partir de los datos dados.\\
+Para hacer esto tenemos \textbf{dos herramientas}: el teorema de \textbf{Pitágoras} y
+la \textbf{trigonometría}.\\
+También hay que tener en cuenta algunas \textbf{reglas que seguramente vimos en primaria} y que quizá no nos
+acordamos bien:
+\begin{itemize}
+\item La suma de dos lados siempre es mayor que el tercero (da igual qué lados).
+\item A mayor lado le corresponde mayor ángulo opuesto.
+\item La suma de los tres ángulos siempre es $180\degree$.
+\end{itemize}
+
+Los datos mínimos que necesitamos para resolver un triángulo son los siguientes:
+\begin{itemize}
+\item Dos lados y un ángulo.
+\item Un lado y dos ángulos (que es lo mismo que tener los tres ángulos).
+\item Los tres lados.
+\end{itemize}
+
+Por hacer una graduación en la dificultad vamos a dividirlo en dos partes, una para triángulos rectángulos y la otra para triángulos cualesquiera. Pero antes de ello vamos a ver unas reglas para
+nombrar a los puntos, lados y ángulos de un triángulo para que todos sigamos las mismas y así
+sabremos de lo que estamos hablando en todo momento.
+\subsection{Reglas de nomenclatura en el triángulo.} \label{nomenclatura_triangulo}
+\begin{enumerate}
+\item Se empieza nombrando los vértices, empezando por el que nos parezca mejor.
+\item Los vértices se nombran con letras mayúsculas en sentido contrario a las agujas del reloj.
+\item Los ángulos se nombran poniendo un acento circunflejo al nombre del vértice.
+\item Los lados se nombran con la letra minúscula del vértice opuesto.
+\end{enumerate}
+
+De esta manera un triángulo podría tener los siguientes nombres (todo depende de qué vértice
+escojamos primero).
+\begin{center}
+  \begin{tikzpicture}[scale=.8]
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (3,4);
+    \coordinate (C) at (4.5, -1);
+    \draw (A) -- (B) node[midway, above] {\Large{$b$}};
+    \draw (A) -- (C) node[midway, below] {\Large{$c$}};
+    \draw (B) -- (C) node[midway, right] {\Large{$a$}};
+    \node[left] at (A) {\large{$A$}};
+    \node[right] at (C) {\large{$B$}};
+    \node[above] at (B) {\large{$C$}};
+    \draw pic["${\widehat{A}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=C--A--B};
+    \draw pic["${\widehat{C}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=A--B--C};
+    \draw pic["${\widehat{B}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=B--C--A};
+  \end{tikzpicture}
+\end{center}
+
+Estas reglas las utilizaremos más cuando estemos con triángulos no rectángulos, ya que con los
+triángulos rectángulos es más visual hablar de catetos opuestos y adyacentes.
+
+\subsection{Triángulos rectángulos.}
+Son los más sencillos de resolver, ya que siempre conocemos un ángulo (el recto) y además podemos aplicar las definiciones trigonométricas directamente.\\
+Vamos a ver unos ejemplos variados.
+\begin{itemize}
+\item \emph{Resuelve un triángulo rectángulo cuya hipotenusa mide 10\,cm y tiene un ángulo de $30\degree$.}
+  \begin{solution}
+    Lo primero que tenemos que hacer siempre es el dibujo aproximado para tener claro donde está cada cosa ya que en la trigonometría todo depende de la posición relativa de los distintos elementos.
+    \begin{center}
+      \begin{tikzpicture}[scale=.6]
+        \draw
+        (4,0) coordinate (a)
+        -- (0,0) coordinate (b)
+        -- (4,5) coordinate (c)
+        pic["$30\degree$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+        {angle=a--b--c};
+        \draw (4,0) -- (4,5) node[midway, right] {$c_o$};
+        \draw(0,0) -- (4,0) node[midway,below] {$c_a$};
+        \draw (0,0) -- (4,5) node[midway, sloped, above] {10\,cm};
+        \draw (3.5, 0) -- (3.5, .5) -- (4, .5);
+        \draw pic["$\beta$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+        {angle=b--c--a};
+      \end{tikzpicture}
+    \end{center}
+    Para obtener $c_o$ y $c_a$ solo tenemos que hacer uso de la definición de las razones trigonométricas:
+    \begin{itemize}
+    \item Como $\sen 30\degree = \frac{c_o}{10\,\text{cm}}$ despejamos y
+      \[\boldsymbol{c_o = 10\,\text{cm} * \sen 30\degree = 5\,\text{cm}}\]
+    \item Como $\cos 30\degree = \frac{c_a}{10\,\text{cm}}$ despejamos y
+      \[\boldsymbol{c_a = 10\,\text{cm} * \cos 30\degree = \frac{10\sqrt{3}}{2}\,\text{cm}}\]
+    \end{itemize}
+    Y para el ángulo que falta solo tenemos que restar:
+    \[\boldsymbol{\beta = 180\degree - 90\degree -30\degree = 60\degree}\]
+  \end{solution}
+
+\item \emph{Resuelve un triángulo rectángulo cuyos catetos miden 5\,m y 12\,m.}
+  \begin{solution}
+    El dibujo:
+    \begin{center}
+      \begin{tikzpicture}[scale=.8, rotate=-20, transform shape]
+        \draw
+        (4,0) coordinate (a)
+        -- (0,0) coordinate (b)
+        -- (4,5) coordinate (c)
+        pic["$\alpha$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+        {angle=a--b--c};
+        \draw (4,0) -- (4,5) node[midway, right] {12\,cm};
+        \draw(0,0) -- (4,0) node[midway,below] {5\,cm};
+        \draw (0,0) -- (4,5) node[midway, sloped, above] {$h$};
+        \draw (3.5, 0) -- (3.5, .5) -- (4, .5);
+        \draw pic["$\beta$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+        {angle=b--c--a};
+      \end{tikzpicture}
+    \end{center}
+    Para obtener la hipotenusa utilizamos el teorema de Pitágoras:
+    \[h^2 = (12\,\text{cm})^2 + (5\,\text{cm})^2 = 169\,\text{cm}^2\]
+    \[h = 13\,\text{cm}\]
+    Y para obtener los ángulos utilizamos las razones trigonométricas inversas:
+    \begin{itemize}
+    \item Como $\sen \alpha = \frac{12}{13}$ se obtiene que $\alpha = \asen \frac{12}{13} = 74.87\degree$
+    \item $\sen \beta = \frac{5}{13} \longrightarrow \beta = \asen \frac{5}{13} = 25.13\degree$
+    \end{itemize}
+    Para obtener $\beta$ también podíamos haber utilizado que $\alpha + \beta = 90\degree$.  
+  \end{solution}
+\end{itemize}
+
+\subsection{Triángulos de cualquier tipo.}
+Para resolver estos triángulos tenemos que utilizar otros teoremas además de lo anterior.\\
+
+Y no está de más indicar que para que estos teoremas nos den resultados fiables tenemos que
+utilizar la nomenclatura indicada en el punto \ref{nomenclatura_triangulo} (página:
+\pageref{nomenclatura_triangulo}).
+\subsubsection{Teorema del seno.}
+\emph{(La demostración de este teorema es bastante sencilla y se incluye en
+  \ref{apendice_teoremaseno}, página \pageref{apendice_teoremaseno}).}
+Si tenemos un triángulo cualquiera
+\begin{center}
+  \begin{tikzpicture}[scale=.8]
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (3,4);
+    \coordinate (C) at (4.5, -1);
+    \draw (A) -- (B) node[midway, above] {\Large{$b$}};
+    \draw (A) -- (C) node[midway, below] {\Large{$c$}};
+    \draw (B) -- (C) node[midway, right] {\Large{$a$}};
+    \node[left] at (A) {\large{$A$}};
+    \node[right] at (C) {\large{$B$}};
+    \node[above] at (B) {\large{$C$}};
+    \draw pic["${\widehat{A}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=C--A--B};
+    \draw pic["${\widehat{C}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=A--B--C};
+    \draw pic["${\widehat{B}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=B--C--A};
+  \end{tikzpicture}
+\end{center}
+Siempre se cumple que
+\[\boldsymbol{\frac{\sen \widehat{A}}{a} = \frac{\sen \widehat{B}}{b}
+    =\frac{\sen \widehat{C}}{c}}\]
+Es decir, el seno de cada ángulo partido por el lado opuesto es constante para todos los ángulos de un triángulo.\\
+
+De los tres teoremas este es el más sencillo y el más utilizado. Aunque tiene un pequeño problema,
+a veces tiene dos soluciones por lo visto en el punto \ref{cuadrante2} y tendremos que utilizar algunas de las reglas que conocemos para discriminar cual es la solución válida.
+
+\subsubsection{Teorema del coseno.}
+En el triángulo del punto anterior se cumple:
+\begin{itemize}
+\item $\boldsymbol{c^2= a^2 + b^2 - 2ab\cos \widehat{C}}$
+\item $\boldsymbol{a^2= c^2 + b^2 - 2cb\cos \widehat{A}}$
+\item $\boldsymbol{b^2= a^2 + c^2 - 2ac\cos \widehat{B}}$
+\end{itemize}
+Es decir, el cuadrado de un lado es igual a la suma de los cuadrados de los otros dos menos el doble del producto de los otros dos lados por el coseno del ángulo opuesto.\\
+
+A este teorema también se le conoce como \emph{teorema de Pitágoras generalizado}.
+
+\subsubsection{Teorema de la tangente.}
+En un triángulo de cualquier tipo se cumple que:
+\begin{itemize}
+\item $\boldsymbol{\frac{a+b}{a-b} = \cfrac{\tg \frac{\widehat{A}+\widehat{B}}{2}}
+    {\tg \frac{\widehat{A}-\widehat{B}}{2}}}$
+\item $\boldsymbol{\frac{a+c}{a-c} = \cfrac{\tg \frac{\widehat{A}+\widehat{C}}{2}}
+    {\tg \frac{\widehat{A}-\widehat{C}}{2}}}$
+\item $\boldsymbol{\frac{c+b}{c-b} = \cfrac{\tg \frac{\widehat{C}+\widehat{B}}{2}}
+    {\tg \frac{\widehat{C}-\widehat{B}}{2}}}$
+\end{itemize}
+Hay que decir que este teorema no se utiliza mucho, normalmente utilizaremos solo los dos
+anteriores.
+
+\subsection{Casos de resolución de triángulos}
+Tal y como hemos indicado en el punto \ref{resolucion_triangulos}, los casos en los que podemos
+resolver un triángulo son en los que conocemos:
+\begin{itemize}
+\item Dos lados y un ángulo.
+\item Un lado y dos ángulos (que es lo mismo que tener los tres ángulos).
+\item Los tres lados.
+\end{itemize}
+Así que vamos a ver cada uno de ellos por separado con sus correspondientes subcasos.
+\subsubsection{Conociendo dos lados y un ángulo.}
+Este caso se puede separar en dos subcasos:
+\begin{itemize}
+\item Tenemos dos lados y el ángulo que forman.
+\item Tenemos dos lados y el ángulo opuesto a uno de ellos.
+\end{itemize}
+Vamos a verlos por separado.
+\paragraph{Conocemos dos lados y el ángulo que forman.}
+Resuelve un triángulo del que conocemos lo siguiente:
+\begin{itemize}
+\item $a=3$\,cm.
+\item $b=5$\,cm.
+\item $\widehat{C} = 40\degree$.
+\end{itemize}
+\begin{solution}
+  Siempre tenemos que empezar por dibujar una aproximación de la situación en la que lo importante
+  es la posición de los elementos del triángulo. No importan los tamaños de los lados y los ángulos,
+  solo la posición porque es la que nos va a decir qué es lo que vamos a tener que utilizar para
+  resolver el triángulo.\\
+  En este caso la situación aproximada es:
+  \begin{center}
+    \begin{tikzpicture}[scale=.8]
+      \coordinate (A) at (0,0);
+      \coordinate (B) at (3,4);
+      \coordinate (C) at (4.5, -1);
+      \draw (A) -- (B) node[midway, above left, sloped] {\Large{$5$\,cm}};
+      \draw (A) -- (C) node[midway, below] {\Large{$c$}};
+      \draw (B) -- (C) node[midway, above right, sloped] {\Large{$3$\,cm}};
+      \node[left] at (A) {\large{$A$}};
+      \node[right] at (C) {\large{$B$}};
+      \node[above] at (B) {\large{$C$}};
+      \draw pic["${\widehat{A}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=C--A--B};
+      \draw pic["${40\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=A--B--C};
+      \draw pic["${\widehat{B}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=B--C--A};
+    \end{tikzpicture}
+  \end{center}
+  Desconocemos qué tipo de triángulo es, con lo que no podemos aplicar directamente las definiciones de seno y coseno y tenemos que acudir a los tres teoremas que hemos visto: el del seno, el del
+  coseno y el de la tangente.\\
+  De estos tres teoremas el que involucra dos lados y el ángulo que forman es el del coseno, con lo
+  que \textbf{en este caso tenemos que empezar utilizando el teorema del coseno}, y aplicado 
+  a los lados y el ángulo que conocemos nos dice que:
+  \[c^2 = a^2 + b^2 - 2ab\cos \widehat{C}\]
+  Sustituyendo los valores:
+  \[c^2 = (3\unidad{cm})^2 + (5\unidad{cm})^2 - 2*3*5\unidad{cm}^2 \cos 40\degree\]
+  \[c^2 = 9\unidad{cm}^2 + 25 \unidad{cm}^2 - 30\unidad{cm}^2 \cos 40\degree\]
+  \[c^2 = 11.0186667064 \unidad{cm}^2\]
+  \[c \simeq 3.32\unidad{cm}\]
+  Ahora podemos utilizar el teorema del seno para calcular alguno de los ángulos que nos falta,
+  por ejemplo $\widehat{A}$:
+  \[\frac{\sen \widehat{A}}{a}=\frac{\sen \widehat{C}}{c}\]
+  \[\frac{\sen \widehat{A}}{3\unidad{cm}}=\frac{\sen 40\degree}{3.32\unidad{cm}}\]
+  \[\sen \widehat{A}=3\unidad{cm}*\frac{\sen 40\degree}{3.32\unidad{cm}}\]
+  \[\sen \widehat{A} \simeq 0.5808\]
+  Y ahora calculamos el arco de seno:
+  \[\widehat{A} = \asen 0.5808 \simeq 35.51\degree\]
+  Pero por lo visto en el apartado \ref{cuadrante2} también puede ser:
+  \[\widehat{A} = 180\degree - 35.51\degree = 144.49\degree\]
+  ¿Cómo sabemos cual de los dos es? Utilizamos alguna de las reglas que conocemos para triángulos,
+  en este caso la que nos dice que a mayor lado le corresponde mayor ángulo opuesto.\\
+  Teniendo en cuenta que $c=3.32\unidad{cm}$ y $\widehat{C} = 40\degree$ como $a = 3\unidad{cm}$
+  le tiene que corresponder un ángulo menor de $40\degree$ porque $a < c$, con lo que
+  $\widehat{A} = 35.51\degree$.\\
+  \begin{center}\small{\emph{(A veces no será tan sencillo discriminar cual es el ángulo y tendremos
+        que resolver el problema entero con cada ángulo para saber cual es el verdadero.
+        Ya haremos ejemplos de ese tipo más adelante)}}\end{center}
+  Y para calcular $\widehat{B}$ utilizamos la regla de que los tres ángulos suman $180\degree$:
+  \[\widehat{B} = 180\degree - 40\degree - 35.51\degree = 104.49\degree\]
+
+  Y con esto ya hemos resuelto el triángulo:
+  \begin{center}
+    \begin{tikzpicture}[scale=.8]
+      \coordinate (A) at (10,0);
+      \coordinate (B) at (0,0);
+      \coordinate (C) at (4.6, 2.86);
+      \draw (A) -- (B) node[midway, below, sloped] {\Large{$5$\,cm}};
+      \draw (A) -- (C) node[midway, above, sloped] {\Large{$3.32\unidad{cm}$}};
+      \draw (B) -- (C) node[midway, above , sloped] {\Large{$3$\,cm}};
+      \node[right] at (A) {\large{$A$}};
+      \node[above] at (C) {\large{$B$}};
+      \node[left] at (B) {\large{$C$}};
+      \draw pic["${35.51\degree}$",draw=darkgray, angle eccentricity=1.45, angle radius=1cm]
+      {angle=C--A--B};
+      \draw pic["${40\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=A--B--C};
+      \draw pic["${104.49\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=.6cm]
+      {angle=B--C--A};
+    \end{tikzpicture}
+  \end{center}
+\end{solution}
+\paragraph{Conocemos dos lados y un ángulo opuesto a uno de ellos.}
+\textbf{IMPORTANTE: En este caso podemos tener dos soluciones válidas}, y es lo que nos va a suceder
+en el ejemplo que hemos escogido (se puede ver el porqué en
+\ref{apendice_dossoluciones}, página \pageref{apendice_dossoluciones}).\\
+
+
+Resuelve un triángulo del que conocemos lo siguiente:
+\begin{itemize}
+\item $a=6$\,cm.
+\item $c=7$\,cm.
+\item $\widehat{A} = 55\degree$.
+\end{itemize}
+\begin{solution}
+  Tenemos la siguiente situación aproximada:
+    \begin{center}
+    \begin{tikzpicture}[scale=.8]
+      \coordinate (A) at (0,0);
+      \coordinate (B) at (3,4);
+      \coordinate (C) at (4.5, -1);
+      \draw (A) -- (B) node[midway, above left, sloped] {\Large{$b$}};
+      \draw (A) -- (C) node[midway, below] {\Large{$7$\unidad{cm}}};
+      \draw (B) -- (C) node[midway, above right, sloped] {\Large{$6$\,cm}};
+      \node[left] at (A) {\large{$A$}};
+      \node[right] at (C) {\large{$B$}};
+      \node[above] at (B) {\large{$C$}};
+      \draw pic["${55\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=C--A--B};
+      \draw pic["${\widehat{C}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=A--B--C};
+      \draw pic["${\widehat{B}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=B--C--A};
+    \end{tikzpicture}
+  \end{center}
+  \textbf {En este caso el primer teorema a aplicar es el teorema del seno} ya que es el que nos
+  relaciona los ángulos con los lados opuestos. En este caso los datos que nos dan corresponden
+  a los lados $a$ y $c$, con lo que:
+  \[\frac{\sen \widehat{A}}{a} = \frac{\sen \widehat{C}}{c}\]
+  \[\frac{\sen 55\degree}{6\unidad{cm}} = \frac{\sen \widehat{C}}{7\unidad{cm}}\]
+  \[\sen \widehat{C} = 7\unidad{cm}*\frac{\sen 55\degree}{6\unidad{cm}}\]
+  \[\sen \widehat{C} \simeq 0.9557\]
+  Con lo que tenemos estas dos posibilidades:
+  \begin{itemize}
+  \item $\widehat{C} = \asen 0.9557 \simeq 72.88\degree$
+  \item $\widehat{C} = 180\degree - 72.88\degree = 107.12\degree$
+  \end{itemize}
+  El problema es que las reglas que conocemos no nos permiten discriminar cual es el ángulo verdadero
+  con los datos que tenemos, con lo que vamos a tener que resolver el problema con cada ángulo para
+  ver cual es el verdadero.
+  \begin{itemize}
+  \item Si cogemos $\boldsymbol{\widehat{C} = 72.88\degree}$\\
+    Tenemos que el ángulo que nos falta es $\widehat{B} = 180\degree - 55\degree - 72.88\degree
+    = 52.12\degree$, y aplicando el teorema del seno obtenemos el lado que nos falta:
+    \[\frac{\sen \widehat{B}}{b} = \frac{\sen \widehat{A}}{a}\]
+    \small{(Nos saltamos un pequeño paso de cálculo algebraico)}
+    \[b = 6\unidad{cm}* \frac{\sen 52.12\degree}{\sen 55\degree}\]
+    \[b \simeq 5.78\unidad{cm}\]
+    Vamos a ver si esta solución sería válida:
+    \begin{itemize}
+    \item ¿Los tres ángulos suman $180\degree$?. Sí, los hemos calculado para que suceda así.
+    \item ¿A mayor lado corresponde mayor ángulo opuesto?. Sí, porque tenemos:
+      \[
+        \begin{array}{rcrcr}
+          5.78\unidad{cm}&<&6\unidad{cm}&<&7\unidad{cm}\\
+          52.12\degree&<&55\degree&<&72.88\degree
+        \end{array}
+      \]
+    \item ¿Cada lado es menor que la suma de los otros dos? Sí, es fácil de comprobar.
+    \end{itemize}
+    Entonces esta sería una solución válida, que dibujada sería:
+    \begin{center}
+    \begin{tikzpicture}[scale=.8]
+      \coordinate (A) at (4.3,5.52);
+      \coordinate (C) at (6,0);
+      \coordinate (B) at (0, 0);
+      \draw (A) -- (B) node[midway, above, sloped] {\Large{$7\unidad{cm}$}};
+      \draw (A) -- (C) node[midway, above, sloped] {\Large{$5.78$\unidad{cm}}};
+      \draw (B) -- (C) node[midway, below] {\Large{$6$\,cm}};
+      \node[above] at (A) {\large{$A$}};
+      \node[right] at (C) {\large{$C$}};
+      \node[left] at (B) {\large{$B$}};
+      \draw pic["${55\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+      {angle=B--A--C};
+      \draw pic["${52.12\degree}$",draw=darkgray, angle eccentricity=1.5, angle radius=1cm]
+      {angle=C--B--A};
+      \draw pic["${72.88\degree}$",draw=darkgray, angle eccentricity=1.45, angle radius=.8cm]
+      {angle=A--C--B};
+    \end{tikzpicture}
+  \end{center}
+  \item Vamos a por la otra posibilidad. Si cogemos $\boldsymbol{\widehat{C} = 107.12\degree}$\\
+    Hacemos lo mismo que en el caso anterior, el ángulo que nos falta es
+    $\widehat{B} = 180\degree - 55\degree - 107.12\degree = 17.88\degree$, y obtenemos el lado que
+    nos falta:
+    \[\frac{\sen \widehat{B}}{b} = \frac{\sen \widehat{A}}{a}\]
+    \[b = 6\unidad{cm}* \frac{\sen 17.88\degree}{\sen 55\degree}\]
+    \[b \simeq 2.25\unidad{cm}\]
+    
+    Comprobamos que también es válida:
+    \begin{itemize}
+    \item ¿Los tres ángulos suman $180\degree$?. Sí, los hemos calculado para que suceda así.
+    \item ¿A mayor lado corresponde mayor ángulo opuesto?. Sí, porque tenemos:
+      \[
+        \begin{array}{rcrcr}
+          2.25\unidad{cm}&<&6\unidad{cm}&<&7\unidad{cm}\\
+          17.88\degree&<&55\degree&<&107.12\degree
+        \end{array}
+      \]
+    \item ¿Cada lado es menor que la suma de los otros dos? Sí, es fácil de comprobar.
+    \end{itemize}
+    Entonces esta sería también una solución válida, y dibujada sería:
+    \begin{center}
+    \begin{tikzpicture}[scale=.8]
+      \coordinate (A) at (6.66,2.15);
+      \coordinate (C) at (6,0);
+      \coordinate (B) at (0, 0);
+      \draw (A) -- (B) node[midway, above, sloped] {\Large{$7\unidad{cm}$}};
+      \draw (A) -- (C) node[midway, below, sloped] {$2.25$\unidad{cm}};
+      \draw (B) -- (C) node[midway, below] {\Large{$6$\,cm}};
+      \node[above] at (A) {\large{$A$}};
+      \node[below right] at (C) {\large{$C$}};
+      \node[left] at (B) {\large{$B$}};
+      \draw pic["${55\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm,
+      pic text options={shift={(-.1cm,0.2cm)}}] {angle=B--A--C};
+      \draw pic["${17.88\degree}$",draw=darkgray, angle eccentricity=1.7, angle radius=1cm,
+      pic text options={shift={(0cm,-.1cm)}}] {angle=C--B--A};
+      \draw pic["${107.12\degree}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm,
+      pic text options={shift={(-.6cm,-.4cm)}}] {angle=A--C--B};
+    \end{tikzpicture}
+  \end{center}
+  \end{itemize}
+  Ver \ref{apendice_dossoluciones} (página \pageref{apendice_dossoluciones})
+\end{solution}
+
+\subsubsection{Conocemos un lado y dos ángulos.}
+Este caso es lo mismo que si nos diesen un lado y los tres ángulos,
+ya que la obtención del tercer ángulo es inmediata.
+Vamos a por un ejemplo:\\
+
+Resolver un triángulo del que conocemos:
+\begin{itemize}
+\item $b=8\unidad{cm}$.
+\item $\widehat{A} = 30\degree$.
+\item $\widehat{B} = 80\degree$.
+\end{itemize}
+
+\begin{solution}
+  Como siempre, primero hacemos el dibujo aproximado de la situación que tenemos:
+  \begin{center}
+    \begin{tikzpicture}
+      \coordinate (A) at (0,0);
+      \coordinate (C) at (2,3);
+      \coordinate (B) at (5,0);
+      
+      \draw (A) -- (B) node[below, midway, sloped] {\Large{$c$}};
+      \draw (A) -- (C) node[above, midway, sloped] {\Large{$8\unidad{cm}$}};
+      \draw (C) -- (B) node[above, midway, sloped] {\Large{$a$}};
+      
+      \draw pic["${30\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=B--A--C};
+      \draw pic["${80\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=C--B--A};
+      \draw pic["$\widehat{C}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=A--C--B};
+    \end{tikzpicture}
+  \end{center}
+  Y es fácil ver que con los datos que tenemos \textbf{en este caso empezamos por calcular el tercer
+    ángulo y después aplicar el teorema del seno}.\\
+  El ángulo que nos falta es $\widehat{C} = 180\degree - 30\degree-80\degree = 70\degree$, y aplicando
+  el teorema del seno con el lado que tenemos y cada uno de los que nos faltan:
+  \begin{itemize}
+  \item Para $a$:
+    \[\frac{a}{\sen \widehat{A}} = \frac{b}{\sen \widehat{B}}\]
+    \[a = b*\frac{\sen \widehat{A}}{\sen \widehat{B}}\]
+    \[a = 8\unidad{cm}*\frac{\sen 30\degree}{\sen 80\degree} \simeq 4.06\unidad{cm}\]
+  \item Para $c$:
+    \[\frac{c}{\sen \widehat{C}} = \frac{b}{\sen \widehat{B}}\]
+    \[c = b*\frac{\sen \widehat{C}}{\sen \widehat{B}}\]
+    \[c = 8\unidad{cm}*\frac{\sen 70\degree}{\sen 80\degree} \simeq 7.63\unidad{cm}\]
+  \end{itemize}
+  Y con lo que hemos obtenido la solución es:
+  \begin{center}
+    \begin{tikzpicture}
+      \coordinate (A) at (0,0);
+      \coordinate (C) at (6.93,4);
+      \coordinate (B) at (7.63,0);
+      
+      \draw (A) -- (B) node[below, midway, sloped] {\Large{$7.63\unidad{cm}$}};
+      \draw (A) -- (C) node[above, midway, sloped] {\Large{$8\unidad{cm}$}};
+      \draw (C) -- (B) node[above, midway, sloped] {\Large{$4.06\unidad{cm}$}};
+      
+      \draw pic["${30\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=B--A--C};
+      \draw pic["${80\degree}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=C--B--A};
+      \draw pic["$70\degree$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=A--C--B};
+    \end{tikzpicture}
+  \end{center}
+\end{solution}
+\subsubsection{Conocemos tres lados.}
+Vamos a por un ejemplo al igual que en las anteriores.
+
+Resuelve el triángulo que tiene de lados:
+\begin{itemize}
+\item $a=3\unidad{cm}$
+\item $b=5\unidad{cm}$
+\item $c=6\unidad{cm}$
+\end{itemize}
+\begin{solution}
+  En este caso lo primero es comprobar si con esos lados podemos formar un triángulo mediante el
+  criterio de que cada lado ha de ser menor que la suma de los otros dos. Y en este caso se cumple,
+  con lo que podemos seguir.\\
+
+  Como siempre, dibujamos aproximadamente la situación que tenemos:
+  \begin{center}
+    \begin{tikzpicture}
+      \coordinate (A) at (0,0);
+      \coordinate (C) at (2,3);
+      \coordinate (B) at (5,0);
+      
+      \draw (A) -- (B) node[below, midway, sloped] {\Large{$6\unidad{cm}$}};
+      \draw (A) -- (C) node[above, midway, sloped] {\Large{$5\unidad{cm}$}};
+      \draw (C) -- (B) node[above, midway, sloped] {\Large{$3\unidad{cm}$}};
+      
+      \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=B--A--C};
+      \draw pic["$\widehat{B}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=C--B--A};
+      \draw pic["$\widehat{C}$",draw=darkgray, angle eccentricity=1.4, angle radius=.8cm] {angle=A--C--B};
+    \end{tikzpicture}
+  \end{center}
+  \textbf{En este caso el primer teorema que hay que utilizar es el del coseno}. Podemos utilizar el
+  lado que queramos, y vamos a utilizar $c$:
+  \[c^2 = a^2 + b^2 - 2ab\cos \widehat{C}\]
+  \[36\unidad{cm}^2 = 9\unidad{cm}^2 + 25\unidad{cm}^2 - 30\unidad{cm}^2 * \cos \widehat{C}\]
+  \[\cos \widehat{C} = -\frac{1}{15}\]
+  \[\widehat{C} = \acos \left(-\frac{1}{15}\right) \simeq 93.82\degree\]
+
+  Una vez que tenemos un ángulo podemos empezar a utilizar el teorema del seno (con cuidado de
+  elegir la solución adecuada) o continuar con el del coseno (que es más largo pero nos da solo una
+  solución).\\
+  Como en los anteriores ejemplos hemos utilizado casi siempre el teorema del seno aquí vamos a
+  seguir con el del coseno. De esta manera:
+  \[\cos \widehat{A} = \frac{9 - 25 - 36}{-60} = \frac{13}{15} \longrightarrow
+    \widehat{A} \simeq 29.93\degree\]
+  \[\cos \widehat{B} = \frac{25 - 9 - 36}{-36} = \frac{5}{9} \longrightarrow
+    \widehat{B} \simeq 56.25\degree\]
+  Comprobamos que sea una solución válida:
+  \begin{itemize}
+  \item ¿Cada lado es menor que la suma de los otros dos?: sí, lo hemos comprobado al empezar la
+    resolución.
+  \item ¿Los ángulos suman $180\degree$?: \[93.82\degree + 29.93\degree + 56.25\degree = 180\degree\]
+  \item ¿A mayor lado le corresponde mayor ángulo opuesto?: es fácil comprobar que sí.
+  \end{itemize}
+  Y el dibujo de la solución es:
+  \begin{center}
+    \begin{tikzpicture}
+      \coordinate (A) at (5,0);
+      \coordinate (C) at (0,0);
+      \coordinate (B) at (-.2,2.99);
+      
+      \draw (A) -- (B) node[above, midway, sloped] {\Large{$6\unidad{cm}$}};
+      \draw (A) -- (C) node[below, midway, sloped] {\Large{$5\unidad{cm}$}};
+      \draw (C) -- (B) node[below, midway, sloped] {\Large{$3\unidad{cm}$}};
+      
+      \draw pic["$29.93\degree$",draw=darkgray, angle eccentricity=1.7, angle radius=.8cm] {angle=B--A--C};
+      \draw pic["$56.25\degree$",draw=darkgray, angle eccentricity=1.5, angle radius=.8cm] {angle=C--B--A};
+      \draw pic["$93.82\degree$",draw=darkgray, angle eccentricity=1.7, angle radius=.6cm] {angle=A--C--B};
+    \end{tikzpicture}
+  \end{center}
+\end{solution}
+
+\newpage
+\appendix
+\renewcommand{\thesection}{Apendice \Alph{section}}
+
+\section{Demostración del teorema del seno.} \label{apendice_teoremaseno}
+Tenemos un triángulo no rectángulo y trazamos una de sus alturas (la más evidente):
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (6,0);
+    \coordinate (C) at (2,4);
+    \coordinate (H) at (2,0);
+    \draw (A) -- (B) node[midway, below] {\Large{$c$}};
+    \draw (A) -- (C) node[midway, above left] {\Large{$b$}};
+    \draw (B) -- (C) node[midway, above right] {\Large{$a$}};
+    \node[left] at (A) {\large{$A$}};
+    \node[above] at (C) {\large{$C$}};
+    \node[right] at (B) {\large{$B$}};
+    \draw pic["${\widehat{A}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=B--A--C};
+    \draw pic["${\widehat{B}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=C--B--A};
+    \draw pic["${\widehat{C}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=A--C--B};
+
+    \draw[dashed] (C)--(H) node[midway, right] {$h$};
+  \end{tikzpicture}
+\end{center}
+
+Esta altura divide el triángulo original en dos triángulos rectángulos a los que hemos llamado $T_1$ y $T_2$:
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (8,0);
+    \coordinate (C1) at (2,4);
+    \coordinate (H1) at (2,0);
+
+    \coordinate (C2) at (4,4);
+    \coordinate (H2) at (4,0);
+
+    \coordinate (T1) at (1.5,2);
+    \coordinate (T2) at (4.8,2);
+    
+    \draw (A) -- (H1);
+    \draw (A) -- (C1) node[midway, above left] {\Large{$b$}};
+    \draw (H1) -- (C1) node[midway, right] {$h$};
+    
+    \draw pic["${\widehat{A}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=H1--A--C1};
+
+    \draw (H2) -- (C2) node[midway, left] {$h$};
+    \draw (B) -- (C2) node[midway, above right] {\Large{$a$}};
+    \draw (H2) -- (B);
+
+    \draw pic["${\widehat{B}}$",draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=C2--B--H2};
+
+    \node at (T1) {\large{$\boldsymbol{T_1}$}};
+    \node at (T2) {\large{$\boldsymbol{T_2}$}};
+  \end{tikzpicture}
+\end{center}
+
+Ambos tienen la misma altura y ésta es el cateto opuesto al ángulo indicado, de manera que:
+\begin{itemize}
+\item En $T_1$: $\sen \widehat{A} = \frac{h}{b} \longrightarrow h = b*\sen \widehat{A}$.
+\item En $T_2$: $\sen \widehat{B} = \frac{h}{a} \longrightarrow h = a*\sen \widehat{B}$.
+\end{itemize}
+Igualando ambas alturas:
+\[h = b*\sen \widehat{A} = a*\sen \widehat{B}\]
+De manera que
+\[\frac{\sen \widehat{A}}{a} = \frac{\sen \widehat{B}}{b}\]
+
+Y si hacemos lo mismo con las otras dos alturas tendremos que esa relación entre cada lado y el
+seno del ángulo opuesto es la misma para todo el triángulo, de manera que:
+\[\boldsymbol{\frac{\sen \widehat{A}}{a} = \frac{\sen \widehat{B}}{b} =
+    \frac{\sen \widehat{C}}{c}}\]
+que es el \textbf{teorema del seno}.
+\section{Explicación de las dos soluciones con dos lados y un ángulo.}\label{apendice_dossoluciones}
+En el primer ejemplo que hemos visto teníamos los siguientes datos:
+\begin{itemize}
+\item $a=6$\,cm.
+\item $c=7$\,cm.
+\item $\widehat{A} = 55\degree$.
+\end{itemize}
+
+Si dibujamos el lado $c$, el lado $a$ tiene que estar en una circunferencia de radio $6\unidad{cm}$ con
+centro en uno de los extremos de $c$:
+\begin{center}
+  \begin{tikzpicture}[scale=.6]
+    \begin{scope}
+      \clip (-1,-1) rectangle (8,8);
+      \coordinate (A) at (0,0);
+      \coordinate (B) at (7,0);
+      \draw (A)--(B) node[below, midway] {${c}$};
+      \draw[dashed, draw=midgray] (B) circle(6);
+      \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  Si en el otro extremo dibujamos el ángulo que nos dan (porque $\widehat{A}$ es opuesto a $a$ que es el
+  radio de la circunferencia) tenemos que corta a la circunferencia en dos puntos, que son los vértices
+  $C$ de las dos soluciones que hemos obtenido al resolver el ejemplo:
+  \begin{center}
+    \begin{tikzpicture}[scale=.6]
+      \begin{scope}
+      \clip (-1,-1) rectangle (8,8);
+      \coordinate (A) at (0,0);
+      \coordinate (B) at (7,0);
+      \coordinate (C) at (1.29,1.84);
+      \coordinate (D) at (3.32,4.74);
+      \coordinate (E) at (4.02, 5.73);
+      \draw (A)--(B) node[below, midway] {\Large{$c$}};
+      \draw[dashed, draw=midgray] (B) circle(6);
+      \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm
+      ] {angle=B--A--C};
+      \draw (A)--(E);
+      \draw (B)--(C) node[above, midway] {\Large{$a$}};
+      \draw (B)--(D) node[above right, midway] {\Large{$a$}};
+      \end{scope}
+    \end{tikzpicture}
+  \end{center}
+
+  Y de ahí las dos soluciones que hemos obtenido:
+  \begin{center}
+    \begin{tikzpicture}[scale=.6]
+      \coordinate (A1) at (0,0);
+      \coordinate (B1) at (7,0);
+      \coordinate (C1) at (1.29,1.84);
+
+      \coordinate (A2) at (9,0);
+      \coordinate (B2) at (16,0);
+      \coordinate (C2) at (12.32,4.74);
+      
+      \draw (A1)--(B1) node[below, midway] {\Large{$c$}};
+      \draw (B1)--(C1) node[above right, midway] {\Large{$a$}};
+      \draw (A1)--(C1) node[above left, midway] {\Large{$b$}};
+      \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm
+      ] {angle=B1--A1--C1};
+
+      
+      \draw (A2)--(B2) node[below, midway] {\Large{$c$}};
+      \draw (B2)--(C2) node[above right, midway] {\Large{$a$}};
+      \draw (A2)--(C2) node[above left, midway] {\Large{$b$}};
+      \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm
+      ] {angle=B2--A2--C2};
+    \end{tikzpicture}
+  \end{center}
+
+  A la vista de la interpretación gráfica de lo que está pasando en ese caso es
+  fácil deducir que habrá casos en los que solo tengamos una solución y otros en los que no haya
+  solución.
+\end{document}

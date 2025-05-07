@@ -1,0 +1,114 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+%para la última página
+\usepackage{lastpage}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \titulofichas {\textbf {Parámetros población y muestras}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+%\runningheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+\footer{}{\thepage}{}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\begin{document}
+\section*{Definiciones previas}
+\subsection*{Población}
+La población es el conjunto total de individuos a los que se aplica el estudio.\\
+
+Generalmente no se puede hacer el estudio sobre la población total, pero si pudiésemos hacerlo nos saldría una media y una desviación típica que vamos a llamar
+
+\begin{itemize}
+\Large
+\item $\mu_p$: Media poblacional.
+\item $\sigma_p$: desviación típica poblacional.
+\end{itemize}
+
+\subsection*{Muestra}
+Es una muestra que cogemos de la población y que tiene que cumplir ciertas condiciones (tamaño, forma de seleccionar individuos, etc.) que garantizan que sea representativa. Estas condiciones dependerán del estudio que se esté realizando.\\
+
+Para cada muestra obtendremos unos parámetros que serán:
+\begin{itemize}
+\Large
+\item $\overline{x}_i$: media de la muestra $i$.
+\item $\sigma_i$: desviación típica de la muestra $i$.
+\end{itemize}
+
+\subsection*{Conjunto de muestras}
+Cuando se hace un estudio estadístico no solo se toma una muestra, sino que se toman un conjunto de muestras, cada una de las cuales tendrá su media ($\overline{x}_i$) y su desviación típica ($\sigma_i$).\\
+Si nos fijásemos en las medias de todas las muestras veríamos que se distribuyen según una distribución normal con una media y una desviación típica que llamaremos:
+\begin{itemize}
+\Large
+\item $\mu_m$: media de las medias de las muestras.
+\item $\sigma_m$: desviación típica de las medias de las muestras.
+\end{itemize}
+
+\section*{Relación entre los parámetros. Inferencia}
+\subsection*{Población y conjunto de muestras}
+Lo que se busca es establecer la relación que hay entre los parámetros de la población y los de un conjunto de muestras.\\
+Por lo que hemos visto en otros sitios, se tiene que:
+\begin{itemize}
+\Large
+\item $\mu_m = \mu_p$. \normalsize Es decir la media de las medias de las muestras es igual que la media de la población.\Large
+\item $\sigma_m = \frac{\sigma_p}{\sqrt{n}}$
+\end{itemize}
+Con lo anterior, que es lo que aparece en el teorema del límite central (así es como se llama esto), podemos obtener la media y la desviación de la distribución de las medias muestrales.\\
+Si nos dan éstas últimas y nos piden la media y la desviación poblacional, simplemente tenemos que despejar.
+\begin{itemize}
+\item $\mu_p = \mu_m$.
+\item $\sigma_p = \sigma_m * \sqrt{n}$. Simplemente hay que despejar.
+\end{itemize}
+\subsection*{Población y muestra}
+(Esta parte no se suele dar en bachillerato. Aunque no entiendo porqué, ya que me parece sencilla y facilita la comprensión de algunas de las otras cosas)\\
+A veces no es posible tener un conjunto de muestras y hay que conformarse con una sola, y de ahí inferir los parámetros para la población total.\\
+
+Si $\overline{x}$, $\sigma$ y $n$ son la media, la desviación y el tamaño de la muestra respectivamente; la media y la desviación de la población se pueden estimar como:
+\begin{itemize}
+\Large
+\item $\mu_p = \overline{x}$ \normalsize A falta de algo mejor.\Large
+\item $\sigma_p = \sigma * \sqrt{\frac{n}{n-1}}$
+
+
+\end{itemize}
+\textbf{Lo anterior sería lo correcto, pero en bachillerato se da como bueno hacer}:
+\begin{itemize}
+\Large
+\item $\mu_p = \overline{x}$ \normalsize A falta de algo mejo.\Large
+\item $\sigma_p = \sigma$
+\end{itemize}
+Evidentemente esto coincide con lo anterior para valores de $n$ muy grandes, y por eso se da como una buena la aproximación.
+\end{document}

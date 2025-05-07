@@ -1,0 +1,836 @@
+\documentclass[a4paper,10pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+%para la última página
+%\usepackage{lastpage}
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \titulofichas {\textbf {Apuntes de probabilidad}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\runningheader{\cursofichas}{\titulofichas}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%\footer{}{\thepage}{}
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de probabilidad\\Bachillerato}
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\begin{document}
+
+\author{\autor}
+\title{\titulo}
+\date{}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+
+\section{Sucesos. Álgebra de sucesos}
+Empezamos recordando la definición de probabilidad de un suceso $A$ (definición de Laplace):
+\[
+P(A) = \frac{\mathrm{Casos\ en\ los\ que\ se\ da\ }A}{Total\ de\ casos\ posibles}
+\]
+De esta definición ya se pueden sacar dos conclusiones:
+\begin{enumerate}
+	\item La probabilidad no puede ser negativa, ya que el numerador y el denominador son cantidades positivas.
+	\item La probabilidad no puede ser mayor que 1 (100\%), ya que nunca va a haber más casos favorables que totales porque los primeros están incluidos en los segundos.
+\end{enumerate}
+Y de estas dos se deduce que la probabilidad siempre va a ser un valor entre 0 y 1 (ambos incluidos) y que si alguna vez nos sale algo que no esté entre esos límites es porque hemos hecho algo mal.\\
+
+Entonces la probabilidad es simplemente el contar casos. Parece algo sencillo pero no lo es, y para poder hacerlo tenemos que tener en cuenta una serie de reglas que se engloban en lo que se llama \textbf{\emph{Álgebra de Sucesos}}.
+
+\subsection{Sucesos}
+\emph{¿Qué es un suceso?, ¿qué es un caso?, ¿en qué se diferencian?}\\
+
+Empecemos por definir suceso:\\
+\emph{Un suceso es cada uno de los resultados posibles de una experiencia aleatoria} (por ejemplo, lanzar un dado)\\
+
+Y ahora a por la de caso:
+\emph{Un caso es cada uno de los resultados posibles de una experiencia aleatoria}\\
+
+Entonces, ¿es lo mismo?\\
+Pues sí y no, depende del contexto.\\
+
+En un problema de probabilidad lo normal es que nos refieran a sucesos complejos, que se pueden descomponer en sucesos más pequeños, más elementales, y estos últimos son a los que llamamos casos. Lo mejor para entenderlo es que pongamos un ejemplo:\\
+\emph{¿Cuál es la probabilidad de que al lanzar un dado obtengamos un número par?}\\
+Al pensar en el problema haremos un razonamiento como el que sigue:
+\begin{itemize}
+	\item En un dado tenemos seis valores: \{1, 2, 3, 4, 5, 6\}
+	\item De esos seis valores, tres de ellos son pares: \{2, 4, 6\}
+	\item La probabilidad es: $P($obtener par$) = \frac{3}{6} = \frac{1}{2}$
+\end{itemize}
+Es decir, al pensar en el suceso ``obtener un número par'' lo hemos descompuesto en tres sucesos más elementales. Por regla general al suceso complejo es al que llamaremos suceso (en este ejercicio: obtener par) y a los sucesos más simples les llamaremos casos (en este ejercicio: sacar 2, 4 ó 6. Cada uno de ellos es un caso)\\
+
+Ahora tendremos que hacer operaciones con estos casos y sucesos, pero no es lo mismo que hacer operaciones con cajas.
+Si yo junto dos cajas voy a obtener un número de objetos que es la suma del número de objetos de cada caja, pero ¿si junto dos sucesos el número de casos resultante es la suma de casos de cada suceso?\\
+Es fácil ver que no.\\
+Tomemos el experimento anterior, lanzar un dado, y los sucesos ``obtener un número par'' (casos: 2, 4 y 6) y ``obtener un número múltiplo de 3'' (casos: 3 y 6) Si juntamos los sucesos para obtener uno en el que nos resulte indiferente el obtener un par o un múltiplo de 3 tendremos cuatro casos (2, 3, 4 y 6) y no cinco como obtendríamos al sumar los casos de cada suceso por separado.\\
+Esto se debe a que estamos operando con objetos abstractos que no siguen las mismas reglas que los físicos. Con lo que tenemos que utilizar otras reglas que forman la parte de las matemáticas que se denomina \emph{Teoría de Conjuntos}. Pero aquí vamos a utilizar solo una pequeña parte y aplicada a la probabilidad. Es lo que se llama:
+\subsection{Álgebra de sucesos}
+En esta parte nos vamos a poner en plan abstracto, poniendo ejemplos de cada caso para tratar de entender bien los conceptos. La idea es que se entienda que esto sirve para cualquier situación en la que nos aparezcan ideas similares a la de suceso en probabilidad.\\
+
+Lo que nos tiene que quedar claro es que un suceso es un conjunto en el que están contenidos todos los casos que hacen que se produzca ese suceso.\\
+Si llamamos en el experimento de lanzar un dado definimos los sucesos:
+\begin{itemize}
+	\item $A$=``Obtener un número par''.
+	\item $B$=``Obtener un múltiplo de 3''.
+	\item $C$=``Obtener un número menor que 4''.
+	\item $D$=``Obtener un número mayor que 8''.
+\end{itemize}
+Y buscamos los casos que componen cada suceso, nos encontramos con los siguientes conjuntos:
+\begin{itemize}
+	\item $A$ = \{2, 4, 6\}
+	\item $B$=\{3, 6\}
+	\item $C$=\{1, 2, 3\}
+	\item$D=\emptyset$ (esto significa que no tiene elementos, es un cero tachado. Se lee \emph{Conjunto Vacío})
+\end{itemize}
+Vamos a por las definiciones y operaciones que podemos hacer con estos conjuntos.
+\subsubsection{Espacio muestral}
+Se denomina Espacio muestral, y se representa con la letra $E$, al suceso que contiene todos los resultados que se pueden obtener en un experimento aleatorio.\\
+Es decir, el espacio muestral son todos los casos.\\
+
+Lógicamente, $P(E) = 1$
+\subsubsection{Suceso imposible}
+Es aquel suceso para el que no hay ningún resultado posible (por ejemplo, sacar un 7 en un dado).\\
+Su probabilidad es 0.
+
+\subsubsection{Cardinal de un suceso}
+El cardinal de un conjunto es el número de elementos que contiene.\\
+
+Ejemplo: \emph{Calcular el cardinal de el suceso $A$=``Obtener un número par al lanzar un dado''}.
+\begin{center}
+El conjunto es: $A$=\{2, 4, 6\}\\
+Su cardinal: $\Card (A) = 3$
+\end{center}
+(En otros sitios $\Card(A)$ puede estar escrito de las siguientes maneras:
+\begin{itemize}
+	\item $|A|$
+	\item $\#A$
+	\item $o(A)$
+\end{itemize})
+
+\subsubsection{Intersección de sucesos}
+La intersección de sucesos contiene los casos que hacen que se verifiquen los dos sucesos a la vez. Se escribe $A \cap B$.\\
+
+Ejemplo: Escribir la intersección de los sucesos ``obtener un número par'' y ``obtener un múltiplo de tres'' al lanzar un dado.
+\begin{itemize}
+	\item El suceso ``obtener un número par'': $A=$\{2, 4, 6\}
+	\item El suceso ``obtener un múltiplo de tres'': $B=$\{3, 6\}
+	\item La intersección de ambos: $A \cap B=$\{6\} (son los elementos que están en los dos a la vez)
+\end{itemize}
+
+La intersección de sucesos tiene la propiedad asociativa. Es decir:
+\[A \cap B \cap C = (A \cap B) \cap C = A \cap (B \cap C)\]
+
+{\Large IMPORTANTE: a la hora de interpretar enunciados, la intersección es lo mismo que la conjunción \textbf{y}}
+\subsection{Unión de sucesos}
+La unión contiene los casos que se dan en cualquiera de los dos. Se escribe $A \cup B$.\\
+
+Ejemplo: Escribir la unión de los sucesos ``obtener un número par'' y ``obtener un múltiplo de tres'' al lanzar un dado.
+\begin{itemize}
+	\item El suceso ``obtener un número par'': $A=$\{2, 4, 6\}
+	\item El suceso ``obtener un múltiplo de tres'': $B=$\{3, 6\}
+	\item La unión de ambos: $A \cup B=$\{ 2, 3, 4, 6\} (son los elementos que están en cualquiera de los dos)
+\end{itemize}
+
+La unión de sucesos tiene la propiedad asociativa. Es decir:
+\[A \cup B \cup C = (A \cup B) \cap C = A \cup (B \cup C)\]
+
+{\Large IMPORTANTE: a la hora de interpretar enunciados, la unión es lo mismo que la conjunción \textbf{o}}\\
+
+Si bien hemos visto que el cardinal de unión no es lo mismo que sumar el cardinal de cada conjunto, sí que se puede obtener una expresión que nos diga cual va a ser.\\
+Si sumásemos los elementos de los dos sucesos estaríamos sumando dos veces los elementos que se repiten, con lo que lo que tenemos que hacer es quitarlo. De este razonamiento resulta:
+\[
+\Card (A \cup B ) = \Card (A) +  \Card (B) - \Card (A \cap B)
+\]
+Esta expresión es importante porque de ella salen algunas de las cosas que vamos a utilizar en probabilidad.
+
+\subsubsection{Suceso complementario o contrario}
+El suceso complementario o contrario a uno dado es aquel que cumple:
+\begin{itemize}
+	\item Su intersección con el suceso dado es nula.
+	\item Su unión con el suceso dado es el espacio muestral.
+\end{itemize}
+Es decir, si tenemos un suceso $A$ su suceso contrario (se escribe $\overline{A}$) cumple lo siguiente:
+\begin{itemize}
+	\item $A \cap \overline{A} = \emptyset$
+	\item $A \cup \overline{A} = E$, que traducido a probabilidad se convierte en $P(A) + P(\overline{A}) = 1$
+\end{itemize}
+(La fórmula del último punto la utilizaremos bastante)\\
+Es decir, el suceso contrario es aquel que contiene todos los casos que no están en el suceso original, que es lo mismo que decir que ``no se cumpla el suceso original''.\\
+
+De aquí se concluye que para calcular los casos del contrario a un suceso dado solo hay que buscar todos los que le falten al suceso dado. Por ejemplo, con el dado:
+\begin{itemize}
+	\item El suceso ``obtener un número menor que 3'': $A=$\{1, 2\}
+	\item El suceso ``No obtener un número menor que tres'': $\overline{A}=$\{3, 4, 5, 6\}
+	\item La probabilidad del contrario $P(\overline{A}) = \frac{4}{6}$ es $1-P(A) = 1 -\frac{2}{6}$. Y al revés también ocurre: $P(A) = 1 - P(\overline{A})$.
+\end{itemize}
+(En algunos textos al contrario se le llama $A'$ en lugar de $\overline{A}$)
+
+\subsubsection{Leyes de De Morgan}
+Las leyes de De Morgan son unas leyes que nos transforman expresiones en la que aparece el contrario:
+\begin{itemize}
+	\item El complementario de la intersección es la unión de los complementarios.
+	\[\overline{A \cap B}=\overline{A} \cup \overline{B}\]
+	\item El complementario de la unión es la intersección de los complementarios.
+	\[\overline{A \cup B}=\overline{A} \cap \overline{B}\]
+\end{itemize}
+
+\subsubsection{Sucesos incompatibles o disjuntos}
+Dos sucesos son incompatibles cuando no pueden suceder a la vez, como que al lanzar un dado nos salga un número par e impar a la vez.
+Se llaman también sucesos disjuntos porque su intersección es nula. Es decir, $A$ y $B$ son incompatibles sí y solo sí $A \cap B = \emptyset$\\
+
+En este caso, y únicamente en este caso, el cardinal de la unión coincide con la suma de los cardinales.
+\[
+A \cap B = \emptyset \Leftrightarrow \Card (A \cup B ) =\Card(A) + \Card(B)
+\]
+
+Con esto queremos decir que siempre que vayamos a calcular probabilidades de uniones hay que tener en cuenta si los sucesos son compatibles o incompatibles para saber si tenemos o no que restar la intersección.
+
+
+\section{Aritmética de probabilidades}
+Visto lo anterior, ya podemos obtener unas reglas para obtener probabilidades de sucesos a partir de otros sucesos en enunciados complejos a partir del Álgebra de sucesos.
+
+\subsection{Probabilidad de la unión}
+Si nos atenemos a lo visto en álgebra de sucesos y a la definición de probabilidad vamos a tener lo siguiente.\\
+Dados dos sucesos $A$ y $B$, pertenecientes a un espacio muestral $E$, sabemos que:
+\begin{itemize}
+	\item $P(A) = \frac{\Card(A)}{\Card(E)}$ Por la definición de Laplace.
+	\item $P(B) = \frac{\Card(B)}{\Card(E)}$ Por la definición de Laplace.
+	\item $\Card (A \cup B) = \Card(A) + \Card(B) - \Card (A \cup B)$ Por el cardinal de la unión.
+\end{itemize}
+De donde obtenemos al aplicar la definición de probabilidad:
+\begin{center}
+$P(A \cup B) = \frac{\Card(A \cup B)}{\Card(E)} = \frac{\Card(A) + \Card(B) - \Card (A \cup B)}{\Card(E)}$\vspace{2mm}\\
+$P(A \cup B) = \frac{\Card(A)}{\Card(E)} + \frac{\Card(B)}{\Card(E)} - \frac{\Card(A \cap B)}{\Card(E)}$\vspace{2mm}\\
+$P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+\end{center}
+
+Vamos a verlo con unos ejemplos:
+\begin{questions}
+\question\emph{Calcula la probabilidad de que al lanzar un dado obtengamos un múltiplo de dos o de tres.}
+\begin{solution}
+Aquí tenemos dos sucesos separados por una ``o'', con lo que tendremos que hacer la unión.\\
+Hagamos los cálculos preliminares:
+\begin{itemize}
+	\item $A=$Obtener múltiplo de dos =\{2, 4, 6\}
+	\item $B=$Obtener múltiplo de tres = \{3, 6\}
+	\item Comprobemos si son compatibles o incompatibles. El seis múltiplo de dos y de tres, luego $A \cap B=$\{6\}.
+\end{itemize}
+
+Y con esto ya podemos calcular lo pedido:
+\[
+P(A \cup B) = P(A) + P(B) - P(A \cap B) = \frac{3}{6} + \frac{2}{6} - \frac{1}{6} = \frac{4}{6} = \frac{2}{3}
+\]
+Con lo que la probabilidad de que sea múltiplo de dos o de tres es de $\frac{2}{3}$
+\end{solution}
+\end{questions}
+
+\subsection{Probabilidad de la intersección. Probabilidad condicionada}
+El cálculo de la probabilidad de la intersección es más complejo, ya que depende de varios factores.\\
+
+Para abordarlo vamos a recurrir a otras definiciones y conceptos:
+\subsubsection{Probabilidad condicionada}
+Llamaremos $A/B$ al suceso ``que suceda $A$ habiendo sucedido $B$''. Es decir, si al lanzar un dado consideramos los sucesos $A$=``Obtener par'' y $B$=``Obtener mayor de tres'', el suceso $A/B$=``obtener par habiendo sacado un número mayor que tres''\\
+En este caso, por el hecho de haber sucedido $B$, el espacio muestral está restringido al conjunto $B$, lo cual simplifica los cálculos:
+\begin{itemize}
+	\item El número total de casos del experimento va a ser $\Card(B)$ ya que, habiendo ocurrido $B$ es imposible que tengamos un caso que no esté en $B$.
+	\item Los casos de $A/B$ van a ser los casos de $A$ que estén en $B$. Esto es lo mismo que decir que son los casos que estén en los dos, o sea $A \cap B$. Con lo cual $\Card(A/B) = \Card(A \cap B)$
+\end{itemize}
+Con todo lo dicho podemos calcular la probabilidad:
+\[
+P (A/B) = \frac{\Card(A \cap B)}{\Card(B)}
+\]
+Si dividimos numerador y denominador entre el mismo número obtendremos una fracción equivalente. Así que vamos a dividir entre $\Card(E)$, que es el número total de casos del experimento.
+\[P(A/B) = \ddfrac{\frac{\Card(A \cap B)}{\Card(E)}}{\frac{\Card(B)}{\Card(E)}} \]
+Y por la definición de probabilidad, cada una de esas fracciones es la probabilidad de el suceso de su numerador. Entonces:
+\[P(A/B) = \frac{P(A \cap B)}{P(B)}\]
+
+El mismo razonamiento se puede hacer para el suceso $B/A$, y lo que obtendríamos es:
+\[P(B/A) = \frac{P(A \cap B)}{P(A)}\]
+
+\subsubsection{Probabilidad de la intersección. Dependencia e independencia de sucesos}
+De lo anterior, con solo despejar podemos sacar dos expresiones que nos dan la probabilidad de la intersección:
+\begin{itemize}
+	\item $P(A \cap B) = P(A/B) * P(B)$
+	\item $P(A \cap B) = P(A) * P(B/A)$
+\end{itemize}
+Con lo que ya tenemos dos expresiones con las que podemos calcular la probabilidad de la intersección.\\
+
+Es importante resaltar que el valor de $P(A/B)$ y de $P(B/A)$ va a depender bastante del contexto. Va a depender de si $A$ y $B$ son independientes o no.\\
+En el caso de que sean independientes ocurrirá que $P(A/B) = P(A)$ y $P(B/A)=P(B)$, mientras que en otro caso no será tan sencillo.\\
+Vamos a verlo con unos ejemplos:
+\begin{questions}
+\question\emph{Calcula la probabilidad de que al lanzar dos veces un dado obtengamos par en el primer lanzamiento e impar en el segundo.}
+\begin{solution}
+Evidentemente lo que tenemos en este enunciado son dos sucesos unidos por una ``y'', una intersección.\\
+Llamaremos:\
+\begin{itemize}
+	\item $A=$``Obtener par en el primer lanzamiento'', que son tres casos.
+	\item $B=$``Obtener impar en el segundo lanzamiento'', que también son tres casos.
+\end{itemize}
+
+Calcular la probabilidad de par en el primer lanzamiento e impar en el segundo es calcular la probabilidad de $A \cap B$, y por lo visto en el punto anterior:
+\[P(A \cap B) = P(A) * P(B/A)\] (se podría hacer al revés $P(A \cap B) = P(B) * P(B/A)$)\\
+De aquí conocemos $P(A) = \frac{1}{2}$, y para calcular $P(B/A)$ razonamos cual será la probabilidad de que salga impar en el segundo lanzamiento habiendo salido par en el primero. Lógicamente, lo que salga en el segundo no va a depender de lo que salga en el primero, con lo que $P(B/A) = P(B) = \frac{1}{2}$. Y de aquí:
+\[P(A \cap B) = P(A)*P(B/A) = \frac{1}{2} * \frac{1}{2} = \frac{1}{4}\]
+
+Con lo que la probabilidad de obtener par en el primer lanzamiento e impar en el segundo es $\frac{1}{2}$\\
+\textbf{En este caso los sucesos son independientes, y ocurre que $P(B/A) = P(B)$}
+\end{solution}
+\question\emph{De una bolsa con 4 bolas verdes, 3 blancas y 3 rojas, sacamos una bola la volvemos a meter y sacamos otra. Calcula la probabilidad de que sean las dos rojas.}
+\begin{solution}
+Volvemos a tener los sucesos unidos por una ``y'', roja en la primera extracción y roja en la segunda. Luego los sucesos serán:
+\begin{itemize}
+	\item $A=$``Sacar roja en la primera extracción''
+	\item $B=$``Sacar roja en la segunda extracción''
+\end{itemize}
+Calcular $P(A)$ es sencillo, no hay más que aplicar la definición:
+\[P(A)=\frac{3}{10}\]
+Para calcular $P(B/A)$ razonamos qué ha sucedido: hemos sacado una bola, que ha sido roja, y la volvemos a meter para realizar otra extracción. Como al volverla a meter estamos otra vez con las condiciones iniciales (3 rojas y 10 en total):
+\[P(B/A) = \frac{3}{10}\]
+Con lo cual la probabilidad de  roja en la primera extracción y roja en la segunda será:
+\[P(A \cap B) = P(A)*P(B/A) = \frac{3}{10} * \frac{3}{10} = \frac{9}{100}\]
+\textbf{En este caso ocurre lo mismo que en el anterior, y $P(B/A) = P(B)$}
+\end{solution}
+\question\emph{De una bolsa con 4 bolas verdes, 3 blancas y 3 rojas, sacamos dos bolas. Calcula la probabilidad de que sean las dos rojas.}
+\begin{solution}
+Volvemos a tener los sucesos unidos por una ``y'', roja en la primera extracción y roja en la segunda. Luego los sucesos serán:
+\begin{itemize}
+	\item $A=$``Sacar roja en la primera extracción''
+	\item $B=$``Sacar roja en la segunda extracción''
+\end{itemize}
+Calcular $P(A)$ es sencillo, no hay más que aplicar la definición:
+\[P(A)=\frac{3}{10}\]
+Para calcular $P(B/A)$ tenemos que tener en cuenta que ya no volvemos a meter la bola, con lo que las condiciones cambian. Si la primera ha sido roja, quedarán 9 bolas en total y solo 2 de ellas son rojas. Por esto:
+\[P(B/A) = \frac{2}{9}\]
+
+Y la probabilidad de sacar dos rojas queda:
+\[P(A \cap B) = P(A)*P(B/A) = \frac{3}{10} * \frac{2}{9} = \frac{6}{90} = \frac{1}{15}\]
+\textbf{En este caso ya no son independientes, y hemos tenido que calcular $P(B/A)$ razonando sobre lo que pasa}
+\end{solution}
+\end{questions}
+La idea que queremos transmitir con estos ejemplos es que cuando tenemos que calcular una intersección, conjunción ``y'', siempre vamos a tener que comprobar si hay dependencia o no, y realizar el cálculo correspondiente a si la hay o no.
+
+\subsubsection{Interdependencia de sucesos. Teorema de Bayes}
+Si tenemos un suceso $A$ que depende de un suceso $B$ es lógico pensar que a la inversa también vamos a tener dependencia. Pero, ¿podemos calcular la dependencia de $B$ respecto de $A$ conociendo la de $A$ respecto de $B$?\\
+Vamos a verlo.
+Del apartado anterior hemos obtenido las siguientes expresiones:
+\[
+\left\lbrace 
+\begin{array}{ccc}
+P(A \cap B) &= &P(A)*P(B/A)\\
+P(A \cap B) &= &P(B)*P(A/B)\\
+\end{array}\right. \]
+Como ambas son $P(A \cap B)$ podemos igualarlas y despejar, obteniendo:
+\[\left\lbrace 
+\def\arraystretch{2}
+\begin{array}{ccc}
+P(A/B) &= &\frac{P(A)*P(B/A)}{P(B)}\\
+P(B/A) &= &\frac{P(B)*P(A/B)}{P(A)}\\
+\end{array}\right. \]
+
+Y eso es lo que nos dice el teorema de Bayes, que si conocemos la probabilidad condicionada de un suceso y las probabilidades de cada suceso por separado podemos conocer la probabilidad condicionada inversa a través de una de esas expresiones.\\
+
+Vamos a ver algún ejemplo:
+\begin{questions}
+\question\emph{En un pueblo hay 100 jóvenes; 40 de los chicos y 35 de las chicas juegan al tenis. El
+total de chicas en el pueblo es de 45. Si elegimos una persona jugadora de tenis de esa localidad al azar ¿cuál es la probabilidad de que sea chica?}
+\begin{solution}
+Vamos a empezar definiendo los sucesos: por lo que nos dice el enunciado tenemos dos el resultado del sexo y el de que juegue o no al tenis.
+\begin{itemize}
+	\item $A=$``Sea chica''
+	\item $B=$``Juega al tenis''
+\end{itemize}
+Con los datos que nos da se tienen las siguientes probabilidades:
+\begin{itemize}
+	\item $P(A) = \frac{45}{100} = \frac{9}{20}$
+	\item $P(B) = \frac{40+35}{100} = \frac{3}{4}$
+	\item $P(B/A) = \frac{35}{45} = \frac{7}{9}$
+\end{itemize}
+Y la que nos piden es la de que sea chica sabiendo que juega al tenis: $P(A/B)$. Para obtenerla aplicamos la expresión que corresponda del teorema de Bayes:
+\[P(A/B) = \frac{P(A)*P(B/A)}{P(B)} = \ddfrac{\frac{9}{20} * \frac{7}{9}}{\frac{3}{4}} = \frac{7}{15}\]
+
+Luego la probabilidad de que al elegir al azar a una persona que juegue al tenis sea chica es de $\frac{7}{15}$.
+\end{solution}
+\end{questions}
+
+\subsection{Repetición de experimentos. Orden de resultados y simultaneidad}
+En probabilidad, como en muchas otras ciencias, es muy difícil o incluso imposible estudiar las cosas que ocurren simultáneamente. Por eso en probabilidad estudiamos los resultados simultáneos en resultados consecutivos.\\
+Es por esto que cuando nos hablan de que lanzamos dos dados, o que sacamos dos bolas, o que elegimos a dos personas (o el número que sea) siempre hablamos de primer resultado, segundo resultado, etc.\\
+
+Esto hace que a veces las cosas tengan que complicarse un poco cuando lo que esperamos en cada resultado es distinto.\\
+Pongamos un ejemplo: tenemos una bolsa con bolas de colores y sacamos dos (esto equivale a sacar una y luego otra sin meter la primera).\\
+Si nos piden la probabilidad de que las dos sean del mismo color no hay problema, seria buscar la probabilidad del color en la primera y en la segunda.\\
+Pero si nos piden dos colores la cosa cambia, porque no tiene porqué salir primero uno y luego otro.\\
+¿Qué hacemos entonces? Calcular las dos posibilidades y, como nos es indiferente el orden, las sumamos porque equivaldría a la conjunción ``o''.\\
+
+Vamos a verlo con un ejemplo:
+\begin{questions}
+\question\emph{De una bolsa con 4 bolas verdes, 3 blancas y 3 rojas, sacamos dos bolas. Calcula la probabilidad de que sean verde y blanca.}
+\begin{solution}
+Como no nos dice que sea un orden especifico tenemos que evaluar los dos, de manera que el suceso que queremos queda de la siguiente manera: ``Sacar la primera verde y la segunda blanca o sacar la primera blanca y la segunda verde''.\\
+Para ello definimos los siguientes sucesos:
+\begin{itemize}
+	\item $V_1=$``Sacar verde en la primera''.
+	\item $V_2=$``Sacar verde en la segunda''.
+	\item $V=$``Sacar verde en cualquier posición''.
+	\item $B_1=$``Sacar blanca en la primera''.
+	\item $B_2=$``Sacar blanca en la segunda''.
+	\item $B=$``Sacar blanca en cualquier posición''.
+\end{itemize}
+Con estos sucesos la probabilidad pedida queda así:
+\[P(V \cap B) = P((V_1\cap B_2) \cup (B_1 \cap V_2)) = P(V_1\cap B_2) + P(B_1 \cap V_2)\]
+(No hacemos la resta de la probabilidad de la intersección porque $V_1 \cap B_2$ es incompatible con $B_1 \cap V_2$, luego la probabilidad de la intersección vale 0)\\
+Ahora solo hay que sacar la probabilidad de cada intersección:
+\begin{itemize}
+	\item $P(V_1\cap B_2)  = P(V_1) * P(B_2 / V_1) = \frac{4}{10} * \frac{3}{9} = \frac{2}{15}$
+	\item $P(B_1 \cap V_2) = P(B_1) * P(V_2 /B_1) = \frac{3}{10} * \frac{4}{9} = \frac{2}{15}$
+\end{itemize}
+Con lo cual la probabilidad de blanca y verde: $P(B \cap V) = \frac{2}{15} + \frac{2}{15} = \frac{4}{15}$.
+\end{solution}
+\end{questions}
+\subsection{Probabilidad del contrario o complementario. Probabilidad de alguno}
+En la parte de álgebra de sucesos hemos visto la existencia de un suceso llamado contrario o complementario. Y por lo que vimos se cumple que, si $\overline{A}$ es el complementario de $A$:
+\[P(A) + P(\overline{A}) = 1\]
+Esto puede ser muy útil a la hora de calcular probabilidades que de otra manera sería complicado calcular, en concreto cuando nos hablan de calcular la probabilidad de que un suceso se produzca al menos una vez.\\
+Insistimos, es algo a tener en mente. Si vemos que un ejercicio de probabilidad se complica demasiado, quizá sea buena idea intentarlo a través del contrario. Eso sí, hay que tener claro cuál es el contrario.\\
+
+Vamos a por un ejemplo:
+\begin{questions}
+\question\emph{Calcula la probabilidad de que, al lanzar dos dados, obtengamos algún uno.}
+\begin{solution}
+Es suceso ``obtener algún uno al lanzar dos dados'' es complejo. Contiene los siguientes casos:
+\begin{itemize}
+	\item Un uno en el primero y otro número en el segundo.
+	\item Un uno en el segundo y otro número en el primero.
+	\item Un uno en los dos.
+\end{itemize}
+Para calcularlo directamente tendríamos que calcular cada uno de esos por separado y hacer la unión (unión porque nos es indiferente que sea cualquiera de ellos)\\
+Vamos a ver que pasaría si  pensamos en el contrario de ``algún uno'', que sería ``ningún uno''. Los casos serían:
+\begin{itemize}
+	\item Distinto de uno en el primero y distinto de uno en el segundo.
+\end{itemize}
+Con lo que nos queda reducido a un solo caso. Llamemos:
+\begin{itemize}
+	\item $O_1 = $``Distinto de uno en el primero''
+	\item $O_2=$``Distinto de uno en el segundo''
+\end{itemize}
+Entonces:
+\[P(O_1 \cap O_2 ) = P(O_1) * P(O_2 / O_1) = \frac{5}{6} * \frac{5}{6} = \frac{25}{36}\]
+Y la probabilidad de algún uno será $1 - \frac{25}{36} = \frac{11}{36}$
+\end{solution}
+\end{questions}
+\subsubsection{Uso de las leyes de De Morgan}
+Una manera de utilizar el contrario rápidamente es con las leyes de De Morgan. Vamos a verlo con el ejemplo anterior:
+\begin{questions}
+\question\emph{Calcula la probabilidad de que, al lanzar dos dados, obtengamos algún uno.}
+\begin{solution}
+Ya sabemos que siempre que nos aparece el cálculo de la probabilidad de ``alguno'' tenemos que utilizar el contrario.\\
+Definamos los siguientes sucesos:
+\begin{itemize}
+	\item $U_1=$``Algún uno en el primero''
+	\item $U_2=$``Algún uno en el segundo''
+\end{itemize}
+Por la probabilidad del contrario:
+\[P(U_1 \cup U_2) = 1- P(\overline{U_1 \cup U_2})\]
+Y por las leyes de De Morgan:
+\[P(U_1 \cup U_2) = 1- P(\overline{U_1} \cap \overline{U_2}) = 1 - P(\overline{U_1}) * P(\overline{U_2}/\overline{U_1})\]
+Como $\overline{U_i}=$``Ningún uno en el dado $i$'' tenemos que $P(\overline{U_i}) = \frac{5}{6}$. Luego:
+\[P(U_1 \cup U_2) = 1-\frac{5}{6} * \frac{5}{6} = \frac{11}{36}\]
+\end{solution}
+\end{questions}
+\subsection{Teorema de probabilidad total}
+Para ver de que va esto supongamos que tenemos un sistema de sucesos incompatibles de tal manera que todos juntos nos dan el espacio muestral.\\
+Es decir: tenemos un sistema de sucesos \{$A_1, A_2, A_3, ..., A_n$\}; que cumplen:
+\begin{itemize}
+	\item $A_i \cap A_j = \emptyset$ si $i \neq j$.
+	\item $A_1 \cup A_2 \cup ... \cup A_n = E$
+\end{itemize}
+A un sistema de sucesos con esas características se le llama \emph{\textbf{Sistema Completo de Sucesos}}.\\
+
+Con esto ya podemos ir a por el \emph{\textbf{teorema de probabilidad total}}:\\
+Tenemos un sistema completo de sucesos \{$A_1, A_2, A_3, ..., A_n$\} y un suceso $B$ del que conocemos $P(B/A_i)$ para cualquier $i$, la probabilidad de $B$ viene dada por:
+\[P(B) = P(B/A_1) * P(A_1) + P(B/A_2) *P(A_2) + ... + P(B/A_n) *P(A_n) = \sum_{i=1}^n P(B/A_i) * P(A_i)\]\\
+
+A simple vista parece un poco duro, así que vamos a verlo con algunos ejemplos:\\
+\begin{questions}
+\question\emph{De los 30 asistentes a una fiesta se sabe que 10 son rubios, 5 castaños y 15 morenos. El
+90\% de los rubios tienen los ojos azules, el 30\% de los castaños también, y lo mismo ocurre con el 40\%
+de los morenos. Si elegimos una persona de la fiesta al azar, calcula la probabilidad de que tenga los ojos azules.}
+\begin{solution}
+Aquí nos dan dos características distintas: el color de pelo, y el tener o no los ojos azules. Lo convertimos en sucesos:
+\begin{itemize}
+	\item $A_1=$``Elegir una persona rubia''.
+	\item $A_2=$``Elegir a una persona castaña''.
+	\item $A_3=$``Elegir una persona morena''.
+	\item $B=$``Elegir una persona de ojos azules.
+\end{itemize}
+Aquí vemos que los tres sucesos para el color del pelo ($A_1$, $A_2$ y $A_3$) forman un sistema completo, ya que entre los tres colores de pelo suman el total de asistentes (30) y además son incompatibles (no se puede tener dos colores de pelo a la vez. Salvo tintes, pero no estamos hablando de eso)\\
+Aparte nos dan la probabilidad de tener los ojos azules en cada uno de los casos, con lo que estamos en situación de aplicar el teorema de probabilidad total.\\
+Vamos a recopilar todo:
+\begin{itemize}
+	\item Para los colores de pelo (resultado ya simplificado):
+	\begin{itemize}
+		\item $P(A_1) = \frac{1}{3}$
+		\item $P(A_2) = \frac{1}{6}$
+		\item $P(A_3)  = \frac{1}{2}$
+	\end{itemize}
+	\item Las probabilidades de tener los ojos azules en cada caso:
+	\begin{itemize}
+		\item $P(B/A_1) = 0.9$
+		\item $P(B/A_2) = 0.3$
+		\item $P(B/A_3) = 0.4$
+	\end{itemize}
+\end{itemize}
+Y con todo esto aplicamos la probabilidad total:
+\[P(B) = P(B/A_1) * P (A_1) + P(B/A_2) * P (A_2) + P(B/A_3) * P (A_3) = \frac{1}{3} * 0.9 + \frac{1}{6} * 0.3 + \frac{1}{2} * 0.4 = 0.55\]
+\end{solution}
+\end{questions}
+
+\section{Ejercicios resueltos}
+\begin{questions}
+\question\emph{Dos personas eligen al azar, cada una de ellas, un número del 0 al 9. ¿Cuál es la
+probabilidad de que las dos personas no piensen el mismo número?}
+\begin{solution}
+Como se ha dicho en la teoría no podemos estudiar a las dos personas a la vez, con lo que vamos a pensar en ellas de manera secuencial.\\
+La primera persona piensa un número que puede ser cualquiera. Aquí no hay que realizar ningún cálculo puesto que no tenemos que calcular la probabilidad de que elija ningún número en concreto.\\
+La segunda persona piensa otro número, que tiene que ser igual que el que ha pensado la primera. Aquí sí que hay que hacer cálculos, que coincida con el que ha pensado la primera.\\
+Con esto nos queda:
+\begin{center}
+$P($``Las dos piensen el mismo número''$)=$\\$= P($``La segunda piense el mismo número que la primera''$) = \frac{1}{10}$
+\end{center}
+Luego la probabilidad de que ambas piensen el mismo número es $\frac{1}{10}$
+\end{solution}
+
+\question\emph{En unas oposiciones, el temario consta de 85 temas. Se eligen tres temas al azar de entre los 85.
+Si un opositor sabe 35 de los 85 temas, ¿cuál es la probabilidad de que sepa al menos uno de los tres temas?}
+\begin{solution}
+En este caso nos piden que sepa ``alguno'', y este tipo de ejercicios se hacen por el contrario que es ``ninguno''.\\
+Decir que no sabe ningún tema de los que salen es lo mismo que decir ``no sabe el primero y no sabe el segundo y no sabe el tercero''.\\
+Definimos los sucesos como $N_i=$``No sabe el tema que ha salido en la posición $i$'', con lo que el suceso ``No saber ningún tema'' queda:
+\begin{center}
+$P($``No saber ningún tema''$)=P(N_1 \cap N_2 \cap N_3)$
+\end{center}
+Aquí tenemos dos intersecciones, que no podemos hacer a la vez (igual que no podemos hacer a la vez $2*3*4$, sino que hacemos primero una multiplicación y el resultado por la que queda. Aquí vamos a hacer lo mismo.
+\[P(N_1 \cap N_2 \cap N_3) = P((N_1 \cap N_2) \cap N_3) = P(N_1 \cap N_2)*P(N_3/(N_1 \cap N_2)) = \]
+\[=P(N_1) * P(N_2 /N_1) * P (N_3 /(N_1 \cap N_2))\]
+Calculemos cada una de las probabilidades que aparecen:
+\begin{itemize}
+	\item $P(N_1) = \frac{50}{85} = \frac{10}{17}$ No sabe 50 de los 85.
+	\item $P(N_2 / N_1)  = \frac{49}{84} = \frac{7}{12}$ Quedan 49 que no sabe y 84 en total.
+	\item  $P (N_3 /(N_1 \cap N_2)) = \frac{48}{83}$ Solo quedan 48 que no sabe y 83 en total.
+\end{itemize}
+Con lo que la probabilidad de que no sepa ninguno:
+\begin{center}
+$P($``No sabe ninguno''$) = \frac{10}{17} * \frac{7}{12} * \frac{48}{83} = \frac{280}{1411}$
+\end{center}
+Con lo que la probabilidad de saberse alguno:
+\begin{center}
+$P($``Saberse alguno''$)=1 - \frac{280}{1411} = \frac{1131}{1411}$
+\end{center}
+\end{solution}
+
+
+\question\emph{Extraemos dos cartas de una baraja española (de cuarenta cartas). Calcula la
+probabilidad de que sean:
+\begin{multicols}{2}
+\begin{parts}
+	\part Las dos de oros.
+	\part La primera de copas y la segunda de oros
+	\part Una de copas y otra de oros.
+	\part Al menos una de oros
+\end{parts}
+\end{multicols}
+}
+\begin{solution}
+Antes de empezar la resolución del ejercicio vamos a recordar cómo es una baraja española de 40 cartas.
+\begin{itemize}
+	\item Hay cuatro palos: oros, copas, espadas y bastos. Cada palo tiene diez cartas.
+	\item En cada palo están los números del 1 (as) al 7 y las tres figuras (sota, caballo y rey)
+	\item De esta manera hay cuatro cartas de cada número o figura, una de cada palo.
+\end{itemize}
+\begin{parts}
+\part Este suceso se descompone en la intersección de dos:
+\begin{itemize}
+	\item $O_1=$``Oro en la primera' '
+	\item $O_2=$``Oro en la segunda' '
+\end{itemize}
+Entonces:
+\[P(O_1 \cap O_2) = P(O_1) * P(O_2 / O_1)\]
+\begin{itemize}
+	\item $P(O_1) = \frac{10}{40} = \frac{1}{4}$ (Hay 10 oros y 40 cartas)
+	\item $P(O_2 / O_1) = \frac{9}{39} = \frac{3}{13}$ (Quedan 9 oros y 39 cartas)
+\end{itemize}
+Entonces:
+\[P(O_1 \cap O_2) = \frac{1}{4} * \frac{3}{13} = \frac{3}{52}\]
+
+\part En este caso los sucesos son:
+\begin{itemize}
+	\item $C_1=$``Primera de copas''
+	\item $O_2=$``Segunda de oros''
+\end{itemize}
+\[P(C_1 \cap O_2) = P(C_1) * P(O_2 / C_1)\]
+\begin{itemize}
+	\item $P(C_1) = \frac{1}{4}$
+	\item $P(O_2 / C_1) = \frac{10}{39}$ (Siguen quedando 10 oros pero solo 39 cartas)
+\end{itemize}
+Entonces:
+\[P(C_1 \cap O_2) = \frac{1}{4} * \frac{10}{39} = \frac{5}{78}\]
+
+\part Este caso es el mismo que el anterior pero no nos importa el orden en el que salgan. Reutilizamos la definición de sucesos anterior, teniendo en cuenta que el subíndice indica la posición en la que sale la carta. De esta manera queda:
+\[P((O_1 \cap C_2) \cup (C_1\cap O_2) ) = P((O_1 \cap C_2) + P(C_1\cap O_2)\]
+No hay que restar la intersección porque son sucesos incompatibles. Y reutilizando el resultado del punto anterior:
+\[P((O_1 \cap C_2) \cup (C_1\cap O_2) ) = \frac{5}{78} + \frac{5}{78} = \frac{5}{39}\]
+
+\part Aparece ``al menos'', que es lo mismo que ``alguna'', con lo que lo mejor es utilizar el contrario:
+\begin{itemize}
+	\item $N_1=$``No sea oro la primera' ' 
+	\item $N_2=$``No sea otro la segunda''
+\end{itemize}
+Luego la probabilidad de ningún oro es:
+\[P(N_1 \cap N_2 ) = P(N_1) * P(N_2 / N_1) = \frac{30}{40}*\frac{29}{39} = \frac{29}{52}\]
+Y, por el contrario, la probabilidad de algún oro es:
+\begin{center}
+$P($``Algún oro''$) = 1- \frac{29}{52} = \frac{23}{52}$
+\end{center}
+\end{parts}
+\end{solution}
+
+\question\emph{Tenemos dos urnas: la primera tiene 3 bolas rojas, 3 blancas y 4 negras; la segunda tiene
+4 bolas rojas, 3 blancas y 1 negra. Elegimos una urna al azar y extraemos una bola.
+\begin{parts}
+	\part ¿Cuál es la probabilidad de que la bola extraída sea blanca?
+	\part Sabiendo que la bola extraída fue blanca, ¿cuál es la probabilidad de que fuera de la primera urna?
+\end{parts}
+}
+\begin{solution}
+\begin{parts}
+\part Nos dicen que elegimos al azar la urna y de ahí sacamos la bola, podemos enunciar el suceso como ``Sacar una blanca de la primera urna o sacar una blanca de la segunda urna''. Cada una de las partes se puede enunciar como ``Elegir la urna $i$ y sacar blanca''.\\ Con esto vamos a definir los sucesos:
+\begin{itemize}
+	\item $U_i=$``Elegir la urna $i$''
+	\item $B=$``Sacar una bola blanca''
+\end{itemize}
+$U_1$ y $U_2$ forman un sistema completo de sucesos, así que podemos utilizar probabilidad total.
+Con lo que la probabilidad que tenemos que calcular es:
+\[P(B) = P((U_1 \cap B) \cup (U_2 \cap B)) = P(U_1 \cap B) + P(U_2 \cap B) = P(U_1) * P(B/U_1) + P(U_2) * P(B/U_2)\]
+(las dos igualdades intermedias son otra forma de razonarlo. Está puesto para que se vea que conducen a lo mismo, pero lo normal es no ponerlo porque para eso está el teorema)
+
+
+Calculamos cada probabilidad por separado:
+\begin{itemize}
+	\item $P(U_1) = P(U_2) = \frac{1}{2}$ Porque no nos dicen que haya ninguna preferencia en la elección de cada urna.
+	\item $P(B/U_1) = \frac{3}{10}$
+	\item $(P(B/U2) = \frac{3}{8}$
+\end{itemize}
+Luego:
+\[P(B) = \frac{1}{2} * \frac{3}{10} + \frac{1}{2} * \frac{3}{8} = \frac{27}{80}\]
+La probabilidad de sacar una bola blanca con las condiciones dadas es $\frac{27}{80}$
+
+\part En este caso nos pide $P(U_1 /B)$. Como conocemos $P(U_1)$, $P(B)$ y $P(B/U_1)$ solo tenemos que aplicar el teorema de Bayes:
+\[P(U_1 /B) = \frac{P(B/U_1) * P(U_1)}{P(B)} = \ddfrac{\frac{3}{10}*\frac{1}{2}}{\frac{27}{80}} = \frac{4}{9}\]
+La probabilidad de que siendo blanca haya salido de la primera es $\frac{4}{9}$
+\end{parts}
+\end{solution}
+
+\question\emph{Tenemos tres urnas con las siguientes composiciones:
+\begin{enumerate}
+\item Urna I: Cinco bolas numeradas del 1 al 5.
+\item Urna II: 5 bolas blancas y 10 negras.
+\item Urna III: 6 bolas blancas y 8 negras.
+\end{enumerate}
+Extraemos una bola de la urna I. Si el número obtenido es par, sacamos otra bola de la urna II y si es
+impar, la sacamos de la urna III.
+\begin{parts}
+	\part ¿Cuál es la probabilidad de sacar una bola blanca?
+	\part Sabiendo que ha salido blanca, ¿cuál es la probabilidad de que fuera de la urna II?
+\end{parts}
+}
+\begin{solution}
+\begin{parts}
+\part Para sacar una bola blanca se tiene que dar el siguiente suceso ``Sacar par de la primera urna y sacar blanca de la segunda, o sacar impar de la primera y blanca de la tercera''.\\
+Llamemos a los sucesos:
+\begin{itemize}
+	\item $I =$``Sacar impar en la primera urna''
+	\item $\overline{I}=$``Sacar par en la primera urna''
+	\item $B=$``Sacar blanca''
+\end{itemize}
+Como $\overline{I}$ e $I$ forman un sistema completo de sucesos, aplicamos probabilidad total:
+\[P(B) = P(\overline{I}) * P(B / \overline{I}) + P(I) * P(B/I)\]
+De nuevo, no tenemos que restar la intersección porque es incompatible el sacar par e impar a la vez de la primera urna.\\
+
+Calculamos las probabilidades:
+\begin{itemize}
+	\item $P(I) = \frac{3}{5}$
+	\item $P(\overline{I}) = \frac{2}{5}$
+	\item $P(B / \overline{I}) = \frac{5}{15} = \frac{1}{3}$ Porque estamos en la segunda urna.
+	\item $P(B/I) = \frac{6}{14} = \frac{3}{7}$ Porque estamos en la tercera urna.
+\end{itemize}
+Con esto la expresión queda:
+\[P(B) = \frac{2}{5} * \frac{1}{3} + \frac{3}{5}* \frac{3}{7} = \frac{41}{105}\]
+
+\part Tal y como lo estamos trabajando el suceso que nos pide es ``que haya salido par si la bola es blanca'', y para calcular esto aplicamos el teorema de Bayes:
+\[P(\overline{I}/B) = \frac{P(B/\overline{I})* P(\overline{I})}{P(B)} = \ddfrac{\frac{1}{3} * \frac{2}{5}}{\frac{41}{105}} =\frac{14}{41}\]
+\end{parts}
+\end{solution}
+
+
+
+\question\emph{En un club deportivo, el 52\% de los socios son hombres. Entre los socios, el 35\% de los
+hombres practica la natación, así como el 60\% de las mujeres. Si elegimos un socio al azar:
+\begin{parts}
+	\part ¿Cuál es la probabilidad de que practique la natación?
+	\part Sabiendo que practica la natación, ¿cuál es la probabilidad de que sea una mujer?
+\end{parts}
+}
+\begin{solution}
+\begin{parts}
+\part Nos encontramos con el mismo caso que los dos anteriores, tenemos que calcular la probabilidad de un suceso que depende de otros de los que sabemos como depende y que forman un sistema completo. En este caso tenemos que calcular la probabilidad de que nade conociendo como depende del sexo, y el sexo forma un sistema completo.\\
+Definimos:
+\begin{itemize}
+	\item $M=$``Ser mujer''
+	\item $H=$``Ser hombre''
+	\item $N=$``Practicar natación''
+\end{itemize}
+Con esto y el teorema de probabilidad total queda:
+\[P(N) = P(M)*P(N/M) + P(H)*P(N/H)\]
+Y las probabilidades por separado son:
+\begin{itemize}
+	\item $P(M) = 0.48$
+	\item $(P(H) = 0.52$
+	\item $P(N/M) = 0.6$
+	\item $P(N/H) = 0.35$
+\end{itemize}
+Con lo que:
+\[P(N) = 0.48*0.6+0.52*0.35 = 0.47\]
+La probabilidad de que al extraer una persona al azar practique natación es del 47\%.
+\part Teniendo todo lo que tenemos solo hay que aplicar Bayes:
+\[P(M/N) = \frac{P(N/M)*P(M)}{P(N)} = \frac{0.6*0.48}{0.47} \simeq 0.613\]
+\end{parts}
+\end{solution}
+\question\emph{En una ciudad, la probabilidad de que un habitante censado vote al partido $A$ es de $0.4$, la de que vote al partido $B$ es $0.35$ y la de que vote a $C$ es de $0.25$. Por otra parte, las probabilidades de que que un votante de cada partido lea diariamente algún periódico son de $0.4$, $0.4$ y $0.6$ respectivamente. Si elegimos al azar a una persona de dicha ciudad:
+\begin{parts}
+\item Calcúlese la probabilidad de que lea algún periódico.
+\item Si la persona elegida lee algún periódico, ¿cuál es la probabilidad de que vote a $B$?
+\end{parts}
+} 
+\begin{solution}
+\begin{parts}
+\part Tenemos que calcular la probabilidad de que lea el periódico y esta depende del partido al que vote, formando estos últimos un sistema completo de sucesos.\\
+Definimos:
+\begin{itemize}
+	\item $A=$``Votar al partido $A$''
+	\item $B=$``Votar al partido $B$''
+	\item $C=$``Votar al partido $C$''
+	\item $L=$``Leer el periódico''
+\end{itemize}
+Con el teorema de probabilidad total:
+\[P(L) = P(A) * P(L/A) + P(B)*P(L/B) + P(C)*P(B/C) = 0.4*0.4+0.35*0.4+0.25*0.6 = 0.45\]
+
+\part Y para el segundo apartado aplicamos Bayes:
+\[P(B/L) = \frac{P(L/B)*P(B)}{P(L)} = \frac{0.4*0.35}{0.45}\simeq 0.311\]
+\end{parts}
+\end{solution}
+
+\question\emph{Una empresa fabrica tres modelos de móviles: $A$, $M$ y $N$. El 20\% de los móviles que fabrica son del modelo $A$, el 40\% del modelo $M$ y el resto del modelo $N$. Se decide instalar un software oculto que permita recopilar datos de los usuarios de estos móviles, pero no se instala en todos. Este spyware se instala en el 15\% de los móviles del modelo $A$, en el 10\% del modelo $M$  y en el 12\% del modelo $N$. Se pide:
+\begin{parts}
+	\part Calcular la probabilidad de comprar un móvil con spyware.
+	\part Calcular la probabilidad de que un móvil con spyware sea del modelo $A$.
+\end{parts}
+}
+\begin{solution}
+\begin{parts}
+\part Tiene todas las características para aplicar probabilidad total.\\
+Definimos:
+\begin{itemize}
+	\item $A=$``Comprar el modelo $A$''
+	\item $M=$``Comprar el modelo $M$''
+	\item $N=$``Comprar el modelo $N$''
+	\item $S=$``Tener spyware''
+\end{itemize}
+Y queda:
+\[P(S) = P(A)*P(S/A) + P(M)*P(S/M) + P(N)*P(S/M) = 0.2*0.15+0.4*0.1+0.4*0.12 = 0.118\]
+
+\part Para este apartado aplicamos Bayes:
+\[P(A/S) = \frac{P(S/A)*P(A)}{P(S)} = \frac{0.15*0.2}{0.118} \simeq 0.254\]
+\end{parts}
+\end{solution}
+\question\emph{Tres máquinas (A, B y C) producen una determinada pieza. La máquina A las elabora con una longitud que tiene sigue una distribución normal de media $\mu = 165$\,mm y $\sigma = 5$\,mm. La longitud que sale de la máquina B también sigue una distribución normal con $\mu = 175$\,mm y $\sigma = 5$\,mm. Y para la máquina C lo mismo con $\mu = 170$\,mm y $\sigma = 5$\,mm.\\
+El 50\% de la producción sale de la máquina A, el 30\% la B y el resto la C. Calcula la probabilidad de que al elegir una pieza al azar tenga más de 173\,mm}
+\begin{solution}
+La situación es la misma que en los anteriores, tenemos un suceso (la longitud) que depende de otros tres (las máquinas) y estos tres sucesos forman un sistema completo.\\
+La diferencia con los anteriores es que para calcular las probabilidades dependientes vamos a tener que utilizar la normal.\\
+Definimos los sucesos:
+\begin{itemize}
+	\item $A=$``Sale de la máquina A''
+	\item $B=$``Sale de la máquina B'
+	\item $C=$``Sale de la máquina C''
+	\item $L=$``Mide más de 173\,mm''
+\end{itemize}
+Y por probabilidad total:
+\[P(L) = P(A) * P(L/A) + P(B) *P(L/B) + P(C) *P(L/C)\]
+Y aquí está la diferencia, para calcular $P(L/A)$, $P(L/B)$ y $P(L/C)$ tenemos que usar la normal.
+\begin{itemize}
+	\item $P(L/A)$: tenemos que utilizar una normal $N_A (165, 5)$ y obtener $P(X_A > 173)$.\vspace{2mm}\\
+	Para ello tenemos que tipificar $z=\frac{173 - 165}{5} = 1,6$, buscamos en la tabla y obtenemos que $P(X_A \leq 173) = 0.9452$, con lo que:
+	\[P(L/A) = P(X_A > 173) = 1 - P(X_A \leq 173 )= 1 - 0.9452 = 0.0548\]
+	\item $P(L/B)$: lo mismo, solo que $N_B (175, 5)$.\vspace{2mm}\\
+	$z = \frac{173-175}{5} = -0.4$. Buscamos $P(z > -0.4 ) = P(z \leq 0.4) = 0.6554$. Entonces:
+	\[P(L/B) = P(X_B > 173) = 0.6554\]
+	\item $P(L/C)$: aquí la normal es $N_C(170, 5)$. Y tipificando, buscando en la tabla y corrigiendo el sentido de la desigualdad:
+	\[P(L/C) = P(X_C > 173) = 0.2742\]
+\end{itemize}
+Con todo esto ya podemos sustituir en la expresión que teníamos:
+\[P(L) = 0.5*0.0548+0.3*0.6554+0.2*0.2742 \simeq 0.279\]
+\end{solution}
+\end{questions}
+\end{document}
+
+
+
+

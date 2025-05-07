@@ -1,0 +1,342 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+%para la última página
+\usepackage{lastpage}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de potencias y raíces}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\begin{document}
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+
+
+
+
+\section{Potencias}
+\subsection{Definición y consecuencias.}
+Empecemos con la definición de potencia que permite entender mejor algunas de las cosas que vamos a ver en estos apuntes.\\
+
+Sabemos que una potencia se escribe de la siguiente manera:
+\begin{Huge}
+\[\boldsymbol{a^n}\]
+\end{Huge}
+Donde $\boldsymbol{a}$ es la base y $\boldsymbol{n}$ es el exponente.\\
+Entonces \textbf{la potencia consiste en multiplicar 1 por la base tantas veces como indica el exponente.}\\
+
+Es decir:
+\[5^4 = 1*5*5*5*5\]
+
+Como el 1 no hace nada al multiplicar no se pone nunca. Pero está ahí, por eso cuando escribimos:
+\[17^0 = 1\]
+es porque estamos multiplicando 1 por 17 cero veces, es decir no multiplicamos 1 por nada y se queda como está.\\
+
+Además esta definición nos permite entender como funcionan las potencias con exponentes no naturales.
+
+\subsubsection{Exponentes negativos.}
+¿Qué es lo que pasa cuando tenemos $a^{-n}$?.\\
+Atendiendo a la definición el exponente dice las veces que tenemos que multiplicar 1 por la base. \textbf{Al ser el exponente negativo lo que tendremos que hacer será "desmultiplicar", es decir, dividir 1 entre la base el número de veces que indica el exponente}; con lo cual:
+\begin{Large}
+\[\boldsymbol{a^{-n} = \frac{1}{a^n}}\]
+\end{Large}
+
+
+De todas maneras veremos esto en detalle más adelante y lo deduciremos también de otra manera.
+
+\subsubsection{Exponentes fraccionarios.}
+Ahora vamos a ver lo que pasa cuando tenemos $a^\frac{1}{n}$, para ello vamos a tomar el ejemplo de $3^\frac{1}{2}$ y alguna más.\\
+
+En el caso de $3^\frac{1}{2}$, y atendiendo la la definición, lo que tenemos que hacer es multiplicar "media vez" por 3. O lo que es lo mismo, para multiplicar por 3 una vez tendremos que hacerlo dos veces por $3^\frac{1}{2}$:
+\[3 = 1*3^\frac{1}{2}*3^\frac{1}{2}\]
+Con lo que $3^\frac{1}{2}$ es un número que multiplicado por si mismo da 3, con lo que:
+\[3^\frac{1}{2} = \sqrt{3}\]
+
+Si hacemos lo mismo con $3^\frac{1}{5}$ llegaremos a la conclusión de que:
+\[3^\frac{1}{5} = \sqrt[5]{3}\]
+Con lo que podemos extrapolar que:
+\begin{Large}
+\[\boldsymbol{a^\frac{1}{n} = \sqrt[n]{a}}\]
+\end{Large}
+
+\subsection{Propiedades de las potencias}
+\begin{itemize}
+	\item \textbf{Potencias de la misma base}
+	\begin{itemize}
+	
+		\item \textbf{Producto de potencias de la misma base}: se suman los exponentes y se deja la misma base.\\
+		\[a^n * a^m = a^{n+m}\]
+		\item \textbf{Cociente de potencias de la misma base}: al exponente del dividendo se le resta el del divisor y se deja la misma base.\\
+	\[\frac{a^n}{a^m} = a^{n-m}\]
+	\end{itemize}
+	\item \textbf{Potencias del mismo exponente}: 
+	\begin{itemize}	
+		\item \textbf{Potencia de un producto}: es igual al producto de las potencias de los factores.\\
+		\[(a*b)^n = a^n * b^n\]
+		\item \textbf{Potencia de un cociente}: es igual al cociente de las potencias.\\
+		\[\left(\frac{a}{b} \right)^n = \frac{a^n}{b^n}\]
+	 \end{itemize}
+	 \item \textbf{Potencia de una potencia}: se deja la misma base y se multiplican los exponentes.\\
+	\[\left(a^m \right)^n = a^{m*n}\]
+\end{itemize}
+Es importante tener en cuenta que \textbf{todas las propiedades son reversibles} y el utilizarlas en un sentido o en otro dependerá de la situación.\\
+Es decir, a veces nos interesará hacer $2^5 * 3^5 = 6^5$, y otras veces nos interesará hacer $10^9  = 2^9 * 5^9$.\\
+
+De las propiedades anteriores se sacan dos conclusiones importantes:
+\begin{itemize}
+	\item \textbf{Potencia de exponente 0}: $a^0 = 1$ independiente del valor de a (excepto si $a=0$)
+	\item \textbf{Potencia de exponente negativo}: $a^{-n} = \frac{1}{a^n}$, que mezclándola con la potencia de un cociente se puede escribir así:
+	$\left(\frac{a}{b} \right)^{-n} = \left(\frac{b}{a} \right)^{n}$.
+\end{itemize}
+Consecuencias que, como hemos visto, también se pueden sacar de la definición de potencia.
+\subsection{Potencias de base negativa}
+El resultado de una potencia de base positiva siempre es positivo, ya que al multiplicar positivos solo se puede obtener un resultado positivo.\\
+
+Pero en el caso de que la base sea negativa la cosa cambia. Sabemos que si multiplicamos dos negativos el resultado es positivo, pero si multiplicamos tres negativos el resultado vuelve a ser negativo.\\
+De lo anterior se saca la siguiente conclusión:
+\[(-a)^n = \left\lbrace
+\begin{array}{rl}
+a^n & \mathrm{si\ }n\ \mathrm{es\ par}\\
+-a^n & \mathrm{si\ }n\ \mathrm{es\ impar}
+\end{array} 
+\right.
+\]
+IMPORTANTE: $\boldsymbol{-a^n = -\left(a^n \right)}$
+\subsection{Ejercicios de simplificación de potencias}
+Para realizar estos ejercicios es necesario saberse de memoria todas las propiedades anteriores y dar los siguientes pasos:
+\begin{enumerate}
+	\item Calcular el signo del resultado en caso de que haya bases negativas. Para esto calculamos el signo de cada potencia de base negativa y, utilizando las reglas de signos para la multiplicación y la división, obtenemos el signo del resultado.
+	\item Operamos las potencias que tengan la misma base aplicando las propiedades correspondientes.
+	\item Si es necesario, factorizamos las bases que son números compuestos y aplicamos las propiedades de la potencia del producto y el cociente, y la potencia de una potencia para dejar bases que sean números primos y repetimos el paso anterior.
+	\item Para finalizar, si es necesario, aplicamos la propiedad del exponente negativo o del exponente 0.
+\end{enumerate}
+
+\textbf{Ejemplo}: simplificar $\frac{3^5 * (-2)^3 *6^4}{-2^4 * (-12)^3 *3^3}$
+\begin{enumerate}
+	\item Calculamos el signo. En el numerador hay un negativo, $(-2)^3$ y en el denominador hay dos negativos, $-2^4$ y $(-12)^3$, con lo que el numerador es negativo y el denominador positivo. Como negativo entre positivo es negativo tenemos que:
+	\[\frac{3^5 * (-2)^3 *6^4}{-2^4 * (-12)^3 *3^3} = - \frac{3^5 * 2^3 *6^4}{2^4 * 12^3 *3^3}\]
+	\item Operamos las potencias de la misma base:
+	\[- \frac{3^5 * 2^3 *6^4}{2^4 * 12^3 *3^3} = - \frac{3^2 * 2^{-1} * 6^4}{12^3}\]
+	\item Factorizamos las bases compuestas y aplicamos las propiedades de la potencia del producto y de la potencia de una potencia:
+	\[- \frac{3^2 * 2^{-1} * 6^4}{12^3} = - \frac{3^2 * 2^{-1} * (2*3)^4}{\left(2^2 * 3 \right)^3} =- \frac{3^2 * 2^{-1} * 2^4 * 3^4}{2^6 * 3^3}\]
+	\item Volvemos a aplicar las propiedades de las potencias de la misma base:  
+	\[- \frac{3^2 * 2^{-1} * 2^4 * 3^4}{2^6 * 3^3} = - 2^{-3} * 3^3\]
+	\item Ahora aplicamos la propiedad del exponente negativo:
+	\[- 2^{-3} * 3^3 = -\frac{3^3}{2^3}\]
+	\item Y si queremos dejarlo más resumido podemos aplicar la potencia de un cociente en sentido contrario:
+	\[-\frac{3^3}{2^3} = -\left(\frac{3}{2} \right)^3\]
+\end{enumerate}
+
+Si tenemos fracciones en las que aparecen los mismos números es mucho más fácil considerar las fracciones como bases y aplicar la propiedad del exponente negativo para luego aplicar las propiedades de las potencias de la misma base.\\
+
+\textbf{Ejemplo}: simplificar $\ddfrac{\left(\frac{4}{5} \right)^3 * \left( \frac{5}{4} \right)^4}{\left(\frac{5}{4} \right)^3}$
+\begin{enumerate}
+	\item Damos la vuelta a $\frac{4}{5}$, porque es de la que menos hay, utilizando la propiedad del exponente negativo:
+	\[\ddfrac{\left(\frac{4}{5} \right)^3 * \left( \frac{5}{4} \right)^4}{\left(\frac{5}{4} \right)^3} = \ddfrac{\left(\frac{5}{4} \right)^{-3} * \left( \frac{5}{4} \right)^4}{\left(\frac{5}{4} \right)^3}\]
+	\item Aplicamos las propiedades de las potencias de la misma base, que en este caso es $\frac{5}{4}$:
+	\[\ddfrac{\left(\frac{5}{4} \right)^{-3} * \left( \frac{5}{4} \right)^4}{\left(\frac{5}{4} \right)^3} = \left( \frac{5}{4} \right)^{-2}\]
+	\item Y si no nos gustan los exponentes negativos, la damos la vuelta:
+	\[\left( \frac{5}{4} \right)^{-2} = \left( \frac{4}{5} \right)^2\]
+\end{enumerate}
+
+\section{Raíces}
+La raíz es una operación contraria a la potencia, de manera que la raíz cuadrada $\left(\sqrt{\ }\right)$ nos dice el número que elevado al cuadrado da un resultado dado.\\
+Esto se extiende a cualquier potencia, resultando que:
+\[\sqrt[n]{a} = b \Leftrightarrow b^n = a\]
+(NOTA: a toda la raíz se la llama \textbf{radical}, a lo de dentro se le llama \textbf{radicando} y al numerito de la raíz se le llama \textbf{índice})
+Al hablar de operaciones contrarias viene a la mente la relación entre las operaciones y las transformaciones que realizan en los números:
+\begin{itemize}
+	\item La contraria de la suma es la resta, que también se puede entender como la suma del opuesto. Es decir, restar $a$ es lo mismo que sumar $-a$.
+	\item Lo mismo ocurre con la división, que dividir entre $a$ es lo mismo que multiplicar por $\frac{1}{a}$
+\end{itemize}
+Teniendo en cuenta lo anterior, que la resta se puede hacer sumando y que la división se puede hacer multiplicando, se puede pensar que la raíz se podría hacer con una potencia. Y teniendo en cuenta las propiedades de las potencias se llega a la conclusión de que:
+\Large
+\[\sqrt[n]{a} = a^{\frac{1}{n}}\]
+\normalsize
+Con lo cual, al poder escribir una raíz como una potencia, podemos utilizar las propiedades de las potencias y utilizarlas para operar con las raíces. La única diferencia está en los números con los que tenemos que operar, que con las potencias son enteros mientras que con las raíces son fracciones. Ya hemos visto que esto también es una consecuencia de la definición de potencia.\\
+A partir de aquí es fácil llegar a dos conclusiones inmediatas:
+\begin{itemize}
+	\item $\sqrt[n]{a*b} = \sqrt[n]{a} * \sqrt[n]{b}$
+	\item $\sqrt[n]{a^m} = \left(\sqrt[n]{a}\right)^m = a^{\frac{m}{n}}$
+\end{itemize}
+
+El resto son un poco más complejas por tener que hacer denominador común. Así que vamos a clasificarlas por tipo de ejercicio.
+\subsection{Simplificación de raíces} \label{simplirad}
+Cuando tenemos la raíz de una potencia, o la potencia de una raíz, podemos escribirla como una potencia de exponente fraccionario. Y si es una fracción simplificable, la simplificamos.\\
+
+\textbf{Ejemplo}: simplificar $\sqrt[9]{5^{12}}$\\
+\[\sqrt[9]{5^{12}} = 5^{\frac{12}{9}} = 5^{\frac{4}{3}} = \sqrt[3]{5^4}\]
+\subsection{Poner bajo índice común. Meter factores}
+En el enunciado del ejercicio puede aparecer cualquiera de los términos del título.\\
+Lo que vamos a aplicar aquí es el denominador común de fracciones y las propiedades de las potencias con el mismo exponente y de potencia de una potencia.\\
+
+\textbf{Ejemplo}: mete factores en $3 * \sqrt[3]{2}$\\
+\[3* \sqrt[3]{2} = 3 * 2^{\frac{1}{3}} = 3^{\frac{3}{3}} * 2^\frac{1}{3} = \left(3^3 * 2 \right)^\frac{1}{3} = \sqrt[3]{3^3*2}\]
+
+\textbf{Otro ejemplo}: poner bajo índice común $2a \sqrt[3]{a^2}$
+\[2a \sqrt[3]{a^2} = 2^\frac{3}{3}*a^\frac{3}{3}*a^\frac{2}{3} = \left( 2^3 * a^3 * a^2 \right)^\frac{1}{3} = \sqrt[3]{2^3 a^5} =
+\sqrt[3]{8a^5}\]
+\subsection{Extraer factores}
+Al tener que la raíz es una potencia fraccionaria podemos utilizar la interpretación de la fracción como división, y en una división sabemos que:
+\[\frac{dividendo}{divisor} = cociente + \frac{resto}{divisor}\]
+De manera que si llamamos $m$ al dividendo, $n$ al divisor, $c$ al cociente y $r$ al resto, tenemos:
+\[\sqrt[n]{a^m} = a^\frac{m}{n} = a^{c + \frac{r}{n}} = a^c * a^\frac{r}{n} = a^c \sqrt[n]{a^r}\]
+Con lo que, si en una raíz el exponente es mayor que el indice hacemos la división entera, el cociente es el exponente de lo que sale y el resto es el exponente de lo que se queda dentro.
+
+\textbf{Ejemplo}: saca factores de $\sqrt{72}$
+\begin{enumerate}
+	\item Primero factorizamos el radicando:
+	\[\sqrt{72} = \sqrt{2^3 * 3^2}\]
+	\item Para cada factor hacemos lo indicado en la explicación, hacemos la división entera del exponente de cada uno entre el índice (que como es raíz cuadrada es 2), el cociente es el exponente de lo que sale y el resto es el exponente de lo que se queda dentro. Para el 2, que tiene exponente 3 el cociente es 1 y el resto es 1; para el 3, que tiene exponente 2, el cociente es 1 y el resto 0:
+	\[2^1 * 3^1 * \sqrt{2^1 * 3^0} = 2* 3 * \sqrt{2} = 6 \sqrt{2}\]
+\end{enumerate}
+
+\textbf{Otro ejemplo}: saca factores de $\sqrt[3]{a^5 b^7 c^2}$
+En este caso con la $c$ no podemos hacer nada, porque su exponente (2) es menor que el índice (3), con lo que se va a quedar como está. Pero con $a$ y $b$ sí podemos sacar factores:
+\begin{itemize}
+	\item Para la $a$ el exponente es 5, que al dividirlo entre 3 da de cociente 1 y de resto 2.
+	\item Para la $b$ el exponente es 7, que al dividirlo entre 3 da de cociente 2 y de resto 1.
+\end{itemize}
+Y con lo anterior queda:
+\[\sqrt[3]{a^4 b^7 c^2} = a  b^2  \sqrt[3]{a^2 b c^2}\]
+\subsection{Suma de radicales semejantes}
+Esta operación es idéntica a la suma de monomios y consiste en contar cosas que son iguales.\\
+Al igual que podemos reducir un polinomio de la siguiente manera:
+\[2x - 3x^2 + x - 5x + 4x^2 - 2x^2 = -x^2 -2x\]
+Podemos reducir una suma de radicales sumando los que son semejantes:
+\[3\sqrt{3} - 3\sqrt[3]{4} + \sqrt[3]{4} - \sqrt{3} = 2\sqrt{3} - 2\sqrt[3]{4}\]
+
+Aunque a veces no es tan evidente, por ejemplo: $\sqrt{32} - 4\sqrt{2} + 2 \sqrt{18}$\\
+En la suma anterior parece que no tenemos radicales semejantes que sumar, pero si sacamos factores los tendremos. Para ello damos los siguientes pasos:
+\begin{enumerate}
+	\item Factorizamos los radicandos que sean números compuestos:
+	\[\sqrt{32} - 4\sqrt{2} + 2 \sqrt{18} = \sqrt{2^5} - 4 \sqrt{2} + 2\sqrt{2* 3^2}\]
+	\item Sacamos factores de los radicales en los que sea posible, teniendo en cuenta que los coeficientes que están fuera multiplican:
+	\[\sqrt{2^5} - 4 \sqrt{2} + 2\sqrt{2*3^2} = 2^2 \sqrt{2} - 4 \sqrt{2} + 2 * 3\sqrt{2}\]
+	\item Hacemos las multiplicaciones y reducimos:
+	\[2^2 \sqrt{2} - 4 \sqrt{2} + 2* 3 \sqrt{2} = 4 \sqrt{2} - 4 \sqrt{2} + 6 \sqrt{2} = 6 \sqrt{2}\]
+\end{enumerate}
+
+\textbf{Otro ejemplo}: reduce $5\sqrt{3}- \sqrt{8} + \sqrt{12} - \sqrt{50}$
+\[5\sqrt{3}- 4\sqrt{8} + 3\sqrt{12} - \sqrt{50} = 5\sqrt{3}- 4\sqrt{2^3} + 3\sqrt{2^2 * 3} - \sqrt{2*5^2} =
+5\sqrt{3}- 4*2\sqrt{2} + 3*2\sqrt{3} - 5\sqrt{2} = 11\sqrt{3}- 13\sqrt{2}\]
+
+\subsection{Racionalización de denominadores (4º ESO)}
+Es fácil que en algunas operaciones acaben saliendo fracciones con uno o varios radicales en el denominador. Si luego tenemos que hacer operaciones con esas fracciones no posible calcular el m.c.m. de estos denominadores ya que no son enteros.\\
+Por esto tenemos que conseguir que los denominadores sean enteros, y a la técnica para hacerlo se le llama \textbf{racionalización de denominadores}.\\
+
+Dependiendo de si tenemos un radical o una suma en la que intervienen radicales el método es distinto.
+\subsubsection{Denominador con un único radical}
+Tenemos una fracción con la siguiente forma: $\frac{a}{b\sqrt[n]{c^m}}$. Para convertir ese denominador en un entero hacemos una fracción equivalente multiplicando numerador y denominador por $\sqrt[n]{c^{n-m}}$, de manera que al hacer la multiplicación el radicando del denominador estará elevado a un exponente igual al índice de la raíz y al simplificar la raíz (ver \S\ref{simplirad}) desaparecerá.\\
+Vamos a ver porqué:
+\[\frac{a}{b\sqrt[n]{c^m}} = \frac{a}{b\sqrt[n]{c^m}} * \frac{\sqrt[n]{c^{n-m}}}{\sqrt[n]{c^{n-m}}} = 
+\frac{a * \sqrt[n]{c^{n-m}}}{b \sqrt[n]{c^m * c^{n-m}}} = \frac{a * \sqrt[n]{c^{n-m}}}{b \sqrt[n]{c^n}} =
+\frac{a * \sqrt[n]{c^{n-m}}}{b * c}\]
+Y nos ha quedado el denominador $b*c$ en el que ya no hay ninguna raíz.\\
+
+\textbf{Ejemplo}: racionaliza $\frac{2}{5*\sqrt{3}}$
+\[\frac{2}{5*\sqrt{3}} = \frac{2}{5*\sqrt{3}}* \frac{\sqrt{3}}{\sqrt{3}} = \frac{2 \sqrt{3}}{5\sqrt{3^2}} =
+\frac{2\sqrt{3}}{5* 3} = \frac{2\sqrt{3}}{15}\]
+
+\textbf{Otro ejemplo}: racionaliza $\frac{3}{\sqrt[3]{2}}$
+\[\frac{3}{\sqrt[3]{2}} = \frac{3}{\sqrt[3]{2}}* \frac{\sqrt[3]{2^2}}{\sqrt[3]{2^2}} =
+\frac{3\sqrt[3]{4}}{2}\]
+
+\subsubsection{Denominador con una suma en la que hay algún radical}
+\textbf{Este método solo sirve si las raíces son cuadradas}\\
+
+Para abordar este caso primero tenemos que definir qué es el \textbf{conjugado}.\\
+Cuando tenemos una suma, el conjugado es lo que se obtiene al cambiar de signo el segundo término. De manera que:
+\begin{itemize}
+	\item El conjugado de $a+b$ es $a-b$.
+	\item El conjugado de $a-b$ es $a+b$.
+\end{itemize}
+
+Además tenemos que acordarnos de una de las identidades notables, la de suma por diferencia:
+\[(a+b)(a-b) = a^2 - b^2\]
+
+Con todo esto vamos a ver que hay que hacer cuando tenemos un denominador con las características indicadas, por ejemplo: $\frac{a}{b + \sqrt{c}}$ (Puede ser que haya dos raíces en el denominador. Lo veremos en algún ejemplo)\\
+En este caso multiplicamos numerador y denominador por el conjugado del denominador, de manera que queda:
+\[\frac{a}{b + \sqrt{c}} = \frac{a}{b + \sqrt{c}} * \frac{b-\sqrt{c}}{b-\sqrt{c}} = \frac{a(b-\sqrt{c})}{(b+\sqrt{c})(b-\sqrt{c})}\]
+Y ahora aplicamos la identidad notable, de manera que:
+\[\frac{a(b-\sqrt{c})}{(b+\sqrt{c})(b-\sqrt{c})} = \frac{a(b-\sqrt{c})}{b^2 - c}\]
+Quedando en el denominador $b^2 - c$ que ya no tiene ninguna raíz.\\
+
+\textbf{Ejemplo}: racionaliza $\frac{2}{\sqrt{5} - 3}$\\
+Tenemos que multiplicar y dividir por el conjugado de $\sqrt{5} - 3$ y operar:
+\[\frac{2}{\sqrt{5} - 3} = \frac{2}{\sqrt{5} - 3}* \frac{\sqrt{5} + 3}{\sqrt{5} + 3} =
+\frac{2 (\sqrt{5} + 3)}{(\sqrt{5} - 3)(\sqrt{5} + 3)} = \frac{2(\sqrt{5} + 3}{5 - 3^2} = \frac{2(\sqrt{5} + 3)}{-4} = 
+- \frac{2(\sqrt{5} + 3)}{4}\]
+
+\textbf{Otro ejemplo}: racionaliza $\frac{\sqrt{3} + \sqrt{2}}{\sqrt{3} - \sqrt{2}}$\\
+\[\frac{\sqrt{3} + \sqrt{2}}{\sqrt{3} - \sqrt{2}} = \frac{\sqrt{3} + \sqrt{2}}{\sqrt{3} - \sqrt{2}} * \frac{\sqrt{3} + \sqrt{2}}{\sqrt{3} + \sqrt{2}} = \frac{(\sqrt{3} + \sqrt{2})^2}{(\sqrt{3} - \sqrt{2})(\sqrt{3} + \sqrt{2})} = \frac{(\sqrt{3} + \sqrt{2})^2}{3 -2} =
+(\sqrt{3} + \sqrt{2})^2\]
+Y aplicando otra identidad notable:
+\[(\sqrt{3} + \sqrt{2})^2 = 3 + 2 + 2 \sqrt{2}*\sqrt{3} = 5 + 2\sqrt{6}\]
+
+\end{document}
+
+
+
+

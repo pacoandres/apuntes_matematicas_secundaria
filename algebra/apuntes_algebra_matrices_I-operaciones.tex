@@ -1,0 +1,641 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de álgebra de matrices. Operaciones y aplicaciones.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\section{Definición de matriz. Propiedades.}
+En matemáticas, una matriz es un conjunto de valores ordenados en filas y columnas, p.e.:
+\[\left(\begin{array}{rrr}
+4&-3&4\\
+-5&12&27\\
+14&\frac{2}{3}&-5\\
+9&13&5.2
+\end{array}\right)\]
+\begin{center}
+	\begin{small}
+		(En algunos textos se encierra entre corchetes en lugar de paréntesis)\\
+	\end{small}
+\end{center}
+
+A las matrices se las nombra con una letra mayúscula, y a sus elementos con la misma letra pero en minúscula e indicando la fila y la columna en la que se encuentran:
+\[A=\left(\begin{array}{rrr}
+4&-3&4\\
+-5&12&27\\
+14&\frac{2}{3}&-5\\
+9&13&5.2
+\end{array}\right)\]
+\[a_{1\,1} = 4\quad a_{3\,2} = \frac{2}{3} \quad a_{4\,3} = 5.2\]
+
+Muchas veces también se indican las dimensiones de la matriz en el nombre:
+\[A_{4\times3}=\left(\begin{array}{rrr}
+4&-3&4\\
+-5&12&27\\
+14&\frac{2}{3}&-5\\
+9&13&5.2
+\end{array}\right)\]
+
+Dependiendo de la forma y la disposición de los valores a las matrices se las suele dar nombres especiales:
+\begin{itemize}
+	\item Si tiene el \textbf{mismo número de filas que de columnas} se dice que es una \textbf{matriz cuadrada}.
+	\item Si \textbf{todos sus elementos son 0} se dice que es una \textbf{matriz nula}. Se suele indicar con un una $O$ y tendrá las dimensiones adecuadas al contexto.
+	\item Si es una \textbf{matriz cuadrada y todos sus elementos son 0 excepto los $\boldsymbol{a_{1\,1}$, $a_{2\,2}$, $a_{3\,3}$, \dots, $a_{n\,n}}$}, se dice que es una \textbf{matriz diagonal}. A esa diagonal se la llama \textbf{diagonal principal}. Por ejemplo:\\
+	\[\left(\begin{array}{rrr}
+		3&0&0\\0&5&0\\
+		0&0&-2
+	\end{array}\right)\]
+	\item Si en una \textbf{matriz diagonal} todos los \textbf{elementos de la diagonal principal son iguales} se dice que es una \textbf{matriz escalar}.
+	\item Si en una \textbf{matriz diagonal} los elementos de la \textbf{diagonal principal son todo 1} se dice que es una \textbf{matriz identidad}.
+	\item Si es una matriz cuadrada y todos los elementos que están por debajo de la diagonal principal son 0 entonces es una \textbf{matriz triangular superior}.
+	\item Si en el caso anterior los elementos que son 0 están por encima de la diagonal se llama \textbf{matriz triangular inferior}.
+	\item Si la matriz \textbf{solo tiene una fila} se llama \textbf{matriz fila}.
+	\item Si la matriz \textbf{solo tiene una columna} se llama \textbf{matriz columna}.
+\end{itemize}
+Existen otros tipos de matrices ``especiales'' que ya iremos viendo porque sus características están relacionadas con las operaciones.
+\section{Operaciones con matrices.}
+\subsection{Igualdad de matrices.}
+Para que dos matrices sean iguales tienen que tener las mismas dimensiones y además sus elementos tienen que ser iguales uno a uno. Es decir:
+\[A_{n \times m} = B_{n \times m} \quad \Longleftrightarrow \quad a_{i\,j} = b_{i\,j}\quad \forall\, i\in[1,n],\ j\in[1,m]\]
+\subsection{Opuesta de una matriz.}
+La matriz opuesta es la resultante de \textbf{cambiar de signo todos los elementos}. Se indica poniendo un $-$ a la izquierda, igual que en los números.
+\subsection{Traspuesta de una matriz.}
+Hacer la traspuesta de la matriz $A$ (normalmente se escribe $A^T$ o $A^t$) \textbf{consiste en cambiar las filas por las columnas}.\\
+Es decir, si $B = A^t$ entonces $b_{i\,j} = a_{j\,i}$.\\
+
+Lo vemos con \textbf{un ejemplo}:
+\[\left(\begin{array}{rrr}
+	3&-2& 0\\
+	-2&-4&2\\
+	5&1&-1
+\end{array} \right)^t =
+\left(\begin{array}{rrr}
+	3&-2& 5\\
+	-2&-4&1\\
+	0&2&-1
+\end{array} \right)
+\]
+
+Es fácil de ver que es una operación involutiva (si la realizamos dos veces obtenemos la original), es decir $\left(A^t\right)^t = A$.\\
+
+En algunas matrices cuadradas ocurre que $A^t = A$ y se dice que es una \textbf{matriz simétrica}. Si $A^t = -A$ es una \textbf{matriz antisimétrica}.
+\subsection{Traza de una matriz cuadrada.}
+Como se indica en el título es una operación que \textbf{solo se puede realizar en matrices cuadradas}.\\
+
+Antes de explicar en que consiste vamos a hacer un par de definiciones:
+\begin{itemize}
+	\item \textbf{Diagonal principal}: la que va desde el extremo superior izquierdo al extremo inferior derecho (\textbackslash).
+	\item \textbf{Diagonal secundaria}: la que va desde el extremo inferior izquierdo al superior derecho (/).
+\end{itemize}
+
+Una vez definidas las diagonales podemos decir que es la traza: \textbf{la traza de una matriz cuadrada es la suma de los elementos de su diagonal principal}.\\
+Vamos a verlo con un \textbf{ejemplo}. Si tenemos la matriz $A$:
+\[A = \left(\begin{array}{rrr}
+	3&-2& 5\\
+	-2&-4&1\\
+	0&2&-1
+\end{array} \right)\]
+Su traza es:
+\[\mathrm{tr}(A) = 3-4-1 = -2\]
+
+\subsection{Suma de matrices.}
+\textbf{Solo podemos sumar matrices que tengan las mismas dimensiones}. Dicho esto, la suma de matrices \textbf{consiste en sumar los elementos que se encuentran en la misma posición}. Es decir, si $C = A+ B$ entonces $c_{i\,j} = a_{i\,j}+b_{i\,j}$.\\
+
+\textbf{Con un ejemplo:}
+\[\left(\begin{array}{rrr}
+	3&-2& 0\\
+	-2&-4&2\\
+	5&1&-1
+\end{array} \right) + \left(\begin{array}{rrr}
+5&-2&-4\\
+0& 0&3\\
+1&0&1
+\end{array}\right) = \left(\begin{array}{rrr}
+3+5&-2-2&0-4\\
+-2+0&-4 + 0&2 + 3\\
+5 + 1&1+ 0& -1 + 1
+\end{array}\right) = \left(\begin{array}{rrr}
+8&-4&-4\\
+-2&-4&5\\
+6&1&0
+\end{array}\right)\]
+
+%Se entiende que cuando una matriz tiene un signo menos delante se cambia el signo de todos los elementos de la matriz:
+%\[-\left(\begin{array}{rrr}
+%	5&-2&-4\\
+%	0& 0&3\\
+%	1&0&1
+%\end{array}\right) =
+%\left(\begin{array}{rrr}
+%	-5&2&4\\
+%	0& 0&-3\\
+%	-1&0&-1
+%\end{array}\right)\]
+\subsubsection{Propiedades de la suma}
+Entre paréntesis se indica el nombre de cada propiedad.
+\begin{itemize}
+	\item $A+B = B+ A\quad$ (conmutativa).
+	\item $A + (B+C) = (A+B) + C\quad$ (asociativa).
+	\item $A+ O = O + A = A\quad$ (elemento neutro, la matriz nula).
+	\item $A+ (-A) = -A + A = 0\quad$ (elemento opuesto).
+	\item $(A+B)^t = A^t + B^t$
+\end{itemize}
+\subsection{Producto de un escalar por una matriz.}
+En este caso \textbf{el escalar multiplica a todos los elementos de la matriz}.
+\[k*\left(\begin{array}{rr}
+	a_{1\,1}&a_{1\,2}\\
+	a_{2\,1}&a_{2\,2}
+\end{array}\right) = 
+\left(\begin{array}{rr}
+	k*a_{1\,1}&k*a_{1\,2}\\
+	k*a_{2\,1}&k*a_{2\,2}
+\end{array}\right)
+\]
+
+\subsubsection{Propiedades.}
+Teniendo $\alpha, \beta \in \mathbb{R}$:
+\begin{itemize}
+	\item $\alpha * (A + B) = \alpha*A + \alpha*B$
+	\item $(\alpha + \beta)A = \alpha A + \beta A$
+	\item $\alpha*(\beta A)  = (\alpha *\beta) A$
+	\item $(\alpha*A)^t = \alpha *A^t$
+\end{itemize}
+\subsection{Producto de matrices.}
+Para poder multiplicar matrices \textbf{el número de columnas de la primera debe coincidir con el número de filas de la segunda}, y el resultado tendrá el número de filas de la primera y el número de columnas de la segunda. Es decir:
+\[A_{n \times m} * B_{m\times p} = C_{n \times p}\]
+De esto es fácil concluir que el \textbf{producto de matrices no es conmutativo} ($A*B \neq B*A$) salvo en algunos casos. Esto también nos dice que en operaciones complejas tendremos que fijarnos muy bien en el orden en en que están escritas las cosas para no cambiar la operación.\\
+
+El producto de matrices \textbf{consiste en multiplicar cada fila de la primera matriz por cada columna de la segunda}, y de ahí obtendremos cada elemento del resultado. De manera que el elemento 1,1 del resultado es el producto de la primera fila por la primera columna, el elemento 1,2 la primera fila por la segunda columna\dots\\
+De manera formal:
+\[c_{i\,j} = \sum_k (a_{i\,k}*b_{k\,j})\]
+
+Vamos a verlo de una manera más gráfica con \textbf{un ejemplo}:\\
+\begin{center}
+
+\begin{tikzpicture}[yscale=-1]
+%	\useasboundingbox(0,0) rectangle (297.0mm,210.0mm);
+	\begin{scope}[shift={(-32.4mm,-103.2mm)}]
+		%% Elipse fila 1
+		\draw [fill=none,draw=black,line width=0.5mm] (73.7mm,127.2mm) ellipse (7.0mm and 2.3mm) ;
+%		\definecolor{dc}{RGB}{153,153,153}\draw [fill=none,draw=dc,line width=0.5mm] (89.6mm,131.4mm) ellipse (2.3mm and 5.5mm) ;
+		%%Elipse columna 1
+		\definecolor{dc}{RGB}{153,153,153}\draw [fill=none,draw=dc,line width=0.5mm] (91.6mm,133.4mm) ellipse (2.3mm and 5.5mm) ;
+		%%Elipse resultado 1,1
+		\definecolor{dc}{RGB}{153,153,153}\draw [fill=none,draw=dc,line width=0.5mm] (122mm,127.6mm) ellipse (11.3mm and 2.8mm) ;
+		%% path id="path2405"
+		%% path spec="m 90.373211,125.21953 3.265456,-5.2988 19.318493,-0.23369 3.19378,4.44013"
+		\definecolor{dc}{RGB}{179,179,179}
+%		\draw [<-,fill=none,draw=dc,line width=0.1mm] (90.4mm,125.2mm)
+		\draw [-latex,fill=none,draw=dc,line width=0.3mm] (92mm,127.2mm)
+		-- ++(3.3mm,-5.3mm)
+		-- ++(19.3mm,0mm)
+		-- ++(3.2mm,3mm)
+		;
+		%% path id="path2641"
+		%% path spec="m 72.40949,124.12717 2.971013,-4.59593 10.269371,-0.0779 3.035602,5.68649"
+		\definecolor{dc}{RGB}{153,153,153}
+		\draw [-latex,fill=none,draw=dc,line width=0.3mm] (72.4mm,124.1mm)
+		-- ++(3.0mm,-4.6mm)
+		-- ++(10.3mm,0mm)
+%		-- ++(3.0mm,5.7mm)
+		-- ++(5mm,8mm)
+		;
+%		\definecolor{dc}{RGB}{77,77,77}\draw [fill=none,draw=dc,line width=0.5mm] (95.4mm,131.3mm) ellipse (1.8mm and 5.2mm) ;
+		\definecolor{dc}{RGB}{77,77,77}\draw [fill=none,draw=dc,line width=0.5mm] (96.8mm,133.4mm) ellipse (1.8mm and 5.2mm) ;
+		\definecolor{dc}{RGB}{77,77,77}\draw [fill=none,draw=dc,line width=0.5mm] (145mm,127.5mm) ellipse (9.4mm and 3.1mm) ;
+		%% path id="path1393"
+		%% path spec="m 71.999195,130.12302 2.131574,8.50023 16.953227,-0.0567 3.349577,-1.90018"
+		\definecolor{dc}{RGB}{77,77,77}
+		\draw [-latex,fill=none,draw=dc,line width=0.3mm] (72.0mm,130.1mm)
+		-- ++(2.1mm,12mm)
+		-- ++(20.0mm,-0.1mm)
+		-- ++(2mm,-3mm)
+		;
+		%% path id="path1428"
+		%% path spec="m 96.303106,136.90007 12.087424,2.96076 20.16199,-6.7e-4 5.6865,-10.59401"
+		\definecolor{dc}{RGB}{77,77,77}
+		\draw [-latex,fill=none,draw=dc,line width=0.3mm] (97mm,139mm)
+		-- ++(12.1mm,3.0mm)
+		-- ++(22mm,-0.0mm)
+		-- ++(5.7mm,-11.6mm)
+		;
+		%% path id="path1959"
+		%% path spec="M 108.61086,142.11918 Z"
+		\draw [fill=none,draw=black,line width=0.1mm] (108.6mm,142.1mm)
+		-- cycle
+		;
+		%% << %% tspan: tspan9283
+		\node [font=\tiny,align=center] at (80mm,115mm) { Fila 1 con\\Columna 1 };
+		%% << %% tspan: tspan9287
+%		\node [font=\sffamily\small] at (69.5mm,118.8mm) { Columna 1 };
+		%% << %% tspan: tspan13131
+		\node [font=\tiny] at (103.3mm,119.0mm) { Elemento 1,1 };
+		%% << %% tspan: tspan19055
+		\node [font=\tiny, align=center] at (82mm,145.5mm) { Fila 1 con\\Columna 2 };
+		%% << %% tspan: tspan19053
+%		\node [font=\sffamily\small] at (73.4mm,147.9mm) { Columna 2 };
+		%% << %% tspan: tspan25555
+		\node [font=\tiny] at (118.3mm,144.4mm) { Elemento 1,2 };
+		%% << %% tspan: tspan30756
+%		\node [font=\small] at (62.4mm,128.4mm) { $\left(\begin{array}{rr}
+				\node [font=\small] at (125mm,133mm) { $\left(\begin{array}{rr}
+				1&2\\
+				3&4\\
+				-1&-2
+			\end{array}\right)*\left(\begin{array}{rr}
+				5&6\\
+				7&8
+			\end{array}\right) = 
+			\left(\begin{array}{rr}
+				1*5 + 2* 7&1*6 + 2*8\\
+				3*5 + 4*7&3*6+4*8\\
+				-1*5-2*7&-1*6-2*8
+			\end{array}\right) = \left(\begin{array}{rr}
+				19&22\\
+				43&50\\
+				-19&-22
+			\end{array}\right)$ };
+	\end{scope}
+\end{tikzpicture}
+\end{center}
+
+O de una manera más general:
+\tikzset{highlight/.style={rectangle,
+		fill=gray!15,
+		rounded corners = 0.5 mm,
+		inner sep=1pt,
+		fit=#1}}
+\[\begin{NiceArray}{*{6}{c}@{\hspace{6mm}}*{5}{c}}[nullify-dots]
+	\CodeBefore [create-cell-nodes]
+	\SubMatrix({2-7}{6-11})
+	\SubMatrix({7-2}{11-6})
+	\SubMatrix({7-7}{11-11})
+	\begin{tikzpicture}
+		\node [highlight = (9-2) (9-6)] { } ;
+		\node [highlight = (2-9) (6-9)] { } ;
+	\end{tikzpicture}
+	\Body
+	 & & & & & & & & \scriptstyle C_j \\
+	 & & & & & & b_{11} & \Cdots & b_{1j} & \Cdots & b_{1n}\\
+	 & & & & & & \Vdots & &\Vdots & & \Vdots\\
+	 & & & & & & & & b_{kj} \\
+	 & & & & & & & &\Vdots \\
+	 & & & & & & b_{n1} & \Cdots&b_{nj} & \Cdots & b_{nn}\\[3mm]
+	& a_{11} & \Cdots & &	& a_{1n} \\
+	& \Vdots & & & & \Vdots & & & \Vdots \\
+	\scriptstyle L_i
+	& a_{i1} & \Cdots & a_{ik} & \Cdots & a_{in} & \Cdots & & c_{ij} \\
+	& \Vdots & & & & \Vdots \\
+	& a_{n1} & \Cdots & & & a_{nn} \\
+	\CodeAfter
+	\tikz \draw [-latex, gray,thick] (9-4.north) to [bend left] (4-9.west) ;
+\end{NiceArray}\]
+
+\vspace*{7mm}
+Con el producto de matrices ocurre algo bastante curioso, veámoslo primero con un ejemplo: vamos a multiplicar las matrices:
+\[A= \left(\begin{array}{rr}
+	2&3\\4&6
+\end{array}\right)\quad\text{y}\quad B=\left(\begin{array}{rr}
+9&-12\\-6&8
+\end{array}\right)\]
+Entonces:
+\[A*B = \left(\begin{array}{rr}
+	2&3\\4&6
+\end{array}\right)*\left(\begin{array}{rr}
+9&-12\\-6&8
+\end{array}\right) = \left(\begin{array}{rr}
+2*9+3*(-6)&2*(-12)+3*8\\
+4*9+6*(-6)&4*(-12)+6*8
+\end{array}\right) = \left(\begin{array}{rr}
+0&0\\0&0
+\end{array}\right)\]
+Es decir, tenemos dos matrices no nulas cuyo producto en ese orden vale 0 (si hacemos $B*A$ veremos que no ocurre lo mismo)\\
+Cuando ocurre esto se dice que \textbf{tenemos divisores de 0}. En este caso $A$ es un divisor de 0 por la izquierda y $B$ es el divisor de 0 por la derecha.
+
+\subsubsection{Propiedades:}
+\begin{itemize}
+	\item $(A*B)*C = A*(B*C)$
+	\item $A*(B+C) = A*B+A*C$
+	\item $(B+C)*A = B*A + C*A\quad$ (\textbf{Observemos que ésta y la anterior no son iguales, una es por la izquierda y otra por la derecha}).
+	\item $\alpha*(A*B) = (\alpha*A)*B = A*(\alpha*B) \quad \forall\,\alpha \in \mathbb{R}$
+	\item $A*O = O*A = O\quad$ (donde $O$ es la matriz nula).
+	\item $(A*B)^t = B^t * A^t$ 
+\end{itemize}
+Observemos que no aparece la propiedad conmutativa y es algo que tenemos que tener bien presente.
+
+\subsection{Potencia de una matriz.}
+Para calcular la potencia de una matriz solo tenemos que aplicar la definición de potencia, con lo que:
+\[A^n = \overbrace{A*A*A\dots A}^{n \text{ veces}}\]
+
+Las \textbf{propiedades} de las potencias de matrices son las mismas que las de las potencias de números teniendo en cuenta el orden (izquierda y derecha) en las multiplicaciones.\\
+Las identidades notables cambian un poco por este hecho, por ejemplo:
+\[(A+B)^2 = (A+B)*(A+B) = A^2 + B^2 + AB + BA\]
+
+Todo esto hace que en todas las potencias en las que participe más de una matriz tenemos que tener mucho cuidado con el orden en el que se encuentran.
+\subsection{Matriz inversa.}
+En el álgebra de matrices no existe la división y lo más parecido que existe es el producto por la inversa.
+Pero esto no siempre es posible, así que vamos a ver qué es la matriz inversa y sus propiedades.\\
+
+\textbf{Solo las matrices cuadradas tienen inversa}, y no todas las matrices cuadradas la tienen (veremos más adelante qué condiciones
+tiene que cumplir una matriz cuadrada para tener inversa.) Pero si una matriz cuadrada $A$ tiene inversa ocurre que:
+\[A*A^{-1} = A^{-1}*A = I_n\]\\
+Donde $I_n$ es la matriz identidad de orden $n$: una matriz $n\times n$ cuyos elementos son todo ceros excepto la diagonal
+principal que son unos.\\
+
+\textbf{El cálculo de la matriz inversa no es sencillo}, aunque para matrices $2\times 2$ el calculo por sistemas es asequible.
+\textbf{Veamos un ejemplo}:\\
+
+Calcular la inversa de $A=\left(\begin{array}{rr}
+	2&1\\5&3
+\end{array}\right)$\\
+\begin{solution}
+	Para ello utilizamos una matriz de la que no conocemos sus elementos, hacemos $A^{-1} = \left(\begin{array}{rr}
+		a&b\\c&d
+	\end{array}\right)$, de manera que:
+\[A*A^{-1} = \left(\begin{array}{rr}
+	2&1\\5&3
+\end{array}\right) * \left(\begin{array}{rr}
+a&b\\c&d
+\end{array}\right) = \left(\begin{array}{rr}
+2a+c&2b+d\\5a+3c&5b+3d
+\end{array}\right) = \left(\begin{array}{rr}
+1&0\\0&1
+\end{array}\right)\]
+Como para que dos matrices sean iguales los elementos tienen que ser iguales uno a uno, obtenemos el sistema:
+\[\left\lbrace \begin{array}{lll}
+	2a+c&=&1\\
+	2b+d&=&0\\
+	5a+3c&=&0\\
+	5b+3d&=&1
+\end{array}\right.\]
+Que en realidad son dos sistemas, uno con $a$ y $c$ y otro con $b$ y $d$. Resolviéndolos obtenemos:
+\[a=3,\ b=-1,\ c=-5\ d=2\quad \text{con lo que }A=\left(\begin{array}{rr}
+	3&-1\\-5&2
+\end{array}\right)\]
+\end{solution}
+Con lo que se ve éste método puede ser muy largo si aumenta el tamaño de la matriz.
+Mas adelante veremos un método algo más sencillo que también nos permitirá calcular la inversa de matrices $3 \times 3$ o mayores.\\
+
+Una vez que ya hemos visto qué es la inversa vamos a ver sus
+\subsubsection{Propiedades:}
+\begin{itemize}
+	\item La matriz inversa de $A$ es única.
+	\item $(A*B)^{-1} = B^{-1}*A^{-1}$
+	\item $\left(A^T\right)^{-1} = \left(A^{-1}\right)^T$
+	\item $(\alpha*A)^{-1} = \frac{1}{\alpha} * A^{-1} = \frac{A^{-1}}{\alpha}$
+	\item $\left(A^{-1}\right)^{-1} = A$ (por el hecho de que es única)
+	\item Si $A^t = A^{-1}$ se dice que $A$ es una \textbf{matriz ortogonal}.
+\end{itemize}
+\subsection{Aplicaciones.}
+Como veremos en otros temas las matrices tienen muchísimas aplicaciones en otros campos como la geometría. También tienen muchísimas aplicaciones en física, química, ....\\
+
+Pero vamos a ver un par de aplicaciones sencillas a modo de muestra.
+\subsubsection{Aplicaciones a la contabilidad.}
+Supongamos que en una tienda manejan las siguientes tablas:
+\begin{itemize}
+	\item Datos económicos por producto:\\
+	\begin{center}
+		\begin{tabular}{l|r|r|r|}
+			\cline{2-4}
+			& \multicolumn{1}{l|}{\textbf{Artículo A}} & \multicolumn{1}{l|}{\textbf{Artículo B}} & \multicolumn{1}{l|}{\textbf{Artículo C}} \\ \hline
+			\multicolumn{1}{|l|}{\textbf{Coste/ud}}  & 100,00& 120,00& 115,00\\ \hline
+			\multicolumn{1}{|l|}{\textbf{Margen/ud}} & 30,00& 50,00& 50,00\\ \hline
+			\multicolumn{1}{|l|}{\textbf{IVA}}       & 27,30& 35,70& 34,65\\ \hline
+			\multicolumn{1}{|l|}{\textbf{PVP/ud}}    & 157,30& 205,70& 199,65\\ \hline
+		\end{tabular}
+	\end{center}
+	\item Y las unidades vendidas por cada vendedor:\\
+	\begin{center}
+		\begin{tabular}{l|r|r|r|}
+			\cline{2-4}
+			& \multicolumn{1}{l|}{\textbf{Artículo A}} & \multicolumn{1}{l|}{\textbf{Artículo B}} & \multicolumn{1}{l|}{\textbf{Artículo C}} \\ \hline
+			\multicolumn{1}{|l|}{\textbf{Vendedor 1}} & 15& 12& 35\\ \hline
+			\multicolumn{1}{|l|}{\textbf{Vendedor 2}} & 25& 11& 20\\ \hline
+			\multicolumn{1}{|l|}{\textbf{Vendedor 3}} & 4& 29& 2\\ \hline
+		\end{tabular}
+	\end{center}
+\end{itemize}
+De aquí obtendríamos dos matrices, la de datos económicos ($D$)y la de ventas ($V$):
+\[D=\left(\begin{array}{rrr}
+	100.00& 120.00& 115.00\\
+	30.00& 50.00& 50.00\\ 
+	27.30& 35.70& 34.65\\ 
+	157.30& 205.70& 199.65
+\end{array}\right)\quad\quad\quad V=\left(\begin{array}{rrr}
+	15& 12& 35\\ 
+	25& 11& 20\\
+	4& 29& 2
+\end{array}\right)\]
+
+Si realizamos el producto $D*V^t$ estamos realizando el producto de cada fila de $D$, que es cada uno de los conceptos económicos, por cada columna
+de $V^t$, que contiene los artículos que ha vendido un vendedor concreto, de tal manera que el resultado nos ofrece los resultados económicos por cada vendedor:
+\[D*V^t = \left(\begin{array}{rrr}
+	100.00& 120.00& 115.00\\
+	30.00& 50.00& 50.00\\ 
+	27.30& 35.70& 34.65\\ 
+	157.30& 205.70& 199.65
+\end{array}\right) *\left(\begin{array}{rrr}
+15& 25& 4\\ 
+12& 11& 29\\
+35& 20& 2
+\end{array}\right) = \left(\begin{array}{rrr}
+6\,965.00&6\,120.00&4\,110.00\\
+2\,800.00&2\,300.00&1\,670.00\\
+2\,050.70&1\,768.20&1\,213.80\\
+11\,815.70&10\,188.20&6\,993.80
+\end{array}\right)\]
+Que convertido en tabla interpretando lo que significa cada fila y cada columna nos da:\\
+\begin{center}
+	\begin{tabular}{l|r|r|r|}
+		\cline{2-4}
+		& \multicolumn{1}{l|}{\textbf{Vendedor 1}} & \multicolumn{1}{l|}{\textbf{Vendedor 2}} & \multicolumn{1}{l|}{\textbf{Vendedor 3}} \\ \hline
+		\multicolumn{1}{|l|}{\textbf{Coste}}  & 6\,965,00                                & 6\,120,00                                & 4\,110,00                                \\ \hline
+		\multicolumn{1}{|l|}{\textbf{Margen}} & 2\,800,00                                & 2\,300,00                                & 1\,670,00                                \\ \hline
+		\multicolumn{1}{|l|}{\textbf{IVA}}    & 2\,050,70                                & 1\,768,20                                & 1\,213,80                                \\ \hline
+		\multicolumn{1}{|l|}{\textbf{Total}}  & 11\,815,70                               & 10\,188,20                               & 6\,993,80                                \\ \hline
+	\end{tabular}
+\end{center}
+\subsubsection{Caminos de Markov.}
+Imaginemos que tenemos la siguiente situación (en matemáticas esto se llama grafo):\\
+\begin{center}
+
+\begin{tikzpicture}[yscale=-1]
+	\begin{scope}[shift={(-33.5mm,-124.6mm)}]
+		%% Group layer1 --> top=True
+		\draw [fill=none,draw=black,line width=0.3mm] (37.6mm,140.7mm) ellipse (4.0mm and 4.0mm) ;
+		%% << %% tspan: tspan4478
+%		\node [font=\small] at (36.6mm,141.7mm) { 1 };
+		\node [font=\small] at (37.5mm,140.7mm) { 1 };
+		\draw [fill=none,draw=black,line width=0.3mm] (58.2mm,128.7mm) ellipse (4.0mm and 4.0mm) ;
+		%% << %% tspan: tspan4478-7
+		\node [font=\small] at (58mm,128.6mm) { 2 };
+		\draw [fill=none,draw=black,line width=0.3mm] (63.0mm,151.1mm) ellipse (4.0mm and 4.0mm) ;
+		%% << %% tspan: tspan4478-5
+		\node [font=\small] at (63.0mm,151.1mm) { 3 };
+		\draw [fill=none,draw=black,line width=0.3mm] (84.2mm,138.6mm) ellipse (4.0mm and 4.0mm) ;
+		%% << %% tspan: tspan4478-5-9
+		\node [font=\small] at (84.1mm,138.5mm) { 4 };
+		%% path id="path23213"
+		%% path spec="m 40.760385,137.04303 13.219586,-6.38947"
+		\draw [latex-latex, fill=none,draw=black,line width=0.3mm] (40.8mm,137.0mm)
+		-- ++(13.2mm,-6.4mm)
+		;
+		%% path id="path23215"
+		%% path spec="m 62.5727,129.99258 17.846437,5.94881"
+		\draw [latex-latex,fill=none,draw=black,line width=0.3mm] (62.6mm,130.0mm)
+		-- ++(17.8mm,5.9mm)
+		;
+		%% path id="path23217"
+		%% path spec="M 67.634483,148.73132 81.74682,142.31986"
+		\draw [latex-latex,fill=none,draw=black,line width=0.3mm] (67.6mm,148.7mm)
+		-- (81.7mm,142.3mm)
+		;
+		%% path id="path23414"
+		%% path spec="M 61.471068,146.29674 59.267804,133.29748"
+		\draw [-latex,fill=none,draw=black,line width=0.3mm] (61.5mm,146.3mm)
+		-- (59.3mm,133.3mm)
+		;
+	\end{scope}
+\end{tikzpicture}
+\end{center}
+Donde 1, 2, 3 y 4 pueden representar poblaciones y las flechas caminos, o empresas y las flechas clientes que cambian
+de una a otra, ... Esto es aplicable a muchas situaciones.\\
+Definimos la matriz $A$ como aquella cuyos $a_{i\,j}$ representan el número de caminos que tenemos para ir del nodo $i$
+al nodo $j$:
+\[A = \left(\begin{array}{rrrr}
+	1&1&0&0\\
+	1&1&0&1\\
+	0&1&1&1\\
+	0&1&1&1
+\end{array}\right)\quad\text{\parbox{.5\linewidth}{\begin{small}(Estamos suponiendo que existe un camino para ir de un nodo a sí mismo,
+		esto se llama bucle. Si no fuese
+	así los elementos de la diagonal principal serían 0)\end{small}}}\]
+
+
+Si calculamos $A^2$:
+\[A^2 = \left(\begin{array}{rrrr}
+	1&1&0&0\\
+	1&1&0&1\\
+	0&1&1&1\\
+	0&1&1&1
+\end{array}\right) * \left(\begin{array}{rrrr}
+1&1&0&0\\
+1&1&0&1\\
+0&1&1&1\\
+0&1&1&1
+\end{array}\right) = \left(\begin{array}{rrrr}
+2&2&0&1\\
+2&3&1&2\\
+1&3&2&3\\
+1&3&2&3
+\end{array}\right)\]
+Obtenemos una matriz cuyos elementos $a_{i\,j}$ nos indican el número de caminos que hay para ir del nodo $i$ al nodo $j$
+pasando por un nodo intermedio. Si calculásemos $A^3$ la interpretación sería la misma pero pasando por dos nodos intermedios.\\
+
+Dependiendo de lo que represente el grafo inicial los resultados anteriores tendrán un significado en ese contexto. Además los caminos pueden
+estar asociados a distintos valores (distancias, costes, probabilidades,...) de manera que los elementos de la primera matriz no serían
+unos y los resultados producidos contendrán mucha más información.
+\end{document}

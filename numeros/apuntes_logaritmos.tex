@@ -1,0 +1,260 @@
+\documentclass[a4paper,10pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+%para la última página
+\usepackage{lastpage}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes sobre logaritmos}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\begin{document}
+
+%For e number
+\newcommand{\e}{\mathrm{e}}
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+
+\section{Necesidad de los logaritmos}
+Hasta ahora hemos visto que hay seis operaciones aritméticas: suma resta, multiplicación división, potencia y raíz.\\
+También hemos visto que cada operación tiene su contraria:
+\begin{itemize}
+	\item Si en una suma desconocemos uno de los sumandos lo hayamos con su contraria, que es la resta:
+	\[a+b=c \Leftrightarrow a=c-b\ (\text{o también } b = a-c)\]
+	\item Si en una multiplicación desconocemos uno de los factores lo hayamos con su contraria, la división:
+	\[a * b = c \Leftrightarrow a= \frac{c}{b}\  \left( \text{o también } b = \frac{c}{a} \right)\]
+	\item Si en una potencia desconocemos la base la calculamos con la raíz, que es su contraria:
+	\[a^n = b \Leftrightarrow a = \sqrt[n]{b}\]
+\end{itemize}
+Pero, ¿cómo podemos obtener un exponente desconocido? ¿Es necesario?\\
+Hay muchas fórmulas en las que aparecen exponentes, y a veces serán desconocidos. Pongamos un ejemplo:\\
+En el cálculo del interés compuesto (el que utilizan los bancos) se utiliza la fórmula:
+\[Cantidad\ final = Cantidad\ final * (1 + inter\acute{e}s)^n\]
+En esta fórmula $n$ es el número de años (o de meses, dependerá de lo que contratemos con el banco) y es fácil imaginarse que habrá situaciones en las que necesitemos calcular esa $n$ y, ¿con cual de las operaciones anteriores lo haríamos?\\
+
+El problema es que ninguna de las que hemos dicho nos sirve, y por eso existe otra operación que también es contraria a la potencia (con lo que la potencia tiene dos contrarias) que se llama \textbf{logaritmo}.
+
+\section{Definición de logaritmo}
+Con lo que hemos dicho antes el logaritmo se define de la siguiente manera:
+\Large
+\[\boldsymbol {\log_a b = c \Leftrightarrow a^c = b}\]
+\normalsize
+Es decir, el resultado del logaritmo es \textbf {el valor $c$ al que hay que elevar la base $a$ para que nos dé como resultado el argumento $b$}.\\
+
+Vamos a ver unos ejemplos:
+\[\log_3 81 = 4 \Leftrightarrow 3^4 = 81\]
+\[\log_5 125 = 3 \Leftrightarrow 5^3 = 125\]
+\[\log_4 2 = \frac{1}{2} = 0.5 \Leftrightarrow 4^\frac{1}{2} = 2\]
+\[\log_2 \frac{1}{4} = -2 \Leftrightarrow 2^{-2} = \frac{1}{4}\]
+\[\log_a 1 = 0 \Leftrightarrow a^0 = 1\]
+
+Aunque no lo parezca, ésta definición no es sencilla de entender y requiere memorizarla y tener muy claro que significa cada cosa (base, argumento y resultado) para poder utilizar los logaritmos correctamente.
+
+Debido a a que no todos los exponentes conducen a números negativos y que hay exponentes (raíces) que no pueden tener bases negativas, la base y el argumento de un algoritmo no pueden ser negativos. 
+
+\subsection{Logaritmos especiales} \label{logaritmos especiales}
+Aparte de memorizar la definición anterior y tener claro lo que significa cada valor que aparece en ella, es necesario saber que existen dos logaritmos especiales, que lo son por razones históricas, que no vienen al caso, y porque son los logaritmos que podemos calcular con cualquier calculadora científica.\\
+El hecho de ser especiales hace que los escribamos de manera distinta al resto. Y hay que saber cómo se escriben porque si no, no podremos localizarlos en la calculadora ni podremos utilizarla para cualquier cosa que tenga que ver con logaritmos.
+\subsubsection{Logaritmo decimal}
+Los logaritmos decimales son \textbf{aquellos que tienen base 10}, y la manera de diferenciarlos de los demás es que se escriben sin base ($\boldsymbol {\log_{10} = \log}$) Ejemplos:
+\[\log_{10} 2 = \log 2\]
+\[\log_{10} 5 =  \log 5\]
+\[\log 67 = \log_{10} 67\]
+\[\log 45 = \log_{10} 45\]
+\subsubsection{Logaritmo neperiano}
+Estos logaritmos son los que \textbf{tienen base e}.\\
+
+$\e$ es una constante matemática, al igual que $\pi$, y es un número irracional (tiene infinitas cifras) cuyo valor es $\e = 2.71828...$ El porqué de utilizar este número excede el propósito de estos apuntes, pero si alguien tiene interés en saber por qué es tan importante puede consultar las siguientes páginas:
+\begin{itemize}
+	\item \url{https://soymatematicas.com/numero-e/}
+	\item \url{https://es.wikipedia.org/wiki/N\%C3\%BAmero_e} (ésta es bastante más compleja)
+\end{itemize}
+
+Lo importante en este punto es que los logaritmos que tienen como base a $\e$ tienen una manera especial de escribirse, y esta es $\boldsymbol{\ln}$. Ejemplos:
+\[\log_\e 13 = \ln 13\]
+\[\log_\e 18 = \ln 18 \]
+\[\ln 4 = \log_\e 4\]
+\[\ln 10 = \log_\e 10\]
+
+\subsection{Prioridad de los logaritmos}
+A la hora de hacer operaciones combinadas con logaritmos hay que tener en cuenta que \textbf{tienen la misma prioridad que un paréntesis}. Es decir:
+\[\log_2 7*3 = \left( \log_2 7 \right) * 3 \]
+
+Debido a esto hay que tener en cuenta que tendremos que poner paréntesis para indicar un orden distinto al fijado. De todas maneras vamos a ver los distintos casos que nos pueden aparecer:
+\begin{itemize}
+	\item Para indicar que queremos hacer primero un producto y luego el logaritmo tendremos que escribir $\log_a (b*c)$, porque si no ponemos paréntesis tendríamos que hacer primero el logaritmo y luego la multiplicación.
+	\item Para indicar que queremos hacer primero una división y luego el logaritmo podemos escribir $\log_a \left(\frac{b}{c} \right)$ y también sin paréntesis, $\log_a \frac{b}{c}$, porque en este caso la prioridad nos la da la el tamaño y la posición de línea de fracción.\\
+	Si quisiésemos indicar que hay que hacer el logaritmo antes de la división lo escribiríamos así: $\frac{\log_a b}{c}$.
+	\item Para indicar que queremos hacer un logaritmo y elevarlo a una potencia se escribe $\log_a^n b$, y esto es equivalente a escribir $\left( \log_a b \right)^n$.\\
+	Si lo que queremos indicar es que hay que hacer primero la potencia y luego el logaritmo escribiremos $\log_a b^n$.
+\end{itemize}
+\subsection{Ejercicios sobre la definición de logaritmos}
+En este apartado vamos a ver como utilizar la definición para calcular algunos logaritmos sencillos. Para ello hay que recordar la definición: $\log_a b = c \Leftrightarrow a^c = b$.\\
+De la definición se obtienen dos conclusiones importantes que nos sirven para hacer ejercicios:
+\begin{itemize}
+	\item $\boldsymbol{\log_a a^n = n}$
+	\item $\boldsymbol{\log_a 1 = 0}$, independientemente del valor de $a$
+\end{itemize}
+
+Con esto y la factorización de números podemos empezar a hacer algunos ejercicios de logaritmos.\\
+\textbf{Ejemplos}:
+\begin{itemize}
+	\item $\log_2 16 = \log_2 2^4 = 4$
+	\item $\log 1\,000 = \log 10^3 = 3$
+	\item $\log_3 \frac{1}{27} = \log_3 3^{-3} = -3$
+	\item $\log_{\sqrt{5}} 5 = \log_{\sqrt{5}} (\sqrt{5})^2 = 2$
+	\item $\log_\frac{1}{4} 16 = \log_\frac{1}{4} \left(\frac{1}{4} \right)^{-2} = -2$
+	\item $\log_{27} 3 = \log_{27} \sqrt[3]{27} = \log_{27} 27^\frac{1}{3} = \frac{1}{3}$
+\end{itemize}
+\subsection{Posibles resultados de los logaritmos}
+En los ejemplos y ejercicios de los apartados anteriores hemos visto que los resultados de los logaritmos son de todo tipo, positivos, negativos, cero coma, ...\\
+Aunque no lo parezca esto tiene una lógica y es conveniente conocerla para saber si los resultados que estamos obteniendo son coherentes.\\
+Si tenemos un logaritmo $\boldsymbol{\log_a b}$ los posibles resultados son (recuerda que la base $a$ y el argumento $b$ siempre son positivos):
+\begin{itemize}
+	\item Si la base ($a$) es mayor que 1:
+	\begin{itemize}
+		\item Si el argumento ($b$) es mayor que la base el resultado es positivo y mayor que 1.
+		\item Si el argumento es positivo pero menor que 1 el resultado será entre 0 y 1 (cero coma)
+		\item Si el argumento es menor que 1 el resultado será negativo.
+	\end{itemize}
+	\item Si la base es menor que 1:
+	\begin{itemize}
+		\item Si el argumento es menor que la base el resultado es positivo y mayor que 1.
+		\item Si el argumento es mayor que la base pero menor que 1 el resultado estará entre 0 y 1.
+		\item Si el argumento es mayor que 1 el resultado será negativo.
+	\end{itemize}
+	\item Si la base es 1 no tiene sentido, porque no podemos obtener ningún número distinto de 1 haciendo potencias de 1.
+\end{itemize}
+\section{Propiedades de los logaritmos}
+Teniendo en cuenta que los logaritmos son una operación contraria a las potencias y que estas tienen unas propiedades muy utilizadas, es lógico pensar que los logaritmos también las tienen. Y además se utilizan mucho más que las de las potencias.\\
+Vamos a ir viendo estas propiedades.
+\subsection{Logaritmo de un producto}
+El logaritmo de un producto es igual que la suma de logaritmos:
+\large
+\[\boldsymbol{\log_a (b*c) = \log_a b + \log_a c}\]
+\normalsize
+\textbf{Ejemplos}: 
+\begin{itemize}
+	\item $\log_2 (3*5) = \log_2 3 + \log_2 5$
+	\item $\log_\frac{2}{3} (4*9) = \log_\frac{2}{3} 4 + \log_\frac{2}{3} 9$
+	\item $\log 6 = \log (2*3) = \log 2 + \log 3$
+	\item $\log 20 = \log 2 + \log 10 = \log 2 + 1$
+\end{itemize}
+
+\subsection{Logaritmo de un cociente}
+Haciendo una analogía con las potencias se ve claramente que el logaritmo de un cociente será la resta de los logaritmos:
+\large
+\[\boldsymbol{\log_a \frac{b}{c} = \log_a b - \log_a c}\]
+\normalsize
+\textbf{Ejemplos}:
+\begin{itemize}
+	\item $\log_3 \frac{2}{5} = \log_3 2 - \log_3 5$
+	\item $\log 0.25 = \log \frac{25}{100} = \log 25 - \log 100 = \log 25 - 2$
+	\item $\ln \frac{1}{5} = \ln 1 - \ln 5 = -\ln 5$
+\end{itemize}
+
+\subsection{Logaritmo de una potencia}
+Cuando el argumento está elevado a un exponente, éste sale multiplicando fuera del logaritmo:
+\large
+\[\boldsymbol{\log_a b^n = n*\log_a b}\]
+\normalsize
+Si en vez de una potencia tenemos una raíz:
+\[\boldsymbol{\log_a \sqrt[n]{b} = \log_a b^{\frac{1}{n}} = \frac{1}{n}*\log_a b = \frac{\log_a b}{n}}\]
+Con lo que podríamos decir que en el logaritmo de una raíz el índice sale dividiendo al logaritmo.\\
+
+\textbf{Ejemplos}:
+\begin{itemize}
+	\item $\log_5 25 = \log_5 5^2 = 2* \log_5 5 = 2*1 = 2$
+	\item $\log 1\,000 = \log 10^3 = 3* \log 10 = 3$
+	\item $\log_2 \sqrt{3} = \frac{\log_2 3}{2}$
+	\item $\log_3 \sqrt[5]{17^2} = \frac{2}{5} * \log_3 17$
+\end{itemize}
+\subsection{Cambio de base}
+Como hemos dicho en el apartado sobre logaritmos especiales (\S\ref{logaritmos especiales}) en las calculadoras solo suele haber dos logaritmos:
+\begin{itemize}
+	\item El de base 10 o decimal ($\log$).
+	\item El de base $\e$ o neperiano ($\ln$).
+\end{itemize}
+Y esto presenta un problema: ¿cómo calculamos un logaritmo en cualquier otra base?.\\
+Para eso está esta propiedad que nos permite calcular un logaritmo en cualquier base a partir de otra:
+\large
+\[\boldsymbol{\log_b c = \frac{\log_a c}{\log_a b}}\]
+\normalsize
+Vamos a ver unos ejemplos de cómo se utiliza:
+\begin{itemize}
+	\item $\log_3 4 = \frac{\log 4}{\log 3}$\\
+	
+	Con la calculadora obtenemos $\log 4 \simeq 0.602$ y $\log 3 \simeq 0.477$, que sustituyendo en lo anterior nos da:
+	\[\log_3 4 \simeq \frac{0.602}{0.477} \simeq 1.262\]
+	Y con la calculadora comprobamos que $3^{1.262} = 4.0006$ (no sale exactamente igual a 4 porque hemos redondeado)
+	
+	\item $\log_{35} 7 = \frac{\ln 7}{\ln 35}$\\
+	
+	Como antes, cogemos la calculadora y obtenemos $\ln 7 \simeq 1.9459$ y $\ln 35 \simeq 3.5553$, que sustituyendo nos da:
+	\[\log_{35} 7 = \frac{1.9459}{3.5553} \simeq 0.5473\]
+\end{itemize}
+\end{document}

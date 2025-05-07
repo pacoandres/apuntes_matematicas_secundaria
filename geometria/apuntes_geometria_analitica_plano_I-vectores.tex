@@ -1,0 +1,660 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+%\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows.meta,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de geometría analítica en el plano I.\\Coordenadas y vectores.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+
+%Para trigonometría
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+\newcommand{\degree}{^\circ}
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+
+%Para las unidades:
+\newcommand{\unidad}[1]{\,\text{#1}}
+
+
+\renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+
+%Colores
+\definecolor{gridgray}{gray}{0.7}
+\pgfplotsset{grid style={color=gridgray}}
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\tableofcontents
+\newpage
+
+\section{Coordenadas en el plano.}
+
+En matemáticas cada \textbf{posición} en el plano se define con \textbf{una pareja de valores}
+que indican la \textbf{distancia horizontal y la altura con respecto} a un punto determinado
+llamado \textbf{origen}.\\
+
+Esta pareja de valores se escribe entre paréntesis y separada por una coma o un punto y coma
+(esto último es obligatorio cuando trabajemos con decimales).\\
+
+El primer valor siempre es la distancia horizontal y el segundo la altura, con el siguiente
+criterio de signos:
+\begin{itemize}
+\item En horzontal: positivo indica a la derecha del origen, negativo a la izquierda.
+\item En vertical: positivo indica por encima del origen, negativo por debajo.
+\end{itemize}
+
+De esta manera $(-1,2)$ indica una posición que está $1$ unidad a la izquierda del origen y
+$2$ unidades por encima. Gráficamente:
+\begin{center}
+\begin{tikzpicture}
+	\begin{axis}[xmin=-3, xmax=3, ymin=-3, ymax=3, xtick={-3, -2, - 1, 0, 1, 2, 3}, ytick={-3, -2, - 1, 0, 1, 2, 3}, axis x line=center, axis y line=center, grid=both]
+		\addplot[mark=*, only marks] coordinates {(-1, 2)};
+	\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Para hacer más sencilla la comprensión gráfica se añaden unos ejes en los que se indican las
+distancias horizontales y verticales al origen (que es el punto en el que se cortan los ejes)
+y, a veces, se añade una cuadrícula para mayor
+simplicidad. A lo largo de este primer cuadernillo de apuntes se intentará representar todo de
+esta manera salvo en situaciones en las que consideremos que el dibujo de los ejes o la cuadrícula
+pueda dificultar la comprensión de lo que pretendemos explicar.
+
+\section{El punto.}
+El punto es el elemento geométrico más elemental, todo se define a partir de él.\\
+El punto no tiene dimensiones, sin longitud, ni superficie ni volumen. Se corresponde con una
+posición en el espacio, de manera que se indica de la misma manera que ésta pero añadiéndole un
+nombre que siempre es una letra mayuscula.\\
+
+De esta manera los puntos $A(3, 0)$, $B(-1, -1)$ y $C\left(2, -\frac{3}{2}\right)$ son:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[xmin=-4, xmax=4, ymin=-4, ymax=4, xtick={-3, -2, - 1, 0, 1, 2, 3}, ytick={-3, -2, - 1, 0, 1, 2, 3}, axis x line=center, axis y line=center, grid=both]
+      % \addplot[mark=*, only marks] coordinates {(3,0) (-1,-1) (2,.5)};
+      \addplot[mark=*, only marks] coordinates {(3,0)} node[above] {$A$};
+      \addplot[mark=*, only marks] coordinates {(-1,-1)} node[left] {$B$};
+      \addplot[mark=*, only marks] coordinates {(2,-1.5)} node[below] {$C$};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+Dependiendo del contexto los puntos se nombran a partir de la $A$ o de la $P$, o de otra letra
+si el contexto lo hace necesario. Lo importante es que es una letra mayúscula.
+\section{El vector.}
+En matemáticas existen múltiples definiciones de vectores, más sencillas o más complejas,
+cada una de ellas prestando más o menos atención a determinadas características (que veremos más
+adelante).
+
+La definición que vamos a utilizar aquí es una definición intuitiva, basada en el movimiento:
+\begin{center}
+  \emph{\textbf{Un vector es el desplazamiento que hay que realizar para ir de un punto a otro.}}  
+\end{center}
+Y la ventaja de esta definición, además de ser fácilmente comprensible, es que lleva implicito
+el mecanismo para calcular un vector, porque \textbf{¿cómo se calcula el desplazamiento de un lugar a otro?}.
+
+Pensemos en cómo calculamos el desplazamiento para ir del 2º al 5º piso, \textbf{lo que hacemos es
+  restar} $5-2 = 3$, el desplazamiento es de 3 pisos.
+
+De esta manera el vector que nos lleva desde el punto $A$ al punto $B$ (que se escribe $\overrightarrow{AB}$, con una flecha encima) será:
+\[\overrightarrow{AB} = B -A\quad\quad\text{(el desplazamiento siempre es destino menos origen)}\]
+\begin{center}
+  \small{(En algunos textos en lugar de la flecha lo que se hace es escribir el vector en
+    negrita $\overrightarrow{AB} = \boldsymbol{AB}$, pero no es lo normal)}
+\end{center}
+
+Pero, ¿cómo podemos restar un punto a otro si tiene dos valores entre paréntesis?.\\
+Lo que tenemos que hacer es no mezclar la parte horizontal con la vértical, tenemos que operarlas
+siempre por separado.\\
+De esta manera, si $A(A_x, A_y)$ y $B(B_x,B_y)$ el vector $\overrightarrow{AB}$ será:
+\[\overrightarrow{AB} = B - A = (B_x,B_y) - (A_x,A_y) = (B_x - A_x, B_y - A_y)\]
+Es decir, la parte horizontal del vector $\overrightarrow{AB}$, que se llama \textit{componente
+  horizontal}, es la resta de las coordenadas horizontales de los puntos. Y lo mismo ocurre para la
+componente vertical del vector.\\
+
+A partir de esta definición es fácil darse cuenta de que $\overrightarrow{AB}$ no es el mismo vector
+que $\overrightarrow{BA}$, el primero es el que va a $A$ a $B$ y el segundo al revés, de manera que
+son vectores opuestos:
+\begin{itemize}
+\item $\overrightarrow{AB} = B-A$.
+\item $\overrightarrow{BA} = A - B$.
+\end{itemize}
+
+Vamos a ver unos ejemplos y así vemos cómo se interpreta geométricamente el vector.
+
+\begin{questions}
+\question Calcula y dibuja el vector que va del punto $A(3,-2)$ al punto $B(-1, 1)$.
+  \begin{solution}
+    El cálculo del vector es sencillo, teniendo cuidado con los signos:
+    \[\overrightarrow{AB} = (-1, 1) - (3, -2) = (-1-3, 1-(-2)) = (-4, 3)\]
+    
+    Y la representación de la situación:
+    \begin{center}
+      \begin{tikzpicture}
+        \begin{axis}[xmin=-4, xmax=4, ymin=-4, ymax=4, xtick={-3, -2, - 1, 0, 1, 2, 3}, ytick={-3, -2, - 1, 0, 1, 2, 3}, axis x line=center, axis y line=center, grid=both]
+          % \addplot[mark=*, only marks] coordinates {(3,0) (-1,-1) (2,.5)};
+          \addplot[mark=*, only marks] coordinates {(3,-2)} node[above] {$A$};
+          \addplot[mark=*, only marks] coordinates {(-1,1)} node[left] {$B$};
+          \draw[arrows={-Latex[length=3mm]}] (3,-2) -- (-1,1);
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+  \end{solution}
+Ahora vamos a interpretar lo que significa $\overrightarrow{AB} = (-4,3)$ en el dibujo.\\
+Si nos fijamos en la parte horizontal el vector recorre cuatro unidades (cuadritos)
+hacia la izquierda,
+por eso la componente horizontal es $-4$; mientras que la componente vertical recorre tres
+unidades hacia arriba y esa componente es $3$ positivo.
+
+A modo de regla tenemos que:
+\begin{itemize}
+\item Si la componente horizontal es positiva significa que el desplazamiento es hacia la
+  derecha, mientras que si es negativo es a la izquierda.
+\item Si la componente vertical es positiva significa que el desplazamiento es hacia arriba,
+  mientras que si es negativa el desplazamiento es hacia abajo.
+\end{itemize}
+
+\question Calcula a qué punto se desplaza el punto $A(3,-2)$ mediante el vector
+  $\overrightarrow{AB} = (-4, -1)$.
+  \begin{solution}
+    Si hemos visto que el vector se calcula como el destino menos el origen
+    \[\overrightarrow{AB} = B-A\]
+    para calcular el destino solo tenemos que despejar:
+    \[B = \overrightarrow{AB} + A\]
+    \[B = (-4, -1) + (3, -2)\]
+    Y sumaremos como antes, horizontal con horizontal y vertical con vertical:
+    \[B = (-4+ 3, -1 + (-2)) = (-1, -3)\]
+
+    De manera gráfica para poder interpretarlo:
+    \begin{center}
+      \begin{tikzpicture}
+        \begin{axis}[xmin=-4, xmax=4, ymin=-4, ymax=4, xtick={-3, -2, - 1, 0, 1, 2, 3}, ytick={-3, -2, - 1, 0, 1, 2, 3}, axis x line=center, axis y line=center, grid=both]
+          % \addplot[mark=*, only marks] coordinates {(3,0) (-1,-1) (2,.5)};
+          \addplot[mark=*, only marks] coordinates {(3,-2)} node[above] {$A$};
+          \addplot[mark=*, only marks] coordinates {(-1,-3)} node[left] {$B$};
+          \draw[arrows={-Latex[length=3mm]}] (3,-2) -- (-1,-3);
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+  \end{solution}
+  La interpretación gráfica es que hemos dibujado el punto $A$ en las coordenadas correspondientes,
+  después hemos dibujado $\overrightarrow{AB}$ desde $A$, $4$ unidades a la izquierda y una
+  hacia abajo como indican sus componentes, y en el punto en el que termina
+  hemos situado $B$.
+  Y vemos que el resultado gráfico de $B$ coincide con el calculado.
+\end{questions}
+
+\subsection{Propiedades de los vectores.}
+Al estar compuestos de varios valores y tener el significado que tienen hace que los vectores
+tengan unas propiedades fundamentales que no tiene ningún otro objeto matemático que hayamos
+visto hasta ahora.\\
+
+Estas propiedades son las siguientes:
+\begin{itemize}
+\item \textbf{Módulo}: que es el tamaño del vector. Es fácil ver que, geométricamente, el vector y sus componentes forman un triángulo rectángulo en el que el vector es la hiponenusa.
+  \begin{center}
+    \begin{tikzpicture}
+      \coordinate (O) at (0,0);
+      \coordinate (A) at (3,2);
+      \coordinate (B) at (3,0);
+      \draw[-Latex] (O)--(A) node[midway, above, sloped] {$\vec{v}$};
+      \draw[dashed] (O)--(B) node[midway, below] {$v_x$};
+      \draw[dashed] (B)--(A) node[midway, right] {$v_y$}; 
+    \end{tikzpicture}
+  \end{center}
+  Entonces podemos utilizar el teorema de Pitágoras para calcular el módulo del vector, que
+  se escribe poniéndolo entre dos barras verticales:
+  \[|\vec{v}| = \sqrt{v_x^2 + v_y^2}\] 
+\item \textbf{Dirección}: la dirección de un vector es la recta que lo contiene. Para entenderlo
+  mejor podemos imaginar que la dirección de un vector es la inclinación que tiene este con
+  respecto a la horizontal.\\
+  Muchas veces se utiliza como ``sinónimo'' \textbf{la pendiente}, que es \textbf{la tangente del
+    ángulo que forma el vector con la horizontal} y, teniendo en cuenta que el vector con sus
+  componentes forma un triángulo rectángulo, la pendiente se calcula como:
+  \begin{center}
+    Pendiente$=\tg \alpha = \frac{v_y}{v_x}$
+    \small{(Aprovechamos esta propiedad para recordar que es necesario saber
+      trigonometría básica para poder aprender geometría analítica)}
+  \end{center}
+  De aquí se saca la conclusión de que \textbf{dos vectores que tienen la misma dirección} forman el
+  mismo ángulo con la horizontal y por tanto \textbf{son paralelos}.
+\item \textbf{Sentido}: el sentido del vector es hacia que lado de la dirección apunta. El sentido
+  viene indicado por el signo de las componentes.
+\end{itemize}
+
+\textbf{Para que dos vectores sean iguales tienen que tener el mismo módulo, la misma dirección
+  y el mismo sentido.}\\
+Por eso en la definición de vectores hemos dicho que $\overrightarrow{AB}$ y $\overrightarrow{BA}$
+no son el mismo vector ya que tienen igual módulo y dirección pero distinto sentido, por lo que
+hemos dicho que son opuestos.
+
+\begin{questions}
+\question Calcula el módulo y el ángulo que forma con la horizontal el vector $\vec{v} = (-1,3)$.
+  \begin{solution}
+    Por lo que hemos visto el módulo se calcula utilizando el teorema de Pitágoras:
+    \[|\vec{v}| = \sqrt{(-1)^2 + 3^2} = \sqrt{10}\]
+
+    Y el ángulo que forma con la horizontal es el arco de tangente de su pendiente:
+    \[\tg \alpha = \frac{3}{-1} = -3\]
+    \[\alpha = \atg (-3) \simeq -71.57\degree = 288.43\degree\]
+    El ángulo lo podemos dejar en negativo o positivo según nos convenga o nos diga el contexto.
+  \end{solution}
+\end{questions}
+\subsection{Vectores unitarios.}
+Se dice que que un vector es unitario cuando su módulo es $1$.\\
+Más adelante veremos como obtener un vector unitario en la dirección y sentido de otro vector.
+
+\subsection{Vectores ligados y vectores libres.}
+Esta es una definición que depende completamente del contexto en el que estemos trabajando y no
+afecta a la manera en que realicemos las operaciones.\\
+
+Se dice que un vector es ligado cuando está asociado a un punto de origen. En el ejemplo que hemos
+utilizado para la definición de vector hemos usado un vector ligado y por eso en el nombre
+hemos puesto el nombre de los puntos ($\overrightarrow{AB}$).\\
+El \textbf{punto en el que empieza} el vector se llama \textbf{punto de aplicación}.\\
+A los vectores ligados a veces también se les llama vectores fijos.\\
+
+Se dice que un vector es libre cuando no está asociado a un punto en concreto. Este caso sería el
+que hemos utilizado para definir las propiedades básicas de los vectores y por eso lo hemos
+llamado con una letra minúscula ($\vec{v}$). Cuando un vector es libre siempre se nombra con
+una letra minúscula.
+
+\section{Operaciones con vectores.}
+Todas las operaciones con vectores tienen dos formas de hacerse, la analítica y la geométrica.\\
+
+La analítica es más sencilla ya que consiste en sumas, restas, \dots Es decir, operaciones
+aritméticas básicas. Pero esta manera no nos proporciona información sobre lo que está
+sucediendo.\\
+
+La geométrica es más compleja ya que es necesario dibujar todo, pero nos permite saber qué está
+sucediendo y así poder interpretar el resultado o saber que operación tenemos que realizar
+para conseguir un objetivo.\\
+
+Es evidente que hay que saber y entender las dos maneras ya que el procedimiento a utilizar va a
+ser el siguiente:
+\begin{enumerate}
+\item Dibujar la situación inicial.
+\item Pensar en las operaciones geométricas que tenemos que hacer para conseguir el
+  objetivo.
+\item Realizar de manera analítica las operaciones del punto anterior para llegar al resultado.
+\end{enumerate}
+
+Y es por esto que en cada operación se va a explicar el cálculo analítico y la interpretación
+geométrica de la operación, tanto en la explicación como en los ejemplos.
+
+\subsection{Opuesto de un vector.}
+Dos vectores son opuestos si tienen el mismo módulo y la misma dirección pero distinto sentido.\\
+Para calcular el opuesto de un vector solo hay que cambiar de signo a las componentes.\\
+Si tenemos $\vec{v} =(v_x, v_y)$ el opuesto será:
+\[-\vec{v} = (-v_x, -v_y)\]
+
+La interpretación geométrica es:
+\begin{center}
+  \begin{tikzpicture}
+    \draw[-Latex] (0,0)--(2,1) node[midway, sloped, above] {$\vec{v}$};
+    \draw[Latex-] (0,-1)--(2,0) node[midway, sloped, above] {$-\vec{v}$};
+  \end{tikzpicture}
+\end{center}
+Como se puede ver ambos tienen el mismo módulo y la misma dirección, pero distinto sentido.
+
+\begin{questions}
+\question Escribe un vector $\vec{w}$ opuesto a $\vec{v} = (-2,3)$.
+  \begin{solution}
+    Este ejemplo es muy sencillo:
+    \[\vec{w} = -\vec{v} = (2,-3)\]
+  \end{solution}
+\end{questions}
+\subsection{Suma de punto y vector.}
+Esta operación ya se ha explicado en la definición de vector, ya que está íntimamente ligada
+a esta definición, pero no está de más volverla a contar, tanto de manera analítica como
+geométrica.\\
+
+Si tenemos un punto $A(A_x, A_y)$ y un vector $\vec{v}= (v_x, v_y)$ el resultado de su suma
+($A + \vec{v}$) es un punto cuyas coordenadas son:
+\[B(B_x,B_y) = (A_x + v_x, A_y + v_y)\]
+
+Geométricamente es el punto que en el que acaba el vector cuando se aplica en el punto $A$:
+\begin{center}
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \begin{axis}[xmin=-2, xmax=2, ymin=-3, ymax=3, axis lines =none]
+      \addplot[mark=*, only marks] coordinates {(-1,-2)} node[left] {$A$};
+      \addplot[draw=none] coordinates {(1,2)};
+      \node at (-.5,1.5) {\textbf{1.}};
+    \end{axis}
+  \end{tikzpicture}
+  \quad
+  $\longrightarrow$
+  \quad
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \begin{axis}[xmin=-2, xmax=2, ymin=-3, ymax=3, axis lines =none]
+      \addplot[mark=*, only marks] coordinates {(-1,-2)} node[left] {$A$};
+      \draw[arrows={-Latex[length=3mm]}] (-1,-2) -- (1,2) node[midway, above, sloped]
+      {$\vec{v}$};
+      \node at (-.5,1.5) {\textbf{2.}};
+    \end{axis}
+  \end{tikzpicture}
+  \quad
+  $\longrightarrow$
+  \quad
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \begin{axis}[xmin=-2, xmax=2, ymin=-3, ymax=3, axis lines =none]
+      \addplot[mark=*, only marks] coordinates {(-1,-2)} node[left] {$A$};
+      \addplot[mark=*, only marks] coordinates {(1,2)} node[right] {$B$};
+      \draw[arrows={-Latex[length=3mm]}] (-1,-2) -- (1,2) node[midway, above, sloped]
+      {$\vec{v}$};
+      \node at (-.5,1.5) {\textbf{3.}};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+Tal y como indica el dibujo la operación geométrica es
+\begin{enumerate}
+\item Dibujamos el punto de partida.
+\item Aplicamos el vector en el punto de partida avanzando en horizontal y vertical los valores
+  indicados en las componentes.
+\item El resultado es el punto en el que finaliza el vector.
+\end{enumerate}
+\subsection{Suma de vectores.}
+\textbf{La suma de vectores es otro vector cuya componente horizontal es la suma de las componentes horizontales y cuya componente vertical es la suma de componenetes verticales.}\\
+Es decir, si $\boldsymbol{\vec{u} = (u_x, u_y)}$ y $\boldsymbol{\vec{v} = (v_x, v_y)}$ entonces:
+\[\boldsymbol{\vec{u} + \vec{v} = (u_x + v_x, u_y + v_y)}\]
+
+Geométricamente la suma de vectores es como poner un vector a continuación del otro, el vector
+resultante tiene el mismo origen que el primero y el mismo destino que el segundo.
+\begin{center}
+  \begin{multicols}{2}
+    \begin{tikzpicture}
+      % \begin{axis}
+      \draw[-latex] (0,0) -- (2,3) node[midway,above,sloped] {$\vec u$};
+      \draw[-latex] (2,3) -- (4,1) node[midway,above,sloped] {$\vec v$};
+      \draw[ultra thick, -latex] (0,0) -- (4,1) node[midway,above,sloped] {$\vec u + \vec{v}$};
+      % \end{axis}
+    \end{tikzpicture}
+    
+    \begin{tikzpicture}
+      
+      \draw[-latex] (0,0) -- (2,-2) node[midway,above,sloped] {$\vec v$};
+      \draw[-latex] (2,-2) -- (4,1) node[midway,above,sloped] {$\vec u$};
+      \draw[ultra thick, -latex] (0,0) -- (4,1) node[midway,above,sloped] {$\vec u + \vec{v}$};
+      
+    \end{tikzpicture}
+  \end{multicols}
+\end{center}
+
+En la represtación geométrica hemos puesto la operación en dos ordenes distintos y es fácil ver
+que el resultado es el mismo, lo que quiere decir que la suma de vectores es conmutativa.\\
+
+El igual que ocurre con los enteros, la resta de vectores es equivalente a la suma con el
+opuesto del segundo.
+
+Vamos a ver un par de ejemplos de manera analítica y gráfica.
+\begin{questions}
+\question Dados los vectores $\vec{u} = (3,2)$ y $\vec{v} = (-1, 2)$ calcula y dibuja
+  $\vec{w} = \vec{u} + \vec{v}$.
+  \begin{solution}
+    El cálculo es sencillo:
+    \[\vec{w} = (3,2) + (-1,2) = (2,4)\]
+
+    Vamos a hacer ahora el cálculo geométrico, primero empezando por $\vec{u}$ y luego
+    empezando por $\vec{v}$ para comprobar que sale lo mismo (cada cuadradito representa
+    una unidad):
+
+    \begin{center}
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=-1, xmax=4, ymin=-1, ymax=5, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5}]
+          \draw[-Latex] (0,0) --(3,2) node[midway, sloped, above] {$\vec{u}=(3,2)$};
+          \node at (-1,4) {\textbf{1.}};
+        \end{axis}
+      \end{tikzpicture}
+      \quad
+      $\longrightarrow$
+      \quad
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=-1, xmax=4, ymin=-1, ymax=5, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5}]
+          \draw[-Latex] (0,0) --(3,2) node[midway, sloped, below] {$\vec{u}=(3,2)$};
+          \draw[-Latex] (3,2) -- (2,4) node[midway, sloped, above] {$\vec{v}=(-1,2)$};
+          \draw[ultra thick, -Latex] (0,0) -- (2,4) node[midway, sloped, above] {$\vec{w}$};
+          \node at (-1,4) {\textbf{2.}};
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+
+    Hemos dibujado primero $\vec{u}$ (tres unidades a la derecha y dos hacia arriba) y a
+    continuación $\vec{v}$ (una unidad a la izquierda y dos hacia arriba). El resultado es
+    el vector que une el origen de $\vec{u}$ y el destino de $\vec{v}$ y recorre dos unidades a la
+    derecha y cuatro hacia arriba, que es lo que nos ha salido en el cálculo.\\
+
+    Vamos a hacerlo ahora al revés y veremos que el resultado es el mismo:
+    \begin{center}
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=-2, xmax=3, ymin=-1, ymax=5, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5}]
+          \draw[-Latex] (0,0) --(-1,2) node[midway, sloped, above] {$\vec{v}=(-1,2)$};
+          \node at (-2,4) {\textbf{1.}};
+        \end{axis}
+      \end{tikzpicture}
+      \quad
+      $\longrightarrow$
+      \quad
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=-2, xmax=3, ymin=-1, ymax=5, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5}]
+          \draw[-Latex] (0,0) --(-1,2) node[midway, sloped, below] {$\vec{v}=(-1,2)$};
+          \draw[-Latex] (-1,2) -- (2,4) node[midway, sloped, above] {$\vec{u}=(3,2)$};
+          \draw[ultra thick, -Latex] (0,0) -- (2,4) node[midway, sloped, below] {$\vec{w}$};
+          \node at (-2,4) {\textbf{2.}};
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+
+    Hemos empezado dibujando $\vec{v}$ y a continuación $\vec{u}$, y el resultado sigue teniendo
+    dos unidades a la derecha y cuatro hacia arriba.\\
+    Esto nos quiere decir que la suma de vectores es conmutativa.
+  \end{solution}
+\question Dados los mismos vectores que en el enunciado anterior calcula $\vec{a} = \vec{u} -
+  \vec{v}$.
+  \begin{solution}
+    Recordemos los vectores que nos daban $\vec{u} = (3,2)$ y $\vec{v} = (-1, 2)$.\\
+
+    El cálculo sigue siendo sencillo:
+    \[\vec{a} = (3,2) - (-1, 2) = (3-(-1), 2-2) = (4,0)\]
+
+    Para hacer la operación geométricamente vamos a tener en cuenta que la resta es lo mismo
+    que sumar con el opuesto. Entonces
+    \[\vec{a} = \vec{u} -\vec{v} = \vec{u} + (-\vec{v})\]
+
+    Con lo que para el cálculo geométrico vamos a dibujar $\vec{u}$ y a continuación
+    $-\vec{v} = (1, -2)$:
+
+    \begin{center}
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=0, xmax=5, ymin=-1, ymax=4, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4}]
+          \draw[-Latex] (0,0) --(3,2) node[midway, sloped, above] {$\vec{u}=(3,2)$};
+          \node at (0,3) {\textbf{1.}};
+        \end{axis}
+      \end{tikzpicture}
+      \quad
+      $\longrightarrow$
+      \quad
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=0, xmax=5, ymin=-1, ymax=4, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4}]
+          \draw[-Latex] (0,0) --(3,2) node[midway, sloped, above] {$\vec{u}=(3,2)$};
+          \draw[-Latex] (3,2) -- (4,0) node[midway, sloped, above] {$-\vec{v}=(1,-2)$};
+          \draw[ultra thick, -Latex] (0,0) -- (4,0) node[midway, sloped, below] {$\vec{a}$};
+          \node at (0,3) {\textbf{2.}};
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+    Vemos que dibujando $\vec{u}$ y a continuación $-\vec{v}$ el vector que obtenemos tiene las
+    mismas componentes que habíamos calculado.\\
+    Y esta sería la interpretación geométrica de la resta de vectores.
+  \end{solution}
+\end{questions}
+\subsubsection{Regla del paralelogramo.}
+Para entender bien esta regla vamos a utilizar los vectores de los ejemplos de la suma de
+vectores.\\
+
+Estos vectores han sido $\vec{u} = (3,2)$ y $\vec{v} = (-1, 2)$, y lo que vamos a hacer es dibujar
+el paralelogramo que tiene de lados esos dos vectores:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis equal, xmin=-1, xmax=4, ymin=-1, ymax=5, axis lines = middle,
+      axis line style={draw=lightgray}, xticklabel=\empty, yticklabel=\empty,
+      tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5}]
+      \draw[thick, -Latex] (0,0) --(3,2) node[midway, sloped, below] {$\vec{u}$};
+      \draw[thick, -Latex] (0,0) --(-1,2) node[midway, sloped, below] {$\vec{v}$};
+      \draw[thick,-Latex] (-1,2) --(2,4) node[midway, sloped, above] {$\vec{u}$};
+      \draw[thick,-Latex] (3,2) --(2,4) node[midway, sloped, above] {$\vec{u}$};
+      \addplot[mark=*, only marks] coordinates {(0, 0)};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+Y resulta que \textbf{el vector suma $\boldsymbol{\vec{u} + \vec{v}}$ es la diagonal que va del
+  punto del que salen los dos vectores al punto al que llegan los dos}:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis equal, xmin=-1, xmax=4, ymin=-1, ymax=5, axis lines = middle,
+      axis line style={draw=lightgray}, xticklabel=\empty, yticklabel=\empty,
+      tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5}]
+      \draw[dashed, thick,-Latex] (0,0) --(3,2) node[midway, sloped, below] {$\vec{u}$};
+      \draw[dashed,thick,-Latex] (0,0) --(-1,2) node[midway, sloped, below] {$\vec{v}$};
+      \draw[dashed,thick,-Latex] (-1,2) --(2,4) node[midway, sloped, above] {$\vec{u}$};
+      \draw[dashed,thick,-Latex] (3,2) --(2,4) node[midway, sloped, above] {$\vec{u}$};
+      \addplot[mark=*, only marks] coordinates {(0, 0)};
+      \draw[ultra thick, -Latex] (0,0) --(2,4) node[midway, sloped, above] {$\vec{u}+\vec{v}$};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+\textbf{El vector resta $\boldsymbol{\vec{u} - \vec{v}}$ es la diagonal que va desde el destino de
+  $\boldsymbol{\vec{v}}$ al destino de $\boldsymbol{\vec{u}}$}:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[axis equal, xmin=-1, xmax=4, ymin=-1, ymax=5, axis lines = middle,
+      axis line style={draw=lightgray}, xticklabel=\empty, yticklabel=\empty,
+      tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5}]
+      \draw[dashed,thick, -Latex] (0,0) --(3,2) node[midway, sloped, below] {$\vec{u}$};
+      \draw[dashed,thick, -Latex] (0,0) --(-1,2) node[midway, sloped, below] {$\vec{v}$};
+      \draw[dashed,thick,-Latex] (-1,2) --(2,4) node[midway, sloped, above] {$\vec{u}$};
+      \draw[dashed,thick,-Latex] (3,2) --(2,4) node[midway, sloped, above] {$\vec{u}$};
+      \addplot[mark=*, only marks] coordinates {(0, 0)};
+      \draw[ultra thick, -Latex] (-1,2)--(3,2) node[midway, sloped, above] {$\vec{u} - \vec{v}$};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+\end{document}

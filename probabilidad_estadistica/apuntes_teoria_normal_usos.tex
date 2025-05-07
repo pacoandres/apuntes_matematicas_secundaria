@@ -1,0 +1,197 @@
+\documentclass[a4paper,10pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+%para la última página
+\usepackage{lastpage}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \titulofichas {\textbf {Usos de la Distribución Normal}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+%\runningheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+\footer{}{\thepage}{}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+\begin{document}
+
+
+\section*{Usos de la distribución normal}
+En estos apuntes se supone que hay un conocimiento inicial de la normal y sus tablas. La normal es una distribución de probabilidad, con lo que para calcular la probabilidad tenemos que calcular la integral, que se corresponde con el área encerrada entre la curva y el eje $X$, que es lo que nos dan en las tablas.\\
+
+Para poder interpretar las tablas hay que recordar que una distribución normal se describe utilizando el valor de su media ($\mu$) y su desviación típica ($\sigma$): $N(\mu, \sigma)$
+
+Para simplificar el cálculo se utilizan las tablas de $N(0,1)$ , y la más usada es la que los da la probabilidad de que se dé un valor menor que uno dado, es decir $P(z \leq k)$.\\
+
+Teniendo en cuenta que el área total bajo la curva es 1 (ya que la probabilidad total tiene que ser del 100\%) y que la curva es simétrica con respecto a la media, se sacan las siguientes conclusiones:
+\begin{itemize}
+\item $P(z > k) = 1 - P(z \leq k)$
+\item $P(-z \leq k = P(z > k) = 1 - P(z \leq k)$
+\item $P(-z > k) = P (z \leq k)$
+\item $P(a < z \leq b) = P (z \leq b) - P(z \leq a)$
+\end{itemize}
+
+Cuando la $\mu \neq 0$ o $\sigma \neq 1$ hay que tipificar o destipificar la variable para adaptar los datos que obtenemos de la tabla:
+\begin{itemize}
+	\item \textbf{Tipificar}: tenemos $N(\mu, \sigma)$ y necesitamos calcular la probabilidad de que $x \leq a$:
+	\begin{enumerate}
+		\item Tipificamos la variable: $k = \frac{a - \mu }{\sigma}$.
+		\item Buscamos en la tabla $P(z \leq k)$
+		\item El resultado es $P(x \leq a) = P ( z\leq k)$
+	\end{enumerate}
+	\item \textbf{Destipificar}: tenemos $N(\mu, \sigma)$ y queremos saber para que valor de $a$ se tiene que $P(x \leq a) = p$
+	\begin{enumerate}
+		\item Buscamos $p$ en la tabla, de donde sacaremos $k$
+		\item deshacemos la tipificación, con lo que $a = \mu + k \cdot \sigma$
+	\end{enumerate}
+\end{itemize}
+
+Una vez dicho todo esto vamos a ver los tres usos de la normal:
+\begin{itemize}
+	\item Para calcular probabilidades.
+	\item Para estimar valores estadísticos globales a partir de una muestra (inferencia estadística)
+	\item Para estimar una proporción.
+\end{itemize}
+\subsection*{Cálculo de probabilidades}
+En este caso tenemos una distribución $N(\mu, \sigma)$ aplicable a toda la población (no hay muestras ni grupos de individuos).\\
+En este caso la normal se utiliza como vimos el curso pasado.\\
+
+En este curso únicamente aparece un concepto nuevo que es el \textbf{Intervalo Característico} para una probabilidad dada, cuyo significado es \emph{el intervalo centrado en la media entre cuyos extremos se encuentran todos los valores para los que la probabilidad alcanza la probabilidad dada.}\\
+Vamos a verlo con unos ejemplos.\\
+
+\emph {Si me dicen que el intervalo característico de las alturas de los alumnos de un centro una probabilidad del 90\% es $(1.55\,cm; 1.75\,cm)$  significa que si cogemos un alumno al azar tenemos el 90\% de probabilidades de que su altura esté dentro del intervalo}.\\
+
+
+\emph {Si me dicen que en un juego de azar el intervalo característico de las ganancias con una probabilidad del 80\% es $(-20$\,€;$ 1$\,€) significa que si juego tengo un 80\% de probabilidades de ganar una cantidad que esté en ese intervalo.}\\
+
+Para el intervalo característico tenemos varios parámetros que necesitaremos para hacer los cálculos:
+\begin{itemize}
+	\item probabilidad que nos piden, o \textbf{Nivel de Confianza}. Se le suele dar la letra $p$.
+	\item $\alpha$ es el \textbf{Nivel de Significación}, y se cumple que $\alpha = 1 - p$
+	\item $z_\frac{\alpha}{2}$ es el \textbf{Valor Crítico}, y es el valor para el que se cumple
+	$P(z \leq z_{\frac{\alpha}{2}}) = 1-\frac{\alpha}{2}$
+\end{itemize}
+Con esto el cálculo del intervalo característico se realiza de la siguiente forma.\\
+Nos dan $\mu$, $\sigma$ y $p$
+\begin{enumerate}
+	\item De $p$ sacamos $\frac{\alpha}{2}$
+	\item Buscamos $1-\frac{\alpha}{2}$ en la tabla y obtenemos $z_\frac{\alpha}{2}$
+	\item El intervalo característico es $(\mu - \sigma \cdot z_\frac{\alpha}{2}, \mu + \sigma \cdot z_\frac{\alpha}{2})$
+\end{enumerate}
+
+\subsection*{Inferencia estadística}
+Cuando se hace un estudio estadístico sobre una población, lo ideal sería obtener datos de todos los individuos que la componen. Pero lo normal es que no sea posible.\\
+Cuando no es posible lo que se hace es coger una muestra y de esta muestra extraer las conclusiones para el total de la población. El problema es, ¿cómo de buenas son estas conclusiones? De eso trata la inferencia estadística.\\
+
+Para empezar vamos a hacer distinción entre dos tipos de medias, que es fundamental para entender esto:
+\begin{itemize}
+	\item \textbf{Media poblacional}: es la media que se obtendría utilizando toda la población.
+	\item \textbf{Media muestral}: es la media que se obtiene utilizando una única muestra.
+\end{itemize}
+
+Se sabe que si cogemos muchas muestras de una población, obtenemos la media muestral y la desviación típica de cada una de ellas y las comparamos con las de las demás y con la media poblacional, estas medias muestrales van a distribuirse según la normal.\\
+
+Pongamos un ejemplo:\\
+Hemos hecho una estadística a 350 muestras y hemos obtenido las siguientes medias muestrales y sus repeticiones.
+\begin{itemize}
+	\item 44 muestras han dado de media 1
+	\item 11 muestras han dado de media 25
+	\item 78 muestras han dado de media 15
+	\item 78 muestras han dado de media 5
+	\item 99 muestras han dado de media 9
+	\item 40 muestras han dado de media 19
+\end{itemize}
+Representamos estas muestras y queda lo siguiente:\\
+\begin{center}
+	\includegraphics[scale=1]{distribucion_medias.eps} 
+\end{center}
+Hemos puesto punteada la forma de la normal, para que se observe que las medias muestrales se distribuyen según la normal.\\
+
+De esto se concluye que la distribución de las medias muestrales de una estadística cuya media poblacional es $\mu$ y cuya desviación típica es $\sigma$ sigue una distribución normal $N \left(\mu, \frac{\sigma}{\sqrt{n}}\right)$, donde $n$ es el número de individuos que compone la muestra.\\
+Es decir, si elegimos una muestra de n individuos, la probabilidad de que su media muestral tenga un valor determinado va a seguir una distribución normal $N\left(\mu, \frac{\sigma}{\sqrt{n}}\right)$.\\
+
+Dicho todo esto, lo que queremos saber es como de buena es una estadística en la que hemos utilizado $n$ individuos. Para eso definimos los siguientes parámetros:
+\begin{itemize}
+	\item \textbf{Intervalo de confianza}: una muestra de tamaño $n$ nos ha dado una media muestral $\overline{x}$ y 
+	queremos saber entre
+	que márgenes estará la media poblacional con una probabilidad $p$. Recordando que $\alpha = 1 - p$ tenemos que este
+	intervalo de confianza es:
+	\begin{center}
+		$\left(\overline{x} - z_{\frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}, \overline{x} + z_{\frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}\right)$
+	\end{center}
+	Esto quiere decir que la media poblacional se encontrará dentro de ese intervalo con un nivel de confianza $p$
+	\item \textbf{Error de la estimación}: es el margen en el que se moverá la media poblacional con un nivel de confianza determinado, y es la semianchura del intervalo de confianza. Es decir: $E = z_{\frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}$.
+\end{itemize}
+Una vez que ya hemos definido todo esto, lo razonable es proceder al revés. Es decir, yo quiero tener un error menor que uno dado ($E$) con un un nivel de confianza determinado. Entonces el tamaño de la muestra debe ser:
+\begin{center}
+$n \geq \left(\frac{z_{\frac{\alpha}{2}} \cdot \sigma}{E} \right)^2$
+\end{center}
+
+\subsection*{Estimación de una proporción}
+En este caso lo que estamos buscando es saber que proporción de la población tiene una característica y que proporción no la tiene.\\
+Llamaremos $p$ a la proporción que la tiene, y $q$ a la que no la tiene.\\
+Es evidente que $p + q = 1$.\\
+
+Este caso es similar a la inferencia: tomamos una muestra en la que nos sale una proporción $p$ y queremos saber cómo de buena es la conclusión que sacamos.\\
+
+Aquí no tenemos media ni desviación típica. Pero, por lo que vimos el año pasado de la aproximación de la binomial a la normal, es una buena aproximación hacer $\mu = p$ y $\sigma = \sqrt{\frac{p \cdot q}{n}}$.\\
+De manera que los parámetros del apartado anterior quedan como siguen:
+
+\begin{itemize}
+	\item \textbf{Intervalo de confianza}: una muestra de tamaño $n$ nos ha dado una proporción $p$ y 
+	queremos saber entre
+	que márgenes estará la proporción real con una probabilidad $prob$. Recordando que $\alpha = 1 - prob$ tenemos que este
+	intervalo de confianza es:
+	\begin{center}
+		$\left( p - z_{\frac{\alpha}{2}} \cdot \sqrt{\frac{p \cdot q}{n}}, p + z_{\frac{\alpha}{2}} \cdot \sqrt{\frac{p \cdot q}{n}} \right)$
+	\end{center}
+	Esto quiere decir que la media poblacional se encontrará dentro de ese intervalo con un nivel de confianza $prob$
+	\item \textbf{Error de la estimación}: es el margen en el que se moverá la media poblacional con un nivel de confianza determinado, y es la semianchura del intervalo de confianza. Es decir: $E = z_{\frac{\alpha}{2}} \cdot \sqrt{\frac{p \cdot q}{n}}$.
+\end{itemize}
+Una vez que ya hemos definido todo esto, lo razonable es proceder al revés. Es decir, yo quiero tener un error menor que uno dado ($E$) con un un nivel de confianza determinado. Entonces el tamaño de la muestra debe ser:
+\begin{center}
+$n \geq p \cdot q \left(\frac{z_{\frac{\alpha}{2}} }{E} \right)^2$
+\end{center}
+
+Ejemplo:
+\emph{ En una muestra de 300 personas tomadas al azar en una ciudad se encontró que 104 de ellas leían el periódico.
+Halla, con un nivel de confianza del 90\%, la proporción de habitantes que leen el periódico y el error máximo admisible
+para la proporción de habitantes que leen el periódico}
+\begin{solution}
+Calculamos las proporciones $p=\frac{104}{300} = 0.347$; $q = 1-p = 1-0.347=0.653$ \\
+El error para una probabilidad del 90\%, es decir $\frac{\alpha}{2} = 0.05$, con lo que $z_{\frac{\alpha}{2}} = 1.645$; va a ser:
+\begin{center}
+$E = z_{\frac{\alpha}{2} }\sqrt{\frac{p \cdot q}{n}} = 1.645 \sqrt{\frac{0.347 \cdot 0.653}{300}} = 0.045$
+\end{center}
+Con lo que la proporción de personas que lee el periódico va a ser de $0.347$ (un 34,7\%) con un error de $0.045$. Es decir, va a estar en el intervalo (30,2\%, 39,2\%), que será el intervalo de confianza para esta muestra con un nivel del 90\%.
+\end{solution}
+\end{document}

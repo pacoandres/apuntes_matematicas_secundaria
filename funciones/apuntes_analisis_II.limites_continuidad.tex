@@ -1,0 +1,1057 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de análisis II. Límites y continuidad.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+\begin{document}
+
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+
+\section{Límite de una función en un punto.}
+\subsection{Concepto y definición.}
+El \textbf{límite de una función $f(x)$ cuando $x$ tiende a un punto $a$} (se escribe $x \to a$) es el \textbf{valor al que se va aproximando la función cuanto más se parece $x$ al valor $a$}.\\
+
+El problema de esta definición es que no es utilizable matemáticamente, con lo que tenemos que redefinirla de manera que podamos hacer operaciones con ella. Y lo mejor es hacer una visualización gráfica de lo que está ocurriendo:
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+        compat=1.12,
+        /pgf/declare function={
+            f(\x) = \x^2;
+        }
+}
+\pgfmathsetmacro{\a}{2}
+\pgfmathsetmacro{\d}{1}
+\pgfmathsetmacro{\fa}{f(\a)}
+
+\begin{axis}[width=.7\linewidth, height=.5\linewidth,xmin=-1, xmax=4, ymin = -5, axis x line=center,axis y line=center,
+	xtick={\a}, ytick={\fa}, xticklabels={$\boldsymbol{a}$},
+	yticklabels={$\boldsymbol{l}$}
+]
+    \addplot[
+        domain = 0:3,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^2);
+    \pgfmathsetmacro{\mul}{2}
+	\foreach \i in {0,...,2}
+	{
+
+		\pgfmathsetmacro{\delt}{\d/\mul^\i)}
+		\pgfmathsetmacro{\puntoa}{\a - \delt}
+		\pgfmathsetmacro{\puntob}{\a + \delt}
+		\pgfmathsetmacro{\yb}{f(\puntob)}
+		\pgfmathsetmacro{\ya}{f(\puntoa)}
+		\pgfmathsetmacro{\posx}{-.8+.2*\i}
+		\pgfmathsetmacro{\pose}{-.9+.2*\i}
+		\pgfmathsetmacro{\alturae}{(\yb+\ya)/2}
+		\pgfmathsetmacro{\altura}{-3.5+\i}
+		\pgfmathsetmacro{\alturad}{-4+\i}
+		\pgfmathsetmacro{\posd}{(\puntoa+\puntob)/2}
+		\edef\temp { %Si no está con toda esta mierda no funciona por la expansión de las macros
+			\noexpand \draw[dashed] ( \puntoa , 0)-- ( \puntoa , \ya );
+			\noexpand \draw[dashed] ( \puntob , 0)-- ( \puntob , \yb );
+			\noexpand \draw[dashed] ( 0 , \ya)-- ( \puntoa , \ya );
+			\noexpand \draw[dashed] ( 0 , \yb)-- ( \puntob , \yb );
+			\noexpand \draw[latex-latex, dashed] ( \puntoa, \altura)-- ( \puntob , \altura );
+			\noexpand \node[] at (axis cs: \posd, \alturad) {$\delta_\i$};
+			\noexpand \draw[latex-latex, dashed] ( \posx, \ya)-- ( \posx , \yb );
+			\noexpand \node[] at (axis cs: \pose, \alturae) {$\epsilon_\i$};
+		} \temp
+	}
+	\draw[densely dotted] ( \a , 0)-- ( \a , {f( \a )} );
+	\draw[densely dotted] ( 0 , {f(\a)})-- ( \a , {f( \a )} );
+\end{axis}
+\end{tikzpicture}
+\end{center}
+En la gráfica anterior cada $\delta_i$ representa el intervalo de valores que puede tomar $x$ y cada $\epsilon_i$ el intervalo de valores que puede tomar $f(x)$ en cada caso.\\
+Es fácil observar que conforme el intervalo de $x$ se estrecha alrededor de $a$ el intervalo de valores de $f(x)$ se estrecha alrededor de $l$, y si el intervalo alrededor de $a$ se hace infinitamente pequeño el valor de $f(x)$ solo podrá ser $l$. Es decir:
+\[\lim_{x \to a} f(x) = l\]
+
+De manera simbólica esto que acabamos de ver se expresa así:
+\[\lim_{x \to a} f(x) = l \Leftrightarrow \forall\,\epsilon >0\  \exists\,\delta > 0 / |x-a| < \delta \Rightarrow |f(x) - l| < \epsilon\]
+\begin{small}
+\textit{($\lim_{x \to a} f(x) = l$ si y solo si para todo entorno alrededor del límite $l$ tan pequeño como queramos podemos encontrar un entorno alrededor de $a$ de manera que los valores de $f(x)$ en este entorno no se salgan del entorno que hemos elegido alrededor de $l$).}
+\end{small}
+
+Siguiendo esta definición, un ejemplo de función que no tiene límite sería:
+\begin{center}
+\begin{tikzpicture}
+\pgfplotsset{
+        compat=1.12,
+        /pgf/declare function={
+            f(\x) = \x^2;
+        },
+        /pgf/declare function={
+            g(\x) = \x^2+1;
+        }
+}
+\pgfmathsetmacro{\a}{2}
+\pgfmathsetmacro{\d}{1}
+\pgfmathsetmacro{\fa}{f(\a)}
+\pgfmathsetmacro{\ga}{g(\a)}
+\begin{axis}[width=.7\linewidth, height=.5\linewidth,xmin=-1, xmax=4, ymin = -5, axis x line=center,axis y line=center,
+	xtick={\a}, ytick={\fa, \ga}, xticklabels={$\boldsymbol{a}$},
+	yticklabels={$\boldsymbol{l_1}$, $\boldsymbol{l_2}$}
+]
+    \addplot[
+        domain = 0:\a,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {f(x)});
+    \addplot[
+        domain = \a:3,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {g(x)});
+    \pgfmathsetmacro{\mul}{2}
+	\foreach \i in {0,...,2}
+	{
+
+		\pgfmathsetmacro{\delt}{\d/\mul^\i)}
+		\pgfmathsetmacro{\puntoa}{\a - \delt}
+		\pgfmathsetmacro{\puntob}{\a + \delt}
+		\pgfmathsetmacro{\yb}{g(\puntob)}
+		\pgfmathsetmacro{\ya}{f(\puntoa)}
+		\pgfmathsetmacro{\posx}{-.8+.2*\i}
+		\pgfmathsetmacro{\pose}{-.9+.2*\i}
+		\pgfmathsetmacro{\alturae}{(\yb+\ya)/2}
+		\pgfmathsetmacro{\altura}{-3.5+\i}
+		\pgfmathsetmacro{\alturad}{-4+\i}
+		\pgfmathsetmacro{\posd}{(\puntoa+\puntob)/2}
+		\edef\temp { %Si no está con toda esta mierda no funciona por la expansión de las macros
+			\noexpand \draw[dashed] ( \puntoa , 0)-- ( \puntoa , \ya );
+			\noexpand \draw[dashed] ( \puntob , 0)-- ( \puntob , \yb );
+			\noexpand \draw[dashed] ( 0 , \ya)-- ( \puntoa , \ya );
+			\noexpand \draw[dashed] ( 0 , \yb)-- ( \puntob , \yb );
+			\noexpand \draw[latex-latex, dashed] ( \puntoa, \altura)-- ( \puntob , \altura );
+			\noexpand \node[] at (axis cs: \posd, \alturad) {$\delta_\i$};
+			\noexpand \draw[latex-latex, dashed] ( \posx, \ya)-- ( \posx , \yb );
+			\noexpand \node[] at (axis cs: \pose, \alturae) {$\epsilon_\i$};
+		} \temp
+	}
+	\draw[dotted] ( \a , 0)-- ( \a , {g( \a )} );
+	\draw[dotted] ( 0 , {f(\a)})-- ( \a , {f( \a )} );
+	\draw[dotted] ( 0 , {g(\a)})-- ( \a , {g( \a )} );
+\end{axis}
+\end{tikzpicture}
+\end{center}
+En esta función se ve que por muy pequeño que hagamos el intervalo alrededor de $a$ el intervalo más pequeño que podemos conseguir con $f(x)$ es el intervalo $(l_1, l_2)$.\\
+En este caso la función no tiene límite cuando $x \to a$.
+
+\paragraph*{Nota sobre la definición de límite:}
+\begin{small}
+A lo largo del bachillerato la definición simbólica de límite no se utiliza, pero en cursos posteriores se utilizará para demostrar la existencia y el valor de límites. En este nivel estas demostraciones pueden resultar bastante duras de entender.\\
+Por ejemplo: \textbf{demostrar que $\lim_{x \to 1} (2x - 1) = 1$}.\\
+\begin{solution}
+Según la definición tenemos que encontrar un $\delta$ de manera que si $|x-1|<\delta$ entonces $|(2*x -1) - 1|<\epsilon$. Operamos con esta última:
+\[|2*x - 1 - 1| < \epsilon\]
+\[|2*x-2| <\epsilon\]
+\[2|x-1| < \epsilon\]
+\[|x-1| < \frac{\epsilon}{2}\]
+entonces hemos encontrado cuanto tiene que valer $\delta$ para que la condición de la definición de límite se cumpla, o lo que es lo mismo: con $\delta < \frac{\epsilon}{2}$ podemos cogen un $\epsilon$ tan pequeño como queramos y esa $\delta$ nos garantiza que nunca vamos a obtener valores de $f(x)$ que difieran más de $\epsilon$ del límite.
+\end{solution}
+
+\end{small}
+
+\subsection{Límites laterales. Existencia de límites.}
+La definición anterior puede llegar a ser un poco confusa a la hora de entender si una función tiene o no límite. Por ello vamos a definir los límites laterales que son más sencillos de entender:
+\begin{itemize}
+	\item Se dice que el límite de $f(x)$ cuando $x \to a$ por la izquierda es $l$ $\left(\lim_{x \to a^-} f(x) = l\right)$ si cuando $x$ se va acercando a $a$, siendo menor que $a$, $f(x)$ se acerca cada vez más a $l$.
+	\item Se dice que el límite de $f(x)$ cuando $x \to a$ por la derecha es $l$ $\left(\lim_{x \to a^+} f(x) = l\right)$ si cuando $x$ se va acercando a $a$, siendo mayor que $a$, $f(x)$ se acerca cada vez más a $l$.
+\end{itemize}
+Gráficamente:
+\begin{center}
+\begin{multicols}{2}
+\begin{tikzpicture}
+\pgfplotsset{
+        compat=1.12,
+        /pgf/declare function={
+            f(\x) = \x^2;
+        }
+}
+\pgfmathsetmacro{\a}{2}
+\pgfmathsetmacro{\fa}{f(\a)}
+
+\begin{axis}[title={$\lim_{x \to a^-} f(x)$}, width=.4\textwidth, height=.3\textwidth, xmin=-1, xmax=4, ymin = -1, axis x line=center,axis y line=center,
+	xtick={\a}, ytick={\fa}, xticklabels={$\boldsymbol{a}$},
+	yticklabels={$\boldsymbol{l}$}
+]
+    \addplot[
+        domain = 0:3,
+        samples = 100,
+        smooth,
+        thin,
+        %blue,
+    ] (x, x^2);
+    \addplot[
+        domain = 0:2,
+        samples = 100,
+        smooth,
+        very thick,
+        -latex
+        %blue,
+    ] (x, x^2);
+   	\draw[dotted] ( \a , 0)-- ( \a , {f( \a )} );
+	\draw[dotted] ( 0 , {f(\a)})-- ( \a , {f( \a )} );
+\end{axis}
+\end{tikzpicture}
+\newline
+\begin{tikzpicture}
+\pgfplotsset{
+        compat=1.12,
+        /pgf/declare function={
+            f(\x) = \x^2;
+        }
+}
+\pgfmathsetmacro{\a}{2}
+\pgfmathsetmacro{\fa}{f(\a)}
+
+\begin{axis}[title={$\lim_{x \to a^+} f(x)$}, width=.4\textwidth,height=.3\textwidth, xmin=-1, xmax=4, ymin = -1, axis x line=center,axis y line=center,
+	xtick={\a}, ytick={\fa}, xticklabels={$\boldsymbol{a}$},
+	yticklabels={$\boldsymbol{l}$}
+]
+    \addplot[
+        domain = 0:3,
+        samples = 100,
+        smooth,
+        thin,
+        %blue,
+    ] (x, x^2);
+    \addplot[
+        domain = 2:3,
+        samples = 100,
+        smooth,
+        very thick,
+        latex-
+        %blue,
+    ] (x, x^2);
+   	\draw[dotted] ( \a , 0)-- ( \a , {f( \a )} );
+	\draw[dotted] ( 0 , {f(\a)})-- ( \a , {f( \a )} );
+\end{axis}
+\end{tikzpicture}
+\end{multicols}
+\end{center}
+
+Con todo esto podemos establecer lo siguiente:
+\[\boldsymbol{\lim_{x \to a} f(x) = l \Leftrightarrow \lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x) = l}\]
+Es decir: \textbf{el límite de $\boldsymbol{f(x)}$ cuando $\boldsymbol{x \to a}$ es $\boldsymbol{l}$ si y solo si los límites laterales coinciden y su valor es $\boldsymbol{l}$}.
+
+\subsection{Límites e infinitos.}
+Con lo que acabamos de contar tenemos una idea de lo que es el límite de una función en un punto cuando la operación es realizable y da un valor finito. Pero hay veces que las cosas no funcionan así de bien.\\
+
+\subsubsection{Límites infinitos.}
+Tomemos el siguiente ejemplo: $\lim_{x \to 0} \frac{1}{x}$.\\
+Es evidente que no podemos calcular $f(0) = \frac{1}{0}$ ya que por definición no se puede dividir entre 0. Pero como el significado del límite es calcular a qué valor nos vamos acercando podemos hacer una tabla de valores acercándonos a 0.
+\begin{center}
+\begin{tabular}{r|r}
+\multicolumn{1}{c|}{$\boldsymbol{x}$} & \multicolumn{1}{c}{$\boldsymbol{\frac{1}{x}}$} \\ 
+&\\
+\hline
+0,1&10\\
+0,01&100\\
+0,001&1\,000\\
+0,0001&10\,000
+\end{tabular}
+\end{center}
+Se ve que el valor de la función crece conforme $x$ se aproxima más a 0, y es fácil extrapolar que cuanto más cerca de 0 esté el valor de $x$ de 0 mayor va a ser el valor de la función (este comportamiento se intuye observando la gráfica de la función de proporcionalidad inversa).\\
+
+Es decir, \textbf{podemos fijar un valor tan grande como queramos que al final la función va a acabar superándolo según la variable $x$ se acerca más al valor indicado en el límite} (que en el ejemplo es 0). \textbf{En este caso se dice que la función tiende a infinito} ($\infty$).\\
+Gráficamente tiene esta representación:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[title={$f(x) = \frac{1}{x}$}, width=.4\textwidth, height=.3\textwidth, xmin=-1, xmax=2, ymin = -1, axis x line=center,axis y line=center,
+]
+	\addplot[domain = .01:3,
+        samples = 100,
+        smooth,
+        very thick,
+        latex-
+        %blue,
+    ] (x, 1/x);
+ \end{axis}
+\end{tikzpicture}
+\end{center}
+Donde se ve que conforme estamos más cerca de 0 la línea que representa el valor de la función llega cada vez más arriba.\\
+
+De forma simbólica el límite infinito se define:
+\[\lim_{x \to a} f(x) = \infty \Leftrightarrow \forall\,k > 0 \ \exists\,\delta > 0 /|x - a| <\delta \Rightarrow f(x) > k\]
+\textbf{De la misma manera que una función tiende a $\infty$ puede tender a $-\infty$}. En este caso la definición cambia un poco:
+\[\lim_{x \to a} f(x) = -\infty \Leftrightarrow \forall\,k < 0 \ \exists\,\delta > 0 /|x - a| <\delta \Rightarrow f(x) < k\]
+Y un ejemplo de este caso sería $\lim_{x \to 0} \ln x = -\infty$, que es fácil de intuir viendo la gráfica de la función logarítmica.\\
+
+\textbf{IMPORTANTE: en los únicos casos que vamos a tener límites infinitos cuando la variable $x$ tiende a una valor concreto van a ser:
+\begin{itemize}
+	\item Divisiones entre 0.
+	\item Logaritmos de 0.
+\end{itemize}
+Que por otra parte son valores con los que tenemos problemas en los dominios.\\
+Cuando una función tiene límites infinitos en algún punto tiene una asíntota vertical, que ya veremos en detalle.
+}
+\subsubsection{Limites en el infinito.}
+Al igual que ha pasado con la función en el apartado anterior \textbf{la variable ($x$) también puede ser tan grande (o pequeña si es negativa) como queramos}. \textbf{En ese caso hablamos de límites en el infinito}.\\
+Y se escribe de la siguiente manera:
+\[\lim_{x \to \pm\infty} f(x)\]
+
+En algunos casos la función crecerá según la variable crezca (o al revés), pero en otros no. Por ejemplo el siguiente caso:
+\[\lim_{x \to \infty} \left(\frac{1}{x} + 1\right) = 1\]
+Ya que cuanto mayor es $x$ el resultado de $\frac{1}{x}$ se acerca más a 0.\\
+Visto de manera gráfica:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[title={$f(x) = \frac{1}{x}$}, width=.4\textwidth, height=.3\textwidth, xmin=-1, xmax=55, ymin = -1, axis x line=center,axis y line=center,
+]
+	\addplot[domain = 1:50,
+        samples = 100,
+        smooth,
+        very thick,
+        latex-
+        %blue,
+    ] (x, 1/x + 1);
+    \draw[dashed] (0,1)--(55,1);
+ \end{axis}
+\end{tikzpicture}
+\end{center}
+Donde se observa que cuanto más grande es el valor de $x$ la línea que representa el valor de la función se va acercando más a 1.\\
+
+De manera simbólica se escribe que el límite de $f(x)$ en infinito es $l$:
+\[\lim_{x \to \infty} f(x) = l \Leftrightarrow \forall\,\epsilon>0\ \exists\,k > 0 / x>k \Rightarrow |f(x) - l| < \epsilon\]
+
+Y en $-\infty$:
+\[\lim_{x \to -\infty} f(x) = l \Leftrightarrow \forall\,\epsilon>0\ \exists\,k < 0 / x<k \Rightarrow |f(x) - l| < \epsilon\]
+
+\textbf{En caso de que ocurra esto la función tiene una asíntota horizontal $\boldsymbol{y = l}$} (por la derecha cuando $x \to \infty$ y por la izquierda en el caso de $-\infty$), que es lo que representa la linea punteada en la gráfica anterior.
+\section{Cálculo de límites I. Álgebra de límites.}
+Por todo lo dicho anteriormente, el cálculo de límites es relativamente sencillo en la mayoría de los casos. Habrá algunos en los que tendremos que hacer otros cálculos y utilizar diferentes estrategias para obtener el valor del límite o asegurar que no existe.\\
+
+La mejor manera de entender todo esto es ir viendo qué pasa con las funciones elementales, y es de gran ayuda que estudiemos esto que sigue teniendo al lado las gráficas de las funciones elementales para poder ver gráficamente lo que estamos contando.
+\subsection{Límites de las funciones elementales.}
+\subsubsection{Función constante.}
+El límite de una función constante es esa misma constante para cualquier punto en el que calculemos el límite.
+\[\boldsymbol{\lim_{x \to a} k = k,\ \forall\,a \in \mathbb{R}}\]
+
+\subsubsection{Función afín y polinómica.}
+En este caso el cálculo del límite en un punto es sencillo, basta con sustituir el valor de la variable. Por ejemplo:
+\[\lim_{x \to 3} (x^2 - x -5) = 3^2 - 3 - 5 = 1\]
+(Esto va a ser así para todas las funciones elementales mientras estemos en el dominio).\\
+
+Para los límites en el infinito van a ser $\pm\infty$. Para decidir el signo nos tenemos que fijar en el término de mayor grado, en concreto en su coeficiente y en la paridad del exponente. Vamos a ver unos ejemplos:
+\begin{itemize}
+	\item $\boldsymbol{\lim_{x \to \infty} (-x^2 + 2x - 1) = -\infty}$\\
+	En este caso el término de mayor grado es $-x^2$, con lo que al elevar infinito al cuadrado tendremos un infinito aún mayor. Y al tener el signo $-$ delante lo que hace es convertirlo en $-\infty$.
+	
+	\item $\boldsymbol{\lim_{x \to -\infty} (-5x^3 - x^2 + 4) = \infty}$\\
+	Aquí el término de mayor grado es $-5x^3$, que tiene exponente impar y conserva el signo de $-\infty$. Pero como el coeficiente es negativo ($-5$) hace que termine cambiado de signo y por eso es $\infty$.
+	
+	\item $\boldsymbol{\lim_{x \to -\infty} 4x^6 = \infty}$\\
+	Como el termino de mayor grado es par $-\infty$ pierde el signo, y como el coeficiente es positivo el límite acaba siendo $\infty$.
+\end{itemize}
+\subsubsection{Función de proporcionalidad inversa.}
+Mientras estemos en el dominio ocurre lo mismo que con la polinómica, que basta con sustituir el valor del punto:
+\[\lim_{x \to 5} \frac{1}{x} = \frac{1}{5}\]
+
+El problema de esta función esta cuando $x \to 0$, ya que el 0 no está en el dominio.\\
+Por lo que hemos visto cuando hablábamos de límites infinitos sabemos que va a tender a infinito, pero lo correcto cuando tenemos una división entre 0 es hacer límites laterales y vamos a ver por qué:
+\[\boldsymbol{\lim_{x \to 0^+}\frac{1}{x} = \infty}\]
+\[\boldsymbol{\lim_{x \to 0^-}\frac{1}{x} = -\infty}\]
+Según nos acercamos a 0 por la izquierda los valores que toma la variable $x$ son negativos y el signo del resultado también lo es, mientras que por la derecha el signo de todo es positivo.\\
+\textbf{Esto ocurre muchas veces en las divisiones entre 0, por lo que en estos casos siempre tendremos que hacer los límites laterales}.\\
+
+En el caso de los límites en el infinito lo que tenemos es que estamos dividiendo 1 entre un número con valor absoluto cada vez mayor, con lo que tendremos que:
+\[\boldsymbol{\lim_{x \to \infty} \frac{1}{x} = 0}\]
+\[\boldsymbol{\lim_{x \to -\infty} \frac{1}{x} = 0}\]
+
+Con todo esto que nos ha salido tenemos que la función de proporcionalidad inversa tiene una asíntota vertical en $x=0$ y asíntotas horizontales $y = 0$ por la derecha y por la izquierda (o en $\infty$ y en $-\infty$, se puede decir de las dos maneras).
+\subsubsection{Función raíz.}
+Con la función raíz \textbf{ocurre lo mismo que con las polinómicas}. En las únicas que podemos pensar que hay algún problema es en las que tienen indice par porque su dominio es $D=[0, \infty)$, pero al estar cerrado en 0 no es realmente un problema salvo que solo podremos calcular el límite por la derecha.\\
+
+En el caso de $x \to \pm\infty$ ocurre también lo mismo que en las polinómicas, que tendremos que tener cuidado al calcular el signo final del infinito que nos salga.
+
+\subsubsection{Función exponencial.}
+Como es otra función cuyo dominio son todos los reales no hay que hacer nada especial para calcular el límite en cualquier punto:
+\[\lim_{x \to 2.5} \e^x = \e^{2.5}\]
+
+En el caso de los límites en infinito hay que prestar especial atención a la base y al signo del exponente, ya que esto afecta enormemente al resultado (es conveniente recordar que la base tiene que ser positiva para que la función esté bien definida).\\
+\[\boldsymbol{\lim_{x \to \infty} a^x =} \left\lbrace
+\begin{array}{ll}
+\boldsymbol{\infty}&\text{\parbox{12cm}{Si $a>1$, ya que al multiplicar un número mayor que uno por si mismo el resultado siempre crece.}}\\
+&\\
+\boldsymbol{0}&\text{\parbox{12cm}{Si $0<a<1$, ya que al multiplicar un número menor que uno por si mismo el resultado siempre decrece.}}\\
+\end{array}\right.\]
+
+\[\boldsymbol{\lim_{x \to -\infty} a^x =} \left\lbrace
+\begin{array}{ll}
+\boldsymbol{0}&\text{\parbox{12cm}{Si $a>1$, ya que $a^{-n} = \left(\frac{1}{a}\right)^n$, con lo que la base es menor que 1 y se aplica lo del límite anterior.}}\\
+&\\
+\boldsymbol{\infty}&\text{\parbox{12cm}{Si $0<a<1$, ya que por la misma razón que el anterior la base se vuelve mayor que 1.}}\\
+\end{array}\right.\]
+
+\subsubsection{Función logarítmica.}
+Como ya hemos visto en las anteriores que dentro del dominio no hay ningún problema para el cálculo vamos a ver que pasa en los puntos conflictivos, que en este caso es el 0 ya que no podemos hacer $\log_a 0$.\\
+
+Si hacemos una tabla para $\log x$ según nos acercamos a 0 (por la derecha evidentemente):
+\begin{center}
+\begin{tabular}{r|r}
+\multicolumn{1}{c|}{$\boldsymbol{x}$} & \multicolumn{1}{c}{$\boldsymbol{\log x}$} \\ 
+\hline
+$0,01$&$-2$\\
+$0,0001$&$-4$\\
+$10^{-10}$&$-10$\\
+$10^{-25}$&$-25$
+\end{tabular}
+\end{center}
+Se ve que según la variable se acerca a 0 el valor del logaritmo es cada vez más pequeño y acaba tendiendo a $-\infty$, con lo que:
+\[\boldsymbol{\lim_{x \to 0} \log x = -\infty}\]
+Y si hacemos el logaritmo de números muy grandes (hacia infinito) tenemos que el resultado tiene que ser también infinito.
+\[\boldsymbol{\lim_{x \to \infty} \log x = \infty}\]
+
+Pero, al igual que pasa con la exponencial, el valor de la base afecta al resultado en estos puntos, y queda:
+\[\boldsymbol{\lim_{x \to \infty} \log_a x =} \left\lbrace
+\begin{array}{ll}
+\boldsymbol{\infty}&\text{{Si $a>1$.}}\\
+&\\
+\boldsymbol{-\infty}&\text{{Si $0<a<1$.}}\\
+\end{array}\right.\]
+
+\[\boldsymbol{\lim_{x \to 0} \log_a x =} \left\lbrace
+\begin{array}{ll}
+\boldsymbol{-\infty}&\text{{Si $a>1$.}}\\
+&\\
+\boldsymbol{\infty}&\text{{Si $0<a<1$.}}\\
+\end{array}\right.\]
+\subsubsection{Funciones trigonométricas.}
+Este caso vamos a separar el seno y el coseno de la tangente.
+
+\paragraph{Seno y coseno}\mbox{}\\
+El dominio de estas funciones son todos los reales, con lo que el cálculo del límite en un punto se reduce a sustituir el valor.\\
+
+En el infinito estas funciones no tienen límite, ya que al ser periódicas sus valores se repiten indefinidamente sin crecer o decrecer o aproximarse a un valor de manera permanente.\\
+\textbf{Esto sucede con todas las funciones periódicas, no tienen límite en $\infty$ ni en $-\infty$.}
+
+\paragraph{Tangente}\mbox{}\\
+Al contrario que el seno y el coseno la tangente sí que presenta problemas en algunos puntos. Recordando que su dominio es $D(\tg x) = \mathbb{R} - \left\lbrace\frac{\pi}{2} + \pi*k,\ \forall\,k \in \mathbb{Z}\right\rbrace$ vamos a ver que pasa en esos puntos.\\
+Por el hecho de ser periódica de periodo $\pi$ solo tenemos que ver qué pasa en el primer punto problemático $\left(\frac{\pi}{2}\right)$ y sabemos que en los demás va a pasar lo mismo.\\
+
+Teniendo en cuenta la definición de $\tg x = \frac{\sen x}{\cos x}$ sabemos que el problema procede de que $\cos \frac{\pi}{2}$ es 0 y al final tenemos una división entre 0 que sabemos que tiene de límite infinito.\\
+Entonces tenemos que hacer los límites laterales:
+\[\lim_{x \to \frac{\pi}{2}^-} \tg x = \infty \text{ porque el seno y el coseno tienen el mismo signo.}\]
+\[\lim_{x \to \frac{\pi}{2}^+} \tg x = -\infty \text{ porque el seno y el coseno tienen distinto signo.}\]
+
+\subsubsection{Funciones trigonométricas inversas.}
+Recordemos que estas son el arco de seno, el arco de coseno y el arco de tangente.\\
+Todas estas funciones tienen dominios puntos excluidos y, en el caso de los arcos de seno y de coseno, cerrados. Por esto no presentan ningún problema a la hora de calcular un límite sustituyendo por el valor. Por ejemplo:
+\[\boldsymbol{\lim_{x \to 0} \acos x = \frac{\pi}{2}}\]
+
+\subsection{Álgebra de límites.}
+Como vimos en los apuntes anteriores la mayor parte de las funciones no son funciones elementales puras, sino que son el resultado de operaciones realizadas sobre ellas. Y como hemos visto cómo es el cálculo de límites en las funciones elementales y sus particularidades ahora necesitamos saber qué pasa con los límites al realizar esas operaciones.
+
+\subsubsection{Límite de una suma.}
+El límite de la suma es la suma de los límites:
+\[\boldsymbol{\lim_{x \to a}(f+g)(x) = \lim_{x \to a} f(x) + \lim_{x \to a} g(x)}\]
+
+\subsubsection{Límite de un producto}
+El límite del producto es el producto de los límites:
+\[\boldsymbol{\lim_{x \to a}(f*g)(x) = \lim_{x \to a}f(x) *\lim_{x \to a}g(x)}\]
+
+\subsubsection{Límite de un cociente.}
+Es el cociente de los límites:
+\[\boldsymbol{\lim_{x \to a}\frac{f}{g}(x) = \ddfrac{\lim_{x \to a} f(x)}{\lim_{x \to a}g(x)}}\]
+
+\subsubsection{Límite de una composición.}
+Sea una composición $(f \circ g)(x)$ en la que $\boldsymbol{\lim_{x \to a}g(x) = l_g}$, entonces el límite de la composición es:
+\[\boldsymbol{\lim_{x \to a}(f \circ g)(x) = \lim_{x \to l_g} f(x)}\]
+Es decir es lo que obtendríamos al calcular $f(x)$ cuando $x$ tiende al límite de $g(x)$ en $a$.\\
+
+Esto puede resultar un poco difícil de entender, pero a la hora de calcularlo es muy sencillo, vamos a verlo con un ejemplo:\\
+\begin{questions}
+
+\question Calcular $\lim_{x \to 1}\e^{x^2 - 1}$.
+\begin{solution}
+Tenemos una composición de dos funciones $f\circ g$, donde:
+\begin{itemize}
+	\item $f(x) = \e^x$
+	\item $g(x) = x^2 - 1$
+\end{itemize}
+Hacemos el límite de $g(x)$, que es:
+\[\lim_{x \to 1} (x^2- 1) = 1 - 1 = 0\]
+Y ahora calculamos el límite de $f(x)$ cuando $x \to 0$, que es el resultado anterior:
+\[\lim_{x \to 1} (f \circ g)(x) = \lim_{x \to 0}f(x) = \lim_{x \to 0} e^x = \e^0 = 1\]
+Y en realidad todo lo anterior es equivalente a:
+\[\lim_{x \to 1} \e^{x^2 - 1} = \e^{1^2- 1} = \e^0 = 1\]
+\end{solution}
+
+\question Calcular $\lim_{x \to 2} \sqrt[3]{3x^2 - 4}$
+\begin{solution}
+Por lo que acabamos de ver todo lo anterior nos dice que  da lo mismo analizar qué composición es o calcular el límite directamente. Y eso último es lo que vamos a hacer aquí porque es más rápido:
+\[\lim_{x \to 2} \sqrt[3]{3x^2 - 4} = \sqrt[3]{3*2^2 -4} = \sqrt[3]{8} = 2\]
+\end{solution}
+\end{questions}
+
+Con todo esto se saca la conclusión de que no hay que hacer nada especial para calcular el límite de una composición, únicamente las operaciones.
+
+\subsubsection{Límite de una función definida a trozos.}
+En este caso hay que tener en cuenta cual es la definición que corresponde al punto en el que estemos calculando el límite, y que nos podemos encontrar problemas en los puntos donde hay cambio de definición porque puede que no coincidan los límites laterales (y tenemos que recordar que el límite existe si los límites laterales coinciden, si no ese límite no existe).
+
+\section{Calculo de límites II. Indeterminaciones.}
+Con lo visto en el álgebra de límites podemos calcular casi cualquier límite, pero a veces nos vamos a encontrar con situaciones como la siguiente:
+\[\lim_{x \to 3} \frac{\sqrt{3x} - 3 }{x-3} = \frac{\sqrt{3*3} - 3}{3 - 3} = \frac{0}{0} = ?\]
+¿Qué hacemos en esta situación? Sabemos que la división entre 0 no está definida pero hay que recordar que estamos haciendo límites, y hemos visto que cuando dividimos entre algo que tiende a 0 el límite es infinito.\\
+Pero el numerador también tiende a 0 y al dividirlo entre cualquier número debería tender también a 0.\\
+¿Entonces es 0 o infinito?\\
+
+Esto es lo que se llama una indeterminación, es un límite que con las herramientas que hemos visto hasta ahora no se puede calcular. Hay siete indeterminaciones, cada una con sus particularidades:
+\begin{itemize}
+	\item $\frac{0}{0}$
+	\item $\frac{\pm\infty}{\pm\infty}$
+	\item $\infty - \infty$
+	\item $1^\infty$
+	\item $\infty * 0$
+	\item $\infty^0$
+	\item $0^0$
+\end{itemize}
+\textbf{Es importante recordar que en ningún caso estamos haciendo la operación con esos valores, sino con variables que se acercan indefinidamente a esos valores pero nunca llegan a alcanzarlos.}\\
+
+Y seguidamente vamos a ver cómo hay que calcular estas indeterminaciones en cada caso.
+\subsection{Indeterminación $\boldsymbol{\frac{0}{0}}$.}
+En este caso podremos hacer dos cosas, siempre que sea posible:
+\begin{itemize}
+	\item \textbf{Factorizar y simplificar.}
+	\item \textbf{Multiplicar y dividir por el conjugado para quitar raíces} (recordar que el conjugado de $a+b$ es $a-b$ y viceversa).
+\end{itemize}
+Vamos a ver un ejemplo de cada una:
+\begin{questions}
+\question Calcular $\lim_{x \to 2} \frac{x^2 - 3x + 2}{x-2}$
+\begin{solution}
+Si sustituimos $x$ por 2 vamos a obtener $\frac{2^2 - 3*2 + 2}{2 - 2}=
+\frac{0}{0}$, con lo que estamos en las condiciones de esta indeterminación.\\
+\textit{(Siempre hay que hacer un primer cálculo del límite para ver que tipo de indeterminación tenemos)}\\
+
+Al ser una fracción con polinomios los podemos factorizar y simplificar (y es sencillo ya que el valor al que tiende $x$ va a ser raíz de los dos polinomios), de manera que nos quedará:
+\[\lim_{x \to 2} \frac{x^2 - 3x + 2}{x-2} = 
+\lim_{x \to 2}\frac{(x-1)(x-2)}{(x-2)} \text{(esto se puede simplificar)} = \lim_{x \to 2} (x-1) = 1\]
+\end{solution}
+\question Calcular $\lim_{x \to 9} \frac{x -9}{\sqrt{x} - 3}$.
+\begin{solution}
+Sustituimos para ver en que caso estamos:
+\[\frac{9 -9}{\sqrt{9} -3} = \frac{0}{0}\]
+que es el caso que estamos estudiando.\\
+
+El problema es que aquí no podemos factorizar, con lo que vamos a por el siguiente método:
+\[\lim_{x \to 9} \frac{x -9}{\sqrt{x} - 3} =
+\lim_{x \to 9} \frac{x -9}{\sqrt{x} - 3}*\frac{\sqrt{x}+3}{\sqrt{x}+3}=
+\lim_{x \to 9} \frac{(x -9)(\sqrt{x} +3)}{x -9} = \lim_{x \to 9}\sqrt{x}+3= 6\]
+\end{solution}
+\end{questions}
+
+En este caso tenemos otros límites que no se pueden hacer por ninguno de estos métodos, como por ejemplo $\lim_{x \to 0} \frac{\sen x}{x}$, pero más adelante (en la parte de derivadas) veremos la \textbf{regla de l'Hôpital} que sirve para calcularlos.
+
+\subsection{Indeterminación $\boldsymbol{\frac{\pm\infty}{\pm\infty}}$.}
+Para este caso tenemos que ver primero los \textbf{ordenes de infinito}:
+\begin{enumerate}
+	\item \textbf{Exponencial} ($x$ en el exponente).
+	\item \textbf{Potencia} ($x$ en la base). Esta \textbf{incluye las raíces} y tiene \textbf{mayor orden la potencia de mayor grado}.
+	\item \textbf{Logaritmo}.
+\end{enumerate}
+El orden está hecho de mayor a menor, y lo que tiene mayor orden  es lo que prevalece. Es decir: si el mayor orden está en el numerador el resultado es $\infty$ (o $-\infty$ si los signos lo indican), si está en el denominador el resultado es 0.\\
+Si son del mismo orden hay que simplificar y ver que pasa.\\
+
+Vamos a verlo con unos cuantos ejemplos:
+\begin{questions}
+\question $\lim_{x \to \infty} \frac{e^x}{x^4}$.
+\begin{solution}
+Por lo que hemos visto en la parte de funciones elementales cuando $x \to \infty$ numerador y denominador tienden a infinito.\\
+Comparamos grados y al ser el numerador de mayor grado el resultado es infinito.
+\[\lim_{x \to \infty} \frac{e^x}{x^4} = \infty\]
+\end{solution}
+
+\question $\lim_{x \to \infty} \frac{\ln x}{x}$
+\begin{solution}
+Estamos en la misma situación, numerador y denominador tienden a infinito. Comparando ordenes el mayor está en el denominador, con lo que el resultado es cero.
+\[\lim_{x \to \infty} \frac{x}{\ln x} = 0\]
+\end{solution}
+
+\question Calcular $\lim_{x \to -\infty} \frac{x^2}{\sqrt[3]{x}}$
+\begin{solution}
+En este caso el mayor orden está en el numerador con lo cual será un infinito, pero además tenemos que prestar atención a los signos porque esta vez son diferentes: el numerador es positivo y el denominador negativo, con lo que
+\[\lim_{x \to -\infty} \frac{x^2}{\sqrt[3]{x}} = -\infty\]
+
+\end{solution}
+\end{questions}
+
+\subsection{Indeterminación $\boldsymbol{\infty - \infty}$.}
+En esta ocurre lo algo similar que en el caso anterior, \textbf{nos quedaremos con el que tenga mayor orden}.\\
+En el caso de que \textbf{los dos tengan el mismo orden (o no sea evidente) tendremos que simplificar o utilizar el conjugado, dependiendo del tipo de operaciones involucradas}.\\
+
+Vamos a verlo con unos ejemplos:
+\begin{questions}
+\question Calcular $\lim_{x \to \infty} (x^3 - \e^x\}$.
+\begin{solution}
+En este caso es evidente que el mayor orden es el de $\e^x$, con lo que 
+\[\lim_{x \to \infty} (x^3 - \e^x) = -\infty\]
+\end{solution}
+
+\question Calcula $\lim_{x \to \infty} (x^3 - 3x\}$.
+\begin{solution}
+Aquí el mayor orden es $x^3$, con lo que:
+\[\lim_{x \to \infty} (x^3 - 3x) = \infty\]
+\end{solution}
+
+\question $\lim_{x \to \infty}\frac{-x^2 - 2x}{3x^2 - 1}$
+\begin{solution}
+Lo que tenemos aquí en realidad es $\frac{\infty - \infty}{\infty-\infty}$, así que lo que vamos a hacer primero es quedarnos con el mayor orden en numerador y denominador:
+\[\lim_{x \to \infty}\frac{-x^2 - 2x}{3x^2 - 1}= \lim_{x \to \infty}\frac{-x^2 }{3x^2 }\]
+Y como ambos son del mismo orden, simplificamos:
+\[\lim_{x \to \infty}\frac{-x^2 - 2x}{3x^2 - 1}= \lim_{x \to \infty}\frac{-x^2 }{3x^2 } = \lim_{x \to \infty} \frac{-1}{3} = -\frac{1}{3}\]
+\end{solution}
+
+\question Calcular $\lim_{x \to \infty}(\sqrt{x^2 + 3x}-\sqrt{x^2})$.
+\begin{solution}
+En este caso vemos que son del mismo orden, ya que el mayor grado dentro de la raíz es el mismo. Pero no podemos simplificar porque cada polinomio está en una raíz distinta.\\
+\textbf{Para solucionar esto multiplicamos y dividimos por el conjugado de la resta} de manera que:
+\begin{flalign*}
+&\lim_{x \to \infty}(\sqrt{x^2 + 3x}-\sqrt{x^2}) = \lim_{x \to \infty}\left((\sqrt{x^2 + 3x}-\sqrt{x^2})*\frac{\sqrt{x^2 + 3x}+\sqrt{x^2}}{\sqrt{x^2 + 3x}+\sqrt{x^2}}\right)\\
+&= \lim_{x \to \infty} \frac{x^2 + 3x - x^2}{\sqrt{x^2 + 3x}+\sqrt{x^2}} = 
+\lim_{x \to \infty} \frac{3x}{\sqrt{x^2 + 3x}+\sqrt{x^2}}
+\end{flalign*}
+Como estamos viendo, ahora tenemos que quedarnos con el mayor grado en el numerador y en el denominado:
+\begin{flalign*}
+&\lim_{x \to \infty} \frac{3x}{\sqrt{x^2 + 3x}+\sqrt{x^2}} = 
+\lim_{x \to \infty} \frac{3x}{\sqrt{x^2}+\sqrt{x^2}} = \lim_{x \to \infty} \frac{3x}{2x} = \frac{3}{2}
+\end{flalign*}
+\end{solution}
+\end{questions}
+
+\subsection{Indeterminación $\boldsymbol{1^\infty}$.}
+Aunque veamos evidente que algo que se parece mucho a 1 por mucho que lo elevemos seguirá pareciéndose a 1 en la realidad esto no es así.\\
+Tomemos la función $f(x) = \left(1 +\frac{1}{x} \right)^x$. Si aumentamos el valor de $x$ la base (el paréntesis) se va pareciendo más a 1, mientras que el exponente va a crecer tanto como queramos. Veamos que pasa según el valor de $x$ va siendo mayor:
+\begin{center}
+\begin{tabular}{r|r|r}
+\multicolumn{1}{c|}{$\boldsymbol{x}$}&\multicolumn{1}{c|}{\textbf{Base}} & \multicolumn{1}{c}{$\boldsymbol{f(x)}$} \\ 
+\hline
+1&2&2\\
+2&1,5&2,25\\
+10&1,1&2,5937\\
+100&1,01&2,7048\\
+1\,000&1,001&2,7169
+\end{tabular}
+\end{center}
+Es evidente que no solo se va pareciendo cada vez menos a 1, sino que además es creciente.\\
+
+Pero la función anterior no crece indefinidamente,  tiene límite cuando $x \to \infty$ y ese límite es el número $\boldsymbol{\e}$.\\
+
+Para el caso general tenemos que si $\boldsymbol{\lim_{x \to a} f(x) = 0}$, entonces:
+\[\boldsymbol{\lim_{x \to a} (1 + f(x))^\frac{1}{f(x)} = \e}\]
+
+Sabiendo esto, lo que tenemos que hacer es intentar transformar cualquier límite del tipo $1^\infty$ en algo parecido a lo anterior, así que empezaremos con dos funciones $f(x)$ y $g(x)$ tales que:
+\begin{flalign*}
+&\lim_{x \to a} f(x) = 1\\
+&\lim_{x \to a} g(x) = \infty
+\end{flalign*}
+De manera que $\lim_{x \to a} f(x)^{g(x)} = 1^\infty$
+Para que se parezca a la anterior hacemos el cambio $h(x) = f(x) -1$, de manera que al sustituir queda:
+\[\lim_{x \to a} (1+h(x))^{g(x)}\]
+Que ya se parece más a lo que queremos conseguir, solo nos falta el $\frac{1}{h(x)}$ en el exponente y lo conseguimos dividiendo y multiplicando por esta función:
+\[\lim_{x \to a} (1+h(x))^{\frac{1}{h(x)}h(x)*g(x)}= \lim_{x \to a} \e^{h(x) *g(x)}\]
+Y deshaciendo el cambio de $f(x)$ y $h(x)$ nos queda:
+\[\boldsymbol{\lim_{x \to a} f(x)^{g(x)} = \lim_{x \to a} \e^{g(x)*(f(x) -1)}}\]
+\textbf{\textit{NOTA: en el caso de que el límite sea del tipo $\boldsymbol{1^{-\infty}}$ lo transformaremos en éste ya que 
+$\boldsymbol{1^{-\infty} = \left(1^\infty\right)^{-1}}$}}\\
+
+Vamos a ver unos ejemplos:
+\begin{questions}
+\question $\lim_{x \to \infty}\left(\frac{2x - 1}{2x}\right)^{3x}$.
+\begin{solution}
+Primero comprobamos que cumple las condiciones, porque si no será otra cosa:
+\begin{itemize}
+	\item La base: $\lim_{x \to \infty} \frac{2x - 1}{2x} = 1$.
+	\item El exponente: $\lim_{x \to \infty} 3x = \infty$.
+\end{itemize}
+Con lo que cumple las condiciones.\\
+
+Entonces aplicamos la conclusión que hemos sacado para este tipo de indeterminación:
+\[\lim_{x \to \infty}\left(\frac{2x - 1}{2x}\right)^{3x} = \lim_{x \to \infty} \e^{3x*\left(\frac{2x - 1}{2x}-1 \right)} =
+\lim_{x \to \infty} \e^\frac{-3x}{2x} = \e^{-\frac{3}{2}}\]
+\end{solution}
+
+\question $\lim_{x \to 2} \left(\frac{5x - 1}{2x^2}\right)^\frac{1}{x-2}$.
+\begin{solution}
+Comprobamos las condiciones:
+\begin{itemize}
+	\item La base: $\lim_{x \to 2} \frac{5x - 1}{2x^2} =\frac{9}{8}$
+	\item El exponente $\lim_{x \to 2} \frac{1}{x-2} = \infty$.
+\end{itemize}
+En este caso la base no tiende a 1 con lo que aplicamos lo visto en la función exponencial: base mayor que 1 elevada a $\infty$ $\to$ resultado $\infty$.\\
+Entonces:
+\[\lim_{x \to 2} \left(\frac{5x - 1}{2x^2}\right)^\frac{1}{x-2} = \infty\]
+\end{solution}
+\end{questions}
+
+\subsection{Indeterminación $\boldsymbol{\infty * 0}$.}
+Este caso es bastante sencillo, lo que vamos a hacer es transformarlo en el caso $\frac{\infty}{\infty}$ y utilizar lo que hemos sabemos de él.\\
+
+Si tenemos $\lim_{x \to a} f(x) = 0$ y $\lim_{x \to a} g(x) = \infty$, para calcular el límite de $f(x)*g(x)$ haremos lo siguiente:
+\[\boldsymbol{\lim_{x \to a} f(x)*g(x) = \lim_{x \to a} \ddfrac{\quad g(x)\quad }{\frac{1}{f(x)}}}\]
+Que ya es del tipo $\frac{\infty}{\infty}$.\\
+
+\textbf{Por ejemplo} $\lim_{x \to -\infty} x*3^x$
+\begin{solution}
+El límite del primer factor ($x$) es $-\infty$, y el del segundo factor ($3^x$) es 0 ya que la base es mayor que 0 y el exponente es $-\infty$. Aplicamos lo que acabamos de decir:
+\[\lim_{x \to -\infty} x*3^x = \lim_{x \to -\infty} \ddfrac{\quad x\quad }{\frac{1}{3^x}} = \lim_{x \to -\infty} \frac{x}{3^{-x}}\]
+Que ya es del tipo $\frac{\infty}{\infty}$ y como el denominador es de mayor orden el resultado es 0.
+\[\lim_{x \to -\infty} x*3^x\]
+\end{solution}
+
+\subsection{Indeterminación $\boldsymbol{\infty^0}$.}
+Esta se puede transformar en la anterior mediante las propiedades de los logaritmos.\\
+Si tenemos $\lim_{x \to a} f(x) = \infty$ y $\lim_{x to a} g(x) = 0$ podemos hacer lo siguiente:
+%\begin{large}
+\[\boldsymbol{\lim_{x \to a} f(x)^{g(x)} = \e^{\,\displaystyle\lim_{x \to a} g(x)*\ln f(x)}}\]
+%\end{large}
+Y el límite que nos queda por resolver ($\lim_{x \to a} g(x)*\ln f(x)$) es del tipo $0*\infty$.\\
+
+Vamos a ver un par de ejemplos:
+\begin{questions}
+\question Calcula $\lim_{x \to \infty} x^\frac{1}{x}$.
+\begin{solution}
+Según el mecanismo indicado tenemos que calcular:
+\[\lim_{x \to \infty} \frac{1}{x}*\ln x = \lim_{x \to \infty} \frac{\ln x}{x} = 0 \quad \text{(por mayor orden en el denominador)}\]
+Y finalmente:
+\[\lim_{x \to \infty} x^\frac{1}{x} = e^0 = 1\]
+\end{solution}
+
+\question Calcular $\lim_{x \to \infty} \left(1 + \e^x \right)^\frac{1}{x}$.
+\begin{solution}
+Al igual que antes calculamos:
+\[\lim_{x \to \infty} \frac{1}{x}*\ln (1 + e^x) = \lim_{x \to \infty} \frac{\ln (1 + e^x)}{x} = \lim_{x \to \infty} \frac{\ln e^x}{x} =
+\lim_{x \to \infty} \frac{x}{x} = 1\]
+Y finalmente:
+\[\lim_{x \to \infty} \left(1 + \e^x \right)^\frac{1}{x} = \e^1 = \e\]
+\end{solution}
+\end{questions}
+
+\subsection{Indeterminación $\boldsymbol{0^0}$.}
+Hacemos la misma transformación de antes, pero esta vez vamos a tener el logaritmo de algo que tiende a 0 y va a tender a $-\infty$, de manera que lo convertiremos en un límite de tipo $-\infty * 0$ que se va a resolver igual pero tendremos que tener en cuenta el signo.
+
+Un par de ejemplos:
+\begin{questions}
+\question $\lim_{x \to 0^+} x^x$.
+\begin{solution}
+Antes de empezar es necesario fijarse en que tiende a $0^+$ porque la exponencial solo está definida para bases positivas, con lo que el dominio de esta función es $D=(0, \infty)$.\\
+
+Una vez hecha esta aclaración y siguiendo lo indicado, tenemos que calcular:
+\[lim_{x \to 0^+} x*\ln x = lim_{x \to 0^+} \frac{\ln x}{x^{-1}} = 0 \quad \text{mayor orden en el denominador)}\]
+Y finalmente:
+\[\lim_{x \to 0^+} x^x = e^0 = 1\]
+\end{solution}
+
+\question Calcular $\lim_{x \to \infty} \left(\frac{1}{\e^x}\right)^\frac{1}{x - 2}$.
+\begin{solution}
+Realizamos el mismo procedimiento. Calculamos:
+\[\lim_{x \to \infty} \frac{1}{x-2}*\ln \frac{1}{\e^x} = \lim_{x \to \infty} \frac{\ln \e^{-x}}{x - 2} = 
+\lim_{x \to \infty} \frac{-x}{x-2} = \lim_{x \to \infty} \frac{-x}{x} = -1\]
+Por lo tanto
+\[\lim_{x \to \infty} \left(\frac{1}{\e^x}\right)^\frac{1}{x - 2} = \e^{-1}\]
+\end{solution}
+\end{questions}
+\section{Continuidad.}
+Primero vamos a ver lo que es la continuidad de manera intuitiva y después pasaremos a definirla de una manera más formal y que nos permita hacer cálculos y deducciones sobre ella.\\
+
+\textbf{Una función es continua si podemos dibujar su gráfica sin levantar el lápiz del papel, o si la podemos representar con un trozo de cordel.}\\
+Y para terminar de completar estas nociones intuitivas dibujamos un par de gráficas:
+
+\begin{center}
+\begin{multicols}{2}
+\begin{tikzpicture}
+\begin{axis}[title={\textbf{Función continua.}}, width=.4\textwidth, height=.3\textwidth, xmin=-2, xmax=2, ymin = -1, axis x line=center,axis y line=center, xmajorticks=false, ymajorticks=false]
+    \addplot[
+        domain = -2:2,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^2+1);
+\end{axis}
+\end{tikzpicture}
+\newline
+\begin{tikzpicture}
+
+\begin{axis}[title={\textbf{Función no continua.}}, width=.4\textwidth,height=.3\textwidth, xmin=-2, xmax=2, ymin = -1, axis x line=center,axis y line=center,xmajorticks=false, ymajorticks=false]
+    \addplot[
+        domain = -2:1,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^2 +1);
+    \addplot[
+        domain = 1:2,
+        samples = 100,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^2-.5);
+\end{axis}
+\end{tikzpicture}
+\end{multicols}
+\end{center}
+\subsection{Continuidad en un punto.}
+En primer lugar vamos a ver que tiene que pasar para que una función sea continua en un punto y a partir de ahí lo extendemos.\\
+
+\textbf{Una función $\boldsymbol{f(x)}$ es continua en un punto $\boldsymbol{a}$ si y solo si:
+\begin{itemize}
+	\item Podemos calcular $\boldsymbol{f(a)}$.
+	\item Además ocurre que $\boldsymbol{f(a) = \lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x)}$.
+\end{itemize}
+Es decir, podemos calcular la función en el punto y además ese resultado coincide con los límites laterales en el punto.\\
+A los puntos en los que una función no es continua se los llama discontinuidades.
+}
+
+Como vemos en las condiciones, la primera es que podamos calcular la función. Esto nos da una pista para saber \textbf{en qué puntos una función no puede ser continua}, que son:
+\begin{itemize}
+	\item \textbf{Divisiones entre 0.}
+	\item \textbf{Logaritmos de 0 o negativos.}
+	\item \textbf{Raíces pares negativas.}
+	\item \textbf{Tangentes de determinados ángulos.}
+\end{itemize}
+\begin{small}
+(Estos puntos son los que se quitan del dominio, con lo que tenemos parte del trabajo hecha)\\
+\end{small}
+
+Con respecto a la segunda condición, \textbf{añadiremos un caso más que son los puntos de cambio de definición en las funciones definidas a trozos.}\\
+
+Salvo en casos excepcionales, que no son objetivo de estos apuntes, una función solo puede tener problemas de continuidad en los puntos citados anteriormente. Con lo que en ausencia de estos puntos consideraremos que una función es continua en cualquier punto.
+
+\subsection{Continuidad en un intervalo.}
+\textbf{Una función $\boldsymbol{f(x)}$ es continua en un intervalo $\boldsymbol{(a, b)}$ si es continua en todos los puntos del intervalo.}\\
+
+\subsection{Tipos de discontinuidad.}
+Ya hemos visto que para que una función sea continua en un punto $a$ debe ocurrir que $f(a) = \lim_{x \to a^-} f(x) =
+\lim_{x \to a^+} f(x)$ y en cualquier otro caso la función es discontinua en dicho punto.\\
+Dependiendo de que sea lo que nos falle en la igualdad anterior tendremos un tipo de discontinuidad u otro según la siguiente clasificación:
+\subsubsection{Discontinuidad evitable.}
+Tenemos una discontinuidad evitable \textbf{cuando $\boldsymbol{\lim_{x \to a^-} f(x) =
+\lim_{x \to a^+} f(x)}$ y $\boldsymbol{\nexists\, f(a)}$ o cuando existe $\boldsymbol{f(a)}$ pero no coincide con los límites laterales que sí son iguales}.\\
+
+\textbf{Por ejemplo}: $f(x) = \frac{\sqrt{x} - 3}{x - 9}$:\\
+\begin{solution}
+Calculamos el dominio y tenemos que no podemos realizar la operación en $x=9$, con lo que $D(f(x)) = \mathbb{R}-\{9\}$.\\
+Veamos lo que pasa en $x=9$:
+\begin{itemize}
+	\item $\nexists f(9)$
+	\item $\lim_{x \to 9^-} f(x) = 6$
+	\item $\lim_{x \to 9^+} f(x) = 6$
+\end{itemize}
+Con lo que los límites laterales coinciden pero la función no se puede calcular en el punto: en $x=9$ hay una discontinuidad evitable.
+\end{solution}
+\subsubsection{Discontinuidad esencial.}
+Es cualquier otra discontinuidad que no sea evitable. Dentro de esta hay las siguientes clasificaciones:
+\paragraph{De primera especie}\mbox{}\\
+Es \textbf{cuando existen los límites laterales pero son diferentes}. A su vez se clasifican de la siguiente manera:
+\subparagraph{De salto finito.}\mbox{}\\
+Cuando ninguno de los limites laterales es $\pm\infty$.\\
+\textbf{Por ejemplo}: $f(x) = \left\lbrace\begin{array}{ll}
+x^2+ 1&\text{Si } x < 0\\
+2x&\text{Si } x \geq 0
+\end{array}\right.$\\
+\begin{solution}
+Esta función tiene dos definiciones y ninguna de las dos presenta ningún problema (son dos polinomios) con lo que $D(f(x) = \mathbb{R}$,así que únicamente vamos a analizar $x=0$ que es donde cambia de definición (como se ha indicado anteriormente).\\
+
+Cuando $x=0$
+\begin{itemize}
+	\item $f(0) = 2*0 = 0$
+	\item $\lim_{x \to 0^-} f(x) = \lim_{x \to 0^-} (x^2 + 1) = 1$
+	\item $\lim_{x \to 0^+} f(x) = \lim_{x \to 0^+} 2x = 0$
+\end{itemize}
+Con lo que los límites laterales no coinciden pero ninguno de los dos es $\pm\infty$.\\
+
+Tenemos que en $x=0$ hay una discontinuidad esencial de salto finito.
+\end{solution}
+\subparagraph{De salto infinito.}\mbox\\
+En este caso alguno de los límites laterales es $\pm\infty$\\
+\textbf{Por ejemplo}: $f(x) = \frac{1}{x}$\\
+\begin{solution}
+En este caso la función presenta problemas en $x=0$ donde no podemos realizar la operación, con lo que $D(f(x)) = \mathbb{R} - \{0\}$.\\
+Vamos a ver que pasa en $x=0$:
+\begin{itemize}
+	\item $\nexists\,f(0)$
+	\item $\lim_{x \to 0^-} \frac{1}{0} = -\infty$
+	\item $\lim_{x \to 0^+} = \infty$
+\end{itemize}
+Y como al menos uno de los límites es $\pm\infty$ tenemos una discontinuidad esencial de salto infinito.
+\end{solution}
+
+\paragraph{De segunda especie}\mbox{}\\
+\textbf{Cuando alguno de los límites laterales no existe.}\\
+\textbf{Por ejemplo}: $f(x) = \sqrt{x}$\\
+\begin{solution}
+Sabemos que el dominio de esta función es $D(f(x) = [0, \infty)$, con lo que el punto conflictivo es $x=0$ que es la frontera del dominio.\\
+Analizamos lo que pasa en ese punto:
+\begin{itemize}
+	\item $f(0) \sqrt{0} = 0$
+	\item $\nexists\,\lim_{x \to 0^-} f(x)$
+\end{itemize}
+\end{solution}
+No podemos calcular $\lim_{x \to 0^-} \sqrt{x}$, con lo que esta función tiene una discontinuidad esencial de 2ª especie en $x=0$
+
+\subsection{Resolución de ejercicios de continuidad.}
+Los ejercicios de continuidad que nos planteen pueden ser de dos tipos:
+\paragraph{Ejercicios de análisis de continuidad.}\mbox{}\\
+En estos ejercicios tenemos que ver las discontinuidades que tiene una función y de qué tipo son, ya sea para todos los reales o en algún punto en concreto. Vamos a verlo con un ejemplo:\\
+Analizar la continuidad de $f(x) = \left\lbrace \begin{array}{ll}
+\frac{1}{x^2 - 1}&\text{Si } x < 0\\
+x^2 &\text{Si } x \geq 0
+\end{array}\right.$
+\begin{solution}
+Los pasos que hay que dar son los siguientes:
+\begin{enumerate}
+	\item \textbf{Calculamos el dominio}.\\
+	En este caso tenemos dos definiciones:
+	\begin{itemize}
+		\item  La primera nos plantea problemas en $x=\pm 1$, pero $x=1$ no entra en los valores para los que es válida esta definición, con lo que solo nos plantearía problemas en $x=1$.
+		\item La segunda no plantea ningún problema.
+	\end{itemize}
+	Con lo cual el dominio es $D(f(x)) = \mathbb{R}- \{-1\}$.
+	\item \textbf{Buscamos los cambios de definición}, que en este caso está en $x=0$
+	\item \textbf{Analizamos lo que sucede en los puntos problemáticos del dominio y en los cambios de definición}.\\
+	En este caso tenemos que analizar lo que sucede en $x \in \{-1, 0\}$ calculando la función y los límites laterales para cada punto:
+	\begin{itemize}
+		\item Para $x= -1$
+		\begin{itemize}
+			\item $\nexists f(-1)$
+			\item $\lim_{x \to -1^-} f(x) = \infty$
+			\item $\lim_{x \to -1^+} f(x) = -\infty$
+		\end{itemize}
+		Con lo que aquí tenemos una discontinuidad esencial de salto infinito.
+		\item Para $x=0$
+		\begin{itemize}
+			\item $f(0) = 0^2 = 0$
+			\item $\lim_{x \to 0^-} f(x) = -1$
+			\item $\lim_{x \to 0^+} f(x) = 0$
+		\end{itemize}
+		En este caso tenemos una discontinuidad esencial de salto finito.
+	\end{itemize}
+	\item \textbf{Recopilamos la información obtenida y redactamos las conclusiones}:\\
+	\textit{$f(x)$ es continua en todos los reales excepto en $x=-1$ donde presenta una discontinuidad esencial de salto infinito y $x=0$ donde presenta una discontinidad esencial de salto finito.}
+\end{enumerate}
+\end{solution}
+
+\paragraph{Ejercicios de continuidad con parámetros.}\mbox{}\\
+En este caso nos darán una función con uno o varios parámetros y tendremos que calcular cuanto tienen que valer esos parámetros para que la continuidad de la función cumpla con lo que nos piden. Para ello tenemos que hacer uso del hecho de que \textit{para que una función sea continua en un punto debe poderse calcular en ese punto y el valor obtenido tiene que coincidir con el valor de los límites laterales}.\\
+\textbf{Por ejemplo}: calcular $\boldsymbol{a}$ para que la siguiente función sea continua en todos los reales.
+\[f(x) = \left\lbrace \begin{array}{rr}
+ax -2&\text{Si } x \leq 1\\
+4x - 2a&\text{Si } x > 1
+\end{array}\right.\]
+\begin{solution}
+Las dos definiciones son polinomios y en las condiciones están todos los reales, por lo tanto tenemos que $D(f(x)) = \mathbb{R}$.\\
+Entonces el único punto conflictivo va a ser el cambio de definición: $x= 1$. Analizamos lo que sucede en este punto:
+\begin{itemize}
+	\item $f(1) = a*1 - 2= a-2$.
+	\item $\lim_{x \to 1^-} f(x) = \lim_{x \to 1^-} (ax -2) = a-2$
+	\item $\lim_{x \to 0^+} f(x) = \lim_{x \to 0^+} (4x -2a) = 4 - 2a$
+\end{itemize}
+Y para que sea continua esos tres resultados tienen que coincidir:
+\[a-2 = 4 - 2a\]
+Es decir, si $a= 2$ la función es continua en todo $\mathbb{R}$, en otro caso presenta una disconituidad esencial de salto finito en $x=1$
+\end{solution}
+\end{document}

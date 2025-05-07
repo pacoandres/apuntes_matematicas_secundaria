@@ -1,0 +1,1591 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+%para la última página
+%\usepackage{lastpage}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de análisis I. Funciones elementales y operaciones.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\begin{document}
+
+%For e number
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\asen}{\mathrm{asen\,}}
+\newcommand{\acos}{\mathrm{acos\,}}
+\newcommand{\atg}{\mathrm{atg\,}}
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+
+\section{Definición y propiedades de una función.}
+\subsection{Definición.}
+Se define una función como la relación entre dos conjuntos, origen e imagen, de manera que a cada elemento del conjunto origen le corresponde como máximo un elemento de conjunto imagen.\\
+
+En el caso que nos ocupa, que es el de las funciones analíticas con definiciones explícitas, no tenemos ningún problema con esta definición ya que lo que haremos será realizar una serie de operaciones para cada valor del origen y estas operaciones no pueden tener dos resultados distintos para el mismo valor.
+
+\subsection{Propiedades.}
+\subsubsection{Dominio.}
+Se define el dominio de una función como los valores del conjunto origen para los cuales existe imagen.\\
+
+En el caso que nos ocupa podemos decir que el dominio son los valores del origen para los cuales podemos realizar las operaciones indicadas en la función.\\
+Con lo cual solo tenemos que analizar todas las operaciones que conocemos y ver para qué valores pueden tener problemas:
+\begin{itemize}
+	\item \textbf{Suma y resta}: no hay ninguna pareja de valores que no podamos sumar o restar.
+	\item \textbf{Multiplicación}: tampoco hay ningún problema para multiplicar cualquier pareja de valores.
+	\item \textbf{División}: aquí tenemos el primer problema, \textbf{\textit{no podemos hacer una división en la que el divisor sea 0}}.
+	\item \textbf{Potencia de exponente entero}: aquí nos encontramos con dos casos: si el \textbf{\textit{exponente es positivo no hay ningún problema}}, pero si el \textbf{\textit{exponente es negativo la base no podrá valer 0}}.
+	\item \textbf{Potencia de exponente racional (raíces)}: aquí tenemos el problema de los signos, de manera que \textbf{\textit{si la raíz es par el radicando (base) no puede ser negativo}}. También hay que tener en cuenta el signo del exponente como en el caso anterior.
+	\item \textbf{Potencia de exponente irracional}:  \textbf{\textit{la base no puede ser negativa}}, y si el exponente es negativo tampoco puede ser 0.
+	\item \textbf{Exponencial (base siempre positiva)}: no hay ningún problema en elevar un positivo a cualquier número.
+	\item \textbf{Logaritmo}:  \textbf{\textit{no podemos hacer el logaritmo de un argumento negativo o nulo}}.
+	\item \textbf{Seno y coseno}: podemos hacer el seno y el coseno de cualquier ángulo.
+	\item \textbf{Tangente}: por la definición de la tangente (seno/coseno) no podemos calcularla cuando el coseno valga 0, con lo que \textbf{\textit{no se puede hacer si el ángulo es $\frac{\pi}{2} + \pi*\text{k}$ con $\text{k} \in \mathbb{Z}$}}.
+\end{itemize}
+
+Con todo esto el cálculo de un dominio queda reducido a la búsqueda de operaciones que dan problemas (divisiones, potencias de exponente negativo/racional/irracional, logaritmos y tangentes), resolver la ecuación o inecuación que no nos dice qué valores dan problemas y quitar estos valores del conjunto de los reales.\\
+
+Vamos a ver un par de ejemplos:\\
+\begin{questions}
+\question Calcular el dominio de $f(x) = \sqrt{x}$.
+\begin{solution}
+En este caso es bastante sencillo ya que lo que no puede suceder es que $x<0$, con lo cual solo tenemos que quitar esos valores:
+\[D(f) = \mathbb{R} - (-\infty, 0) = [0, \infty] = \mathbb{R}^+\]
+\end{solution}
+\question Calcular el dominio de $f(x) = \sqrt{x^2 - 1}$.
+\begin{solution}
+Vemos que hay una raíz cuadrada, es decir par, con lo que no podemos realizarla si el radicando es negativo. Es decir no podemos hacerla cuando
+\[x^2 - 1 < 0\]
+Procedemos a resolver la inecuación. Como es de 2º grado tenemos que resolver primero la ecuación que resulta de cambiar la igualdad por una igualdad:
+\[x^2 -1 = 0\]
+Esta ecuación tiene de soluciones $x_1 = -1$ y $x_2 = 1$, con lo que la recta real nos queda dividida en tres intervalos: $(-\infty, -1)$,  $(-1, 1)$ y $(1, \infty)$. Tenemos que comprobar cuales de los tres son soluciones de la inecuación $x^2 - 1 < 0$
+\begin{itemize}
+	\item $(-\infty, -1)$: cogemos el valor -2, sustituimos en la inecuación y vemos que $(-2)^2 - 1 < 0$ no es cierto. Este intervalo no es solución.
+	\item $(-1, 1)$: cogemos el valor 0, sustituimos en la inecuación y vemos que $0^2 - 1 < 0$ sí es cierto. Este intervalo sí es solución.
+	\item $(1, \infty)$: con el valor 2 se comprueba que la inecuación no se cumple. Este intervalo no es solución.
+\end{itemize}
+Con lo que la solución de la inecuación $x^2 -  1 < 0$ es el intervalo $(-1, 1)$ (abierto porque es $<$ y no $\leq$) y esos son los valores que hacen que no podamos hacer la raíz, así que los quitamos del dominio:
+\[D(f) = \mathbb{R} - (-1, 1) = (-\infty, -1] \cup [1, \infty)\]
+\end{solution}
+
+\question Calcular el dominio de $f(x) = \frac{2x - 3}{x^2 - x - 6}$.
+\begin{solution}
+Aquí la operación que nos da problemas es una división que no podemos hacer cuando el divisor es 0:
+\[x^2 - x - 6 = 0\]
+Las soluciones son $x_1 = -2$ y $x_2 = 3$, y como estos valores son los únicos que nos dan problemas los quitamos del dominio directamente:
+\[D(f) = \mathbb{R} - \{-2, 3\}\]
+\end{solution}
+\end{questions}
+
+\subsubsection{Recorrido.}
+Se define el recorrido de una función como los valores del conjunto imagen que puede tomar la función.\\
+
+Calcular el recorrido no es tan sencillo como calcular el dominio. Existen dos métodos pero uno de ellos es bastante restringido. Vamos a verlos:
+\paragraph{Por la función inversa.}\mbox{}\\ %Sin mbox no deja hacer salto de línea
+La función inversa es aquella que nos da los valores del origen a los que les corresponde una determinada imagen. Por ejemplo, la inversa de la función $f(x) = x + 1$ será $f^{-1} (x)= x - 1$. Se ve claramente que $f(1) = 2$ y $f^{-1}(2) = 1$.\\
+
+Para calcular la función inversa lo único que hay que hacer es despejar la $x$, y muchas veces esto no es sencillo ni posible porque no todas las funciones tienen inversa.\\
+
+En el caso de que la podamos calcular tendremos que \textit{\textbf{el recorrido de la función coincide con el dominio de la inversa}}\\
+
+Vamos a verlo con un ejemplo sencillo:
+\begin{questions}
+\question Calcula el dominio y el recorrido de $f(x) = x^2$
+\begin{solution}
+El dominio de $f(x)$ es sencillo, ya que no tiene ninguna de las operaciones que nos dan problemas, con lo que:
+\[D(f) = \mathbb{R}\]
+Para calcular su recorrido hacemos su inversa, y en este caso también es sencillo porque la operación contraria al cuadrado es la raíz cuadrada:
+\[f^{-1}(x) = \sqrt{x}\]
+Y sabemos cual es el dominio de la raíz cuadrada (lo hemos calculado antes), con lo que la imagen de $f(x) = x^2$ será:
+\[Im(f) = D(f^{-1}) = [0, \infty) = \mathbb{R}^+\]
+\end{solution}
+\end{questions}
+
+El problema de este método es que puede ser muy difícil, y muchas veces imposible, calcular la función inversa.
+
+\paragraph{Por la gráfica.}\mbox{}\\
+A través de la gráfica podemos ver fácilmente cual es el recorrido de la función y es algo que siempre vamos a poder hacer.\\
+Vamos a verlo con la misma función que en el ejemplo anterior: $f(x) = x^2$. Si dibujamos la gráfica tendremos:\\
+\begin{center}
+\begin{tikzpicture}
+ 
+\begin{axis}[ymin=-5,axis x line=center,
+  axis y line=center,  xtick={-3,-2,-1,1, 2, 3}, ytick={1, 4, 9}, grid=major] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -4:4,
+        samples = 200,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^2);
+\end{axis}
+ 
+\end{tikzpicture}
+\end{center}
+Y se ve claramente que la función solamente va a estar por encima del eje $x$ sin dejar de crecer. Por ello se tiene que:
+\[Im(f) = \mathbb{R}^+\]
+
+\subsubsection{Signo de la función.}
+El resultado de una función puede ser positivo o negativo, y lo que hacemos es ver en qué intervalos toma cada signo. Para ello damos los siguientes pasos:
+\begin{enumerate}
+	\item Calculamos el dominio de la función. Supongamos que tiene problemas en los siguientes puntos $\{xd_1, xd_2, ...\}$.
+	\item Resolvemos la ecuación $f(x) = 0$. Supongamos que las soluciones son $\{xs_1, xs_2, ...\}$.
+	\item Unimos y ordenamos los puntos de los conjuntos anteriores, de manera que tenemos una serie de intervalos.
+	\item Tomamos un valor de cada intervalo y calculamos el valor de $f$ en él. El signo de la función en ese intervalo coincidirá con  el que hemos obtenido para ese valor.
+\end{enumerate}
+
+Vamos a ver un ejemplo con todo esto.
+\begin{questions}
+\question Indicar los signos de la función $f(x) = \frac{x^2 - x -6}{x^2 - 1}$.
+\begin{solution}
+Seguimos los pasos indicados:
+\begin{enumerate}
+	\item Como tiene una división tendremos problemas cuando $x^2 -1 = 0$, y esta ecuación tiene de soluciones $\{-1, 1\}$.
+	\item Resolvemos la ecuación $\frac{x^2 - x -6}{x^2 - 1} = 0$, y tiene como soluciones $\{-2, 3\}$.
+	\item Unimos y ordenamos los conjuntos de puntos: $\{-2, -1, 1, 3\}$. Esto nos da los intervalos $(-\infty, -2)$, $(-2, -1)$, $(-1, 1)$, $(1, 3)$, $(3, \infty)$.
+	\item Elegimos un punto de cada intervalo para ver el signo de la función en él:
+	\begin{itemize}
+		\item De $(-\infty, -2)$ elegimos $x=-3$ y $f(-3) = \frac{(-3)^2 - (-3) - 6}{(-3) ^2 - 1} = \boldsymbol{\frac{3}{4}}$, con lo que la función es \textbf{positiva en este intervalo}.
+		\item De $(-2, -1)$ elegimos $x = \frac{-3}{2}$ y $f\left(\frac{-3}{2}\right) =  \ddfrac{\left(\frac{-3}{2}\right)^2- \left(\frac{-3}{2}\right) - 6}{\left(\frac{-3}{2}\right)^2 - 1} = \boldsymbol{-\frac{9}{5}}$, con lo que la función es \textbf{negativa en este intervalo}.
+		\item De $(-1, 1)$ elegimos $x= 0$ y $f(0) = \frac{0^2 - 0 - 6}{0^2- 1} = \boldsymbol{6}$, la función es \textbf{positiva en este intervalo}.
+		\item De $(1, 3)$ elegimos $x = 2$ y $f(2) = \frac{2^2 - 2 - 6}{2^2 - 1} = \boldsymbol{-\frac{4}{3}}$, la función es \textbf{negativa en este intervalo}.
+		\item De $(3, \infty)$ elegimos $x=4$ y $f(4) =\frac{4^2 - 4 - 6}{4^2 - 1} = \boldsymbol{\frac{2}{5}}$, la función es \textbf{positiva en este intervalo}. 
+	\end{itemize}
+\end{enumerate}
+Resumimos los resultados en la siguiente tabla:
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Intervalo} & $(-\infty, -2)$ & $(-2, -1)$ & $(-1, 1)$ & $(1, 3)$ & $(3, \infty)$ \\ \hline
+\textbf{Signo}     & +               & -          & +         & -        & +             \\ \hline
+\end{tabular}
+\end{center}
+
+Que se puede observar en la gráfica:
+\begin{center}
+\begin{tikzpicture}
+ 
+\begin{axis}[xmin=-4, xmax=4, ymin=-2, ymax=10,axis x line=center,
+  axis y line=center,xtick={-3, -2, -1, 1, 2, 3}, grid=major] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -4:-1.01,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] {(x^2 - x -6)/(x^2 - 1)};
+        \addplot[
+        domain = -0.9:0.9,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] {(x^2 - x -6)/(x^2 - 1)};
+        \addplot[
+        domain = 1.01:4,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] {(x^2 - x -6)/(x^2 - 1)};
+    
+    %asintotas verticales
+    \draw[dashed] ( -1,-2) -- ( -1,+10);
+    \draw[dashed] ( 1,-2) -- ( 1,+10);
+    
+    %si fuese horizontal
+    %\addplot[thick,dashed, samples=50] (x,1);
+\end{axis}
+ 
+\end{tikzpicture}
+\end{center}
+(Como en -1 y 1 hay una división entre 0 tenemos dos asíntotas verticales, que ya veremos en detalle lo que son)
+\end{solution}
+\end{questions}
+
+\subsubsection{Monotonía de la función. Extremos.}
+Dado un intervalo $(a, b)$ se dice que:
+\begin{itemize}
+	\item $f(x)$ es creciente en el intervalo $(a, b)$ cuando $\frac{f(x_2)-f(x_1)}{x_2 - x_1}>0\ \forall x_1, x_2 \in (a,b)$.\\
+	(El símbolo $\boldsymbol{\forall}$ significa ``\textit{para todo}'', de manera que se leería ``para todo $x_1$ y $x_2$ que estén en el intervalo $(a,b)$'')
+	\item $f(x)$ es decreciente en el intervalo $(a, b)$ cuando $\frac{f(x_2)-f(x_1)}{x_2 - x_1}<0\ \forall x_1, x_2 \in (a,b)$.
+	\item $f(x)$ es constante en el intervalo $(a, b)$ cuando $\frac{f(x_2)-f(x_1)}{x_2 - x_1}=0\ \forall x_1, x_2 \in (a,b)$.
+\end{itemize}
+
+Gráficamente:\\
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.3\textwidth, title={\textbf{Creciente}}, xmin=-4, xmax=4, ymin=-2, ymax=2, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x/2+1);
+\end{axis}
+
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\textwidth, title={\textbf{Decreciente}}, xmin=-4, xmax=4, ymin=-2, ymax=2, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, -x/2+1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\textwidth, title={\textbf{Constante}}, xmin=-4, xmax=4, ymin=-2, ymax=2, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, 1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Evidentemente no podemos comprobar si se cumple alguna de las condiciones en todos los puntos de un intervalo para saber donde crece, decrece o es constante la función, pero aún no conocemos las herramientas que nos van a permitir conocer donde crece o decrece una función. Más adelante, en las aplicaciones de la derivada, veremos como hacerlo.
+\paragraph{Extremos.}\mbox{}\\
+Un extremo es un punto en el que una función cambia de creciente a decreciente o al revés. Dependiendo de la situación recibe un nombre distinto:
+\begin{itemize}
+	\item Si la función pasa de \textbf{creciente a decreciente} ($\cap$) se dice que tenemos un \textbf{máximo}.
+	\item Si la función pasa de \textbf{decreciente a creciente} ($\cup$) se dice que tenemos un \textbf{mínimo}.
+\end{itemize}
+\subsubsection{Curvatura de una función y puntos de inflexión.}
+Antes de empezar a definir la curvatura de una función tenemos que repasar lo que es la recta tangente a una curva.
+\paragraph{Recta tangente a una curva.}\mbox{}\\
+Se define la recta tangente a una curva en un punto como una recta que toca a la curva en ese punto sin cortarla. Gráficamente se entiende mejor:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Recta no tangente}}, xmin=-1, xmax=1, ymin=-1, ymax=1, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        dashed,
+        thick,
+        %blue,
+    ] (x, -x/2+.375);
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^3);
+%    \draw (axis cs:.5,.125) circle [radius=.05];
+	\addplot[mark=*, only marks] coordinates {(.5,.125)};
+\end{axis}
+
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Recta tangente}}, xmin=-1, xmax=1, ymin=-1, ymax=1, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        dashed,
+        thick,
+        %blue,
+    ] (x, .75*x + .125-.75*.5);
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^3);
+%    \draw (axis cs:.5,.125) circle [radius=.05];
+    \addplot[mark=*, only marks] coordinates {(.5,.125)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\paragraph{Curvatura de una función.}\mbox{}\\
+Dado un intervalo $(a, b)$ se dice que:
+\begin{itemize}
+	\item $f(x)$ es cóncava en el intervalo si se encuentra por encima de su tangente en todos los puntos de $(a,b)$.
+	\item $f(x)$ es convexa en el intervalo si se encuentra por debajo de su tangente en todos los puntos de $(a,b)$.
+	\item Solo queda otra posibilidad, y es que $f(x)$ sea una recta y en ese caso coincide con su tangente.
+\end{itemize}
+
+Gráficamente:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Cóncava}}, xmin=-2, xmax=2, ymin=-3, ymax=2, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        dashed,
+        thick,
+        %blue,
+    ] (x, 2*x - 2);
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^2 - 1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Convexa}}, xmin=-2, xmax=2, ymin=-1, ymax=4, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        dashed,
+        thick,
+        %blue,
+    ] (x, -2*x+2);
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, -x^2 + 1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Al igual que ocurre con la monotonía, es muy complicado analizar la curvatura de una función con los conocimientos que tenemos ahora mismo. Más adelante veremos como hacerlo de una manera relativamente sencilla.
+\paragraph{Puntos de inflexión.}\mbox{}\\
+Un punto de inflexión es aquel en el que la curvatura pasa de cóncava a convexa o al revés. En una gráfica se ve mejor:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth,title={\textbf{Punto de inflexión}}, axis x line=center,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+%        domain = -1:1,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, x^3);
+    \addplot[mark=*, only marks] coordinates {(0,0)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\subsubsection{Paridad de la función.}
+Se dice que una función es \textbf{par si} $f(-x) = f(x)$.\\
+
+Se dice que una función es \textbf{impar si} $f(-x) = -f(x)$.\\
+
+En \textbf{cualquier otro caso no es par ni impar}. Esto último es lo más común.\\
+
+La paridad de una función nos indica si existe algún tipo de simetría en su gráfica que pueda simplificar los cálculos que tendremos que hacer para analizar su comportamiento, pero en la mayoría de los casos no vamos a poder aplicarlo ya que hay pocas funciones que sean pares o impares.
+
+\subsubsection{Periodicidad de una función.}
+Se dice que una función es periódica si existe un valor llamado periodo, generalmente indicado con la letra $T$, que cumple $f(x + T) = f(x),\ \forall x \in D(f)$.\\
+Esto es algo que cumplen las funciones trigonométricas: seno, coseno y tangente. Vamos a verlo gráficamente, aunque se analizará en detalle en el apartado correspondiente a estas funciones:
+
+\begin{center}
+\begin{tikzpicture}
+\pgfmathsetmacro{\pione}{pi/6}
+\pgfmathsetmacro{\pitwo}{13*pi/6}
+\pgfmathsetmacro{\pithree}{25*pi/6}
+\begin{axis}[width=.9\textwidth, height=.3\linewidth, title={\textbf{Función periódica}}, axis x line=center,
+  axis y line=center, xtick={\pione, \pitwo, \pithree}, ytick={.5}, xticklabels={$a$, $a+T$, $a+2T$}, yticklabels={$f(a)$}, grid=major,
+  ymin=-1.1, ymax=1.1,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1},
+  x tick label style={anchor=north west, yshift=1, xshift= 2}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -pi:5*pi,
+        samples = 200,
+        smooth,
+        thick,
+        %blue,
+    ] {sin(deg(x))};
+    \addplot[mark=*, only marks] coordinates {(\pione,0.5)};
+    \addplot[mark=*, only marks] coordinates {(\pitwo,.5)};
+    \addplot[mark=*, only marks] coordinates {(\pithree,.5)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Asíntotas de una función.}
+Una asíntota es una recta a la que una curva se parece cada vez más. Dicho de otra manera es una recta a la que la función se pega indefinidamente sin llegar a tocarla.\\
+Las asíntotas pueden ser de tres tipos: vertical (\textbf{|}), horizontal (\textbf{---}) y oblicua (\textbf{/}).
+\begin{itemize}
+	\item Las asíntotas verticales solo pueden existir en puntos donde hay divisiones entre 0 o logaritmos de 0. Una función puede tener muchas (incluso infinitas) asíntotas verticales.
+	\item Las asíntotas horizontales y las oblicuas solo se pueden dar en los infinitos, y una función solo puede tener dos de éstas en total.
+\end{itemize}
+
+Con lo que conocemos ahora mismo no podemos calcular las asíntotas, pero más adelante lo haremos.
+
+\section{Funciones elementales.}
+Las funciones que vamos a ver aquí son las funciones que se obtienen con las siete operaciones aritméticas que conocemos más las de las tres principales razones trigonométricas.\\
+
+Las primeras que vamos a ver no son simplemente una operación aritmética, sino que tienen varias para que podamos entender bien algunas cosas.
+\subsection{Función afín. La recta.}
+Como su nombre indica la gráfica de esta función es una línea recta. Su expresión analítica, o ecuación explicita es de la forma:
+\[f(x) = mx + n\]
+Donde:
+\begin{itemize}
+	\item $\boldsymbol{m}$ es la \textbf{pendiente} de la recta. En concreto es la tangente del ángulo que forma la recta con el eje $x$. Cuanto mayor sea esta pendiente mayor será el ángulo y la recta se parecerá más a la vertical.
+	\item $\boldsymbol{n}$ es la \textbf{ordenada en el origen} y nos da el punto del eje $y$ por el que pasa la recta cuando $x=0$. Es decir, pasa por el punto $(0,n)$
+\end{itemize}
+
+En la siguiente recta tenemos que $m=\tg \frac{\pi}{4} = 1$ y $n = -1$
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[title={$\boldsymbol{f(x) = x -1}$}, axis x line=center,
+  axis y line=center, xtick={1}, ytick={-1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -3:3,
+        samples = 50,
+        smooth,
+        thick,
+        %blue,
+    ] (x, {x-1});
+    \draw [dashed] (axis cs:2,0) arc [radius=1,start angle=0,end angle=45];
+    \addplot[mark=*, only marks] coordinates {(0,-1)};
+    \node[] at (axis cs: 2.5, .5) {$\frac{\pi}{4}\ (45^\circ)$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Es una función bastante sencilla de la cual hay poco que decir. Generalmente no se suele llamar con $f(x)$ sino con $\boldsymbol{y}$:
+\[y =mx+n\]
+\begin{itemize}
+	\item Si \textbf{dominio son todos los reales} ya que en su expresión no hay ninguna operación que nos dé problemas. El \textbf{recorrido también son todos los reales}.
+	\item Si la \textbf{pendiente es positiva} es una recta \textbf{creciente} y si es \textbf{negativa} la recta es \textbf{decreciente}.
+	\item Si la \textbf{pendiente es 0} ($y=n$) entonces tenemos una \textbf{recta horizontal} que pasa por el punto $(0, n)$. Por ejemplo $y=-2$ es una recta horizontal que pasa por el $(0,-2)$
+	\item Hay una \textbf{recta especial}, que es \textbf{la vertical}. Pero esa recta no cumple la definición de función, aunque sí tiene expresión analítica:
+\[x = a\  \text{ (Donde } a \text{ es el punto del eje } x \text{ por el que pasa la recta vertical.)}\]
+\end{itemize}
+
+
+Gráficamente:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Horizontal}: $y = 2$}, axis x line=center, xmin= -2, xmax=2, ymin=-3, ymax=3, 
+  axis y line=center, xmajorticks=false, ytick={-2,-1,1,2},
+  y tick label style={anchor=south east, yshift=-2, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -2:2,
+        samples = 10,
+        very thick,
+        %blue,
+    ] (x, 2);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Vertical}: $x= -1$}, axis x line=center, xmin= -2, xmax=2, ymin=-1, ymax=1,
+  axis y line=center, ymajorticks=false,
+  x tick label style={anchor=south west, yshift=1, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+ \draw[very thick] ( -1,.-1) -- ( -1,1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Las funciones afines \textbf{tienen inversa} (excepto la horizontal) y es sencilla de calcular, solo tenemos que recordar que para calcular la inversa tenemos que despejar la $x$:
+\[y= mx +n\]
+\[y-n = mx\]
+\[x = \frac{y -n}{m} = \frac{1}{m}y - \frac{n}{m}\]
+Y utilizando las variables a las que estamos acostumbrados:
+\[f^{-1}(x) = \frac{1}{m}x - \frac{n}{m}\]
+Con lo que la inversa es otra función afín (otra recta)
+\subsection{Función polinómica.}
+Son las funciones cuya expresión analítica es un polinomio: $f(x) = a_n x^n + a_{n-1} x^{n-1}+...+a_1 x + a_0$.\\
+Al no tener operaciones que nos den problemas su \textbf{dominio son todos los reales}. El \textbf{recorrido} es algo más complejo, excepto si el \textbf{grado del polinomio es impar}, en cuyo caso es \textbf{todos los reales}.
+De ellas la \textbf{más famosa} es la \textbf{parábola}.
+\paragraph{La parábola}\mbox{}\\
+La parábola tiene como expresión $y=ax^2 + bx + c$, que conocemos todos de las ecuaciones de segundo grado. Su forma es la siguiente:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Parábola cóncava}}, axis x line=center, xmin= -2, xmax=2, ymin=-2, ymax=4, 
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -2:2,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, x^2 - 1);
+    \addplot[mark=*, only marks] coordinates {(0,-1)};
+    \node[] at (axis cs: 0.5, -1.5) {Vértice};
+    \addplot[mark=*, only marks] coordinates {(1,0)};
+    \addplot[mark=*, only marks] coordinates {(-1,0)}; 
+    \node[] at (axis cs: 1.5, .3) {Corte};
+    \node[] at (axis cs: -1.5, .3) {Corte};
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Parábola convexa}}, axis x line=center, xmin= -2, xmax=2, ymin=-4, ymax=2, 
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -2:2,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, -x^2 + 1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Se ve que las parábolas son simétricas con respecto al eje que pasa por el vértice.\\
+
+Es una curva famosa actualmente porque tiene una propiedad, entre otras de las que tiene, muy importante para las comunicaciones: todo lo que llega a la parábola paralelo al eje que pasa por el vértice rebota en la parábola y acaba pasando por un punto llamado foco:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\textwidth, title={\textbf{Propiedad de la parábola}}, axis x line=center, xmin= -2.5, xmax=2.5, ymin=-.5, ymax=4,  axis y line=center, xmajorticks=false, ymajorticks=false, axis line style={draw=none}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -2.5:2.5,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, .5*x^2);
+    \addplot[mark=*, only marks] coordinates {(0,.5)};
+    \node[] at (axis cs: 0, 1) {Foco};
+	\draw[-latex, dashed] (-2,4) -- (-2,2);
+	\draw[-to, dashed] (-2,2) -- (0,.5);
+	\draw[-latex, dashed] (-1,4) -- (-1,.5);
+	\draw[->to, dashed] (-1,.5) -- (0,.5);
+	\draw[-latex, dashed] (-.5,4) -- (-.5,.125);
+	\draw[->to, dashed] (-.5,.125) -- (0,.5);
+	
+	\draw[-latex, dashed] (2,4) -- (2,2);
+	\draw[->to, dashed] (2,2) -- (0,.5);
+	\draw[-latex, dashed] (1,4) -- (1,.5);
+	\draw[->to, dashed] (1,.5) -- (0,.5);
+	\draw[-latex, dashed] (.5,4) -- (.5,.125);
+	\draw[->to, dashed] (.5,.125) -- (0,.5);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Por esta razón la parábola se utiliza para la construcción de antenas, poniendo el receptor en el foco nos aseguramos de que todas las ondas que lleguen a la parábola van a acabar en el foco y así se amplifica la señal que recibiríamos si el receptor estuviese solo.\\
+
+El comportamiento de la parábola es fácil de predecir a partir de los coeficientes del polinomio de 2º grado que tiene como expresión analítica.
+\begin{itemize}
+	\item La \textbf{curvatura} (brazos hacia arriba o hacia abajo) viene dada por $a$, el coeficiente de $x^2$
+	\begin{itemize}
+		\item Si $a>0$ los brazos van hacia arriba, es cóncava.
+		\item Si $a<0$ van hacia abajo, es convexa.
+	\end{itemize}
+	\item La coordenada $x$ del \textbf{vértice} viene dada por $x_v = -\frac{b}{2a}$, y la coordenada $y_v = f(x_v)$.
+	\item Los \textbf{cortes} se calculan resolviendo la ecuación $ax^2 + bx + c = 0$. Como ya sabemos de la ecuación de 2º grado no todas las parábolas van tener cortes.
+\end{itemize}
+Es fácil ver que el \textbf{recorrido de la parábola no son todos los reales}, depende de dónde esté el vértice y hacia dónde estén orientados los brazos.
+
+\paragraph{Funciones polinómicas en general}\mbox{}\\
+El resto de polinomios no son tan famosos, y de ellos se puede decir lo siguiente:
+\begin{itemize}
+	\item El \textbf{dominio son los reales}.
+	\item El \textbf{recorrido} depende:
+	\begin{itemize}
+		\item Si el \textbf{grado es impar} el recorrido son \textbf{todos los reales}.
+		\item Si el \textbf{grado es par} va a depender de dónde estén los extremos y el sentido de los brazos.
+	\end{itemize}
+	\item Si el grado del polinomio es par los brazos irán en el mismo sentido, si es impar en sentido contrario. El signo del coeficiente del término de mayor grado nos dirá el sentido de los brazos de una manera similar a la parábola.
+	\item Puede tener tantos puntos de cortes como el grado del polinomio.
+	\item Puede tener tantos extremos como el grado del polinomio menos uno.
+	\item Puede tener tantos puntos de inflexión como el grado del polinomio menos dos.
+\end{itemize}
+
+Respecto a la función inversa, ésta es bastante complicada de calcular en la mayoría de los caso y en muchos de ellos ni siquiera existe.\\
+Un caso en el que es sencillo es en el de $f(x) = x^2$ porque es evidente que $f^{-1}(x) = \sqrt{x}$, la cual vamos a ver en detalle en otro apartado.
+
+\subsection{Función de proporcionalidad inversa.}
+Tiene la expresión $f(x) = \frac{1}{x}$ y su gráfica:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[axis x line=center, xmin= -1, xmax=1 ,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -1:-0.01,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, 1/x);
+    \addplot[
+        domain = 0.01:1,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, 1/x);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+En está función tenemos una operación que da problemas, una división. Por tanto tenemos que excluir del dominio todos los puntos que hagan que el denominador valga 0.\\
+En este caso son los puntos que cumplen $x=0$, que solo es uno. Por tanto el \textbf{dominio} es:
+\[D(f) = \mathbb{R} - \{0\}\]
+
+Es fácil ver en la gráfica que tiene varias \textbf{asíntotas}, \textbf{una vertical} que es la recta $x=0$ y \textbf{dos horizontales} (en $\infty$ y en $-\infty$) que son la recta $y = 0$.\\
+
+A la vista de la gráfica y de lo que conocemos sobre la división (no hay ninguna pareja de números que al dividirlos nos dé 0) el \textbf{recorrido} va a ser:
+\[Im(f) = \mathbb{R} - \{0\}\]
+
+Se ve también que es \textbf{siempre decreciente}.\\
+
+Por último vamos a calcular la inversa:
+\[y = \frac{1}{x}\]
+\[x = \frac{1}{y}\]
+O lo que es lo mismo:
+\[f^{-1}(x) = \frac{1}{x}\]
+La función de proporcionalidad inversa es igual que su inversa. Hay muchas funciones a las que las sucede esto.
+
+\subsection{Función raíz.}
+Evidentemente la expresión de esta función es $f(x) = \sqrt[n]{x}$.\\
+Su \textbf{dominio} va a depender de si el índice de la raíz es par o impar:
+\begin{itemize}
+	\item Si el índice es par su dominio son los reales positivos: $D(f) = [0, \infty) = \mathbb{R}^{+}$.\\
+	(Nota: algunos autores no consideran que $\mathbb{R}^{+}$ incluya el cero y lo escriben de alguna de las siguientes maneras: $\mathbb{R} \cup \{0\}$ ó $\mathbb{R}^{+}_0$ ó $\mathbb{R}^{+}_{\geq 0}$)
+	\item Si el indice es impar su dominio son todos los reales: $D(f) = \mathbb{R}$.
+\end{itemize}
+Con el \textbf{recorrido sucede exactamente lo mismo}.\\
+
+La gráficas de la función según el índice sea par o impar:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\linewidth, title={$f(x) =\sqrt{x}$},axis x line=center, xmin= -10, xmax=10 , ymin=-5, ymax=5,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = 0:10,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, x^.5);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.45\linewidth, , title={$f(x) =\sqrt[3]{x}$}, axis x line=center, xmin= -10, xmax=10 , ymin=-5, ymax=5,
+  axis y line=center, xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = 0:10,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {x^(1/3)});
+    \addplot[
+        domain = -10:0,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {-(-x)^(1/3)});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+En muchas ocasiones trataremos estas funciones como potencias ya que $\sqrt[n]{x} = x^\frac{1}{n}$.\\
+
+Como se ha visto en las polinómicas, la inversa de estas funciones es la potencia cuyo exponente coincide con el índice.
+\subsection{Funciones exponencial y logarítmica.}
+Estas funciones se suelen agrupar debido a que \textbf{una es la inversa de la otra}:
+\[f(x) = a^x\]
+\[f^{-1}(x) = \log_a x\]
+Sobra decir que $a \in \mathbb{R}$ y $a> 0$.\\
+
+\subsubsection{Función exponencial.}
+Por lo que sabemos no hay ningún problema en elevar una base positiva a cualquier exponente, por lo que en el caso de la \textbf{exponencial el dominio son todos los reales}.\\
+Y debido a que está restringida a bases positivas, como una potencia de base positiva siempre tiene un resultado positivo, el dominio será el intervalo $(0, \infty)$ (no podemos conseguir que una potencia de base positiva de cero como resultado)\\
+
+Para estas funciones hay una gran diferencia si la base es mayor o menor que 1. Vamos a ver las gráficas:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\linewidth, title={$\boldsymbol{base > 1}$},axis x line=center, xmin= -3, xmax=3 , ymin=-4,
+  axis y line=center, xmajorticks=false, ytick={1},
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -3:3,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {2^x});
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.45\linewidth, title={$\boldsymbol{0< base < 1}$},axis x line=center, xmin= -3, xmax=3 ,ymin=-4,
+  axis y line=center, xmajorticks=false, ytick={1},
+  y tick label style={anchor=south west, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -3:3,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {.5^x});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Vemos que dependiendo del valor de la base será creciente o decreciente manteniendo la misma forma, de manera que cuando la base es mayor que 1 la función tiene una asíntota horizontal en $-\infty$ que es $y=0$ mientras que si la base está entre 0 y 1 esta asíntota está en $\infty$.\\
+Esto es fácil de entender con un ejemplo: $2^{-x} = \left(\frac{1}{2}\right)^x = 0,5^x$, por lo que la gráfica de una es el reflejo de la otra sobre el eje $y$.\\
+En el otro infinito no tienen asíntota, crecen indefinidamente.\\
+
+Las funciones exponenciales se utilizan para cualquier proceso que implique un crecimiento multiplicativo, por ejemplo el crecimiento celular donde cada célula se divide en dos de manera que cada vez que lo hacen el número de células se multiplica por dos. Esto hace que tengan mucha importancia.\\
+
+La función \textbf{exponencial más importante} es la que tiene como \textbf{base} el número \textbf{e}:
+\[f(x) = \e^x\]
+Entre otras, esta función también tiene una aplicación importante, ya que con ella se forma la expresión de una curva llamada \textit{catenaria}, cuya expresión es $f(x) = \frac{\e^x + \e^{-x}}{2}$, y que describe la forma que tiene un cable que cuelga de dos postes:
+\begin{center}
+\begin{tikzpicture}
+\pgfmathsetmacro{\altura}{(e^1 + e^-1)/2}
+\begin{axis}[title={\textbf{Catenaria}},axis x line=center, xmin= -1.5, xmax=1.5 , ymin=0, ymax=\altura,
+  axis y line=center, xmajorticks=false, ymajorticks=false, axis line style={draw=none}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -1:1,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {(e^x+e^(-x))/2});
+    \draw[ultra thick]  (-1, 0) -- (-1, \altura);
+    \draw[ultra thick]  (1, 0) -- (1, \altura);
+    \draw[ultra thick]  (-1.5, 0) -- (1.5, 0);
+    \addplot[
+        domain = -1.5:-1,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {(e^(x+2)+e^(-(x+2)))/2});
+        \addplot[
+        domain = 1:1.5,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {(e^(x-2)+e^(-(x-2)))/2});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Teniendo en cuenta que vivimos en un mundo que está lleno de cables colgando, esta función tiene gran importancia ya que permite calcular la distancia que debe haber entre postes para que el cable permanezca a una altura razonable optimizando el número de postes para que el coste sea lo menor posible.\\
+\subsubsection{Función logarítmica.}
+Como ya sabemos la función logarítmica es la inversa de la exponencial, con lo que sus propiedades son las mismas pero intercambiando la horizontal y la vertical. Esto se ve muy bien a partir de la gráfica:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.45\linewidth, title={\textbf{Función logaritmo}},axis x line=center, xmin= -3, xmax=3, 
+  axis y line=center, xtick={1}, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = 0.01:3,
+        samples = 50,
+        thick,
+        %blue,
+    ] (x, {ln(x)});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+La anterior gráfica corresponde a un logaritmo cuya base es mayor que uno. Si la base estuviese entre 0 y 1 la gráfica seria la reflejada por el eje $x$.\\
+
+Por lo que sabemos el \textbf{dominio de la función logarítmica} tiene que ser $\boldsymbol{(0, \infty)}$ y por lo que se ve en la gráfica su \textbf{recorrido} son \textbf{todos los reales}.
+
+Tiene un \textbf{asíntota vertical} en $x=0$ y dependiendo de como sea la base según nos acerquemos a 0 la función tenderá a:
+\begin{itemize}
+	\item $-\infty$ si la base es mayor que 1.
+	\item $\infty$ si la base está entre 0 y 1.
+\end{itemize}
+
+Los logaritmos tienen infinidad de aplicaciones aunque no son conocidas por la mayor parte de la gente ni son fáciles de entender. Unos ejemplos:
+\begin{itemize}
+	\item En tecnología del sonido profesional. En estos equipos los niveles se miden en decibelios (dB) que no son otra cosa que logaritmos.
+	\item En economía y finanzas se utiliza para calcular plazos de depósitos o para curvas de oferta y demanda.
+	\item En biología y medicina se utiliza mucho porque la vida tiene muchas cosas que funcionan de forma logarítmica.
+	\item En química, el pH no es más que el logaritmo de la concentración.
+\end{itemize}
+Estos son solo algunos ejemplos para mostrar que, al igual que el resto de las operaciones aritméticas, tiene multitud de aplicaciones.
+
+\subsection{Funciones trigonométricas y sus inversas.}
+\subsubsection{Funciones trigonométricas.}
+Las funciones trigonométricas son el seno, el coseno y la tangente. Es necesario tener en cuenta que \textbf{en análisis todos los ángulos se miden en radianes}, ya que si no habría que corregir los resultados de determinadas operaciones y no resultaría tan útil.\\
+La mejor manera de analizar estas funciones es observando sus gráficas:
+\begin{center}
+\begin{tikzpicture}
+\pgfmathsetmacro{\piuno}{-5*pi/2}
+\pgfmathsetmacro{\pidos}{-3*pi/2}
+\pgfmathsetmacro{\pitres}{-pi/2}
+\pgfmathsetmacro{\piqua}{pi/2}
+\pgfmathsetmacro{\unopi}{pi}
+\pgfmathsetmacro{\picinco}{3*pi/2}
+\pgfmathsetmacro{\dospi}{2*pi}
+\pgfmathsetmacro{\piseis}{5*pi/2}
+\begin{axis}[width=.5\linewidth, title={$\boldsymbol{f(x) = \sen x}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.5, ymax=1.5,
+xtick={\piuno, -\dospi, \pidos, -\unopi, \pitres, \piqua, \unopi,\picinco,\dospi,\piseis},
+xticklabels={$\scriptstyle\frac{-5\pi}{2}$, $\scriptscriptstyle{-2\pi}$,$\scriptstyle\frac{-3\pi}{2}$,
+$\scriptscriptstyle{-\pi}$, $\scriptstyle\frac{-\pi}{2}$, $\scriptstyle\frac{\pi}{2}$, $\scriptscriptstyle\pi$, $\scriptstyle\frac{3\pi}{2}$,$\scriptscriptstyle{2\pi}$,$\scriptstyle\frac{5\pi}{2}$},
+  axis y line=center, ytick={-1,1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\pgfmathsetmacro{\piuno}{-5*pi/2}
+\pgfmathsetmacro{\pidos}{-3*pi/2}
+\pgfmathsetmacro{\pitres}{-pi/2}
+\pgfmathsetmacro{\piqua}{pi/2}
+\pgfmathsetmacro{\unopi}{pi}
+\pgfmathsetmacro{\picinco}{3*pi/2}
+\pgfmathsetmacro{\dospi}{2*pi}
+\pgfmathsetmacro{\piseis}{5*pi/2}
+\begin{axis}[width=.5\linewidth, title={$\boldsymbol{f(x) = \cos x}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.5, ymax=1.5,xtick={\piuno, -\dospi, \pidos, -\unopi, \pitres, \piqua, \unopi,\picinco,\dospi,\piseis},
+xticklabels={$\scriptstyle\frac{-5\pi}{2}$, $\scriptscriptstyle{-2\pi}$,$\scriptstyle\frac{-3\pi}{2}$,
+$\scriptscriptstyle{-\pi}$, $\scriptstyle\frac{-\pi}{2}$, $\scriptstyle\frac{\pi}{2}$, $\scriptscriptstyle\pi$, $\scriptstyle\frac{3\pi}{2}$,$\scriptscriptstyle{2\pi}$,$\scriptstyle\frac{5\pi}{2}$},
+  axis y line=center, ytick={-1,1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {cos(deg(x))});
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\pgfmathsetmacro{\piuno}{-5*pi/2}
+\pgfmathsetmacro{\pidos}{-3*pi/2}
+\pgfmathsetmacro{\pitres}{-pi/2}
+\pgfmathsetmacro{\piqua}{pi/2}
+\pgfmathsetmacro{\unopi}{pi}
+\pgfmathsetmacro{\picinco}{3*pi/2}
+\pgfmathsetmacro{\dospi}{2*pi}
+\pgfmathsetmacro{\piseis}{5*pi/2}
+\begin{axis}[width=.5\linewidth, title={$\boldsymbol{f(x) = \tg x}$},axis x line=center, xmin= -10, xmax=10, ymin=-10, ymax=10,xtick={\piuno, -\dospi, \pidos, -\unopi, \pitres, \piqua, \unopi,\picinco,\dospi,\piseis},
+xticklabels={$\scriptstyle\frac{-5\pi}{2}$, $\scriptscriptstyle{-2\pi}$,$\scriptstyle\frac{-3\pi}{2}$,
+$\scriptscriptstyle{-\pi}$, $\scriptstyle\frac{-\pi}{2}$, $\scriptstyle\frac{\pi}{2}$, $\scriptscriptstyle\pi$, $\scriptstyle\frac{3\pi}{2}$,$\scriptscriptstyle{2\pi}$,$\scriptstyle\frac{5\pi}{2}$},
+  axis y line=center, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = (\piuno+0.1):(\pidos-.1),
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {tan(deg(x))});
+        \addplot[
+        domain = (\pidos+0.1):(\pitres-.1),
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {tan(deg(x))});
+        \addplot[
+        domain = (\pitres+0.1):(\piqua-.1),
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {tan(deg(x))});
+        \addplot[
+        domain = (\piqua+0.1):(\picinco-.1),
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {tan(deg(x))});
+        \addplot[
+        domain = (\picinco+0.1):(\piseis-.1),
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {tan(deg(x))});
+    \draw[dashed] (\piuno, -10)--(\piuno, 10);
+    \draw[dashed] (\pidos, -10)--(\pidos, 10);
+    \draw[dashed] (\pitres, -10)--(\pitres, 10);
+    \draw[dashed] (\piqua, -10)--(\piqua, 10);
+    \draw[dashed] (\picinco, -10)--(\picinco, 10);
+    \draw[dashed] (\piseis, -10)--(\piseis, 10);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\paragraph{Función seno.}\mbox{}\\
+A la vista de la gráfica de la función seno se pueden decir dos cosas de manera inmediata:
+\begin{itemize}
+	\item Su \textbf{dominio son todos los reales}.
+	\item Su \textbf{recorrido es el intervalo [-1, 1]}.
+	\item Y lo más importante es que \textbf{es una función periódica de periodo $\boldsymbol{2\pi}$}.
+\end{itemize}
+Esto último es lo que la hace tan útil, junto con las otras dos funciones trigonométricas, para describir gran cantidad de fenómenos de la naturaleza como son las ondas (sonido, electromagnéticas, ...) y permitirnos controlarlos para poder realizar cosas como las comunicaciones inalámbricas.\\
+
+Al ser periódica \textbf{se repite indefinidamente} y, al contrario que las anteriores, no tiene ninguna tendencia a crecer o decrecer indefinidamente ni comportarse de manera asintótica al crecer. o decrecer, el valor de $x$.\\
+
+\paragraph{Función coseno.}\mbox{}\\
+En la gráfica se ve que tiene las \textbf{mismas características que la función seno}. La única diferencia es que su valor es distinto cuando $x=0$, pero al ser igual en el resto podríamos considerar que el coseno es un seno desplazado.\\
+
+\paragraph{Función tangente.}\mbox{}\\
+La función tangente es completamente distinta, aunque sigue siendo periódica.\\
+Su principar diferencia procede de que su definición es una división ($f(x) = \frac{\sen x}{\cos x}$)  con lo que tenemos los problemas que tenía la división, por tanto se puede concluir:
+\begin{itemize}
+	\item Tenemos que quitar del dominio todos los puntos donde el coseno vale 0 que son: $\frac{\pi}{2}$, $\frac{3\pi}{2}$. $\frac{5\pi}{2}$, ... y sus opuestos.\\
+	Con lo que el \textbf{dominio} será $\boldsymbol{D(\tg x) = \mathbb{R} - \left\lbrace\frac{\pi}{2} + \pi k\right\rbrace}$ con $k \in \mathbb{Z}$.\\
+	($\frac{\pi}{2} + \pi k$ con $k \in \mathbb{Z}$ es la manera más corta de escribir ``$\frac{\pi}{2}$, $\frac{3\pi}{2}$. $\frac{5\pi}{2}$, ... y sus opuestos'').
+	\item \textbf{Su recorrido son todos los reales}.
+	\item Respecto a su periodicidad es distinta de la del seno y el coseno, el \textbf{periodo} de la tangente es $\boldsymbol{\pi}$.
+\end{itemize}
+Al tener puntos en los que no la podemos calcular porque es una división entre 0 tiene una asíntota vertical en cada uno de esos puntos, y como son infinitos tiene infinitas asíntotas verticales.\\
+
+\subsubsection{Funciones trigonométricas inversas.}
+Estas son el \textbf{arco de seno, arco de coseno y arco de tangente}, o en su forma resumida $\asen$, $\acos$ y $\atg$.\\
+(en algunos libros las escriben como $\arcsen$, $\arccos$, $\arctg$)
+Para cada una de ellas vamos a deducir las propiedades y luego vemos la gráfica.\\
+
+\paragraph{Función arco de seno.}\mbox{}\\
+Como es la \textbf{inversa del seno} su \textbf{dominio} ha de ser igual al \textbf{recorrido del seno}, con lo que el dominio del arco de seno será:
+\[\boldsymbol{D(\asen x) = [-1, 1]}\]
+Y para el recorrido solo tenemos que pensar en qué ángulos tienen como senos -1 y 1, que son $-\frac{\pi}{2}$ y $\frac{\pi}{2}$ respectivamente, con lo cual el recorrido:
+\[\boldsymbol{Im(\asen x) = \left[\frac{\pi}{2}, \frac{\pi}{2}\right]}\]
+Además, por lo que hemos visto en las gráficas de las inversas de algunas de las funciones anteriores, la forma de la gráfica será como si hubiésemos girado la gráfica del seno. Vamos a verlo: 
+\begin{center}
+\begin{tikzpicture}
+\pgfmathsetmacro{\pil}{-pi/2}
+\pgfmathsetmacro{\pih}{pi/2}
+
+\begin{axis}[title={$\boldsymbol{f(x) = \asen x}$},axis x line=center, xmin= -1.2, xmax=1.2, ymin= -2, ymax=2,
+xtick={-1, 1}, ytick={\pil, \pih}, yticklabels={$-\frac{\pi}{2}$, $\frac{\pi}{2}$},
+  axis y line=center, grid=major,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -1:1,
+        samples = 500,
+        thick,
+        %blue,
+    ] (x, {asin(x)/180*pi});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\paragraph{Función arco de coseno.}\mbox{}\\
+Haciendo el mismo razonamiento que para el arco de seno se obtiene que:
+\begin{itemize}
+	\item $\boldsymbol{D(\acos x) = [-1, 1]}$
+	\item $\boldsymbol{Im(\acos x) = [0,\pi]}$
+\end{itemize}
+Veamos la gráfica:
+\begin{center}
+\begin{tikzpicture}
+\pgfmathsetmacro{\pil}{pi}
+
+
+\begin{axis}[title={$\boldsymbol{f(x) = \acos x}$},axis x line=center, xmin= -1.2, xmax=1.2, ymin= -1, ymax=4,
+xtick={-1, 1}, ytick={\pil}, yticklabels={$\pi$},
+  axis y line=center, grid=major,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -1:1,
+        samples = 500,
+        thick,
+        %blue,
+    ] (x, {acos(x)/180*pi});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Función arco de tangente.}
+Aquí tenemos que el recorrido de la tangente son todos los reales, por lo que:
+\[\boldsymbol{D(\atg x) = \mathbb{R}}\]
+Y para el recorrido pensamos en que ángulos pueden tener una tangente que se aproximen a $-\infty$ y a $\infty$:
+\begin{itemize}
+	\item Para $-\infty$ tiene que ser un ángulo cuyo coseno sea prácticamente 0, y eso ocurre en $\frac{\pi}{2}$ y en $-\frac{\pi}{2}$, pero el que tiene dos signos distintos para que nos dé un resultado negativo es $-\frac{\pi}{2}$.
+	\item Con lo cual para $\infty$ solo nos queda $\frac{\pi}{2}$.
+\end{itemize}
+De esto deducimos que el recorrido de el arco de tangente es:
+\[\boldsymbol{Im(\atg x)= \left(-\frac{\pi}{2}, \frac{\pi}{2}\right)}\]
+Esto implica que tenga una \textbf{asíntota horizontal en} $\boldsymbol{-\infty}$ que es $\boldsymbol{y = -\frac{\pi}{2}}$ y \textbf{otra en} $\boldsymbol{\infty}$ que es $\boldsymbol{y = \frac{\pi}{2}}$. Esto es lógico ya que al girar la gráfica de la tangente las asíntotas verticales se convierten en horizontales.\\
+Y para terminar vemos todo esto con su gráfica:
+\begin{center}
+\begin{tikzpicture}
+\pgfmathsetmacro{\pil}{-pi/2}
+\pgfmathsetmacro{\pih}{pi/2}
+
+\begin{axis}[title={$\boldsymbol{f(x) = \atg x}$},axis x line=center, xmin= -10, xmax=10, ymin= -2, ymax=2,
+xmajorticks=false, ytick={\pil, \pih}, yticklabels={$-\frac{\pi}{2}$, $\frac{\pi}{2}$},
+  axis y line=center,
+  y tick label style={anchor=south west, yshift=-5, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 500,
+        thick,
+        %blue,
+    ] (x, {atan(x)/180*pi});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, \pil);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, \pih);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\section{Operaciones con funciones.}
+Cuando se aplican las matemáticas al mundo real las cosas se suelen complicar un poco y en el caso de las funciones resulta en que muy pocas veces se puede describir un fenómeno con una función elemental.Por esto tenemos que ver con qué operaciones se pueden combinar.\\
+
+En la mayoría de las operaciones solo vamos a ocuparnos de las implicaciones en las expresiones analíticas, ya que es como mejor se va a entender. Únicamente vamos a ver las consecuencias gráficas en el caso de los desplazamientos, las ampliaciones y las reducciones.
+\subsection{Suma de funciones.}
+\textbf{La función suma es igual a la suma de funciones}. Es decir:
+\[\boldsymbol{(f+g)(x) = f(x) + g(x)}\]
+Con un ejemplo:
+\[\left.\begin{array}{lcl}
+	f(x) &=& x^2 - 1\\
+	g(x) &=& \frac{1}{x}
+\end{array}\right\rbrace (f+g)(x) = f(x) + g(x) = x^2-1 + \frac{1}{x}\]
+Es decir, solo tenemos que sumar las expresiones analíticas.
+\subsection{Producto y cociente de funciones.}
+Ocurre lo mismo que con la suma:
+\[\boldsymbol{(f*g)(x) = f(x) *g(x)}\]
+\[\boldsymbol{\left(\frac{f}{g}\right)(x) = \frac{f(x)}{g(x)}}\]
+Con un par de ejemplos:
+\begin{itemize}
+	\item \textbf{Producto}:
+	\[\left.\begin{array}{lcl}
+	f(x) &=& x^2 - 1\\
+	g(x) &=& \frac{1}{x}
+\end{array}\right\rbrace (f*g)(x) = f(x) * g(x) = (x^2-1)* \frac{1}{x} = \frac{x^2 - 1}{x}\]
+	\item \textbf{Cociente}:
+	\[\left.\begin{array}{lcl}
+	f(x) &=& x^2 - 1\\
+	g(x) &=& \frac{1}{x}
+\end{array}\right\rbrace \left(\frac{f}{g}\right)(x) = \frac{f(x)}{g(x)} = \ddfrac{x^2-1}{\frac{1}{x}} = x*(x^2- 1)\]
+\end{itemize}
+\subsection{Composición de funciones.}
+Esta operación es propia de funciones y consiste en \textbf{evaluar una función sobre el resultado de otra}. Se escribe de la siguiente manera:
+\[\boldsymbol{(f \circ g)(x) = f\left(g(x)\right)}\]
+Es decir, la $x$ de la función que está a la izquierda de la composición (en este caso $f$) se sustituye por la que está a la derecha de la composición.\\
+Vamos a verlo con un ejemplo:
+\[\left.\begin{array}{lcl}
+	f(x) &=& x^2 - 1\\
+	g(x) &=& \frac{1}{x}
+\end{array}\right\rbrace (f\circ g)(x) = f\left(g(x)\right) = \frac{1}{x^2} - 1\]
+
+Es evidente que la composición de funciones no es conmutativa, $f \circ g$ no es lo mismo que $g \circ f$. Se ve claramente con las funciones del ejemplo anterior:
+\[\left.\begin{array}{lcl}
+	f(x) &=& x^2 - 1\\
+	g(x) &=& \frac{1}{x}
+\end{array}\right\rbrace (g\circ f)(x) = \frac{1}{x^2 - 1}\]
+Que no tiene nada que ver con la que nos había salido antes.\\
+
+Lo complicado de la composición no es hacerla sino deshacerla. Es decir, si tenemos una función que es composición de funciones elementales tenemos que obtener cuáles son las funciones elementales y en qué orden están compuestas, sumadas, restadas,... Esto va a ser necesario cuando tengamos que derivar e integrar.\\
+Vamos a ver un ejemplo de como descomponer una función en funciones elementales:
+\begin{questions}
+\question Descompón $f(x) = \sqrt[3]{\e^{x^2 + 1}}$
+\begin{solution}
+
+Veamos las funciones elementales que hay en esa función:
+\begin{itemize}
+	\item Hay una raíz, entonces llamamos $g(x) = \sqrt[3]{x}$
+	\item Hay una exponencial de base \textbf{e}, llamamos $h(x) = \e^x$
+	\item Hay un polinomio, que llamaremos $i(x) = x^2 +  1$
+\end{itemize}
+
+Ya tenemos  todas las funciones elementales que hay en esa función, solo tenemos que componerlas en el orden adecuado. Y este orden es contrario al orden en el que se realizan las operaciones, es decir la última operación que deberíamos hacer según está escrita es la función que tiene que estar más a la izquierda en la composición. Veamos en el orden que haríamos las operaciones:
+\begin{enumerate}
+	\item Primero haríamos la operación el polinomio ($i(x)$), luego es la que tiene que estar más a la derecha.
+	\item Una vez que tuviésemos el valor del polinomio calcularíamos la exponencial ($h(X)$), entonces tiene que estar a la izquierda de la anterior.
+	\item Por último realizaríamos la raíz ($g(x)$) con lo que es la que tiene que estar más a la izquierda.
+\end{enumerate}
+
+Con todo lo anterior nos queda que:
+\[f(x) = (g \circ h \circ i)(x)\]
+\end{solution}
+\end{questions}
+
+\subsection{Funciones definidas a trozos.}
+Las funciones definidas a trozos \textbf{son aquellas en la cual las operaciones que hay que hacer dependen del valor de $\boldsymbol{x}$}. Por ejemplo:
+\[f(x) = \left\lbrace \begin{array}{ll}
+	x^2 + 1 &\text{Si } x < 1\\
+	\frac{3x -1}{2}&\text{Si } x \geq 1
+\end{array} \right.\]
+En esta función utilizaremos una definición u otra según el valor de $x$:
+\begin{itemize}
+	\item En $f(-2)$ utilizaremos la primera definición porque $-2<1$, con lo que $f(-2) = (-2)^2 + 1 = 5$.
+	\item En $f(3)$ utilizaremos la segunda definición porque $3 \geq 1$, y así $f(3) = \frac{3*3 -1}{2} = 4$.
+\end{itemize}
+
+\textbf{El ejemplo más famoso de función definida a trozos es el valor absoluto}. Sabemos que este consiste en quitar el signo al número, y la manera de escribirlo como función es:
+\[|x| = \left\lbrace \begin{array}{rl}
+	-x &\text{Si } x < 0\\
+	x&\text{Si } x \geq 0
+\end{array} \right.\]
+
+\subsection{Desplazamiento de funciones.}
+Los desplazamientos son \textbf{operaciones que} realizadas sobre las funciones \textbf{producen un desplazamiento de la gráfica de ésta}.\\
+Evidentemente estos desplazamientos pueden ser en las dos dimensiones en las que estamos trabajando con las funciones, vertical y horizontal.
+\subsubsection{Desplazamiento vertical}
+Dada una función $f(x)$ la función $g(x) = f(x) +a$ la gráfica de esta última es la misma que la de $f(x)$ pero desplazada en $a$ unidades en vertical.
+\begin{itemize}
+	\item Si $a>0$ el desplazamiento es hacia arriba.
+	\item Si $a<0$ el desplazamiento es hacia abajo.
+\end{itemize}
+
+Vamos a verlo con el ejemplo de la función seno, que para estas cosas es bastante visual:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen x}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen x + 0.5}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x))+.5});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen x-0.5}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1}, xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x))-.5});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\subsubsection{Desplazamiento horizontal}
+Dada una función $f(x)$ y un valor real $a$, la gráfica de la función $g(x) = f(x+a)$ es la misma que la de $f(x)$ pero desplazada en $a$ unidades en horizontal.
+\begin{itemize}
+	\item Si $a>0$ el desplazamiento es hacia la izquierda.
+	\item Si $a<0$ el desplazamiento es hacia la derecha.
+\end{itemize}
+Hay que tener cuidado porque este efecto no es del todo intuitivo.\\
+
+Vamos a verlo con la misma función seno de antes:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen x}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 100,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen \left(x + \frac{\pi}{2}\right)}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x + pi/2))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen \left(x-\frac{\pi}{2}\right)}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1}, xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift= 1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x-pi/2))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\subsection{Ampliaciones y contracciones de funciones}
+Al igual que ocurre con los desplazamientos tenemos ampliaciones y contracciones en horizontal y en vertical.
+\subsubsection{En vertical}
+Dada una función $f(x)$ y un valor real $a>0$, la gráfica de la función $g(x) = a*f(x)$ es similar a la de $f(x)$ pero
+\begin{itemize}
+	\item Ampliada verticalmente si $a>1$.
+	\item Contraída verticalmente su $0<a<1$
+\end{itemize}
+(Únicamente tenemos en cuenta $a>0$ porque $a<0$ también cambiaría el signo y ya no sería exclusivamente una ampliación o contracción)
+
+Gráficamente:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen x}$},axis x line=center, xmin= -10, xmax=10, ymin= -2.1, ymax=2.1,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift = 4}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) =2* \sen x}$},axis x line=center, xmin= -10, xmax=10, ymin= -2.1, ymax=2.1,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift = 4}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {2*sin(deg(x))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) =\frac{1}{2}* \sen x}$},axis x line=center, xmin= -10, xmax=10, ymin= -2.1, ymax=2.1,
+  axis y line=center, ytick={-1,1}, xmajorticks=false,
+  y tick label style={anchor=south east, yshift=-4, xshift = 4}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {.5*sin(deg(x))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{En horizontal}
+Dada una función $f(x)$ y un valor real $a>0$, la gráfica de la función $g(x) = f(a*x)$ es similar a la de $f(x)$ pero
+\begin{itemize}
+	\item Ampliada horizontalmente si $0<a<1$.
+	\item Contraída horizontalmente si $a>1$
+\end{itemize}
+Hay que tener cuidado porque en este caso el resultado es un poco anti-intuitivo.\\
+
+Y gráficamente:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen x}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=north east, yshift=1, xshift = 4}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen (2*x)}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1},  xmajorticks=false,
+  y tick label style={anchor=north east, yshift=1, xshift = 4}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x *2))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}
+\begin{axis}[width=.3\linewidth, title={$\boldsymbol{f(x) = \sen \left(\frac{1}{2}*x\right)}$},axis x line=center, xmin= -10, xmax=10, ymin= -1.6, ymax=1.6,
+  axis y line=center, ytick={-1,1}, xmajorticks=false,
+  y tick label style={anchor=north east, yshift=1, xshift = 4}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -10:10,
+        samples = 250,
+        thick,
+        %blue,
+    ] (x, {sin(deg(x*.5))});
+    \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, 1);
+        \addplot[
+        domain = -10:10,
+        samples = 2,
+        dashed,
+        %blue,
+    ] (x, -1);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\subsection{Función inversa.}
+De la función inversa se ha hablado varias veces en este documento, pero ahora ya estamos en condiciones de hacer una definición formal y consistente.\\
+
+Dada una función $f(x)$ se dice que $f^{-1}(x)$ es su inversa si y solo si $(f \circ f^{-1})(x) = (f^{-1} \circ f) (x) = x$.\\
+Es decir la función inversa es aquella que nos dice el valor de $x$ para el cual hemos obtenido una determinada $y$.\\
+
+No todas las funciones tienen inversa, y algunas solo la tienen en determinados intervalos o nos dan valores de $x$ muy restringidos tal y como hemos visto con algunas de las funciones elementales.\\
+
+Calcular la inversa no es sencillo normalmente, pero el principio básico es el mismo en todas: despejar la $x$. Vamos a ver un par de ejemplos sencillos:\\
+\begin{questions}
+\question Calcular la inversa de $f(x) = \frac{x-2}{x+1}$
+\begin{solution}
+Por simplificar y escribir menos vamos a cambiar $f(x)$ por $y$:
+\[y = \frac{x-2}{x+1}\]
+Y empezamos como empezaríamos cualquier ecuación, ya que es lo mismo pero teniendo una $y$ a la derecha del igual en lugar de un número.
+\[y(x+1) = (x-2)\]
+\[yx + y = x- 2\]
+\[yx - x = -y - 2\]
+\[x(y-1) = -y - 2\]
+\[x = -\frac{y+2}{y-1}\]
+Y para finalizar se suele cambiar $x$ por $f^{-1}(x)$ e $y$ por $x$ en la expresión del resultado, quedando:
+\[f^{-1}(x) = -\frac{x+2}{x-1}\]
+\end{solution}
+
+\question Calcular la inversa de $f(x) = \sqrt{2x - 1}$
+\begin{solution}
+Comenzamos:
+\[y = \sqrt{2x -1}\]
+\[y^2 = 2x - 1\]
+\[\frac{y^2 +1}{2} = x\]
+Con lo que:
+\[f^{-1}(x) = \frac{x^2 +1}{2}\]
+\end{solution}
+\end{questions}
+
+En algunos casos el cálculo de la inversa puede ser muy sencillo, como en $f(x) = \frac{1}{x}$, pero en la mayoría es extremadamente complicado o incluso imposible. Pero en todos los casos que vamos a tener en bachillerato va a ser posible calcularla de manera relativamente sencilla.
+\end{document}

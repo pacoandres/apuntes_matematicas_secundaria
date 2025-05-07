@@ -1,0 +1,521 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de geometría analítica en el espacio II.\\Problemas afines y métricos.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+\newcommand\distancia[1]{\mathrm{d}(#1)}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\section{Problemas afines.}
+\subsection{Posiciones de dos planos.}
+Dos planos en el espacio pueden estar en tres posiciones:
+\begin{itemize}
+	\item Son secantes, y el corte entre los dos es una recta.
+	\item Son paralelos, con lo que no se cortan nunca.
+	\item Son coincidentes, con lo cual se cortan en todos sus puntos.
+\end{itemize}
+
+Sabemos que la forma más sencilla en la que podemos expresar un plano es con la ecuación general:
+\[\pi: ax + by + cz + d = 0\]
+Y todos los puntos del plano tienen que cumplir la ecuación. Es decir, si en la ecuación sustituimos $x$, $y$, y $z$ por coordenadas del punto si éste está en el plano el resultado debe ser 0. En otro caso el punto no está en el plano.\\
+
+Con lo que si tenemos dos planos tendremos dos ecuaciones:
+\[\pi: ax + by + cz + d = 0\]
+\[\pi': a'x + b'y + c'z + d' = 0\]
+Y si los planos se cortan en algún punto éste debe cumplir las dos ecuaciones. O lo que es lo mismo, \textbf{el corte entre los dos planos es la solución del sistema}:
+\[\left\lbrace\begin{array}{lll}
+	ax + by + cz &=& -d\\
+	a'x + b'y + c'z &=& -d'
+\end{array}\right.\]
+De donde obtenemos la matriz ampliada:
+\[A^+ = \left(\begin{array}{rrr:r}
+	a&b&c&-d\\
+	a'&b'&c'&-d'
+\end{array}\right)\]
+Y por el teorema de Rouche-Frobenius podemos sacar las siguientes conclusiones:
+\begin{itemize}
+	\item Si $\rango{A} = \rango{A^+} = 2$ los planos son secantes y se cortan en una recta (de hecho hemos visto que la ecuaciń general de una recta viene dada por dos planos secantes).
+	\item Si $\rango{A} = \rango{A^+} = 1$ los planos son coincidentes, porque en realidad solo hay una ecuación y por eso el rango es 1.
+	\item Si $\rango{A} \neq \rango{A^+}$ los planos son paralelos, y al no haber puntos de corte el sistema no tiene solución.
+\end{itemize}
+
+En el caso que estamos tratando, dos planos, también se puede ver de una manera más intuitiva: \textbf{si los dos planos son paralelos o coincidentes sus vectores normales también deben ser paralelos}.\\
+Si tenemos las dos ecuaciones anteriores:
+\[\pi: ax + by + cz + d = 0\]
+\[\pi': a'x + b'y + c'z + d' = 0\]
+Los vectores normales de cada plano son $\vec{n} = (a, b, c)$ y $\vec{n'} = (a',b'.c')$, y para que sean paralelos debe ocurrir
+\[\frac{a'}{a} = \frac{b'}{b} = \frac{c'}{c} \neq \frac{d'}{d}\]
+Y si son coincidentes:
+\[\frac{a'}{a} = \frac{b'}{b} = \frac{c'}{c} = \frac{d'}{d}\]
+Si no estamos en ninguna de las situaciones anteriores los planos son secantes.
+Vamos a ver unos ejemplos:
+\begin{questions}
+	\question Calcula $m$ y $n$ para que los planos $\pi: mx + y -3z -1 = 0$ y $\pi': 2x + ny - z - 3 = 0$ sean paralelos. Para los valores de $m$ y $n$ hayados ¿los planos son paralelos o coincidentes?
+	\begin{solution}
+		Sacamos los vectores normales de cada plano:
+		\[\vec{n} = (m,1,-3)\quad\quad\quad\vec{n'} =(2,n,-1)\]
+		Entonces debe ocurrir $\frac{m}{2} = \frac{1}{n} = \frac{-3}{-1}$ y de ahí se obtiene $m=6$, $n=\frac{1}{3}$.
+		
+		Y para que fuesen coincidentes además debería ocurrir que los términos independientes también fuesen proporcionales, pero $\frac{6}{2} \neq \frac{-1}{-3}$ con lo que con los valores hayados los planos solo son paralelos.
+	\end{solution}
+
+	\question Escribe la ecuación de un plano que pase por el punto $(3, -2, 2)$ y sea paralelo al plano $\pi: x - 2y -z + 3 = 0$.
+	\begin{solution}
+		Primero comprobamos si el punto pertenece al plano, porque si es así ya tenemos la ecuación y no tiene sentido seguir:
+		\[3 - 2*(-2) - 2 + 3 = 8 \neq 0\]
+		Una vez comprobado que el punto no pertenece al plano obtenemos el vector normal, que es $\vec n = (1,-2,-1)$ y por lo visto en las ecuaciones de un plano, la ecuación será:
+		\[\vec{n} * (X-P) = 0\]
+		\[(1,-2,-1)* ((x,y,z) - (3,-2,2)) = 0\]
+		\[x-3 -2y - 4 -z +2 = 0\]
+		\[\boldsymbol{x - 2y -z -5 = 0}\]
+	\end{solution}
+\end{questions}
+\subsection{Posiciones de tres planos}
+En el caso de tres planos \textbf{tendremos un sistema de tres ecuaciones con tres incógnitas}, de manera que el sistema que forman puede ser compatible determinado, compatible indeterminado o incompatible. Y dependiendo del caso tendremos cada una de las siguentes situaciones:
+\begin{itemize}
+\item \textbf{Compatible determinado}: los tres planos se cortan en un punto:
+  \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+            
+		\draw[color=white, fill=gray, opacity=.3] (-1,0,-1) -- (1,0,-1) -- (1,0,1)-- (-1,0,1) -- cycle;	
+		  
+                  \draw[color=white, fill=gray, opacity=.3] (0,-1,-1) -- (0,1,-1) -- (0,1,1)-- (0,-1,1) -- cycle;
+            \draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0) -- cycle;      
+			\addplot3[mark=*, only marks] coordinates {(0, 0, 0)};% node[above left] {$P$};
+		        \draw[thin, color=gray] (-1,0,0)--(1,0,0);
+                        \draw[thin, color=gray] (0,-1,0)--(0,1,0);
+                        \draw[thin, color=gray] (0,0,-1)--(0,0,1);
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+\item \textbf{Compatible indeterminado}: En este caso pueden ocurrir varias cosas:
+  \begin{itemize}
+    \item \emph{Los tres planos son coincidentes}, con lo que las tres ecuaciones son proporcionales y tienen todos los puntos en común.
+  \item \emph{Dos de los planos son coincidentes}, con lo que dos ecuaciones son proporcionales y el resultado es el mismo que el corte de dos planos formando una recta.
+  \item \emph{Ninguno de los planos coincide con otro}, con lo que la situación es:
+    \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+            
+		\draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0) -- cycle;	
+		  
+                  \draw[color=white, fill=gray, opacity=.3] (0,-1,-1) -- (0,1,-1) -- (0,1,1)-- (0,-1,1) -- cycle;
+            \draw[color=white, fill=gray, opacity=.3] (1,-1,1) -- (1,1,1) -- (-1,1,-1)-- (-1,-1,-1) -- cycle;      
+			
+		        %\draw[thin, dashed] (-1,0,0)--(1,0,0);
+                        \draw (0,-1.5,0)--(0,1.5,0);
+                        %\draw[thin, dashed] (0,0,-1)--(0,0,1);
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+  Es decir, los tres planos se cortan en una recta común.
+  \end{itemize}
+
+
+\item \textbf{Sistema incompatible}: en este caso no hay ningún punto que sea común a los tres planos y los casos son variados. Para entenderlo mejor pensaremos en el sistema de ecuaciones que forman los tras planos y hablaremos de la matriz de coeficientes ($A$) y la matriz ampliada ($A^+$).
+  \begin{itemize}
+    \item \emph{Dos planos son coincidentes y el otro paralelo}: en este caso $\rango{A}=1$ y $\rango{A^+}=2$ y además dos ecuaciones son proporcionales inicialmente.
+    \item \emph{Los tres planos son paralelos}: en este caso también pasa que $\rango{A}=1$ y $\rango{A^+}=2$ pero las ecuaciones no son proporcionales.
+    \item \emph{Dos planos son paralelos y el otro no}: en este caso $\rango{A}=2$ y $\rango{A^+}=3$ y además en la matriz de coeficientes hay dos filas proporcionales inicialmente. Aquí hay un plano que corta a los otros dos que son paralelos pero no hay ningún punto en común a los tres.
+          \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+            
+		\draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0) -- cycle;	
+		  
+                  \draw[color=white, fill=gray, opacity=.3] (-.5,-1,-1) -- (-.5,1,-1) -- (-.5,1,1)-- (-.5,-1,1) -- cycle;
+            \draw[color=white, fill=gray, opacity=.3] (.5,-1,-1) -- (.5,1,-1) -- (.5,1,1)-- (.5,-1,1) -- cycle;      
+			
+	    \draw[very thin, color=gray] (-.5,-1,0)--(-.5,1,0);
+            \draw[very thin, color=gray] (.5,-1,0)--(.5,1,0);
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+        \item \emph{No hay ningún tipo de paralelismo}: en este caso $\rango{A}=2$ y $\rango{A^+}=3$ y pero en la matriz de coeficientes no hay dos filas proporcionales inicialmente. Aquí los planos se cortan dos a dos pero no hay ningún punto en común a los tres.
+    \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+            
+		\draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0) -- cycle;	
+		  
+
+                \draw[color=white, fill=gray, opacity=.3] (.5,-1,1) -- (.5,1,1) -- (-1.5,1,-1)-- (-1.5,-1,-1) -- cycle;
+                            \draw[color=white, fill=gray, opacity=.3] (-.5,-1,1) -- (-.5,1,1) -- (1.5,1,-1)-- (1.5,-1,-1) -- cycle;      
+			
+
+                            \draw[very thin, color=gray] (-.5,-1,0)--(-.5,1,0);
+                            \draw[very thin, color=gray] (.5,-1,0)--(.5,1,0);
+                            \draw[very thin, color=gray] (0,-1,0.5)--(0,1,0.5);
+
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+    \end{itemize}
+\end{itemize}
+\subsection{Posiciones de recta y plano.}
+Al igual que en los anteriores, para ver cuales serían las \textbf{posiciones de una recta y un plano} tenemos que ver de qué \textbf{tipo es el sistema que forman sus ecuaciones}.
+\begin{itemize}
+\item \textbf{La recta y el plano son paralelos}: en este caso no hay ningún punto de corte, con lo que el \textbf{sistema} que forman las ecuaciones de la recta y del plano tiene que ser \textbf{incompatible}.
+\item \textbf{La recta está contenida en el plano}: en esta caso el número de puntos en los que coinciden es infinito, con lo que el \textbf{sistema} tiene que ser \textbf{compatible indeterminado}.
+  \item \textbf{La recta es secante al plano}: en ese caso la recta y el plano coinciden en un punto, con lo que el \textbf{sistema} que forman tiene que ser \textbf{compatible determinado}.
+\end{itemize}
+
+\subsection{Posiciones de dos rectas.}
+Al igual que en los anteriores tenemos que ver de qué tipo es el sistema que forman las ecuaciones generales de las dos rectas.\\
+Y en este caso el sistema que tienen tiene cuatro ecuaciones y solo tres incógnitas, con lo que la matriz de coeficientes ($A$) no es cuadrada y no podremos aplicar directamente el determinante.\\
+En cualquier caso lo que tenemos son dos rectas y pueden suceder las siguientes cosas:
+\begin{itemize}
+\item \textbf{Las rectas sean secantes}: en este caso el \textbf{sistema} tiene que ser \textbf{compatible determinado}.
+\item \textbf{Las rectas sean coincidentes}: en este caso el \textbf{sistema} tiene que ser \textbf{compatible indeterminado} ya que el número de puntos en el que coinciden es infinito, luego habrá infinitas soluciones.
+\item \textbf{Las rectas son paralelas}: en ese caso el \textbf{sistema} es \textbf{incompatible}, lo que vamos a tener es que el \textbf{rango de la matriz de coeficientes es 2} y el \textbf{rango de la ampliada es 3}.
+\item \textbf{Las rectas se cruzan en distintos planos}: este es un caso que no aparece en dos dimensiones, y la situación es la siguiente:
+  \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+            
+
+                            \draw[thick] (0,-1.5,0)--(0,1.5,0);
+                            \draw[thick] (-1,-1,.5)--(1,1,.5);
+                            \draw[thin, dashed,color=gray] (0,0,0)--(0,0,0.5);
+
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+  Es decir, son dos rectas que se cortarían si estuviesen en el mismo plano pero que al estar en distintos planos no pueden cortarse y se dice que se cruzan.\\
+  Cuando tenemos dos rectas que se cruzan el \textbf{sistema} es \textbf{incompatible} y en este caso el \textbf{rango de la matriz de coeficientes es 3} mientas que el \textbf{rango de la matriz ampliada es 4}.
+\end{itemize}
+
+Otra método para resolver esta cuestión es obtener los vectores directores de las rectas y un punto de cada una de ellas, con lo que tendremos tres vectores y únicamente tenemos que ver el rango de la matriz $3 \times 3$ que forman.\\
+Si las rectas son $r $ y $s$ obtenemos:
+\begin{itemize}
+	\item De $r$ su vector director $\vec{v}_r$ y un punto $P_r$.
+	\item De $s$ su vector director $\vec{v}_s$ y un punto $P_s$.
+\end{itemize}
+Y construimos la matriz $A_{3 \times 3}=\begin{pmatrix}
+\vec{v}_r\\\vec{v}_s\\\overrightarrow{P_r P_s}
+\end{pmatrix}$, y a simple vista ya se pueden sacar dos conclusiones. Si se cumple:
+\begin{itemize}
+	\item Tres filas son proporcionales, entonces las rectas son coincidentes.
+	\item Dos filas son proporcionales, entonces las rectas son paralelas.
+\end{itemize}
+Si no hay filas proporcionales calculamos el rango, y:
+\begin{itemize}
+	\item Si $\rango{A} = 2$ las rectas se cortan.
+	\item Si $\rango{A} = 3$ las rectas se cruzan en distintos planos.
+\end{itemize}
+\section{Problemas métricos.}
+Como indica el nombre del título en este apartado lo que vamos a obtener son medidas, como pueden ser la distancia de un punto a una recta, así como los casos en los que estas medidas están definidas.\\
+En gran parte de los casos se podrían obetener distintas distancias, dependiendo de los puntos elegidos, pero siempre nos vamos a referir a la menor distancia posible, por eso habrá casos en los que no tenga sentido calcularla porque esta distancia va a ser 0.\\
+
+Es importante hacer notar que en algunos de los casos obtendremos fórmulas que es conveniente aprenderse de memoria para poder utilizarlas rápidamente mientras que en otros el objetivo es comprender el razonamiento para poder aplicarlo en las situaciones en las que puede aparecer. En el caso de que sea conveniente aprenderse una fórmula ésta aparecerá en negrita.\\
+
+Vamos a ir viendo los casos por orden de dificultad.
+
+\subsection{Distancia entre dos puntos.}
+Este es el caso más sencillo de todos.
+
+La distancia entre dos puntos $A$ y $B$ es simplemente el módulo del vector que los une, y teniendo en cuenta que si $A(A_x, A_y, A_z)$ y $B(B_x,B_y, B_z)$ el vector que los une es:
+\[\overrightarrow{AB} = (B_x-A_x, B_y-A_y, B_z-A_z)\]
+La distancia entre $A$ y $B$ queda:
+\[\boldsymbol{\distancia{A,B} = \sqrt{(B_x-A_x)^2 + (B_y-A_y)^2 + (B_z-A_z)^2}}\]
+
+\subsection{Punto medio de un segmento.}
+Si tenemos un segmento cuyos extremos están en los puntos $A(A_x, A_y, A_z)$ y $B(B_x,B_y, B_z)$ el punto medio $M$ es el que se encuentra a medio camino entre los puntos de los extremos.\\
+Dicho de otra manera, si el vector que va de $A$ a $B$ es el vector $\overrightarrow{AB}$ el vector que va desde $A$ a $M$ será $\frac{\overrightarrow{AB}}{2}$.\\
+De esta manera:
+\[M = A + \frac{\overrightarrow{AB}}{2} = (A_x, A_y, A_z) +
+ \frac{(B_x-A_x, B_y-A_y, B_z-A_z)}{2} =
+ \boldsymbol{\frac{(B_x+A_x, B_y+A_y, B_z+A_z)}{2}}\]
+ 
+\subsection{Plano mediador de un segmento.}
+Al igual que en el plano cartesiano podemos trazar la mediatriz de un segmento (recta perpendicular al segmento que pasa por su punto medio) en el espacio podemos hablar del plano mediador de un segmento.\\
+Por la situación que tiene que tener ese plano, cada uno de sus puntos estará a la misma distancia de cada uno de los extremos del segmento.\\
+
+Entonces, si tenemos un punto del plano $(x, y, z)$ y los extremos del segmento son $A(A_x, A_y, A_z)$ y $B(B_x,B_y, B_z)$, se debe cumplir:
+\[\sqrt{(x-A_x)^2 + (y-A_y)^2 + (z-A_z)^2} =
+\sqrt{(x-B_x)^2 + (y-B_y)^2 + (z-B_z)^2}\]
+Elevando al cuadrado para quitar las raíces y desarrollando los cuadrados:
+\[x^2 - 2A_x x +A_x^2 + y^2 - 2A_y y + A_y^2 + z^2 - 2A_z z + A_z^2 =
+x^2 - 2B_x x +B_x^2 + y^2 - 2B_y y + B_y^2 + z^2 - 2B_z z + B_z^2\]
+\[2(B_x - A_x)x + 2(B_y - A_y) y + 2(B_z - A_z) z + A_x^2 + A_y^2 + A_z^2
+-B_x^2 - B_y^2 - B_z^2 =0\]
+
+\subsection{Proyección ortogonal de un vector sobre otro.}
+La proyección ortogonal de un vector sobre otro viene marcada por la perpendicular al segundo. La situación es la siguiente:
+\begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
+            
+            \draw[-latex] (-1, 0) -- (1.2, 0) node[below, right] {$\vec{w}$};
+            \draw[-latex] (-1, 0) -- (.8, 1) node[above right] {$\vec{v}$};
+			\draw[line width=.8mm] (-1, 0) -- (.8, 0) node[above, midway] {$\boldsymbol{p}$};
+			\draw[thin, dashed] (.8,0) -- (.8, 1);
+		\coordinate (O) at (-1,0);
+		\coordinate (A) at (-.64, 0);
+		\coordinate (B) at (-.64, .2);
+		%\pic [draw, ->, "$\alpha$", angle eccentricity=1.5] {angle = A--O--B};
+		\draw pic["$\alpha$", draw=black, -, angle eccentricity=1.2, angle radius=1cm]
+    {angle=A--O--B};
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+Como se puede observar el vector, su proyección y la perpendicular que traza la proyección forman un triángulo rectángulo de manera que
+\[p= |\vec{v}| * \cos \alpha\]
+
+Si tenemos en cuenta que la definición del producto escalar es:
+\[\vec v * \vec w = |\vec v| *|\vec w| * \cos \alpha\]
+es fácil deducir que la proyección de $\vec v$ sobre $\vec w$ será:
+\[\boldsymbol{p = \frac{\vec v * \vec w}{|\vec w|}}\]
+\subsection{Distancia entre punto y plano.}
+En este caso la distancia dependería de la dirección que tomemos para ir desde el punto hasta el plano, pero como hemos definido que la distancia ha de ser la mínima de todas las posibles tendremos que escoger la que sigue la dirección perpendicular al plano:
+    \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+            
+	    \draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0) -- cycle;
+            \addplot3[mark=*, only marks] coordinates {(0.5, 0.5, .7)} node[right] {$P$};
+                            \draw[thin, dashed] (.5,.5,0)--(.5,.5,.7) node[left, midway]{d};
+                            \draw[thick,-latex] (-.5,-.5,0)--(-.5,-.5,.5) node[right, midway] {$\vec n$};
+
+
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+
+Si elegimos un punto cualquiera del plano $Q(Q_x, Q_y,Q_z)$ y dibujamos el vector $\overrightarrow{QP}$ tendremos la siguiente situación:
+    \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-.5, zmax=1.5]
+            
+	    \draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0) -- cycle;
+            \addplot3[mark=*, only marks] coordinates {(0.5, 0.5, 1)} node[right] {$P$};
+            \addplot3[mark=*, only marks] coordinates {(-0.5, -0.5, 0)} node[right] {$Q$};
+            \draw[-latex] (-0.5, -0.5, 0)--(0.5, 0.5, 1) node[above, midway] {$\overrightarrow{QP}$}; 
+                            \draw[thin, dashed] (.5,.5,0)--(.5,.5,1) node[left, midway]{d};
+            \draw[-latex] (.5,.5,0)--(.5,.5,.5) node[right, midway]{$\vec n$};
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+Donde podemos ver que la distancia buscada es la proyección del vector $\overrightarrow{QP}$ sobre la dirección del vector normal al plano.\\
+
+De esta manera, si el plano $\pi$ tiene de ecuación $Ax + BY + Cz + D = 0$ su vector normal es $\vec n = (A,B,C)$ y si $P$ tiene de coordenadas $(P_x, P_y, P_z)$ la distancia que buscamos vendrá dada por (es necesario el valor absoluto para corregir la orientación de los vectores):
+\begin{flalign*}
+d(P, \pi) =& \frac{|\overrightarrow{QP}*\vec n|}{|\vec n|} =
+\frac{|(P_x - Q_x, P_y-Q_y, P_z -Q_z)*(A,B,C)|}{\sqrt{A^2+B^2+C^2}}\\
+ =&\frac{|A*P_x + B*P_y + C*P_z - A*Q_x - B*Q_y -C*Q_z|}{\sqrt{A^2+B^2+C^2}}
+\end{flalign*}
+Y como $Q$ pertenece al plano tiene que cumplir la ecuación, con lo que $-A*Q_x-B*Q_y -C*Q_z = D$ y la distancia buscada queda:
+\[\boldsymbol{d(P,\pi) = \frac{|A*P_x + B*P_y+ C*P_z + D|}{\sqrt{A^2 + B^2 + C^2}}}\]
+
+\subsection{Distancia entre dos planos.}
+Tal y como hemos definido al principio la distancia entre dos objetos, para que podamos calcular la distancia entre dos planos tienen que ser paralelos, ya que en otro caso la distancia sería 0.\\
+
+Entonces , si los planos son paralelos podremos escribir sus ecuaciones como:
+\[\left\lbrace\begin{array}{l}
+\pi \equiv Ax+By+Cz+D=0\\
+\pi' \equiv Ax+By+Cz+D'=0
+\end{array} \right.\]
+Ya que los vectores normales son iguales.\\
+
+Si cogemos un punto $P$ del plano $\pi'$ su distancia al plano $\pi$ será:
+\[d(P,\pi) = \frac{|A*P_x + B*P_y+ C*P_z + D|}{\sqrt{A^2 + B^2 + C^2}}\]
+Y como $P$ pertenece al plano $\pi'$ ocurre que $A*P_x + B*P_y+ C*P_z = -D'$, con lo que:
+\[\boldsymbol{d(\pi,\pi') = \frac{|D - D'|}{\sqrt{A^2 + B^2 + C^2}}}\]
+\subsection{Distancia entre recta y punto.}
+En este caso tenemos un punto externo a una recta y la distancia, tal y como la hemos definido, vendrá dada por la dirección perpendicular a la recta:
+\begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
+	  
+	  \draw[thin] (-1,-1) -- (1,1) node[right] {$r$};
+	  \addplot[mark=*, only marks] coordinates {(0,1.2)} node[above] {$P$};
+	  \draw[very thick] (.6,.6) -- (0, 1.2) node[right, midway] {$\boldsymbol{d}$};
+	  \end{axis}
+	  \end{tikzpicture}
+\end{center}
+
+Si cogemos un punto $Q$ de la recta y trazamos el vector que forma con el punto $P$:
+\begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5]
+	  
+	  \draw[thin] (-1,-1) -- (1,1) node[right] {$r$};
+	  \addplot[mark=*, only marks] coordinates {(0,1.2)} node[above] {$P$};
+		\addplot[mark=*, only marks] coordinates {(-.5,-.5)} node[above left] {$Q$};
+		\draw[-latex] (-.5,-.5) -- (0,1.2) node[above left, midway] {$\overrightarrow{QP}$};
+		\draw[-latex, very thick] (-.5,-.5) -- (0,0) node[below, midway] {$\vec{v}$};
+				\draw[very thick] (.6,.6) -- (0, 1.2) node[right, midway] {$\boldsymbol{d}$};
+		\coordinate (O) at (-.5,-.5);
+		\coordinate (A) at (0, 0);
+		\coordinate (B) at (-.3,.18);
+		\draw pic["$\alpha$", draw=black, -, angle eccentricity=1.2, angle radius=1cm]
+    {angle=A--O--B};
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+Donde se ve que tenemos un triángulo rectángulo cuya hipotenusa es el vector $\overrightarrow{QP}$ y cuyo cateto opuesto al ángulo $\alpha$ es la distancia que queremos calcular.\\
+Por trigonometría básica:
+\[d(P,r)=|\overrightarrow{QP}|*\sen \alpha\]
+Y por la definición de producto vectorial sabemos que:
+\[|\vec v \times \vec w| = \left||\vec v|*|\vec w|*sen \alpha
+\right|\]
+Con lo que juntándolo todo obtenemos:
+\[\boldsymbol{d(P, r) = \frac{\left|\overrightarrow{QP}\times \vec v \right|}{|\vec v|}}\]
+Donde $\vec v$ es el vector director de la recta, $Q$ un punto de ésta y $P$ el punto al que queremos calcular la distancia.
+
+\subsection{Distancia entre dos rectas.}
+En este caso tenemos que hacer dos distinciones ya que las situaciones son distintas: distancia entre rectas paralelas y distancia entre rectas que se cruzan.\\
+Por lo cual antes de calcular la distancia tenemos que saber en qué situación nos encontramos.
+\subsubsection{Distancia entre rectas paralelas.}
+En este caso todos los puntos de una de ellas ($r$) se encuentran a la misma distancia de la otra ($r'$), con lo que solo tenemos que cogen un punto $P$ de una y un punto $Q$ de la otra y con el vector director común $\vec v$ la distancia vendrá dada por:
+\[\boldsymbol{d(r,r') = \frac{\left|\overrightarrow{PQ}\times \vec v \right|}{|\vec v|}}\]
+
+\subsubsection{Distancia entre rectas que se cruzan.}
+En este caso la situación es la siguiente:
+  \begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=0, zmax=1.5]
+            
+
+                            \draw[thin, color=darkgray] (0,-1.5,0)--(0,1.5,0)
+                            node[right] {$r$};
+                            \draw[-latex] (0,-1.2,0) -- (0, -.3,0) node[above, midway] {$\vec u$};
+                            \draw[thin] (-1,-1,.5)--(1,1,.5)
+                            node[right] {$s$};
+                            \draw[-latex] (-.7,-.7,.5) -- (-.2, -.2,.5) node[above, midway] {$\vec v$};
+                            \draw[thick] (0,0,0)--(0,0,0.5) node[left, midway]{$\boldsymbol{d}$};
+			\addplot3[mark=*, only marks, color=gray] coordinates {(.2, .2, .5)} node[above right] {$P$};
+			\addplot3[mark=*, only marks, color=gray] coordinates {(0, 1, 0)} node[below] {$Q$};
+			\draw[thin, -latex, color=gray] (0, 1, 0) -- (.2, .2, .5)
+			node[left, midway] {$\scriptstyle \overrightarrow{QP}$};
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+De esto se concluye que la distancia entre las dos rectas, que sería la mínima posible tal y como la hemos definido, será igual al valor absoluto de la proyección del vector $\overrightarrow{QP}$ sobre la dirección en la que está medida la distancia $d$. Y por cómo está definida esta distancia, la dirección en la que se mide tiene que ser perpendicular a las dos rectas, perpendicular a $\vec u$ y $\vec v$.\\
+Para calcular un vector perpendicular a $\vec u$ y $\vec v$ utilizamos el producto vectorial:
+\[\vec n = \vec u \times \vec v\]
+Y como la distancia es la proyección del vector que une los puntos de las rectas sobre la dirección de $\vec n$ tenemos que:
+\[d(r, s) = \frac{\left|\overrightarrow{QP} * \vec n\right|}{|\vec n|} =
+\frac{\left|\overrightarrow{QP} * (\vec u \times \vec v)\right|}{|\vec u \times \vec v|}\]
+Y teniendo en cuenta que el numerador coincide con la definición de producto triple, la fórmula queda:
+\[\boldsymbol{d(r,s) = \frac{\left|[\overrightarrow{QP},\vec u, \vec v]\right|}{|\vec u \times \vec v|}}\]
+
+\subsection{Distancia entre recta y plano.}
+\textbf{Solo tiene sentido si la recta y el plano son paralelos}, con lo que \textbf{primero hay que comprobar si lo son}.\\
+
+Una vez que hemos comprobado que lo son, como todos los puntos de la recta van a estar a la misma distancia del plano, \textbf{basta con coger un punto de la recta y calcular su distancia al plano con la fórmula que ya hemos visto}.
+
+\end{document}

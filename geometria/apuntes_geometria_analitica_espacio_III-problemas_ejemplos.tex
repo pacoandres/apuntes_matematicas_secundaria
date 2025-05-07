@@ -1,0 +1,650 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de geometría analítica en el espacio III.\\Problemas de ejemplo.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+\newcommand\distancia[1]{\mathrm{d}(#1)}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+Lo que sigue es una colección de problemas resueltos de geometría analítica utilizando los conocimientos que se obtienen al final del bachillerato.\\
+La mayor dificultad de algunos de estos problemas reside en la visualización de las relaciones geométricas utilizadas, con lo que intentaremos dar la mayor cantidad de información visual posible pero con el compromiso de fomentar el pensamiento espacial. Por esto se aportará mucha información visual en los primeros ejercicios y se irá reduciendo conforme se avance excepto en los casos donde veamos necesario el aumentarla.\\
+
+La mayor parte de estos problemas están tomados de, o inspirados en, los planteados en las pruebas de acceso a la universidad o los planteados en los apuntes de la Marea Verde. En cualquier caso se indica el origen en cada uno de ellos en el caso de que no sean propios.
+
+\begin{questions}
+\question \textit{(Marea Verde)} Indica si los puntos $A(3,2.1)$, $B(4,4,2)$ y $C(4,-1,3)$ están alineados.
+\begin{solution}
+Para ver si tres puntos están alineados hay que ver si sus vectores son proporcionales, ya que la situación es la siguiente:
+
+\begin{center}
+\begin{tikzpicture}
+	\coordinate (A) at (0,0);
+	\node  {\textbullet} (A);
+	\node[above left] at (A) {$A$};
+	\coordinate (B) at (1,1) ;
+	\node at (B) {\textbullet};
+	\node[above left] at (B) {$B$};
+	\coordinate (C) at (4,4) ;
+	\node at (C) {\textbullet};
+	\node[above left] at (C) {$C$};
+	\draw[-{Latex[length=4mm,width=3mm]}] (A) -- (B);
+	\draw[-{Latex[length=4mm,width=3mm]}] (B) -- (C);
+\end{tikzpicture}
+\end{center}
+Donde se ve que el vector $\overrightarrow{AC}$ es el producto de $\overrightarrow{AB}$ por un número real. (Esto también pasaría si tomásemos cualquier par de vectores formados por dos de los tres puntos).\\
+
+Si hacemos $\vec{w} = a*\vec{v} = (a*v_x, a*v_y, a*v_z) = (w_x, w_y, w_z)$ tendremos que:
+\[a = \frac{w_x}{v_x} = \frac{w_y}{v_y} = \frac{w_z}{v_z}\]
+Es decir, al dividir las componentes del vector nos tiene que dar el mismo valor. Los vectores son proporcionales.\\
+Construyamos entonces dos vectores con los puntos que nos dan:
+\[\overrightarrow{AB} = (1, 2, 1)\]
+\[\overrightarrow{AC} = (1, -3. 2)\]
+Donde es evidente que $\frac{1}{1} \neq \frac{2}{-3} \neq \frac{1}{2}$. Luego \textbf{los puntos no están alineados}.
+\end{solution}
+
+\question \textit{(Marea verde)} Calcula el valor de $m$ para que los vectores $\vec{u} = (-1, m, 4)$ y $\vec{v} = (m, -3, 2)$ sean perpendiculares.
+\begin{solution}
+Para que dos vectores sean perpendiculares tiene que ocurrir que su producto escalar sea cero.
+\[\vec{u}*\vec{v} = -m -3m + 8 = 0\]
+Con lo que si $m=2$ los vectores son perpendiculares.
+\end{solution}
+
+\question \textit{(Marea Verde)} Dadas las rectas $r \equiv \frac{x}{2} = y -3 = \frac{z + 3}{-1}$ y $s \equiv x+1=\frac{y-1}{-1}=
+\frac{z}{2}$ escribe la ecuación general de la recta que pasa por $M(-1,1,1)$ y es perpendicular a ambas.
+\begin{solution}
+Como nos dan ambas rectas en su forma continua es fácil obtener los vectores directores:
+\begin{itemize}
+	\item $\vec{v}_r = (2,1,-1)$.
+	\item $\vec{v}_s =(1,-1,2)$.
+\end{itemize}
+Y sabemos que la mejor manera de obtener un vector perpendicular a dos vectores dados es haciendo su producto vectorial:
+\[\vec p = \vec{v}_r \times \vec{v_s} = \begin{vmatrix}
+\vec i&\vec{j}&\vec{k}\\2&1&-1\\1&-1&2
+\end{vmatrix} = \vec{i}-5\vec{j}-3\vec{k}
+\]
+Con lo que la \textbf{ecuación vectorial} de la recta será: $p \equiv (x,y,z) = (-1,1,1) + t (1,-5,-3)$.
+En forma \textbf{paramétrica}:
+\[r \equiv \begin{cases}
+x= -1 + t\\
+y=1 -5t\\
+z=1 - 3t
+\end{cases}\]
+En forma \textbf{continua}:
+\[r \equiv \frac{x+1}{1} = \frac{y-1}{-5} = \frac{z-1}{-3}\]
+Y separándola en dos igualdades y llevándolo todo al miembro izquierdo llegamos a la \textbf{forma general}:
+\[\boldsymbol{r \equiv \begin{cases}
+-5x -y -4 = 0\\
+-3y + 5z -2 = 0
+\end{cases}}\]
+\end{solution}
+
+\question \textit{(Marea verde)} Dadas las rectas $r \equiv \begin{cases}
+y = -1 + x\\z = 2-3x
+\end{cases}$ y $s \equiv \frac{x-2}{2} = y -1 = \frac{z+1}{2}$, indica su posición relativa.
+\begin{solution}
+Obtenemos el vector director y un punto de cada recta. Para ello pasamos $r$ a forma paramétrica haciendo $x = t$:
+\[r \equiv \begin{cases}
+x=t\\y = -1 + t\\z = 2-3t
+\end{cases}\]
+Con lo que:
+\begin{itemize}
+	\item $\vec{v}_ r = (1, 1, -3)$ y $P_r (0, -1, 2)$.
+	\item $\vec{v}_s = (2,1,2)$ y $P_s (2, 1, -1)$
+\end{itemize}
+Y poniendo en forma de matriz $\vec{v}_r$, $\vec{v}_s$ y $\overrightarrow{P_r P_s}$ nos queda:
+\[A=\left(\begin{array}{rrr}
+1&1&-3\\2&1&2\\2&2&-3
+\end{array}\right)\]
+Evidentemente no tiene filas proporcionales, con lo que no van a ser coincidentes ni paralelas. Hacemos el determinante y se obtiene:
+\[|A| = -3\]
+Con lo que el rango de la matriz es 3 y \textbf{las rectas se cruzan}.
+\end{solution}
+\question \textit{(Acceso universidad)} Dado el vector $\vec{v} = (1, 0, -2)$
+\begin{parts}
+\part Obtener todos los vectores con módulo $\sqrt{5}$ que son perpendiculares a $\vec v$ y tienen alguna coordenada nula.
+\part Obtener los vectores $\vec w$ de módulo $\sqrt{6}$ tales que $\vec v \times \vec w = (2, - 3, 1)$.
+\end{parts}
+\begin{solution}
+\begin{parts}
+	\part Sea $\vec a = (x, y, z)$ el vector pedido.\\
+		Como su módulo es $\sqrt{5}$ tiene que ocurrir que $x^2 + y^2 + z^2 = 5$.\\
+		Por ser perpendicular a $\vec v$ ha de ocurrir que $\vec a * \vec v = x - 2z = 0$.\\
+		De tal manera que nos queda el siguiente sistema:
+		\[\left\lbrace \begin{array}{lll}
+		x^2 + y^2 + z^2 &=& 5\\
+		x - 2z &=& 0
+		\end{array}\right.\]
+		Y la condición de que una de sus componentes sea nula nos plantea tres casos, uno por cada componente:
+		\begin{itemize}
+			\item Si $x=0$ el sistema queda:
+			\[\left\lbrace \begin{array}{lll}
+				y^2 + z^2 &=& 5\\
+				- 2z &=& 0
+			\end{array}\right.\]
+			Cuya solución es $z=0$, $y=\pm \sqrt{5}$, con lo que los vectores que cumplen esa condición ($x=0$) son $\boldsymbol{(0, \pm \sqrt{5}, 0)}$.
+			\item Si $y = 0$ queda:
+			\[\left\lbrace \begin{array}{lll}
+				x^2 + z^2 &=& 5\\
+				x - 2z &=& 0
+			\end{array}\right.\]
+			Cuyas soluciones son $x=2,\ z=1$ y $x=-2,\ z= -1$, con lo que tenemos otros dos vectores que cumplen las condiciones: $\boldsymbol{(2, 0, 1)}$ y $\boldsymbol{(-2, 0, -1)}$.
+			\item Si $z=0$ queda:
+			\[\left\lbrace \begin{array}{lll}
+				x^2 + y^2 &=& 5\\
+				x &=& 0
+			\end{array}\right.\]
+			Y los vectores que se obtienen de aquí son los mismos que en el caso de $x=0$.
+		\end{itemize}
+		Entonces los vectores pedidos son:
+		\begin{itemize}
+			\item $(2, 0, 1)$.
+			\item $(-2, 0, -1)$.
+			\item $(0, \pm \sqrt{5}, 0)$.
+		\end{itemize}
+		
+		\part Sea $\vec w = (x, y, z)$ el vector pedido.\\
+		Por ser su módulo $\sqrt{6}$ la primera ecuación es $x^2 + y^2 + z^2 = 6$.\\
+		Y como segunda condición $\vec v \times \vec w = 
+		\left|\begin{array}{rrr}
+		\vec{i}&\vec{j}&\vec{k}\\1&0&-2\\x&y&z
+		\end{array}\right| =(2y, -2x - z, y) = (2, -3. 1)$.\\
+		Con lo que tenemos el sistema:
+		\[\left\lbrace\begin{array}{lll}
+			x^2 + y^2 + z^2 &=& 6\\
+			-2x - z &=& -3\\
+			y &=& 1
+		\end{array}\right.\]
+		Cuyas soluciones son:
+		\begin{itemize}
+		\item $\boldsymbol{\vec w = (2, 1, -1)}$
+		\item $\boldsymbol{\vec w = \left( \frac{2}{5}, 1, \frac{11}{5} \right)}$.
+		\end{itemize}
+\end{parts}
+\end{solution}
+\question Dados los puntos $P(1,-1,3)$, $Q(1,2,1)$ y $R(1,0,-1)$ calcular el área del triángulo que forman. \textit{(Acceso universidad)}
+\begin{solution}
+En primer lugar tenemos que ver si forman realmente un triángulo, ya que en otro caso no tendría sentido hacer el resto de cálculos.\\
+Para que tres puntos formen un triángulo tiene que ocurrir que no estén alineados, con lo que los vectores $\overrightarrow{PQ}$ y $\overrightarrow{PR}$ no pueden ser paralelos (no pueden ser proporcionales).\\
+Calculando los vectores citados:
+\[\overrightarrow{PQ} = (0,3,-2)\]
+\[\overrightarrow{PR} = (0,1,-4)\]
+Se ve que no son proporcionales, con lo que sí forman un triángulo.\\
+
+Ahora ya podemos calcular el área del triángulo, que es $S=\frac{base*altura}{2}$, con lo que tenemos que elegir qué lado va a hacer de base, lo cual es indiferente porque el área es la misma cojamos la que cojamos.
+
+Entonces cogemos como base el lado $\overline{PR}$ que se corresponde con el vector $\overrightarrow{PR}$. Veamos como queda representado gráficamente de manera idealizada:
+\begin{center}
+	\begin{tikzpicture}
+	\coordinate (P) at (0,0);
+	\coordinate (Q) at (1,2);
+	\coordinate (R) at (3,0);
+	\draw[-latex] (P)--(Q) node[midway, left] {$\overrightarrow{PQ}$};
+	\draw[-latex] (P)--(R) node[midway, below] {$\overrightarrow{PR}$};
+	\node[below left] at (P) {$P$};
+	\node[above left] at (Q) {$Q$};
+	\node[below right] at (R) {$R$};
+	\draw (Q)--(R);
+	\draw[dashed] (1, 0)--(1,2) node[midway, right] {$h$};
+	\draw pic[draw, angle radius=.5cm, "$\alpha$"] {angle=R--P--Q};
+	\end{tikzpicture}
+\end{center}
+Por trigonometría básica sabemos que $h = \sen \alpha * \overrightarrow{PQ}$, con lo que el área del triángulo sera:
+\[A = \frac{|\overrightarrow{PR}|* |\overrightarrow{PQ}|*\sen \alpha}{2} =
+\frac{|\overrightarrow{PR} \times \overrightarrow{PQ}|}{2}\]
+Con lo que solo tenemos que hacer el módulo de $\overrightarrow{PR} \times \overrightarrow{PQ}$ y dividirlo entre dos.
+\[\overrightarrow{PR} \times \overrightarrow{PQ} = \left|\begin{array}{rrr}
+\vec i&\vec j&\vec k\\0&3&-2\\0&1&-4
+\end{array}\right| = -10\vec i\]
+Con lo que:
+\[\boldsymbol{A = \frac{|\overrightarrow{PR} \times \overrightarrow{PQ}|}{2} = \frac{|-10\vec{i} |}{2} = 5\,u^2}\]
+\end{solution}
+
+\question Dado el triángulo de vértices $A(-1,2,0)$, $B(-3,3,-1)$ y $C(1, -1, 1)$ escribe la ecuación de la recta que contiene a la altura sobre el lado $\overline{AB}$.
+\begin{solution}
+La visualización de este problema en tres dimensiones puede ser un poco compleja y se une que no es inmediato, sino que hay que dar bastantes pasos.\\
+
+En primer lugar tenemos que comprobar que los puntos no están alineados porque en ese caso no forman un triángulo. Calculamos los vectores $\overrightarrow{AB} = (-2,1,-1)$ y $\overrightarrow{BC}=(4,-4,2)$ que no son proporcionales, con lo que no están alineados y forman un triángulo.\\
+
+Para abordar el procedimiento a seguir empezemos tratando de visualizar la situación. Por definición la recta que contiene la altura es perpendicular a la base (en este caso el lado $\overline{AB}$) y pasa por el vértice opuesto (en este caso $C$). De manera que la situación es la siguiente:
+\begin{center}
+\begin{tikzpicture}
+ \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+ 	\coordinate (A) at (-.25, -.25, 1);
+ 	\coordinate (B) at (-.25, -.25, -.5);
+ 	\coordinate (C) at (.5, .5 , 0);
+ 	\coordinate (M) at (-.25,-.25,0);
+ 	\draw[color=white, fill=black!60, opacity=.3] (-1,-1,0)--(1,-1,0)--(1,1,0)--(-1,1,0)--cycle;
+ 	\draw (A) node{\textbullet} node[above] {$A$};
+ 	\draw (B) node{\textbullet} node[below] {$B$};
+ 	\draw (C) node{\textbullet} node[above, right] {$C$};
+ 	\draw (A)--(M);
+ 	\draw[dashed] (M)--(B);
+ 	\draw[dashed] (B)--(C);
+ 	\draw (C)--(A);
+ 	\draw[thick] (C)--(M);
+ 	\draw (M) node[left] {$M$};
+ \end{axis}
+\end{tikzpicture}
+\end{center}
+El punto $M$ sería el pie de la altura, el punto en el que la altura corta con la base, y coincide con el punto en el que el plano perpendicular al lado $\overline{AB}$ que pasa por el punto $C$ corta al lado $\overline{AB}$.\\
+Entonces daremos los siguientes pasos:
+\begin{enumerate}
+	\item Calculamos la recta $r$ que contiene al lado $\overline{AB}$.
+	\item Calculamos el plano $\pi$ perpendicular a $\overline{AB}$ que pasa por $C$.
+	\item Calculamos el punto $M$ como corte de $r$ y $\pi$.
+	\item Escribimos la recta que pasa por $C$ y $M$ que será la recta que contenga la altura.
+\end{enumerate}
+Empecemos por calcular $r$: el vector director será $\vec v = (-2,1,-1) $ y pasa por $A(-1,2,0)$ con lo que su forma paramétrica es:
+\[r \equiv \begin{cases}
+x=-1 -2 t\\y = 2 + t\\z = -t
+\end{cases}\]
+Para el plano $\pi$ tenemos que su vector normal es $\vec{n} = \vec{v} = (-2,1,-1)$ (por ser perpendicular a $r$) y pasa por $C(1, -1, 1)$, con lo que su ecuación será:
+\[\pi \equiv (x-1, y + 1, z-1) * (-2, 1, -1) = 0\]
+\[\pi \equiv -2x + y - z +4 = 0\]
+
+Para calcular el corte entre $r$ y $\pi$ sustituimos las paramétricas en la ecuación del plano y resolvemos:
+\[-2(-1-2t) + (2+t) - (-t) + 4 = 0\]
+\[t = \frac{-4}{3}\]
+Con lo que el punto $M$ tendrá de coordenadas:
+\begin{itemize}
+	\item $x = -1 -2 * \frac{-4}{3} = \frac{5}{3}$.
+	\item $y = 2- \frac{4}{3} = \frac{2}{3}$
+	\item $z = \frac{4}{3}$
+\end{itemize}
+Con lo que un vector director de la recta que contiene a la altura es $\overrightarrow{MC} = \left(\frac{-2}{3}, \frac{-5}{3}, \frac{-1}{3}\right)$. Pero como lo que nos importa es la dirección del vector, para que sea más sencillo vamos a elegir uno proporcional que no tenga denominadores. Y en otro caso habría que hacer denominador común, pero como aquí ya está hecho solo hay que quitarlo, con lo que el vector director que vamos a utilizar es $\vec{w} = (2,5, 1)$ (también lo hemos cambiado de signo para simplificar las operaciones).\\
+Y con todo esto, la ecuación vectorial de la recta que contiene la altura es:
+\[\boldsymbol{(x, y, z) = (1,-1,1) + t(2, 5, 1)}\]
+\end{solution}
+
+\question \textit{(Acceso universidad)} Se consideran los puntos $A(0,1,0)$ y $B(1,0,1)$. Se pide: 
+\begin{parts}
+	\part Escribir la ecuación que deben verificar todos los puntos que equidistan de $A$ y $B$.
+	\part Escribir la ecuación de los puntos cuya distancia a $A$ es igual a la distancia que hay de $A$ a $B$.
+	\part Escribir la ecuacion de los puntos $C$ contenidos en el plano $x +y+z=3$ que hacen que el triángulo $ABC$ sea rectángulo en $A$.
+\end{parts}
+\begin{solution}
+\begin{parts}
+	\part Sabemos que la distancia entre dos puntos es el módulo del vector que une los dos puntos, de manera que:
+	\[d(A,B) = |\overrightarrow{AB}|\]
+	
+	Si llamamos $X(x,y,z)$ a los puntos pedidos tiene que ocurrir que
+	\[d(A,X) = d(B,x)\]
+	O, lo que es lo mismo:
+	\[|\overrightarrow{AX}| = |\overrightarrow{BX}|\]
+	
+	Sustituyendo:
+	\[\sqrt{(x-0)^2 + (y -1)^2 + (z-0)^2} = \sqrt{(x-1)^2 + (y-0)^2+(z-1)^2}\]
+	Elevando al cuadrado para quitar las raíces y desarrollando las identidades notables, queda:
+	\[x^2 + y^2-2y + 2 + z^2 = x^2- 2x +2 + y^2 + z^2 -2z +2\]
+	Y reduciendo:
+	\[2x - 2y + 2z - 2 = 0\]
+	
+	Es decir, los puntos que equidistan de $A$ y $B$ forman un plano, y este plano recibe el nombre de plano mediador.
+	
+	\part Aplicando lo mismo de antes, tenemos que:
+	\[|\overrightarrow{AX}| = |\overrightarrow{AB}|\]
+	Con lo que:
+	\[\sqrt{(x-0)^2 + (y -1)^2 + (z-0)^2} = \sqrt{1^2 + (-1)^2 + 1^2}\]
+
+	Es decir:
+	\[x^2 + (y-1)^2 + z^2 = 3\]
+	Que es la ecuación de una esfera que tiene su centro en $(0,1,0)$ y el radio es $r=\sqrt{3}$.
+	
+	\part Para que el triángulo $ABC$ sea rectángulo en $A$ tiene que ocurrir que $\overrightarrow{AB}*\overrightarrow{AC} = 0$, que es lo que nos garantiza que los lados seán perpendiculares.
+	Entonces, si $C(x,y,z)$:
+	\[\overrightarrow{AB}*\overrightarrow{AC}  = (1,-1,1)*(x,y-1,z) =0\]
+	\[x -y + z -1 = 0\]
+	Por otra parte tenemos que el punto $C$ ha de estar en la recta $x+y+z=3$, así que debe cumplir las dos ecuaciones:
+	\[\left\lbrace\begin{array}{lll}
+	x -y + z &=& 1\\
+	x+y+z &=& 3\end{array}\right.\]
+	Con lo que puntos que cumplen las condiciones dadas forman una recta.
+\end{parts}
+\end{solution}
+
+\question \textit{(Acceso universidad)} Calcula la ecuación general del plano que contiene a la recta $\left\lbrace\begin{array}{lll}
+x &=& 1 + \lambda\\y &=& -1 + 2\lambda\\z &=& \lambda
+\end{array}\right.$ y es perpendicular al plano $\pi \equiv 2x + y - z = 2$.
+\begin{solution}
+Si el plano continene a la recta $r$ tiene que contener el punto por el que pasa ésta y el vector director de la recta tiene que ser un vector director del plano.\\
+Si la recta es perpendicular al plano $\pi$, el vector normal a $\pi$ ha de ser el otro vector normal al plano.
+\begin{itemize}
+	\item De $r$ sacamos que el plano tiene que contener a $P(1,-1,0)$ y uno de sus vectores directores es $\vec v = (1,2,1)$.
+	\item Como es perpendicular a $\pi$ otro de sus vectores directores será $\vec w = (2,1,-1)$.
+\end{itemize}
+Entonces, si $X$ es un punto del plano se tiene que verificar que:
+\[\overrightarrow{PX}*(\vec v \times \vec w) = 0\]
+O lo que es lo mismo:
+\[\left|\begin{array}{rrr}
+x-1&y+1&z\\1&2&1\\2&1&-1
+\end{array}\right| = 0\]
+
+De donde la ecuación del plano es:
+\[x -y + z -2=0\]
+\end{solution}
+
+\question \textit{(Acceso universidad)} Con un dispositivo laser situado en el punto $P(1,1,1)$ se ha podido seguir la trayectoria de una partícula que desplaza según la recta de ecuaciones $r \equiv \left\lbrace\begin{array}{lll}
+2x -y &=&= 10\\x - z &=&= -90
+\end{array}\right.$
+\begin{parts}
+\part Calcule un vector director de $r$ y la posición de la partícula cuando se encuentra en el plano $z=0$.
+\part Calcule la posición más próxima de la partícula al dispositivo laser.
+\part Determine el ángulo entre el plano $x + y = 2$ y la recta trayectoria de la partícula.
+\end{parts}
+
+\begin{solution}
+\begin{parts}
+	\part Para calcular un vector director de $r$ pasamos su expresión a paramétricas haciendo $x=t$ y resolviendo el sistema que forma su ecuación general, con lo que queda:
+	\[\left\lbrace\begin{array}{lll}
+		x = t\\y = -10 + 2t\\z = 90 + t
+	\end{array}\right.\]
+	De manera que un vector director de $r$ es $\vec{v}_r = (1, 2, 1)$.\\
+	
+	Para calcular la posición de la partícula cuando $z = 0$ solo hay que resolver el sistema con $z=0$ (también se puede hacer con las paramétricas calculando primero el valor de $t$ que hace que $z$ sea 0), entonces queda:
+	\[\left\lbrace\begin{array}{lll}
+2x -y &=&= 10\\x - 0 &=&= -90
+\end{array}\right.\]
+	Y la solución de ese sistema es el punto $Q(90, 170, 0)$.
+	
+	\part Este apartado se puede resolver de tres maneras distintas:
+	\begin{itemize}
+	\item \textbf{Como un problema de optimización}:
+	Para calcular la posición más próxima de la partícula al dispositivo primero tenemos que escribir el vector que va desde el dispositivo a la partícula.\\
+	Si la posición de la partícula es $X(t) = (t,2t-10,90 +t)$ el vector que va de $P$ a $X$ es:
+	\[\overrightarrow{PX} = (t - 1, 2t - 11, 89 +t)\]
+	Y la distancia viene dada por el módulo del vector:
+	\[d = |\overrightarrow{PX}| = \sqrt{(t-1)^2 + (2t-11)^2 + (89+t)^2}\]
+	Y para que esa distancia sea mínima la derivada de esa función tiene que valer 0.\\
+	Entonces derivamos la función:
+	\[d' =\frac{2(t -1) + 2*(2t - 11)*2 + 2*(t + 89)} {2*\sqrt{(t-1)^2 + (2t-11)^2 + (89-t)^2}}\]
+	Y para que sea 0:
+	\[2t -2 + 8t - 44) + 2t + 178 = 0\]
+	\[t = -11\]
+	Entonces la posición de la partícula para ese valor de $t$ es:
+	\[X(11) = (-11, -32, 79)\]
+	\item \textbf{Utilizando la distancia entre punto y recta}:\\
+	Tal y como se define la distancia entre punto y recta, ésta es la menor distancia posible de todas las que hay. Con lo que basta con calcular esta distancia y luego el punto concreto de la recta que se encuentra a esa distancia del punto $P$.\\
+	En primer lugar calculamos la distancia del punto a la recta, para eso tenemos un vector director de la recta $\vec{v} =(1,2,1)$ y un punto $Q(0, -10, 90)$. Entonces:\\
+	\begin{flalign*}
+	\text{d} &= \frac{|\overrightarrow{PQ} \times \vec{v}|}{|\vec{v}|} = \frac{|(-1, -11, 89) \times (1,2,1)|}{|(1,2,1)|} =
+	\frac{\sqrt{189^2 + (-90)^2 + (-9)^2 }}{\sqrt{1^2+2^2+1^2}}
+	=\\& \frac{\sqrt{43902}}{\sqrt{6}} = \sqrt{3^3 *271}
+	\end{flalign*}
+	
+	Ahora buscamos el punto que esté a esa distancia:
+	\[\overline{PX} = \sqrt{3^3 *271}\]
+	\[\sqrt{(t-1)^2 + (2t-11)^2 + (t+89^2)} = \sqrt{3^3 *271}\]
+	Y la solución de esta ecuación es $t= -11$ con lo que las coordenadas del punto buscado son:
+	\[\begin{cases}
+	x=-11\\
+	y=32\\
+	z=79
+	\end{cases}\]
+	\item \textbf{Como intersección entre recta y plano}:
+	Como la distancia más corta está en la dirección perpendicular a la recta, el punto más cercano a $P$ será la intersección de la recta con el plano perpendicular a ésta que contiene a $P$.\\
+	Como el vector perpendicular al plano va a ser el vector director de la recta, la ecuación del plano va a ser:
+	\[(1,2,1)*(x-1, y-1, z-1) = 0\]
+	\[x + 2y + z - 4 = 0\]
+	Y sustituyendo las paramétricas de la recta queda:
+	\[t + 2(t-1) + t+90 - 4 = 0\]
+	Cuya solución es $t=-11$ de donde obtendremos las mismas coordenadas para el punto que con los otros dos métodos.
+\end{itemize}
+	\part para calcular el ángulo entre $r$ y el plano $x+y=2$ tenemos un vector director de $r$ 
+	y, de la ecuación normal al plano, el vector normal $\vec{n} = (1,1,0)$. Con esto tenemos la siguiente situación:
+	\begin{center}
+  	\begin{tikzpicture}
+	  \begin{axis}[width=.6\linewidth, height=.6\linewidth, axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-1.5, zmax=1.5]
+            
+		\draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0) -- cycle;	
+		  
+		\draw[dashed] (0, -.5, -.125) -- (0, 0,0);
+		\draw (0,0,0)--(0,1,.25) node[right]{$r$};
+
+		\draw[-latex] (0,0,0)--(0,0,1) node[above] {$\vec{n}$};
+		\draw  (0,0,1) coordinate (A) -- (0,0,0) coordinate (O) --
+		(0,1,.25) coordinate (B) 
+		pic (beta) ["$\scriptstyle \frac{\pi}{2} - \alpha$",
+		angle eccentricity=2, fill=black!50] {angle = B--O--A}; %eccentricity desplaza el texto.
+
+		\end{axis}
+	\end{tikzpicture}
+  \end{center}
+  Se ve claramente que el ángulo que queremos calcular es el complementario del ángulo que forman la recta y el vector normal al plano.\\
+
+Entonces:
+\[\frac{\pi}{2}-\alpha = \acos \frac{\vec{n} * \vec{v}_r}{|\vec{n}| * |\vec{v}_r|}
+=\acos \frac{(1,2,1)*(1,1,0)}{\sqrt{6}*\sqrt{2}} = \acos \frac{3}{2\sqrt{3}} = \frac{\pi}{6}\]
+Con lo que $\alpha = \frac{\pi}{2} - \frac{\pi}{6} = \frac{\pi}{3}$ ($60^\circ$).
+\end{parts}
+
+
+\end{solution}
+
+\question \textit{(Acceso universidad)} Sean las rectas $r \equiv \begin{cases}
+	x - y - 6z = 1\\x+y=0
+\end{cases}$ y $s \equiv \frac{x}{2} = \frac{y -1}{a} = z$
+\begin{parts}
+	\part Determinar su posición relativa según los valores de $a$.
+	\part Calcular la distancia entre ellas para $a=-2$.
+\end{parts}
+\begin{solution}
+\begin{parts}
+\part Para calcular la posición relativa primero pasamos las ecuaciones de $s$ a la forma general:
+\[s \equiv \begin{cases}
+ax-2y = -2\\x - 2z = 0
+\end{cases}\]
+Y ahora las juntamos con las de $r$ para construir el sistema:
+\[\left\lbrace\begin{array}{lll}
+x -y -6z &=& 1\\x + y &=& 0\\ax - 2y &=& 2\\1-2z &=& 0
+\end{array}\right.\]
+Con lo que la matriz ampliada del sistema es:
+\[A^+ = \left(\begin{array}{rrr:r}
+1&-1&-6&1\\1&1&0&0\\a&-2&0&-2\\1&0&-2&0
+\end{array}\right)\]
+Y su determinante es $|A^+| = -2a$, con lo que si $a \neq 0$ tenemos que $\text{Rg}(A^+) = 4$ mientras que el rango de la matriz de coeficientes no puede ser mayor de 3, con lo que será un \textbf{sistema incompatible}. Es decir, las rectas no se cortan.\\
+\begin{itemize}
+\item $\boldsymbol{a \neq 0}$\\
+En ese caso la matriz de coeficientes es:
+\[A=\begin{pmatrix}
+1&-1&-6\\1&1&0\\a&-2&0\\1&0&-2
+\end{pmatrix}\]
+Y si tomamos el menor formado por la primera, segunda y cuarta fila:
+\[\left|\begin{array}{rrr}
+1&-1&-6\\1&1&0\\1&0&-2
+\end{array}\right| = 2\]
+Es decir, rango de la matriz de coeficientes es 3 independientemente del valor de $a$, luego \textbf{son rectas que se cruzan}.
+
+\item $\boldsymbol{a = 0}$\\
+En el caso de $a = 0$ tenemos que $\text{Rg}(A^+) < 4$. Tomando el mismo menor que antes tendremos que $\text{Rg}(A) < 3$, y entonces $\text{Rg}(A^+) = 3$ con lo que el sistema es compatible determinado y \textbf{las rectas se cortan en un punto}.
+\end{itemize}
+\part  Para calcular la distancia entre las rectas cuando $a=-2$ tenemos que tener en cuenta que son rectas que se cruzan, con lo que la distancia vendrá dada por:
+\[\text{d} = \frac{|[\overrightarrow{PQ}, \vec{v}_r, \vec{v}_s]|}{|\vec{v}_r||\vec{v}_s|}\]
+Donde $P$ es un punto de $r$ y $Q$ un punto de $s$\\
+Para $s$ es fácil obtener el punto y un vector director, ya que está en forma continua:
+\[s \equiv \frac{x}{2} = \frac{y -1}{-2} = z\]
+Con lo que $Q(0, 1,0)$ y $\vec{v}_s = (2, -2, 1)$\\
+
+Para $r$ lo que hacemos es pasarla a paramétricas haciendo $z = t$, con lo que queda:
+\[r \equiv \begin{cases}
+x&=\frac{1}{2} + 3t\\y&=-\frac{1}{2}-3t\\z&=t
+\end{cases}\]
+Con lo que el vector director será $\vec{v}_r =(3,-3,1)$ y $P\left(\frac{1}{2}, -\frac{1}{2}, 0 \right)$\\
+
+Entonces:
+\[\text{d} = \frac{\left|\left[\left(-\frac{1}{2}, \frac{3}{2}, 0 \right), (3, -3, 1), (2, -2, 1)\right]\right|}{|(3, -3, 1)|*|(2,-2,1)|}\]
+
+Calculamos el producto triple:
+\begin{flalign*}
+&\left[\left(-\frac{1}{2}, \frac{3}{2}, 0 \right), (3, -3, 1), (2, -2, 1)\right] = \left|\begin{array}{rrr}
+-\frac{1}{2}& \frac{3}{2}& 0\\3& -3& 1\\2& -2& 1
+\end{array}\right| = \frac{1}{2} * \left|\begin{array}{rrr}
+-1& 3& 0\\3& -3& 1\\2& -2& 1
+\end{array}\right| =\\& \frac{1}{2}*(-2) = -1
+\end{flalign*}
+Con lo que:
+\[\text{d} = \frac{|-1|}{\sqrt{3^2 + (-3)^2 + 1^2} *\sqrt{2^2 + (-2)^2 + 1}} = \frac{1}{\sqrt{19}*\sqrt{9}}\]
+\end{parts}
+\end{solution}
+\question \textit{(Acceso universidad)} Dados el plano $\pi \equiv x + 2y - z = 5$ y la recta $r \equiv \left\lbrace \begin{array}{lll}
+	x + y - 2z &=& 1\\
+	2x +y -z &=& 2
+	\end{array}\right.$ se pide:
+\begin{parts}
+		\part Determinar la ecuación del plano que contiene a $r$ y pasa por el punto $P(1,0,1)$.
+		\part Hallar la ecuación de la recta perpendicular a $\pi$ que pasa por el punto $Q(2,1,1)$.
+\end{parts}
+\begin{solution}
+		\begin{parts}
+			\part En primer lugar comprobamos que $P$ no esté en la recta, ya que en ese caso el problema no tiene mucho sentido. Sustituimos en la ecuación de la recta:
+		\[\left\lbrace \begin{array}{lll}
+			1 + 0 - 2*1 &=& 1\\
+			2*1 +0 -1 &=& 2
+	\end{array}\right.\]
+		Y se ve que no es cierto, con lo que $P$ no está en $r$.\\
+		Entonces tenemos la siguiente situación:
+		\begin{center}
+  	\begin{tikzpicture}
+  	
+
+  	\begin{axis}[axis lines =none, xmin=-1.5, xmax=1.5, ymin=-1.5, ymax=1.5, zmin=-.5, zmax=1.5]
+		\draw[color=white, fill=gray, opacity=.3] (-1,-1,0) -- (1,-1,0) -- (1,1,0)-- (-1,1,0);
+		\draw (-1,-.5, 0)--(1, .25, 0) node[midway, below] {$r$};
+		\draw (.5,.5,0) node {\textbullet} node[above] {$P$};
+		\draw (-.43,-.29,0) node {\textbullet} node[above] {$A$};
+		\draw[dashed, -latex]  (-.43,-.29,0)--(.5,.5,0);
+		\end{axis}
+		\end{tikzpicture}
+		\end{center}
+		Para que contenga a la recta necesitamos su vector director y un punto, para lo cual pasamos la recta a paramétricas resolviendo el sistema con $z=t$, y nos queda:
+		\[\left\lbrace\begin{array}{lll}
+			x &=& 1 - t\\
+			y &=& 3t\\
+			z &=& t
+		\end{array}\right.\]
+		Con lo que el vector director es $\vec v_r = (-1, 3,1)$ y el punto es $A(1, 0, 0)$.\\
+		Calculamos el vector $\overrightarrow{AP} = (0, 0, 1)$ y con ese vector y el punto $A$ obtenemos la ecuación del plano que es:
+		\[\pi' \equiv \left|\begin{array}{ccc}
+		x-1&y&z\\
+		0&0&1\\
+		-1&3&1
+		\end{array}\right| = \boldsymbol{3x + y - 3 = 0}\]
+		\part Si la recta tiene que ser perpendicular al plano su vector director será el vector normal al plano.\\
+		El vector normal al plano $\pi$ es $\vec n = (1, 2, -1)$.\\
+		Con lo que la ecuación de la recta pedida es
+		\[\boldsymbol{(x, y, z) = (2, 1, 1) + t(1,2, -1)}\]
+		\end{parts}
+\end{solution}
+\end{questions}
+\end{document}

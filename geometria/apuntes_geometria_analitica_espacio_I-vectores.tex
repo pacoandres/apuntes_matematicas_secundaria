@@ -1,0 +1,909 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+%\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows.meta,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de geometría analítica en el espacio I.\\Coordenadas y vectores.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\tableofcontents
+\newpage
+
+\section{Coordenadas en el espacio.}
+Sabemos de cursos anteriores que para el plano se define un sistema de coordenadas que consiste en una pareja de valores que indica la posición de un punto en el plano con respecto a un sistema de referencia prefijado.
+\begin{center}
+\begin{tikzpicture}
+	\begin{axis}[xmin=-3, xmax=3, ymin=-3, ymax=3, xtick={-3, -2, - 1, 0, 1, 2, 3}, ytick={-3, -2, - 1, 0, 1, 2, 3}, axis x line=center, axis y line=center, grid=both]
+		\addplot[mark=*, only marks] coordinates {(-1, 2)};
+	\end{axis}
+\end{tikzpicture}
+\end{center}
+Y el punto indicado tendría las coordenadas $(-1, 2)$ (normalmente se indica también el nombre del punto con una letra mayúscula, por ejemplo $A(-1, 2)$).\\
+
+Al igual que nos ocurre con los naturales, enteros, etc. a las coordenadas en el plano también se las asigna un conjunto que se llama $\mathbb{R}^2$.\\
+
+Y en el espacio ocurre lo mismo que en el plano solo que con tres coordenadas en lugar de dos (y el conjunto se llama $\mathbb{R}^3$).
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0, xmax=3, ymin=0, ymax=3, zmin=0, zmax=3, ztick={1,2}, xtick={1,2}, ytick={1,2}]
+			\addplot3[mark=*, only marks] coordinates {(1, 2, 1)};
+			\draw[dashed] (0,0,1) -- (1,2,1);
+			\draw[dashed, color=lightgray] (0,0,0) -- (1,2,0);
+			\draw[dashed] (1,0,0) -- (1,2,0);
+			\draw[dashed] (0,2,0) -- (1,2,0);
+			\draw[dashed] (1,2,0) -- (1,2,1);
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+Con lo que el punto indicado sería $A(1,2,1)$
+\section{Vectores en el espacio.}
+De una manera intuitiva se podría definir un vector como el desplazamiento entre dos puntos, de manera que el vector que va del punto $A(1,2,1)$ al punto $B(3,0, 2)$ sería $\overrightarrow{AB} = B - A = (2,-2,1)$:
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[xmin=0, xmax=3, ymin=0, ymax=3, zmin=0, zmax=3, ztick={1,2}, xtick={1,2}, ytick={1,2}]
+			\addplot3[mark=*, only marks] coordinates {(1, 2, 1)};
+			\addplot3[mark=*, only marks] coordinates {(3, 0, 2)};
+			\draw[arrows={-Latex[length=3mm]}] (1,2,1) -- (3,0,2);
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+
+A esta forma de escribir los vectores y los puntos $(x, y, z)$ se le llama \textbf{coordenadas cartesianas}. Más adelante veremos otro tipo de coordenadas para representar también puntos y vectores.
+Como ya se vio en el plano, los vectores son magnitudes que tienen:
+\begin{itemize}
+	\item \textbf{Módulo}, que es el tamaño del vector. Por el teorema de Pitágoras $\left|\vec{v}\right| =
+	\sqrt{x^2 + y^2 + z^2}$.
+	\item \textbf{Dirección}, que viene dada por la recta que une los dos puntos que definen el vector. 
+	\item \textbf{Sentido}, que nos dice hacia que parte de la recta apunta el vector.
+\end{itemize}
+\subsection{Cosenos directores de un vector.}
+La dirección y el sentido de un vector también nos puede venir dada a través de los cosenos directores, que son los cosenos de los ángulos que forma el vector con cada uno de los ejes coordenados. Se suelen llamar de la siguientes manera:
+\begin{itemize}
+	\item $\cos \alpha_1$ ó $\cos \alpha$: coseno del ángulo que forma el vector con el eje $x$.
+	\item $\cos \alpha_2$ ó $\cos \beta$: coseno del ángulo con el eje $y$.
+	\item $\cos \alpha_3$ ó $\cos \gamma$: coseno del ángulo con el eje $z$.
+\end{itemize}
+Es evidente que si $\vec{v} = (v_x, v_y, v_z)$:
+\[\cos \alpha =\frac{v_x}{|\vec{v}|}\quad\quad 
+\cos \beta =\frac{v_y}{|\vec{v}|}\quad\quad
+\cos \gamma =\frac{v_z}{|\vec{v}|}\]
+
+Y por tanto tienen la propiedad:
+\[\boldsymbol{\cos^2 \alpha + \cos^2 \beta + \cos^2 \gamma} =
+\frac{v_x^2}{|\vec v|^2} + \frac{v_y^2}{|\vec v|^2} + \frac{v_z^2}{|\vec v|^2} = \boldsymbol{1}\]
+Por lo que los cosenos directores forman un vector de módulo 1 que tiene la dirección y el sentido del vector original.
+\subsection{Vectores fijos y libres. Vectores equipolentes.}
+La distinción entre vectores fijos y libres no tiene nada que ver con sus propiedades intrínsecas, sino con el contexto en el que se utilizan.\\
+Los \textbf{vectores fijos} son aquellos que \textbf{tienen un punto de aplicación fijo}. Por ejemplo el vector posición, que siempre se aplica en el origen de coordenadas ($O(0,0,0)$).\\
+Los \textbf{vectores libres} son aquellos que \textbf{no tienen un punto de aplicación fijo}. Por ejemplo la velocidad, que se aplica en el punto en el que se encuentra el móvil en cada instante.\\
+
+Se dice que \textbf{dos vectores son equipolentes cuando tienen el mismo módulo, dirección y sentido}. Es decir, que tienen las mismas coordenadas.\\
+La palabra \emph{equipolente} no se utiliza mucho, normalmente se dice que los vectores son iguales.
+
+\subsection{Vectores unitarios.}
+Se dice que un vector es unitario cuando su módulo es 1.\\
+
+Es fácil construir un vector unitario a partir de uno dado, solo tenemos que dividir sus componentes entre el módulo del vector y de esta manera obtendremos un vector que tendrá la misma dirección y sentido que el original pero su módulo será 1.
+
+\subsection{Vectores paralelos.}
+Tal y como hemos definido los vectores para que dos de ellos sean paralelos sus componentes han de ser proporcionales.\\
+Es decir, si $\vec{u} = (u_x, u_y, u_z)$ y $\vec{v} = (v_x, v_y, v_z)$ son \textbf{paralelos} sucederá que:
+\[\boldsymbol{\frac{u_x}{v_x} = \frac{u_y}{v_y} = \frac{u_z}{v_z}}\]
+
+\subsection{Operaciones con vectores.}
+\subsubsection{Suma de vectores.}
+Se define la suma de vectores como la operación que nos da como resultado un vector equivalente al desplazamiento que tendríamos al situar uno a continuación del otro.\\
+\begin{center}
+\begin{multicols}{2}
+\begin{tikzpicture}
+		%\begin{axis}
+			\draw[thick, -latex] (0,0) -- (2,3) node[midway,above,sloped] {$\vec u$};
+			\draw[thick, -latex] (2,3) -- (4,1) node[midway,above,sloped] {$\vec v$};
+			\draw[ultra thick, -latex] (0,0) -- (4,1) node[midway,above,sloped] {$\vec u + \vec{v}$};
+		%\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+
+	\draw[thick, -latex] (0,0) -- (2,-2) node[midway,above,sloped] {$\vec v$};
+	\draw[thick, -latex] (2,-2) -- (4,1) node[midway,above,sloped] {$\vec u$};
+	\draw[ultra thick, -latex] (0,0) -- (4,1) node[midway,above,sloped] {$\vec u + \vec{v}$};
+
+\end{tikzpicture}
+\end{multicols}
+\end{center}
+
+De las dos representaciones de la suma se concluye una de las propiedades de ésta, la conmutativa. Pero vamos a nombrarlas todas:
+\begin{itemize}
+	\item \textbf{Conmutativa}: $\vec u + \vec v = \vec v + \vec u$
+	\item \textbf{Asociativa}: $\vec u + (\vec v + \vec w) = (\vec u + \vec v) + \vec w$.
+	\item \textbf{Elemento neutro}: $\exists\, \vec{o}\,/\,\vec{v} + \vec{o} = \vec{v}$. (existe un vector que sumado a cualquier otro no produce ningún efecto)
+	\item \textbf{Elemento opuesto}: $\forall\,\vec v\ \exists\, -\vec v\,/\,\vec v + (-\vec v) = \vec o$, y es un vector con el mismo módulo y dirección que $\vec v$ pero con sentido contrario.
+	\item \textbf{Desigualdad de Minkowski o desigualdad triangular}: $\left|\vec u + \vec v\right| \leq \left|vec u\right| + \left|\vec v\right|$.
+\end{itemize}
+
+En el caso de que estemos utilizando \textbf{coordenadas cartesianas la suma se reduce a sumar las coordenadas correspondientes}. Si $\vec u = (x_u, y_u, z_u)$ y $\vec v = (x_v, y_v, z_v)$
+\[\boldsymbol{\vec u + \vec v = (x_u + x_v,\,y_u + y_v,\, z_u + z_v)}\]
+
+Entonces el elemento neutro es $\vec o = (0,0,0)$ y el elemento opuesto es $-\vec v = (-x_v, -y_v, -z_v)$
+
+\subsubsection{Producto por un escalar.}
+El producto por un escalar produce una ampliación (o contracción) del vector y a veces un cambio de sentido. Es decir, cambia el módulo pero mantiene la dirección y, dependiendo del signo del escalar, el sentido.\\
+
+En el caso que nos ocupa ($\mathbb{R}^3$) si en escalar es positivo mantiene el sentido y si es negativo lo cambia. Si el valor absoluto del escalar es mayor que 1 amplia el módulo y si es menor que 1 lo contrae.
+\begin{center}
+	\begin{tikzpicture}
+		
+		\draw[thick, -latex] (0,0) -- (2,1) node[midway,above,sloped] {$\vec v$};
+		\draw[thick, latex-] (0, -1) -- (4,1) node[midway,above,sloped] {$-2*\vec v$};
+		\draw[thick, -latex] (0, 1) -- (1,1.5) node[midway,above,sloped] {$\frac{1}{2}*\vec v$};
+		
+	\end{tikzpicture}
+\end{center}
+
+El producto de un vector por un escalar tiene las siguientes propiedades:
+\begin{itemize}
+	\item $k*(\vec u + \vec v) = k*\vec u + k*\vec v$
+	\item $(k+l)*\vec v = k*\vec v + l*\vec v$
+	\item $(k*l)*\vec v = k*(l*\vec v)$
+	\item $1*\vec v = \vec v$
+\end{itemize}
+En el caso que nos ocupa ($\mathbb{R}^3$) $k,\,l \in \mathbb{R}$ y
+\[\boldsymbol{k*\vec v = (k*x,\, k*y,\, k*z)}\]
+
+\subsection{Combinaciones lineales. Dependencia e independencia lineal.}
+Dado un conjunto de vectores $\{\vec{v}_1, \vec v_2, \vec v_3, \dots\}$ se dice que $\vec w$ es una combinación lineal de ellos si existe un conjunto de escalares $\{\lambda_1, \lambda_2, \dots\}$ de manera que:
+\[\vec w = \lambda_1 * \vec v_1 + \lambda_2 *\vec v_2 + \dots\]
+
+Esto se puede ver de otra manera, si nos llevamos todo al lado izquierdo queda:
+\[\vec w - \lambda_1 * \vec v_1 - \lambda_2 *\vec v_2 - \dots = 0\]
+Y diremos que si existe algún $\lambda_i$ para el que se cumpla lo anterior el conjunto formado por
+$\{\vec w, \vec{v}_1, \vec v_2, \vec v_3, \dots\}$ es linealmente dependiente, mientras que si no existe (la ecuación no tiene solución) el conjunto es linealmente independiente.\\
+
+En el caso que nos ocupa ($\mathbb{R}^3$) para comprobar si un conjunto es linealmente independiente tenemos que ver si la ecuación $\lambda_1 *\vec v_1 + \lambda_2 *\vec v_2 + \dots = 0$ tiene solución distinta de todo ceros, y como los vectores en $\mathbb{R}^3$ se suman componente a componente nos queda el sistema:
+\[\left\lbrace\begin{array}{lll}
+	\lambda_1 * v_{1x} + \lambda_2 *v_{2x} + \dots &=& 0\\
+	\lambda_1 *v_{1y} + \lambda_2 *v_{2y} + \dots &=& 0\\
+	\lambda_1 *v_{1z} + \lambda_2 *v_{2z} + \dots &=& 0\\
+\end{array}\right.\]
+Que es un sistema homogéneo, y para que tenga solución distinta de la trivial el rango de la matriz de coeficientes tiene que ser menor que el número de incógnitas, es decir que el sistema sea compatible indeterminado.\\
+Con lo cual solo tenemos que escribir la matriz formada por las componentes de los vectores (que son los coeficientes del sistema de ecuaciones) y comprobar si su rango es 3, en cuyo caso forman un conjunto linealmente independiente, o menor, en cuyo caso formarán un conjunto linealmente dependiente.\\
+
+Vamos a ver un \textbf{ejemplo}:\\
+Indicar si los vectores del conjunto $\{(1, 2, -1)$, $(3, 0, 2)$, $(1, -4, 4)\}$ son linealmente independientes.
+\begin{solution}
+	Escribimos la matriz formada por las componentes de los vectores y, como es cuadrada, calculamos el determinante para ver si su rango es 3 (determinante distinto de cero) o menor que 3 (determinante igual a 0).
+	\[\left|\begin{array}{rrr}
+		1&2&-1\\
+		3&0&2\\
+		1&-4&4
+	\end{array}\right| = 0 + 8 + 4 - 24 + 0 + 12 = 0\]
+	Con lo cual es un conjunto linealmente dependiente.
+\end{solution}
+
+\subsection{Espacio vectorial.}
+Un espacio vectorial sobre un cuerpo (en el caso de $\mathbb{R}^3$ los números reales) es un conjunto de elementos en el que se define una ley de composición interna (en el caso de $\mathbb{R}^3$ la suma) que tiene las siguientes propiedades:
+
+\begin{small}{\emph{(nota: ley de composición interna es una operación con dos elementos del conjunto que resulta otro elemento del conjunto)}}
+\end{small}
+\begin{itemize}
+	\item Conmutativa ($\vec u + \vec v = \vec v + \vec u$).
+	\item Asociativa ($(\vec u + \vec v ) + \vec w = \vec u + (\vec v + \vec w)$).
+	\item Elemento neutro ($\exists\, \vec o\ /\ \vec o + \vec v = \vec v$).
+	\item Elemento opuesto ($\forall\,\vec v\ \exists\,-\vec v\ /\ \vec v + (-\vec v) = \vec o$).
+\end{itemize}
+
+Y una ley de composición externa (en el caso de $\mathbb{R}^3$ es el producto por un escalar)que tiene las siguientes propiedades:
+
+\begin{small}{\emph{(nota: ley de composición interna es una operación con un elemento del conjunto y otro externo que resulta otro elemento del conjunto)}}
+\end{small}
+\begin{itemize}
+	\item $(a*b)* \vec v = a*(b*\vec v)$.
+	\item $\exists\,e\ /\ e*\vec v = \vec v$.
+	\item $a*(\vec u + \vec v) = a*\vec u + a*\vec v$.
+	\item $(a+ b)*\vec v = a*\vec v + b*\vec v$.
+\end{itemize}
+
+Es fácil comprobar que la definición de vector junto con las operaciones que estamos utilizando cumplen todas las condiciones de espacio vectorial.\\
+
+Para un espacio vectorial genérico utilizaremos la notación $V(K)$, donde $K$ es el cuerpo sobre el que están definidos los vectores (en el caso de $\mathbb{R}^3$ el cuerpo es $\mathbb{R}$)
+\subsubsection{Base de un espacio vectorial.}
+Se dice que un conjunto de vectores $\{\vec v_1,\,\vec v_2,\,\dots,\,\vec v_n\}$ es base del espacio vectorial $V(K)$ si cualquier vector de $V$ puede construirse como combinación lineal de los vectores de la base. Es decir:
+\begin{flalign*}
+	&B= \{\vec b_1,\,\vec b_2,\,\dots,\,\vec b_n\} \text{ es base de }V(K) \text{ si } \forall\,\vec{v} \in V(K) \ \exists\,\lambda_1,\,\lambda_2,\,\dots,\,\lambda_n\,\in K\,/\\& \vec v = \lambda_1*\vec b_1 + \lambda_2 * \vec b_2 +
+	\dots + \lambda_n * \vec b_n
+\end{flalign*}
+
+En $\mathbb{R}^3$ la base más intuitiva es la llamada base canónica, que esta formada por los vectores
+\[\{(1,0,0),(0,1,0),(0,0,1)\}\]
+De manera que cualquier vector de $\mathbb{R}^3$ se puede expresar como el producto de sus componentes por la base canónica.\\
+Para abreviar se suele llamar a los vectores de la base con $\{\vec i, \vec j,\vec k\}$, de manera que:
+\[(v_x, v_y, v_z) = v_x \vec i + v_y \vec j + v_z \vec k\]
+
+El utilizar la base canónica ofrece determinadas ventajas:
+\begin{itemize}
+	\item Es sencilla e intuitiva.
+	\item El módulo de $\vec i$, $\vec j$ y $\vec k$ es 1. Cuando pasa esto se dice que es una \textbf{base normal}.
+	\item $\vec i$, $\vec j$ y $\vec k$ son perpendiculares entre sí. Cuando pasa esto se dice que es una \textbf{base ortogonal}.
+\end{itemize}
+Las dos últimas hacen que la base canónica sea una \textbf{base ortonormal}.
+
+\subsection{Producto escalar de dos vectores.}
+El producto escalar de dos vectores es una operación en la que intervienen dos vectores y el resultado es un escalar. Para el caso de $\mathbb{R}^3$ se define de la siguiente manera:
+\[\boldsymbol{\vec u * \vec v = |\vec u| * |\vec v|*\cos \alpha}\]
+Donde $\boldsymbol{\alpha}$ es el \textbf{ángulo que forman los dos vectores}.\\
+
+Con esta definición el producto escalar en $\mathbb{R}^3$ tiene las siguientes propiedades:
+\begin{itemize}
+	\item Conmutativa: $\vec u * \vec v = \vec v*\vec u$.
+	\item Distributiva: $\vec u *(\vec v + \vec w) = \vec u*\vec v + \vec u *\vec w$
+	\item Si $a \in \mathbb{R}$, $a*(\vec u * \vec v) = (a*\vec u)*\vec v = \vec u *(a\vec v)$
+	\item $\vec v * \vec v =|\vec v|^2$, ya que el ángulo que forma un vector consigo mismo es 0.
+	\item Si $\vec u * \vec{v} = 0$ uno de los dos vectores tiene modulo 0 o los vectores son perpendiculares. 
+\end{itemize}
+
+Pero lo más normal es que trabajemos con componentes en lugar de con módulos y ángulos, así que vamos a ver qué pasa cuando hacemos un producto escalar por componentes.\\
+Tenemos dos vectores, $\vec u = \vectort{u_x}{u_y}{u_z}$ y $\vec v = \vectort{v_x}{v_y}{v_z}$, y por las propiedades que hemos visto:
+\begin{flalign*}
+	\vec u * \vec v =& (\vectort{u_x}{u_y}{u_z})*(\vectort{v_x}{v_y}{v_z})\\
+	=& u_x*v_x*\vec i *\vec i + u_x*v_y*\vec i * \vec j + u_x*v_z *\vec i *\vec k +
+	u_y*v_x*\vec j *\vec i + u_y*v_y*\vec j* \vec j + u_y*v_z *\vec j *\vec k\\& +
+	u_z*v_x*\vec k *\vec i + u_z*v_y*\vec k * \vec j + u_z*v_z *\vec k *\vec k
+\end{flalign*}
+Como $|\vec i| = |\vec j| = |\vec k| = 1$, por las propiedades del producto escalar tenemos que $\vec i*\vec i = \vec j*\vec j = \vec k*\vec k = 1$.\\
+Y como son perpendiculares entre sí el coseno del ángulo que forman vale 0, con lo que $\vec i *\vec j = \vec i*\vec k = \vec j*\vec k = 0$, y nos queda que:
+\[\boldsymbol{\vec u *\vec v = u_x*v_x + u_y*v_y + u_z*v_z}\]
+
+Una vez que ya hemos definido el producto escalar y como se realiza por componentes vamos a pasar a su interpretación geométrica.
+
+Si tenemos un triángulo rectángulo sabemos que el coseno de un ángulo es el cociente del cateto adyacente entre la hipotenusa:
+\begin{center}
+	\begin{tikzpicture}
+	  \draw
+	(3,0) coordinate (a) node[right] {$A$}
+	-- (0,0) coordinate (b) node[left] {$B$}
+	-- (3,2) coordinate (c) node[above right] {$C$}
+	pic["$\alpha$", draw=darkgray, <->, angle eccentricity=1.2, angle radius=1cm]
+	{angle=a--b--c};
+	\draw[dashed] (3,0) -- (3,2);
+	\draw[latex-latex] (0,-.2) -- (3,-.2) node[midway,below,sloped] {$\overline{BC}*\cos \alpha$};;
+\end{tikzpicture}
+\end{center}
+Y se puede interpretar también como que la hipotenusa por el coseno nos da la proyección de la hipotenusa sobre la dirección del cateto adyacente.\\
+
+De esta manera:
+\begin{center}
+	\begin{tikzpicture}
+		\draw[-latex] (0,0)--(3,2) node[midway,above,sloped] {$\vec u$};
+		\draw[-latex] (0,0)--(6.5,0) node[midway,above,sloped] {$\vec v$};
+		\draw
+		(3,0) coordinate (a)
+		(0,0) coordinate (b)
+		(3,2) coordinate (c)
+		pic["$\alpha$", draw=darkgray, <->, angle eccentricity=1.2, angle radius=1cm]
+		{angle=a--b--c};
+		\draw[dashed] (3,0) -- (3,2);
+		\draw[latex-latex] (0,-.2) -- (3,-.2) node[midway,below,sloped] {$|\vec u|*\cos \alpha$};
+	\end{tikzpicture}
+\end{center}
+Con lo que el producto escalar sería:
+\[\vec u * \vec v = |\vec v| * \overbrace{|\vec u| * \cos \alpha}^\text{proyección de $\vec u$ sobre $\vec v$}\]
+Con esto vemos que el producto escalar se puede interpretar como la proyección del primer vector sobre el segundo multiplicada por el módulo del segundo.\\
+Y como el producto escalar en $\mathbb{R}^3$ es conmutativo también se puede interpretar al revés.
+\subsubsection{Cálculo del ángulo que forman dos vectores.}
+Atendiendo a la definición, el ángulo que forman se puede calcular como:
+\[\alpha = \acos \frac{\vec u * \vec v}{|\vec u| *|\vec v|}\]
+
+\subsection{Producto vectorial de dos vectores.}
+El producto vectorial (que se indica con el símbolo $\times$ o con el símbolo $\wedge$ cuando se escribe a mano para evitar confusiones con la x) se define como una operación que tiene que cumplir las siguientes condiciones:
+\begin{itemize}
+	\item Su resultado es un vector perpendicular a los dos vectores implicados.
+	\item El sentido de este vector viene dado por el sentido en el que avanza un tornillo cuando giramos del primer al segundo vector (a esto se le conoce como la regla de la mano derecha).
+	\item El módulo del vector resultante es el producto del módulo de los otros dos por el seno del ángulo que forman. Es decir, si $\vec w = \vec u \times \vec v$ entonces $|\vec w| = |\vec u|*|\vec{v}| *\sen \alpha$
+\end{itemize}
+De esta definición se deducen las siguientes propiedades:
+\begin{itemize}
+	\item Es anticonmutativo: $\vec{u} \times \vec{v} = -\vec{v}\times\vec{u}$.
+	\item No es asociativo $\vec u \times (\vec v \times \vec{w}) \neq
+	(\vec{u}\times \vec v)\times \vec w$.
+	\item Si $\vec u\times \vec v = 0$ o uno de los dos vectores es 0 o los vectores son paralelos.
+	\item $\vec v \times \vec v =0$ es una conclusión de lo anterior.
+	\item Cumple la propiedad distributiva por los dos lados:
+	\begin{itemize}
+		\item $\vec u \times (\vec v + \vec w) = \vec u \times \vec v +
+		\vec u \times \vec w$
+		\item $(\vec u + \vec v) \times \vec w = \vec u \times \vec w + \vec v \times \vec w$
+	\end{itemize}
+	\item Si $a \in \mathbb{R}$ entonces $a*(\vec u \times \vec v)=(a*\vec u) \times \vec v = \vec u \times (a*\vec v)$.
+\end{itemize}
+
+Con la definición y las propiedades es fácil ver que con los vectores de la base canónica ocurre lo siguiente:
+\begin{itemize}
+	\item $\vec i \times \vec i = 0$,\quad $\vec i \times \vec j = \vec k$,
+	\quad $\vec i \times \vec k = -\vec j$.
+	\item $\vec j \times \vec i = -\vec k$,\quad $\vec j \times \vec j = 0$,
+	\quad $\vec j \times \vec k = \vec i$.
+	\item $\vec k \times \vec i = \vec j$,\quad $\vec k \times \vec j = -\vec i$,
+	\quad $\vec k \times \vec k = 0$.
+\end{itemize}
+
+Entonces el producto vectorial por componentes de los vectores $\vec u =
+\vectort{u_x}{u_y}{u_z}$, $\vec v = \vectort{v_x}{v_y}{v_z}$ será:
+\begin{flalign*}
+\vec u \times \vec v =& (\vectort{u_x}{u_y}{u_z}) \times (\vectort{v_x}{v_y}{v_z})
+= u_x*v_x*\vec i \times \vec i + u_x*v_y*\vec i \times \vec j + u_x *v_z* \vec i \times \vec k\\
++&u_y*v_x*\vec j \times \vec i +u_y*v_y* \vec j \times \vec j + u_y*v_z *\vec j \times \vec k
++ u_z*v_x*\vec k\times \vec i + u_z*v_y* \vec k \times \vec j + u_z*v_z*\vec k \times \vec k\\
+=&u_x*v_y*\vec k -u_x*v_z*\vec j -u_y*v_x*\vec k + u_y*v_z *\vec i + u_z*v_x*\vec j -u_z*v_u*\vec i\\
+=&\boldsymbol{(u_y*v_z-u_z*v_y)\vec i + (u_z*v_x - u_x*v_z)\vec j + (u_x*v_y-u_y*v_x)\vec k}
+\end{flalign*}
+Que no es una expresión sencilla de recordar.\\
+Afortunadamente \textbf{el producto vectorial coincide con el siguiente determinante}:
+\[\vec u \times \vec v = \left|\begin{array}{ccc}
+\vec i&\vec j&\vec k\\
+u_x&u_y&u_z\\
+v_x&v_y&v_z
+\end{array}\right|\]
+Que es bastante más fácil de recordar.\\
+
+\subsection{Aplicaciones del producto vectorial.}
+\subsubsection{Vector normal (perpendicular) a un plano.}
+La aplicación más evidente del producto vectorial está implícita en su definición, y es el \textbf{obtener un vector perpendicular a otros dos dados.}\\
+Es casi redundante decir que un plano está definido por dos direcciones, ya que el plano tiene dos dimensiones, con lo que un plano estará definido por dos vectores no paralelos y si hacemos el producto vectorial de esos vectores obtendremos un vector perpendicular al plano que definen.
+
+\subsubsection{Producto mixto o producto triple.}
+El producto mixto o triple es un producto en el que intervienen tres vectores y da como resultado un escalar. Se define de la siguientes manera:
+\[[\vec u, \vec v,\vec w] = \vec u* (\vec v \times \vec w)\]
+Y es muy fácil de calcular mediante el uso de determinantes, porque:
+\[[\vec u, \vec v,\vec w] = \left|\begin{array}{ccc}
+u_x&u_y&u_z\\
+v_x&v_y&v_z\\
+w_x&w_y&w_z
+\end{array}\right|\]\\
+
+Geométricamente el valor absoluto del producto triple coincide con el volumen del paralelepípedo que forman los tres vectores y sus paralelos:
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[axis lines =none, xmin=0, xmax=2, ymin=0, ymax=2, zmin=-.5, zmax=1.2]
+			\draw[-latex] (0,0,0) -- (1,0,0) node[midway,below,sloped] {$\vec u$};
+			\draw[-latex] (0,0,0) -- (.5,1,0) node[midway,above,sloped] {$\vec v$};
+			\draw[-latex] (0,0,0) -- (.5,.5,1) node[midway,above,sloped] {$\vec w$};
+			\draw[dashed] (1,0,0) -- (1.5,1,0) -- (.5,1,0);
+			\draw[dashed] (.5,.5,1) -- (1.5,.5,1) -- (2,1.5,1)
+			-- (1,1.5,1) -- (.5,.5,1);
+			\draw[dashed] (1.5,1,0) -- (2,1.5,1);
+			\draw[dashed] (1, 0, 0) -- (1.5,.5,1);
+			\draw[dashed] (.5,1,0) --(1,1.5,1);
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+
+Es importante notar que al calcularse como un determinante hereda todas las \textbf{propiedades} del determinante:
+\begin{itemize}
+	\item $\boldsymbol{[a \vec u, \vec v, \vec w] = a *[\vec u, \vec v, \vec w]}$.
+	\item $\boldsymbol{[\vec t + \vec u , \vec v , \vec w] = [\vec t, \vec v, \vec w] + [\vec u,\vec w, \vec w]}$ (la suma puede estar en cualquier posición).
+	\item Si cambiamos de orden dos vectores el resultado cambia de signo: $\boldsymbol{[\vec u, \vec v, \vec w] = -[\vec w, \vec v, \vec u]}$.\\
+	Esto hace que si cambiamos dos veces el orden volvamos a tener el mismo signo, con lo que:
+	\[\boldsymbol{[\vec u, \vec v,\vec w] = [\vec v, \vec w, \vec u] =[\vec w, \vec u, \vec v]}\]
+	
+\end{itemize}
+\section{La ecuación de la recta.}
+Teniendo en cuenta que un vector nos da el desplazamiento entre dos puntos podemos construir una recta a base de sumar vectores a un punto. Lógicamente estos vectores tienen que tener la misma dirección porque la recta solo tiene una dirección, y la manera de obtenerlos será multiplicando un vector que tenga esa dirección por un real de manera que se estire o encoja según necesitemos.\\
+Vamos a ver esto gráficamente:
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[width=.3\textwidth, axis lines = none]
+			\addplot[domain=-.5:1.5,thin, gray] (x,{x});
+			\draw[-latex, thick] (0,0) -- (1,1)
+			node[midway,above,sloped] {$t*\vec v$};
+			\addplot[mark=*, only marks] coordinates {(0, 0)}
+			node[below right]{$P$};
+			\addplot[mark=*, only marks] coordinates {(1, 1)}
+			node[below right]{$Q$};
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+Y de la representación gráfica se deduce que:
+\[Q = P + t*\vec v\]
+Con lo que para obtener cualquier punto de la recta ($Q$) solo necesitamos conocer un punto por el que pase ($P$) y un vector que tenga la dirección de la recta ($\vec v$), y a este vector se le llama \textbf{vector director}.\\
+
+Normalmente se utiliza la siguiente nomenclatura:
+\begin{itemize}
+	\item Para el punto que conocemos: $P = (x_0, y_0, z_0)$.
+	\item Para el vector director: $\vec v = (v_x, v_y, v_z)$.
+	\item Para el punto que desconocemos: $Q = (x, y, z)$.
+\end{itemize}
+
+Y de esta manera nos queda:
+\[(x,y,z) = (x_0, y_0, z_0) + t(v_x, v_y,v_z)\]
+Que es lo que se conoce como \textbf{ecuación vectorial de la recta}.\\
+
+Si separamos por componentes tendremos que:
+\[\left\lbrace
+\begin{array}{lcl}
+x &=& x_0 + t*v_x\\
+y &=& y_0 + t*v_y\\
+z &=& z_0 + t*v_z
+\end{array}
+\right.\]
+Que son lo que se conoce como \textbf{ecuaciones paramétricas de la recta}.\\
+
+
+Si despejamos el parámetro $t$ en cada una de ellas y las igualamos obtendremos:
+\[\frac{x-x_0}{v_x} = \frac{y-y_0}{v_y} = \frac{z-z_0}{v_z}\]
+Que es lo que se conoce como \textbf{ecuación continua de la recta}.\\
+
+\textbf{A las rectas se las nombra con una letra minúscula, empezando generalmente por la $r$.}\\
+
+
+Vamos a ver unos \textbf{ejemplos}:
+\begin{questions}
+	\question Escribe la ecuación de la recta que pasa por el punto $P(3,-1,1)$ y tiene como vector director $\vec{v}(1,-2,-1)$
+	\begin{solution}
+		Para escribir la ecuación vectorial solo tenemos que aplicar la definición:
+		\[r:\ (x,y,z) = (3,-1,1) + t (1,-2,-1)\]
+		
+		Si queremos escribir las paramétricas, separamos por componentes:
+		\[r:\ \left\lbrace
+		\begin{array}{lcl}
+			x &=& 3 + t\\
+			y &=& -1 -2 t\\
+			z &=& 1 - t
+		\end{array}
+		\right.\]
+		
+		Y pasar a la continua es sencillo:
+		\[r:\ \frac{x - 3}{1} = \frac{y + 1}{-2} = \frac{z-1}{-1}\]
+	\end{solution}
+
+	\question Escribe la ecuación de la recta que pasa por los puntos $P(1, 3, 0)$ y $Q(-1,2,1)$
+	\begin{solution}
+		Aquí no tenemos vector director pero es fácil obtenerlo haciendo $\vec{v} = Q - P = (-2, -1,1)$ (ó $P -Q$, va a ser la misma recta).\\
+		De esta manera la ecuación vectorial queda (hemos escogido el punto $P$ pero también puede ser $Q$):
+		\[r:\ (x,y,z) = (1, 3, 0) + t(-2,-1,1)\]
+		Y la paramétrica:
+		\[r:\ \left\lbrace
+		\begin{array}{lcl}
+			x &=& 1-2t\\
+			y &=& 3-t\\
+			z &=& t
+		\end{array}
+		\right.\]
+		Y la continua:
+		\[r:\ \frac{x-1}{-2} = \frac{y-3}{-1} = z\]
+	\end{solution}
+\end{questions}
+\section{La ecuación del plano.}
+Los conceptos que nos llevan a la ecuación del plano son ligeramente más complejos, pero si tomamos el plano al que estamos acostumbrados, el plano $XY$, es algo más sencillo.\\
+En el plano $XY$ cada punto viene determinado por dos coordenadas, una en la dirección horizontal y otra en la dirección vertical, es decir el plano necesita dos direcciones.\\
+Cada una de estas dos direcciones puede venir representada por un vector y para que sean distintas debemos asegurarnos de que no son paralelos (proporcionales).\\
+
+Con lo anterior podemos decir que un plano vendrá determinado por dos vectores directores y un punto por el que pasa. Si $P$ es el punto y los vectores directores son $\vec{v}$ u $\vec{u}$ tendremos que cada punto del plano vendrá dado por el punto más una componente en cada una de las direcciones (vectores) del plano:
+\[(x,y,z) = P + t\vec u + s \vec{v}\]\\
+Es decir, cada punto del plano es el resultado de una combinación lineal de los vectores directores aplicada al punto por el que pasa:
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[axis lines =none, xmin=-2.5, xmax=2.5, ymin=-2.5, ymax=2.5, zmin=-.5, zmax=1.2]
+			\coordinate (A) at (-2.5,-2.5,0);
+			\coordinate (B) at (-2.5,2.5,0);
+			\coordinate (C) at (2.5,2.5,0);
+			\coordinate (D) at (2.5,-2.5,0);
+			\draw[color=white, fill=gray!30] (A) -- (B) -- (C)-- (D) -- cycle;
+			\addplot3[mark=*, only marks] coordinates {(-1, -1.5, 0)} node[below left] {$P$};
+			\draw[-latex] (-1,-1.5, 0) -- (-1.5, .5, 0) node[midway,above,sloped] {$t*\vec u$};
+			\draw[-latex] (-1,-1.5, 0) -- (1, 0, 0) node[midway,above,sloped] {$s*\vec v$};
+			\draw[dashed, -latex] (-1.5,.5,0) -- (.5, 2, 0);
+			\draw[dashed, -latex] (1, 0, 0) -- (.5, 2, 0);
+			\addplot3[mark=*, only marks] coordinates {(.5,2,0)} node[above, right] {$X$};
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+
+Utilizando la misma notación que en la recta, la ecuación vectorial queda:
+\[\pi:\ (x,y,z) = (x_0, y_0, z_0) + t(u_x, u_y, u_z) + s (v_x, v_y, v_z)\]
+Y las paramétricas:
+\[\pi:\ \left\lbrace \begin{array}{lll}
+	x &=& x_0 + t*u_x + s*v_y\\
+	y &=& y_0 + t*u_y + s*v_y\\
+	z &=& z_0 + tu_z + sv_z
+\end{array}\right.\]
+
+Pero el plano también se puede entender de otra manera: cuando tenemos un plano siempre vamos a tener una dirección perpendicular a el, que vamos a asignar al vector $\vec{n}$, de tal manera que cualquier vector esté contenido en el plano va a ser perpendicular a $\vec{n}$
+\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[axis lines =none, xmin=-2.5, xmax=2.5, ymin=-2.5, ymax=2.5, zmin=-.5, zmax=1.2]
+			\coordinate (A) at (-2.5,-2.5,0);
+			\coordinate (B) at (-2.5,2.5,0);
+			\coordinate (C) at (2.5,2.5,0);
+			\coordinate (D) at (2.5,-2.5,0);
+			\draw[color=white, fill=gray!30] (A) -- (B) -- (C)-- (D) -- cycle;
+			\addplot3[mark=*, only marks] coordinates {(-.5, -.5, 0)} node[below, left] {$P$};
+			\addplot3[mark=*, only marks] coordinates {(1.5, 1.5, 0)} node[below, right] {$X$};
+			\draw[-latex] (-.5,-.5, 0) -- (-.5, -.5, 1) node[midway,above,sloped] {$\vec n$};
+			\draw[-latex, dashed] (-.5, -.5, 0) -- (1.5, 1.5, 0) node[midway,above,sloped] {$\overrightarrow{PX}$};
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+Entonces el vector $\vec{n}$ y el vector $\overrightarrow{PX}$ son perpendiculares y su producto escalar tiene que valer cero.\\
+Teniendo en cuenta que conocemos $P(x_0, y_0, z_0)$ y $\vec{n} (n_x, n_y, n_z)$, la ecuación del producto escalar igual a cero será:
+\[\vec{n} *\overrightarrow{PX} = (n_x, n_y, n_z) * (x-x_0, y-y_0, z-z_0) =
+n_x*x + n_y*y + n_z*z - n_x*x_0 - n_y*y_0 - n_z*z_0 = 0\]
+Y haciendo:
+\begin{itemize}
+	\item $n_x = A$
+	\item $n_y = B$
+	\item $n_z = C$
+	\item $- n_x*x_0 - n_y*y_0 - n_z*z_0 = D$
+\end{itemize}
+Nos queda una ecuación con la forma:
+\[\pi:\ Ax + By + Cz + D = 0\]
+Que es la \textbf{ecuación implícita o general del plano}.
+
+
+Otra forma más de definir el plano es a través de tres puntos no alineados, ya que con tres puntos no alineados podemos obtener dos vectores que no sean paralelos y construir la ecuación vectorial. Pero si esos tres puntos son los cortes con los ejes la ecuación del plano es bastante más sencilla.\\
+Pongamos que el plano corta a los ejes $x$, $y$, $z$ en los puntos $(a, 0, 0)$, $(0,b,0)$ y $(0,0,c)$, con esos datos podemos escribir la ecuación como:
+\[\pi:\  \frac{x}{a} + \frac{y}{b} + \frac{z}{c} = 1\]
+Y esta es la \textbf{ecuación segmentaria del plano}.\\
+
+Es fácil darse cuenta de que todas las ecuaciones van precedidas por la letra $\pi$, y esto es porque a \textbf{los planos se les nombra con letras griegas empezando por $\pi$}.
+
+\subsection{Paso de la ecuación vectorial o paramétrica a la general.}
+Para pasar de la ecuación vectorial o de la paramétrica a la general lo primero que tenemos que hacer es sacar de ellas los vectores directores, $\vec{u}$ y $\vec{v}$, y un punto $P(x_0, y_0, z_0)$ por el que pase.\\
+Una vez que los tenemos podemos construir un vector perpendicular al plano con el producto vectorial
+\[\vec{n} = \vec{u} \times \vec{v}\]
+Y la ecuación general viene dada por el producto escalar de la siguiente manera:
+\[(x-x_0, y-y_0, z-z_0)*\vec{n} = 0\]
+Sustituyendo $\vec n$ por el producto vectorial:
+\[(x-x_0, y-y_0, z-z_0)*(\vec u \times \vec{v}) = 0\]
+Que coincide con la definición del producto triple, con lo que podemos escribir:
+\[\left|\begin{array}{ccc}
+	x-x_0&y-y_0&z-z_0\\
+	u_x&u_y&u_z\\
+	v_x&v_y&v_z
+\end{array}
+\right| = 0\]
+Y al desarrollar el determinante obtendríamos la ecuación general del plano.\\
+
+Con un \textbf{ejemplo}.\\
+Escribe la ecuación general del plano que pasa por los puntos $P(1,0,-1)$, $Q(2,-1,3)$ y $R(0, 0, 1)$.
+\begin{solution}
+	Primero tenemos que comprobar que no estén alineados, porque si lo están no pueden definir un plano, y lo hacemos construyendo los vectores $\overrightarrow{PQ}$ y $\overrightarrow{PR}$ y comprobando que no son paralelos.
+	\[\overrightarrow{PQ} = (1, -1, 4)\quad\quad\quad\overrightarrow{PR} ( -1, 0, 2)\]
+	Y está claro que no son paralelos porque:
+	\[\frac{-1}{1}\neq \frac{0}{1} \neq \frac{2}{4}\]
+	Entonces elegimos como punto para la ecuación a $R$, por ser el más sencillo y construimos el determinante con ese punto y los vectores $\overrightarrow{PQ}$ y $\overrightarrow{PR}$:
+	\[\left|\begin{array}{rrr}
+		x-0&y-0&z-1\\
+		1&-1&4\\
+		-1&0&2
+	\end{array}\right| = -2x -4 y -2y -z + 1 = \boldsymbol{-2x -6y - z +1=0} \]
+\end{solution}
+\subsection{Paso de la ecuación general a la segmentaria.}
+Teniendo la ecuación general:
+\[Ax + By + Cz + D = 0\]
+Solo tenemos que pasar $D$ al miembro derecho y dividir todo entre $-D$, con lo que queda:
+\[\frac{Ax}{-D} + \frac{By}{-D} + \frac{Cz}{-D} = 1\]
+Y haciendo $a = \frac{-D}{A}$, $b = \frac{-D}{B}$ y $c = \frac{-D}{C}$ resulta:
+\[\frac{x}{a} + \frac{y}{b} + \frac{z}{c} = 1\]
+
+Lo vemos con un \textbf{ejemplo}:\\
+\begin{questions}
+\question Escribe el plano $2x - 3y + z - 6=0$ en forma segmentaria.
+\begin{solution}
+	Solo hay que seguir los pasos indicados antes:
+	\[2x - 3y + z = 6\]
+	\[\frac{2x}{6} - \frac{3y}{6} + \frac{z}{6} = 1\]
+	\[\frac{x}{3} - \frac{y}{2} + \frac{z}{6} = 1\]
+\end{solution}
+\end{questions}
+\subsection{Paso de la ecuación general a la vectorial.}
+Teniendo la ecuación general $Ax + By + Cz +D = 0$ debemos seguir los siguientes pasos
+\begin{enumerate}
+	\item Despejamos una de las variables, la que tenga el coeficiente más sencillo o que divida a los demás. Para explicar el método vamos a utilizar la $x$
+	\[x = -\frac{By}{A} - \frac{Cz}{A} - \frac{D}{A}\]
+	\item En la terna $(x, y, z)$ podemos sustituir la variable despejada por la expresión obtenida:
+	\[(x, y , z) = \left(-\frac{By}{A} - \frac{Cz}{A} - \frac{D}{A}, y, z\right)\]
+	\item Separamos el punto anterior como la suma de tres puntos, uno con las coordenadas que tengan una variable, otro con las que tengan la otra y otro con las independientes:
+	\[(x, y , z) = \left(-\frac{By}{A}, y, 0\right) +\left(-\frac{Cz}{A}, 0, z\right) +\left(- \frac{D}{A}, 0, 0\right)\]
+	\item Extraemos factor común las variables:
+	\[(x, y , z) = y\left(-\frac{B}{A}, 1, 0\right) +z\left(-\frac{C}{A}, 0, 1\right)+ \left(- \frac{D}{A}, 0, 0\right)\]
+	\item En la expresión de la derecha hacemos $y=t$ y $z=s$, con lo que nos queda:
+	\[(x, y , z) = \left(- \frac{D}{A}, 0, 0\right) + t \left(-\frac{B}{A}, 1, 0\right)+ s\left(-\frac{C}{A}, 0, 1\right) \]
+\end{enumerate}
+Y la forma de esta última ecuación es la de la ecuación vectorial del plano.\\
+
+Veámoslo con un \textbf{ejemplo}:
+\begin{questions}
+	\question Escribe la ecuación vectorial del plano que tiene por ecuación general $2x - y + 3z + 5 = 0$.
+	\begin{solution}
+		En este caso la variable con el coeficiente más sencillo es la $y$, con lo que despejamos esa y nos queda:
+		\[y = 2x + 3z + 5\]
+		Sustituimos en la expresión del punto:
+		\[(x,y,z) = (x, 2x + 3z + 5, z)\]
+		Separamos por variable:
+		\[(x,y,z) = (0, 5, 0) + (x, 2x, 0) + (0, 3z, z)\]
+		Sacamos factor común y cambiamos $x$ por $t$ y $z$ por $s$, con lo que queda:
+		\[(x, y, z) = (0,5,0) + t(1, 2, 0) + s(0,3,1)\]
+		Que es la ecuación vectorial del plano que nos han dado a través de la general.
+	\end{solution}
+\end{questions}
+\section{La recta como intersección de dos planos. Ecuación general de la recta.}
+Si cogemos dos planos que no sean paralelos, ni coincidentes, es evidente que se cortarán en una línea recta.
+\begin{center}
+	\begin{tikzpicture}[fill opacity=.5]
+		\begin{axis}[axis lines =none, xmin=-2.5, xmax=2.5, ymin=-2.5, ymax=2.5, zmin=-2.5, zmax=2.5]
+			\coordinate (A) at (-2.5,-2.5,0);
+			\coordinate (B) at (-2.5,2.5,0);
+			\coordinate (C) at (2.5,2.5,0);
+			\coordinate (D) at (2.5,-2.5,0);
+			
+			\coordinate (E) at (-2.5,-1,-2.5);
+			\coordinate (F) at (-2.5,1,2.5);
+			\coordinate (G) at (2.5,1,2.5);
+			\coordinate (H) at (2.5,-1,-2.5);
+			\draw[color=gray!20, fill=gray!20, fill opacity=0.5] (E) -- (F) -- (G)-- (H) -- cycle;
+			\draw[color=gray!50, fill=gray!50, fill opacity=0.5] (A) -- (B) -- (C)-- (D) -- cycle;
+			
+			\draw[color=black] (-2.5, 0, 0) -- (2.5, 0, 0);
+		\end{axis}
+	\end{tikzpicture}
+\end{center}
+Entonces podemos definir una recta con las ecuaciones de dos planos secantes:
+\[r: \left\lbrace\begin{array}{l}
+	Ax + By + Cz + D = 0\\
+	A'x + B'y + C'z + D' = 0
+\end{array}\right.\]
+La única condición que tienen que cumplir es que no sean paralelos ni coincidentes, y la manera de comprobarlo es a través de los coeficientes $A$, $B$ y$C$.\\
+Sabemos que estos coeficientes son las componentes del vector perpendicular al plano y si los planos son paralelos sus vectores perpendiculares también serán paralelos, con lo que \textbf{no puede ocurrir que}:
+\[\frac{A'}{A} = \frac{B'}{B} = \frac{C'}{C}\]
+
+Un ejemplo de recta definida como intersección de dos planos:
+
+\[r: \left\lbrace\begin{array}{l}
+	4x + y + 2z -1 = 0\\
+	3y - z = 0
+\end{array}\right.\]
+
+A este sistema de ecuaciones se le llama \textbf{ecuación general o implícita de la recta}.
+\subsection{Paso de la ecuación general a la vectorial.}
+Es evidente que la ecuación general de la recta es un sistema compatible indeterminado. Pero podemos convertirlo en determinado si consideramos una de las incógnitas como un parámetro. Siempre con la certeza de que el sistema que queda con las otras dos incógnitas es compatible.\\
+
+Pongamos que elegimos $z$ como parámetro, entonces nos queda el siguiente sistema:
+\[\left\lbrace\begin{array}{l}
+	Ax + By= -Cz -D\\
+	A'x + B'y = - C'z - D' 
+\end{array}\right.\]
+
+El determinante de la matriz de coeficientes:
+\[\left|\begin{array}{cc}
+	A&B\\
+	A'&B'
+\end{array}\right| = AB' - A'B \neq 0\]
+\begin{small}
+	\emph{(Si nos sale 0 es que hemos elegido como parámetro la incógnita equivocada y hay que coger otra)}
+\end{small}\\
+Y haciendo Cramer (o Gauss o cualquier otro método resulte adecuado para el sistema) obtendremos una solución de la forma:
+
+\[\left\lbrace	\begin{array}{l}
+	x = x_0 + t*v_x\\
+	y = y_0 + t*v_y\\
+	z = t
+\end{array}\right. \]
+
+\begin{small}
+	\emph{(Si hemos escogido otra variable como parámetro será esa la que aparezca sola)}
+\end{small}\\
+Con lo que el vector director será $(v_x, v_y, 1)$ y el punto por el que pasa $(x_0, y_0, 0)$.\\
+
+Vamos a ver un \textbf{ejemplo}.
+\begin{questions}
+	\question Escribe la siguiente recta en su forma vectorial:
+	\[r: \left\lbrace\begin{array}{l}
+		4x + y + 2z -1 = 0\\
+		3y - z = 0
+	\end{array}\right.\]
+\begin{solution}
+	En este caso vamos a escoger la $x$ como parámetro ya que no aparece en una de las ecuaciones y nos va a simplificar el trabajo.
+	\[\left\lbrace\begin{array}{l}
+		y + 2z= 1-4x\\
+		3y - z = 0
+	\end{array}\right.\]
+
+	Se ve que el determinante de la matriz de coeficientes no va a ser cero (es $-7$) con lo que hemos elegido bien la variable que actúa como parámetro.\\
+	El sistema es sencillo de resolver, y su solución es:
+	\[\left\lbrace\begin{array}{l}
+		x=t\\
+		y=\frac{1-4x}{7}\\
+		z=\frac{3-12x}{7}
+	\end{array}\right.
+	\]
+
+	Con lo que un punto por el que pasa es el $\left(0, \frac{1}{7}, \frac{3}{7}\right)$ y como vector director tiene a $\left(1,\frac{-4}{7}, \frac{-12}{7}\right)$, y la ecuación vectorial:
+	\[(x,y,z) = \left(0, \frac{1}{7}, \frac{3}{7}\right) + t*\left(1,\frac{-4}{7}, \frac{-12}{7}\right)\]
+\end{solution}
+\end{questions}
+\section{Rectas y planos especiales.}
+\subsection{Rectas especiales.}
+\subsubsection{Eje $\boldsymbol{x}$ y paralelas.}
+El eje $x$ es una recta que pasa por $O(0,0,0)$ y tiene de vector director a $\vec i =(1,0,0)$, de manera que la ecuación vectorial de esa recta será:
+\[(x,y,z) = t*(1,0,0)\]
+Sus ecuaciones paramétricas son:
+\[\left\lbrace\begin{array}{l}
+x=t\\
+y=0\\
+z=0
+\end{array}\right.\]
+Que se suelen dejar como:
+\[\boldsymbol{\left\lbrace\begin{array}{l}
+y=0\\
+z=0
+\end{array}\right.}\]
+Que sería la ecuación general.
+
+Y si lo que queremos es una recta \textbf{paralela} al eje $x$ que pase por el punto $(x_0,y_0,z_0)$, haciendo la misma deducción llegamos a las ecuaciones:
+\[\boldsymbol{\left\lbrace\begin{array}{l}
+y=y_0\\
+z=z_0
+\end{array}\right.}\]
+\subsubsection{Eje $\boldsymbol{y}$ y paralelas.}
+Haciendo la misma deducción para el eje $y$ obtenemos que la ecuación general del eje $y$ es:
+\[\boldsymbol{\left\lbrace
+\begin{array}{l}
+x=0\\
+z=0
+\end{array}\right.}\]
+Y si es una \textbf{paralela} que pasa por el punto $(x_0, y_0,z_0)$:
+\[\boldsymbol{\left\lbrace
+\begin{array}{l}
+x=x_0\\
+z=z_0
+\end{array}\right.}\]
+\subsubsection{Eje $\boldsymbol{z}$ y paralelas.}
+Haciendo la misma deducción para el eje $y$ obtenemos que la ecuación general del eje $z$ es:
+\[\boldsymbol{\left\lbrace
+\begin{array}{l}
+x=0\\
+y=0
+\end{array}\right.}\]
+Y si es una \textbf{paralela} que pasa por el punto $(x_0, y_0,z_0)$:
+\[\boldsymbol{\left\lbrace
+\begin{array}{l}
+x=x_0\\
+y=y_0
+\end{array}\right.}\]
+\subsection{Planos especiales.}
+\subsubsection{Plano $\boldsymbol{XY}$ y paralelos.}
+Para la ecuación más sencilla del plano, que es la general, necesitamos un punto por el que pase el plano y un vector perpendicular. Para el caso del plano $XY$ el punto es sencillo ya que pasa por el punto $O(0,0,0)$ y el vector perpendicular también es sencillo, ya que es el vector que lleva la dirección del eje $z$ y que es $\vec k = (0,0,1)$.\\
+Con todo esto la ecuación del plano $XY$ será:
+\[\vec{k} *(X-O) = 0\]
+\[(0,0,1) *((x,y,z) - (0,0,0)) = 0\]
+\[\boldsymbol{z = 0}\]
+
+En el caso en el que sea un plano \textbf{paralelo} al $XY$ que pase por el punto $P(x_0, y_0, z_0)$ la ecuación general será:
+\[\boldsymbol{z-z_0 = 0}\]
+\subsubsection{Plano $\boldsymbol{XZ}$ y paralelos.}
+Haciendo un razonamiento similar al anterior se tiene que la ecuación general del plano $XZ$ es:
+\[\boldsymbol{y = 0}\]
+
+Y la de uno \textbf{paralelo} que pasa por $P(x_0, y_0, z_0)$:
+\[\boldsymbol{y - y_0 = 0}\]
+
+\subsubsection{Plano $\boldsymbol{YZ}$ y paralelos.}
+Por las mismas razones la ecuación general del plano $YZ$ es:
+\[\boldsymbol{x = 0}\]
+
+Y la de uno \textbf{paralelo} que pasa por $P(x_0, y_0, z_0)$:
+\[\boldsymbol{x - x_0 = 0}\]
+\end{document}

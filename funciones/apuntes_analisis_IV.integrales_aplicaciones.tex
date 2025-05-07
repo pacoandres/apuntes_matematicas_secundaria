@@ -1,0 +1,893 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.12}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de análisis IV. Integrales y aplicaciones.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\begin{document}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+
+\section{La integral indefinida.}
+\textbf{La integral indefinida, o función primitiva, es la operación contraria a la derivada}.\\
+Es decir, tenemos que \textbf{calcular $\boldsymbol{f(x)}$ teniendo $\boldsymbol{f'(x)}$}.\\
+En ocasiones se nombran $\boldsymbol{F(x)}$ y $\boldsymbol{f(x)}$ respectivamente, es decir, la primitiva se nombra con mayúscula).\\
+
+\textbf{Para indicar la integral se utiliza el símbolo $\boldsymbol\int$}. A la hora de escribir la operación de integración hay que tener en cuenta la notación de Leibniz que vimos en derivadas, ya que los pasos que se dan para pasar de la derivada a la integral son similares a los de resolver una ecuación:
+\[\boldsymbol{\frac{\dif{f(x)}}{\dif{x}} = f'(x)} \text{(Esta es la notación de Leibniz tal y como la vimos)}\]
+\[\boldsymbol{\dif{f(x)} = f'(x)*\dif{x}}\]
+\[\boldsymbol{\int \dif{f(x)} = \int f'(x)*\dif{x}}\]
+\[\boldsymbol{f(x) = \int f'(x)*\dif{x}}\]
+\begin{Large}
+\textbf{Esto último es importante: el escribir el diferencial de $\boldsymbol{x\ (\dif{x})}$ no es una opción porque en algunas estrategias juega un papel fundamental. Hay que escribirlo siempre.}
+\end{Large}\\
+
+\vspace{0,5cm}
+En general, la integración es una operación compleja ya que es poco mecánica y tiene más de búsqueda de estrategias que de aplicar un método y unas reglas como sí ocurre con la derivada.\\
+En estos apuntes se indicarán las estrategias básicas y los pasos a seguir en cada una de ellas, pero no siempre van a funcionar. Por ejemplo, para una misma situación puede haber varias estrategias de las cuales podría ser que solo funcionase una, que funcionen varias o que no funcione ninguna.\\
+De hecho hay funciones de las que no se puede calcular la primitiva, por ejemplo:
+\[\int \frac{\sen x}{x}\,\dif{x}\quad \text{ ó }\quad \int \e^{x^2} \dif{x}\]
+no se pueden calcular.\\
+\section{Cálculo de primitivas.}
+\subsection{Integrales inmediatas.}
+\textbf{Son aquellas en las que se puede aplicar una ``tabla de derivadas contraria''}, que sería como sigue:
+\begin{small}
+\begin{center}
+\def\arraystretch{2}
+\begin{longtable}{|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{$\boldsymbol{f(x)}$} &\multicolumn{1}{|c|}{$\boldsymbol{F(x) = \int f(x)*\dif{x}}$}&
+\multicolumn{1}{|c|}{\textbf{Comentarios}}\\ \hline
+\endhead
+\hline
+\endfoot
+$0$&$C$ (constante)&\\ \hline
+$k$ (constante)& $k*x +C$&\\ \hline
+$x^n$&$\frac{x^{n+1}}{n+1} + C$&Es válida para cualquier $n \in \mathbb{R}$\\ \hline
+$a^x$&$\frac{a^x}{\ln a}+ C$&\\ \hline
+$\e^x$& $\e^x+ C$&\\ \hline
+$\frac{1}{x}$& $\ln x+ C$&\\ \hline
+$\sen x$&$-\cos x+ C$&\\ \hline
+$\cos x$& $\sen x+ C$&\\ \hline
+$\tg x$& $-\ln (\cos x)+ C$ &No es realmente inmediata, veremos cómo se hace.\\ \hline
+$\frac{1}{\sqrt{1-x^2}}$&$\asen x+ C$&\\ \hline
+$\frac{-1}{\sqrt{1-x^2}}$&$\acos x+ C$&\\ \hline
+$\frac{1}{1+x^2}$&$\atg x+ C$&\\ \hline
+\end{longtable}
+\end{center}
+\end{small}
+
+\textbf{Veamos unos ejemplos de esta tabla}:
+\begin{questions}
+\question Realiza $\int x^2 * \dif{x}$.
+\begin{solution}
+Si miramos en la tabla anterior vemos que es del tipo $x^n$, con lo que aplicando lo que nos dice:
+\[\int x^2\,\dif{x} =\frac{x^3}{3} + C\]
+El valor de $C$ no está definido, nos hacen falta más datos para poder calcular su valor (lo que se llaman condiciones iniciales o de contorno) y la mayoría de las veces no los vamos a tener. Por eso se deja así.
+\end{solution}
+
+\question Calcula $\int \sqrt{x} \dif{x}$.
+\begin{solution}
+Basta con convertir la raíz en una potencia:
+\[\int \sqrt{x} \dif{x} = \int x^\frac{1}{2} \dif{x} = \frac{x^\frac{3}{2}}{\frac{3}{2}} + C = \frac{2}{3} x^\frac{3}{2} + C\]
+\end{solution}
+
+\end{questions}
+
+\subsection{Reglas de integración.}
+Aquí no sucede lo mismo que con las derivadas: que a cada operación con funciones le corresponde una regla que nos dice cómo hacer la derivada. Aquí tenemos un par de reglas (exactamente un par) y una serie de estrategias o métodos que nos pueden llevar a la primitiva de la función que estamos integrando.\\
+Pero vamos a ver primero las dos reglas que tenemos:
+\subsubsection{Integral de una suma.}
+\textbf{La integral de una suma es la suma de las integrales}. De manera simbólica:
+\[\boldsymbol{\int (f(x) + g(x)) \dif{x} = \int f(x) \dif{x} + \int g(x) \dif{x}}\]
+\subsubsection{Integral de una constante por una función.}
+En realidad es una consecuencia de la regla anterior, y nos dice que \textbf{la integral de una constante por una función es igual a la constante por la integral de la función}. En forma simbólica queda:
+\[\boldsymbol{\int k*f(x) \dif{x} = k*\int f(x) \dif{x}}\]
+
+Con estas dos reglas ya podemos hacer la integral de cualquier polinomio o cualquier suma de potencias de $x$.\\
+\textbf{Veamos unos ejemplos}:
+\begin{questions}
+\question Calcular $\int (2x^3 - x^2 + 3) \dif{x}$
+\begin{solution}
+Aplicando las reglas antes vistas y aplicando después la tabla de inmediatas tenemos que:
+\[\int (2x^3 - x^2 + 3) \dif{x} = 2\int x^3 \dif{x}- \int x^2 \dif{x} + \int 3 \dif{x} = 2\frac{x^4}{4} - \frac{x^3}{3} + 3x + C\]
+En estos casos se pone solo una constante ya que si ponemos varias su suma también sería constante.\\
+Y, lógicamente, para terminar tenemos que simplificar, con lo que:
+\[\int (2x^3 - x^2 + 3) \dif{x} = \frac{x^4}{2} - \frac{x^3}{3} + 3x + C\]
+\end{solution}
+
+\question Calcula la integral de $f(x) = x^2 - \frac{3}{x^2}$
+\begin{solution}
+Realizamos los mismos pasos:
+\[\int \left(x^2 - \frac{3}{x^2} \right) \dif{x} = \int x^2 \dif{x} - 3 \int x^{-2} \dif{x} = \frac{x^3}{3} -3* \frac{x^{-1}}{-1} + C =
+\frac{x^3}{3} + \frac{3}{x} + C\]
+\end{solution}
+
+\question Calcular $\int \left(\frac{5}{x} - \e^x\right) \dif{x}$
+\begin{solution}
+Aplicando las reglas y consultando la tabla:
+\[\int \left(\frac{5}{x} - \e^x\right) \dif{x} = 5*\int \frac{1}{x}\,\dif{x} - \int \e^x \dif{x} = 5\ln x - \e^x + C\]
+\end{solution}
+
+\question Halla $\int x*(x - 2)^2 \, \dif{x}$
+\begin{solution}
+En este caso tenemos un producto y no tenemos ninguna regla para integrarlo. Pero podemos desarrollar la potencia y el producto de manera que nos quedemos únicamente con sumas, que sí vamos a poder integrarlas:
+\[\int x*(x-2)^2\, \dif{x} = \int (x^3 - 4x^2 + 4x)\,\dif{x} = \frac{x^4}{4} - \frac{4x^3}{3} + 2x^2 + C\]
+\end{solution}
+\end{questions}
+
+El problema es que con estas reglas podemos integrar pocas funciones, ya que en la mayoría aparecen productos de funciones elementales que no vamos a poder desarrollar y convertir en sumas, y para ello tenemos que empezar con los métodos de integración.
+
+\section{Métodos de integración.}
+En algunos de estos métodos nos vamos a encontrar con que nos faltan determinadas constantes que deberían estar. Para arreglar este tema utilizaremos un par de \textit{trucos} que se utilizan bastante en matemáticas.
+\begin{itemize}
+	\item Si sumamos y restamos el mismo valor no cambia el resultado:
+	\[x = (x + a) -a = (x-a) + a\]
+	\item Si multiplicamos y dividimos por el mismo valor, distinto de cero, no cambia el resultado:
+	\[x = \frac{1}{a}(a*x) = a *\frac{x}{a}\quad\text{ con } a\ne 0\]
+\end{itemize}
+Y con esto ya nos podemos enfrentar con los métodos.
+\subsection{Integración casi-inmediata por composición.}
+Recordemos la derivada de la función compuesta:
+\[\frac{d(f \circ g)(x)}{x} = (f' \circ g)(x) * g'(x)\]
+De forma que si pasamos a la integral:
+\[\boldsymbol{(f \circ g)(x) = \int (f' \circ g)(x) * g'(x) d(x)}\]
+
+Aquí tenemos una integral con dos factores (recordar que los factores son cosas que multiplican) y uno de ellos se parece bastante a la derivada de la composición de una función elemental y el otro se parece a la derivada de la función que compone el primer factor.\\
+En ese caso tendremos que utilizar los \textit{trucos} que hemos visto antes para poner lo que nos falta y lo convertiremos en una integral inmediata.\\
+
+Esto es \textbf{mejor verlo con unos cuantos ejemplos}:
+\begin{questions}
+\question Realiza la integral $\int \tg x \ \dif{x}$.
+\begin{solution}
+Para realizar esta integral escribimos la definición de la tangente, de forma que nos queda:
+\[\int \tg x \  \dif{x} = \int \frac{\sen x }{\cos x}\, \dif{x} = \int \frac{1}{\cos x} *\sen x\,\dif{x}\quad \text{(*)}\]
+De esta manera ya tenemos dos factores, vamos a identificarlos y ver a qué se parecen:
+\begin{itemize}
+	\item $\frac{1}{\cos x}$ se parece a la derivada de un logaritmo neperiano que estaría compuesta con el coseno de $x$
+	\item $\sen x$ se parece a la derivada del coseno de $x$ salvo por el signo, ya que esa derivada tiene un menos delante.
+\end{itemize}
+Es decir, se parece bastante a la derivada de $\ln (\cos x)$. Así que vamos a derivar esta función y ver que nos falta:
+\[(\ln (\cos x))' = \frac{1}{\cos x} *(-\sen x)\]
+Que si la comparamos con lo que tenemos que integrar (*) vemos que solo le faltaría el menos. Así que lo ponemos dos veces para que nos salga con el signo que tenemos y:
+\[\int \tg x \  \dif{x} = \int \frac{\sen x }{\cos x}\, \dif{x} =
+-\int \frac{1}{\cos x} *(-\sen x)\, \dif{x}  = -\ln (\cos x) + C\]
+\end{solution}
+
+\question Calcula $\int x \e^{x^2}\ \dif{x}$.
+\begin{solution}
+Identificamos los factores:
+\begin{itemize}
+	\item $\e^{x^2}$ sería la derivada de $\e^x$ compuesta con $x^2$.
+	\item $x$ se parece a la derivada de $x^2$, que sería la compuesta en la anterior, pero le falta el 2 multiplicando.
+\end{itemize}
+Con todo esto podemos concluir que toda ella se parece a la derivada completa de $\e^{x^2}$ pero falta el 2 de la derivada de $x^2$, con lo que se multiplicamos y dividimos por 2:
+\[\int x \e^{x^2}\ \dif{x} = \frac{1}{2} \int 2x \e^{x^2}\ \dif{x} = \frac{1}{2}\e^{x^2} + C\]
+\end{solution}
+
+\question Resuelve $\int \frac{x}{\sqrt{x^2 - 1}}\, \dif{x}$
+\begin{solution}
+Por el producto de fracciones podemos hacer $\frac{x}{\sqrt{x^2 - 1}} = \frac{1}{\sqrt{x^2 - 1}} * x$, de manera que tenemos los siguientes factores:
+\begin{itemize}
+	\item $\frac{1}{\sqrt{x^2 - 1}}$ que se parece a la derivada de la raíz, nos faltaría el factor $\frac{1}{2}$.
+	\item $x$ que se parece a la derivada de $x^2-1$, nos faltaría el factor $2$.
+\end{itemize}
+Poniendo y quitando el factor que nos falta obtendremos la derivada de $\sqrt{x^2 - 1}$, entonces:
+\[\int \frac{x}{\sqrt{x^2 - 1}}\, \dif{x} = \int \frac{1}{2\sqrt{x^2 - 1}} * 2x\, \dif{x} = \sqrt{x^2 - 1} + C\]
+\end{solution}
+\end{questions}
+\subsection{Integración por partes.}
+Esté método \textbf{se basa en la derivada de un producto}. Recordemos como era escribiéndola con la notación de Leibniz:
+\[\frac{d(f*g)}{\dif{x}} = \frac{df}{\dif{x}}*g + \frac{dg}{\dif{x}} *f\]
+Y pasándolo a integral como hemos visto al principio:
+\[\integral{}{(f*g)} = \integral{g}{f} + \integral{f}{g}\]
+\[f*g = \integral{g}{f} + \integral{f}{g}\]
+Y haciendo un cambio de miembro:
+\[\boldsymbol{\integral{f}{g} = f*g - \integral{g}{f}}\]
+Pero por razones históricas se utilizan $u$ y $v$ en lugar de $f$ y $g$, de tal manera que se expresa:
+\[\boldsymbol{\integral{u}{v} = u*v - \integral{v}{u}}\]
+Y tenemos que tener en cuenta que:
+\begin{itemize}
+	\item $\boldsymbol{v = \integral{}{v}}$, y que dentro de $\dif{u}$ está $\dif{x}$.
+	\item $\boldsymbol{\dif{u} = u'*\dif{x}}$
+	
+\end{itemize}
+Veamos un \textbf{ejemplo de integral por partes}:
+\[\integral{x\e^x}{x}\]
+\begin{solution}
+Tenemos un producto de dos factores, $x$ y $\e^x$ y tenemos que decidir a cual llamamos $u$ y a cual $\dif{v}$, y tenemos que atender a lo siguiente:
+\begin{itemize}
+	\item \textbf{$\dif{v}$ ha de ser una función sencilla de integrar}.
+	\item \textbf{$u$ ha de ser una función cuya derivada sea más sencilla que la propia función}.
+\end{itemize}
+Atendiendo a lo anterior lo lógico es hacer:
+\begin{itemize}
+	\item $u = x$, ya que su derivada es 1.
+	\item $\dif{v} = \e^x\, \dif{x}$ porque la integral es inmediata.
+\end{itemize}
+De esta manera tendremos que:
+\begin{itemize}
+	\item $\dif{u} = \dif{x}$
+	\item $v = \integral{\e^x}{x} = \e^x$ (Aquí no vamos a poner la constante de integración, la dejamos para el final).
+\end{itemize}
+De manera que:
+\[\integral{x\e^x}{x} = x*\e^x - \integral{\e^x}{x} = x*\e^x - \e^x +C\]
+\end{solution}
+
+Veamos unos cuantos ejemplos más:
+\begin{questions}
+\question Realiza $\integral{\ln x}{x}$
+\begin{solution}
+En este caso no hay ningún producto de funciones, aparentemente, y esto pasa en muchos ejercicios en los que hay que utilizar la integración por partes. Pero en realidad sí que hay un producto de funciones, que desglosamos así:
+\begin{itemize}
+	\item $u = \ln x$ Porque es fácil derivarla pero no integrarla.
+	\item $\dif{v} = 1 * \dif{x}$ porque la integral es muy sencilla.
+\end{itemize}
+De manera que:
+\begin{itemize}
+	\item $\dif{u} = \frac{1}{x}\, \dif{x}$
+	\item $v = \integral{1}{x} = x$
+\end{itemize}
+Con esto ya podemos utilizar la integración por partes:
+\[\integral{\ln x}{x} = x*\ln x - \integral{x*\frac{1}{x}}{x} =
+x*\ln x - x + C\]
+\end{solution}
+
+\question Halla $\integral{\ln^2 x}{x}$.
+\begin{solution}
+En este caso vamos a ver que tendremos que aplicar partes varias veces. Esto ocurre en muchas ocasiones.\\
+Primero asignamos $u$ y $v$ atendiendo a lo dicho anteriormente:
+\begin{itemize}
+	\item $u = \ln^2 x$
+	\item $\dif{v} = \div{x}$
+\end{itemize}
+Así que:
+\begin{itemize}
+	\item $\dif{u} = 2*\ln x * \frac{1}{x}\,\dif{x}$
+	\item $v = x$
+\end{itemize}
+De manera que la integral nos queda:
+\[\integral{\ln^2 x}{x} = x*\ln^2 x - \integral{2\ln x\,\frac{1}{x}}{x} = x*\ln^2 x - 2\integral{\ln x}{x}\]
+En la integral que nos queda tendríamos que hacer otra vez partes, pero como la tenemos calculada del ejercicio anterior:
+\[\integral{\ln^2 x}{x} = x*\ln^2 x - 2x\ln x + 2x + C\]
+\end{solution}
+
+\question Calcula $\integral{\frac{x}{\cos^2 x}}{x}$.
+\begin{solution}
+A la hora de elegir cual es cada una volvemos a tener en cuenta los criterios anteriores, y nos queda:
+\begin{itemize}
+	\item $u = x$ porque la derivada de $\frac{1}{\cos^2 x}$ no nos va a llevar a una situación más sencilla, sino más compleja.
+	\item $\div{v} = \frac{1}{\cos^2 x}\,\dif{x}$, que tiene una integral inmediata si nos sabemos bien la tabla de derivadas.
+\end{itemize}
+Obteniendo los valores para el siguiente paso:
+\begin{itemize}
+	\item $\dif{u} = \dif{x}$
+	\item $v = \tg x$
+\end{itemize}
+\end{solution}
+\end{questions}
+%Métodos en la programación: 
+	%cambio de variable (o sustitución)
+	%racionales sencillas (sin raíces imaginarias ni multiplicidad)
+\subsection{Integración por sustitución o cambio de variable.}
+El método que vamos a utilizar aquí lo hemos visto ya aplicado a determinadas ecuaciones, por ejemplo en las bicuadradas, y consiste en hacer una sustitución que simplifique la operación a realizar y luego deshacemos el cambio.\\
+Vamos a \textbf{recordarlo con un ejemplo}: resolver $x^4 - 5x^2 + 4 = 0$
+\begin{solution}
+Tenemos que hacer el cambio $t = x^2$, de manera que queda:
+\[t^2 - 5t + 4 = 0\]
+Que resolvemos como una ecuación de segundo grado y tiene como soluciones $t_1 = 1$ y $t_2 = 4$.\\
+Pero lo que tenemos que calcular es $x$, no $t$, con lo cual tenemos que deshacer el cambio, y como $t=x^2$ ocurre que $x = \pm \sqrt{t}$. De manera que:
+\begin{itemize}
+	\item $x_1 = \sqrt{1} = 1$
+	\item $x_2 = -\sqrt{1} = -1$
+	\item $x_3 = \sqrt{4} = 2$
+	\item $x_4 = -\sqrt{4} = -2$
+\end{itemize}
+\end{solution}
+
+El procedimiento que vamos a utilizar para integral es muy similar, aunque con sus particularidades. Lo vemos con un ejemplo y luego recopilamos los pasos:
+\textbf{Ejemplo}:\\
+Calcula $\integral{\frac{4x}{\sqrt{1 - x^2}}}{x}$
+\begin{solution}
+En este caso lo que más nos molesta es la raíz y tenemos que pensar cómo quitarla.\\
+Dentro de la raíz tenemos la expresión $1 - x^2$, que se parece bastante a la relación fundamental de la trigonometría, con lo cual podemos probar con el cambio $x = \sen t$.\\
+Con eso cambiaríamos la $x$, pero nos queda suelto el $\dif{x}$, y lo calculamos sabiendo que:
+\[\dif{x} = \frac{\dif{x}}{\dif{t}}*\dif{t}\]
+Es decir, tenemos que calcular la derivada de $x$ con respecto a $t$:
+\[x= \sen t\]
+\[\dif{x} = \frac{\dif{(\sen t)}}{\dif{t}}*\dif{t}\]
+\[\dif{x} = \cos t * \dif{t}\]
+Con esto sustituimos en la integral y utilizando la relación fundamental de la trigonometría:
+\[\integral{\frac{4x}{\sqrt{1 - x^2}}}{x} = 4 \integral{\frac{\sen t}{\sqrt{1 - \sen^2 t}} *\cos t }{t} = 
+4\integral{\frac{\sen t}{\cos t} * \cos t}{t} = 4\integral{\sen t}{t} = 4*(-\cos t) + C\]
+Y ahora tenemos que deshacer el cambio de variable. Como $\cos t = \sqrt{1 - \sen^2 t}$ y el cambio utilizado fue $x= \sen t$ tenemos que $\cos t = \sqrt{1 - x^2}$, así que:
+\[\integral{\frac{4x}{\sqrt{1 - x^2}}}{x} = -4 \sqrt{1 - x^2} + C\]
+\end{solution}
+
+Vamos a hacer una \textbf{recopilación de los pasos que hemos dado en el ejemplo}:
+\begin{enumerate}
+	\item \textbf{Pensar un cambio de variable que nos simplifique la integral}. Esto es lo más difícil, hay algunas reglas pero ninguna nos garantiza que vaya a funcionar.
+	\item \textbf{Calculamos todas las sustituciones que hay que hacer en la integral, incluido el diferencial}.
+	\item \textbf{Realizamos las sustituciones e integramos}.
+	\item \textbf{Deshacemos el cambio de variable}.
+\end{enumerate}
+Con todo lo que hemos contado, éste es el método más difícil de todos los que vamos a ver.
+
+Vamos a ver algunos ejemplos más:
+\begin{questions}
+\question Calcula la integral $\integral{x \sqrt{1 + x}}{x}$
+\begin{solution}
+Como en la anterior, lo que más nos estorba es la raíz. Pero aquí no nos va a servir el mismo cambio, ya que el radicando no se parece en nada a la relación fundamental de la trigonometría.\\
+La única manera que tenemos para quitar esa raíz es haciendo que el radicando sea un cuadrado, con lo que hacemos:
+\[t^2 = 1 + x\]
+Y de aquí nos sale que:
+\[x = t^2 - 1\]
+\[\dif{x} = 2t*\dif{t}\]
+Y ya podemos sustituir en la integral:
+\[\integral{x \sqrt{1 + x}}{x} = \integral{(t^2 - 1) *\sqrt{t^2}*2t}{t} = 2 \integral{(t^4 - t^2)}{t} = 
+2 \left(\frac{t^5}{5} - \frac{t^3}{3}\right) + C\]
+Y ya solo tenemos que deshacer el cambio con la sustitución $t = \sqrt{1 + x}$:
+\[\integral{x \sqrt{1 + x}}{x} = 2 \left(\frac{\left(\sqrt{1 + x}\ \right)^5}{5} - \frac{\left(\sqrt{1 + x}\ \right)^3}{3}\right) + C\]
+\end{solution}
+
+\question Halla $\integral{\frac{1}{1 + \sqrt{x}}}{x}$.
+\begin{solution}
+Como en los anteriores el problema lo tenemos con la raíz, con lo que vamos a hacer el cambio $t = \sqrt{x}$, de manera que:
+\[x = t^2\]
+\[\dif{x} = 2t\dif{t}\]
+Sustituimos:
+\[\integral{\frac{1}{1 + \sqrt{x}}}{x} = \integral{\frac{1}{1 + t} * 2t}{t} =2\integral{\frac{t}{1+t}}{t}\]
+Y llegamos a otra integral que tampoco sabemos hacer con los métodos que hemos visto. En este caso nos estorba que haya $1 + t$ en el denominador, con lo que volvemos hacia atrás y hacemos el cambio $s = 1+\sqrt{x}$ porque así nos quitamos la raíz y el 1 sumando. Entonces:
+\[s = 1 +\sqrt{x}\]
+\[x = (s - 1)^2\]
+\[\dif{x} = 2(s-1)\dif{s}\]
+\end{solution}
+
+\question Halla $\integral{\sqrt{1 - x^2}}{x}$
+\begin{solution}
+Esta es una integral clásica que representa el problema fundamental del método de sustitución, que a veces tendremos que recurrir a conocimientos de muchas y muy variadas partes de las matemáticas.\\
+
+A simple vista se ve algo que se parece a la relación fundamental de la trigonometría, lo que impone el cambio $x = \sen t$, con lo que $\dif{x} = \cos t\, \dif{t}$, y deja la integral como:
+\[\integral{\sqrt{1 - x^2}}{x} = \integral{\sqrt{1 - \sen^2 t}\cos t}{t} =
+\integral{\cos^2 t}{t}\]
+Lo que nos lleva a una integral que no es inmediata ni mucho menos. De hecho la única forma de resolverla es haciendo uso de las relaciones trigonométricas entre múltiplos y submúltiplos del ángulo, en concreto de la relación del ángulo mitad:
+\[\cos \frac{\alpha}{2} = \pm \sqrt{\frac{1 + \cos \alpha}{2}}\]
+En este caso tendríamos que $x = \frac{\alpha}{2}$ y supondremos 	que estamos en el primer cuadrante, con lo que nos quedamos con el signo positivo. De esta manera la integral continuaría:
+\[\integral{\cos^2 t}{t} = \integral{\frac{1 + \cos (2t)}{2}}{t} =
+\frac{1}{2}\integral{}{t} + \frac{1}{2}\integral{\cos (2t)}{t} = \frac{1}{2}t + \frac{1}{4}\sen (2t) + C\]
+Y ahora solo nos queda deshacer el cambio, que en este caso tampoco es sencillo. Tenemos:
+\begin{itemize}
+	\item $\sen (2t) = 2\sen t * \cos t$
+	\item $\sen t = x$
+	\item $\cos t = \sqrt{1 - x^2}$
+	\item $t = \asen x$
+\end{itemize}
+Entonces queda:
+\[\frac{1}{2}t + \frac{1}{4}\sen (2t) + C = \frac{t}{2} + \frac{\sen t *\cos t}{2}+ C = \frac{\asen x}{2} + \frac{x\sqrt{1-x^2}}{2} + C\]
+
+Y finalmente podemos escribir:
+\[\integral{\sqrt{1 - x^2}}{x} =\frac{1}{2} (\asen x + x\sqrt{1 - x^2}) + C\] 
+\end{solution}
+\question Calcula $\integral{\sen^2 x * \cos^3 x}{x}$.
+\begin{solution}
+En este caso tenemos claro que vamos a tener que hacer que $t$ sea el seno o el coseno, y en este caso elegiremos el seno porque al calcular el diferencial nos va a aparecer el coseno que lo cogeremos del coseno al cubo y al quedar un cuadrado nos quitaremos la raíz de la relación fundamental de la trigonometría. Más en detalle:
+\[t = \sen x\quad \text{con lo que}\quad \dif{t} = \cos x\,\dif{x} \quad \text{y}
+\quad \sqrt{1 - t^2} = \cos x\]
+Con todo esto:
+\begin{flalign*}&\integral{\sen^2 x * \cos^3 x}{x} = \int (\sen^2 x *\cos^2 x)(\cos x \dif{x}) =
+\integral{t^2 *(1 - t^2)}{t} =\\
+& \integral{(t^2 - t^4)}{t} = \frac{t^3}{3} - \frac{t^5}{5} + C
+\end{flalign*}
+Y deshaciendo el cambio:
+\[\integral{\sen^2 x * \cos^3 x}{x} = \frac{\sen^3 x}{3} - \frac{\sen^5 x}{5} + C\]
+\end{solution}
+
+\end{questions}
+
+Con los ejemplos anteriores hemos hecho una integral de los tipos que nos interesan para ver los cambios de variable más comunes, aunque no hay garantía de que funcionen. Se dividen en dos tipos, los cambios para integrales trigonométricas y los cambios para integrales irracionales.
+\subsubsection{Cambios para irracionales.}
+Los cambios a realizar son:
+\begin{itemize}
+	 \item Si aparece $\sqrt{a^2 -x^2}$ haremos el cambio $x = a*\sen t$ ó $x=a^2\cos t$.
+	 \item Si aparece $\sqrt{a^2 + x^2}$ haremos el cambio $x=a\tg x$.
+	 \item Si aparece $\sqrt{x^2 - a^2}$ haremos el cambio $x=\frac{a}{\sen x}$.
+\end{itemize}
+Y no tenemos que olvidarnos de que en cada integral tenemos que calcular el cambio para $\dif{x}$, así como deshacer el cambio al final.
+\subsubsection{Cambios para trigonométricas.}
+En este caso tenemos que fijarnos en los exponentes del seno y el coseno, de manera que:
+\begin{itemize}
+	\item Si la potencia del seno es impar haremos $t = \cos x$.
+	\item Si la potencia del coseno es impar haremos $t = \sen x$.
+	\item Si ambas potencias son pares haremos $t = \tg x$ (este cambio es complicado porque hay que hacer uso de identidades y fórmulas trigonométricas) 
+\end{itemize}
+\textbf{Como el último cambio es complejo vamos a hacer un ejemplo con él}:\\
+Vamos a calcular $\integral{\frac{\sen^2 x}{\cos^6 x}}{x}$
+\begin{solution}
+Como los exponentes del seno y el coseno son pares ambos tenemos que hacer el cambio $t = \tg x$ y como $x = \atg t$ tenemos que $\dif{x} = \frac{1}{1+t^2}\,\dif{t}$\\
+Pero primero tenemos que hacer algunos cambios en la integral para que nos sea más fácil hacer la sustitución:
+\[\integral{\frac{\sen^2 x}{\cos^6 x}}{x} =\integral{\tg^2 x *\frac{1}{\cos^4 x}}{x}\quad\text{(*)}\]
+Ahora hacemos uso de la identidad trigonométrica $1 + \tg^2 \alpha = \frac{1}{\cos^2 \alpha}$:
+\[\text{(*)} = \integral{\tg^2 x *(1 + \tg^2 x)^2}{x}\]
+Y ahora ya estamos en situación de realizar la sustitución:
+\[\integral{\tg^2 x *(1 + \tg^2 x)^2}{x} = \integral{t^2 *(1 + t^2)^2\frac{1}{1+t^2}}{t} =\integral{t^2*(1+t^2)}{t} =
+\integral{(t^2 + t^4)}{t} = \frac{t^3}{3} + \frac{t^5}{5} + C\]
+Y deshaciendo el cambio:
+\[\integral{\frac{\sen^2 x}{\cos^6 x}}{x} = \frac{\tg^3 x}{3} + \frac{\tg^5 x}{5} + C\]
+\end{solution}
+\subsection{Integración por fracciones simples.}
+Este método sirve para calcular la primitiva de cualquier función racional.\\
+Para poder hacer este método hay que tener claras las siguientes cosas:
+\begin{itemize}
+	\item Factorización, m.c.m. y m.c.d. de polinomios.
+	\item Operaciones con fracciones.
+\end{itemize}
+
+El método se basa en las partes de una división, aunque en este caso son todos polinomios: tenemos el dividendo ($D(x)$), el divisor ($d(x)$), el cociente ($c(x)$) y el resto ($r(x)$), y todos están relacionados por:
+\[\frac{D(x)}{d(x)} = c(x) + \frac{r(x)}{d(x)}\]
+De esta manera ya nos queda algo más sencillo, ya que $c(x)$ es un polinomio y al ser una suma es fácil de integrar.\\
+Pero ¿qué pasa con la parte $\frac{r(x)}{d(x)}$? Pues esa parte hay que descomponerla en fracciones simples, con denominadores de grado 1 o como mucho 2, cuya integral va a ser un logaritmo $\left(\integral{\frac{a}{x+b}}{x} = a*\ln(x+b) + C \right)$ o un arco de tangente $\left(\integral{\frac{a}{1+x^2}}{x} = a*\atg x + C \right)$.\\
+
+Para hacer esto vamos a describir mejor los polinomios $d(x)$ y $r(x)$.
+\begin{itemize}
+	\item Si $d(x)$ es un polinomio de grado $n$ será: $d(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0$.
+	\item Como $r(x)$ es el resto de dividir entre $d(x)$ tiene que tener como poco un grado menos, con lo que $r(x) = 
+	b_{n-1} x^{n-1} + \dots + b_1 x + b_0$.
+\end{itemize}
+
+Y procederemos de la siguiente manera:
+\begin{enumerate}
+	\item Factorizamos $d(x)$: $d(x) = (x+c_1) ^{m_1} *(x+ c_2)^{m_2} \dots$
+	\item Para cada factor construimos las fracciones: $\frac{K_{i1}}{x+c_i}$, $\frac{K_{i2}}{(x+c_i)^2}$, \dots, $\frac{K_{m_i}}{(x+c_i)^{m_i}}$.\\
+	Si algún factor es del tipo $x^2 + a$ construiremos la fracción $\frac{Ax + B}{x^2 + a}$.
+	\item La suma de todas las fracciones anteriores tiene que ser igual a $\frac{r(x)}{d(x)}$ y con esto obtendremos las ecuaciones para calcular el valor de los coeficientes $K_i$.
+	\item Ahora solo queda integrar cada término de la siguiente manera:
+	\begin{itemize}
+		\item Si es de la forma $\frac{a}{x+b}$ ó $\frac{ax}{x^2+ b}$ su integral será un logaritmo.
+		\item Si es de la forma $\frac{a}{(x+b)^n}$ su integral será una potencia.
+		\item Si es de la forma $\frac{a}{x^2+b}$ su integral será un arco de tangente.
+	\end{itemize}
+\end{enumerate}
+
+Lo mejor es que veamos todo esto con unos ejemplos:
+\begin{questions}
+\question Calcular $\integral{\frac{3x^3 + 5x}{x^2 - x - 2}}{x}$.
+\begin{solution}
+Primero hacemos la división:
+\begin{center}
+\begin{tabular}{lllll}
+$3x^3$ & 0      & $5x$  & \multicolumn{1}{l|}{0} & $x^2 - x - 2$ \\ \cline{5-5} 
+$0$   & $3x^2$ & $11x$ &                        & $3x +3$       \\
+       & $0$    & $14x$ & $6$                    &
+\end{tabular}
+\end{center}
+Con lo cual ya tenemos que $\frac{3x^3 + 5x}{x^2 - x - 2} = 3x + 3 + \frac{14x+6}{x^2 -x -2}$. Ahora damos los pasos para obtener las fracciones simples:
+\begin{enumerate}
+	\item Factorizamos el divisor: $x^2 -x -2 = (x-2)(x+1)$.
+	\item De los factores tenemos las fracciones $\frac{A}{x-2}$, $\frac{B}{x + 1}$
+	\item Igualamos: $\frac{14x + 6}{x^2 -x -2}  = \frac{A}{x-2} + \frac{B}{x + 1} = \frac{A(x+1) + B(x-2)}{(x-2)(x+1)}$\\
+	Como los denominadores son iguales nos quedamos con los numeradores:
+	\[14x+6 = A(x+1) + B(x-2)\]
+	Y para calcular $A$ y $B$ utilizamos en la ecuación anterior las raíces que hemos obtenido en la factorización de $d(x)$:
+	\begin{flalign*}
+	\text{Para }x= -1&\to 14*(-1) + 6 = B(-1-2) \to -8 = -3B \to B= \frac{8}{3}\\
+	\text{Para }x= 2&\to 14*2 + 6 = A(2+1) \to 34 = 3A \to A = \frac{34}{3}
+	\end{flalign*}
+	\item Con esto tenemos que $\integral{\frac{3x^3 + 5x}{x^2 - x - 2}}{x} =
+	\integral{\left(3x + 3 + \frac{34}{3}* \frac{1}{x-2} + \frac{8}{3}*\frac{1}{x+1}\right)}{x}$\\
+	Integramos cada término (ahora vamos a ignorar las constantes de integración y la ponemos después):
+	\begin{itemize}
+		\item $\integral{3x}{x} = \frac{3}{2}x^2$
+		\item $\integral{3}{x} = 3x$
+		\item $\integral{\frac{34}{3}* \frac{1}{x-2}}{x} = \frac{34}{3}* \ln (x-2)$
+		\item $\integral{\frac{8}{3}*\frac{1}{x+1}}{x} = \frac{8}{3}*\ln (x+1)$
+	\end{itemize}
+\end{enumerate}
+Y juntándolo todo tenemos que:
+\[\integral{\frac{3x^3 + 5x}{x^2 - x - 2}}{x} = \frac{3x^2}{2} + 3x + \frac{34}{3}* \ln (x-2) +\frac{8}{3}*\ln (x+1) + C\]
+\end{solution}
+
+\question Halla $\integral{\frac{3x + 5}{x^3 - x^2 - x + 1}}{x}$.
+\begin{solution}
+Aquí no podemos hacer la división ya que el grado del numerador es menor que el denominador, así que vamos a por las fracciones simples:\\
+\begin{enumerate}
+	\item Factorizamos el denominador: $x^3 - x^2 - x + 1 = (x+1) (x-1)^2$.
+	\item Como hay un factor con un exponente mayor que 1 tenemos que construir todas las fracciones de 1 al exponente que tenga, con lo que las fracciones que tenemos son: $\frac{A}{x+1}$, $\frac{B}{x-1}$, $\frac{C}{(x-1)^2}$.
+	\item Igualamos la suma de fracciones: $\frac{3x + 5}{x^3 - x^2 - x + 1} = \frac{A}{x+1} + \frac{B}{x-1} + \frac{C}{(x-1)^2} =
+	\frac{A(x-1)^2 + B(x-1)(x+1) + C(x+1)}{(x+1)(x-1)^2}$
+	\item Igualamos numeradores y resolvemos $A$, $B$ y $C$:
+	\[3x + 5 = A(x-1)^2 + B(x-1)(x+1) + C(x+1)\]
+	\begin{flalign*}
+	\text{Para } x=1 & \to 3 *1 + 5 = 2C \to C= 4\\
+	\text{Para } x=-1 & \to -3 + 5 = A*(-2)^2 \to A = \frac{1}{2}\\
+	\end{flalign*}
+	Como nos falta por calcular $B$ y no tenemos más raíces damos un valor sencillo (p.e. $x= 0$) poniendo los valores que hemos obtenido para las otras incógnitas:
+	\[\text{Para }x= 0 \to 5 = \frac{1}{2} - B + 4 \to B= -\frac{1}{2}\]
+	\item Con lo anterior nos queda: 
+	\begin{flalign*}
+	&\integral{\frac{3x + 5}{x^3 - x^2 - x + 1}}{x} =
+	\integral{\frac{1}{2}*\frac{1}{x+1} -\frac{1}{2}\frac{1}{x-1} + \frac{4}{(x-1)^2}}{x} =\\
+	&\frac{1}{2}\ln(x+1) - \frac{1}{2}\ln(x -1) - 4(x-1)^{-1} +C
+	\end{flalign*}
+\end{enumerate}
+
+\end{solution}
+
+\question Realiza $\integral{\frac{2x^2 - 3x + 2}{x^3 + x}}{x}$.
+\begin{solution}
+Al igual que en la anterior no se puede realizar la división, así que factorizamos el denominador:
+\[x^3 + x = x(x^2 + 1)\]
+De manera que nos queda la ecuación:
+\[\frac{2x^2 - 3x + 2}{x^3 + x} = \frac{A}{x} + \frac{Bx + C}{x^2 + 1}\]
+\[\frac{2x^2 - 3x + 2}{x^3 + x} = \frac{A(x^2 + 1) + Bx^2 + Cx}{x(x^2 + 1)}\]
+Y resolvemos dando valores a $x$, primero las raíces y luego otros para obtener las incógnitas que nos faltan:
+\[\text{Para } x= 0 \to 2 = A\]
+Para obtener $B$ y $C$ damos a $x$ los valores $1$ y $-1$:
+\begin{flalign*}
+\text{Para } x = 1&\to 2 - 3 + 2 = 2*2 + B + C \to B + C = -3\\
+\text{Para } x = -1&\to 2 + 3 + 2 = 2*2 + B - C \to B-C = 3
+\end{flalign*}
+Con lo que tenemos que resolver el sistema $\left\lbrace\begin{array}{lcl}
+B+C&=&-3\\
+B-C&=&3
+\end{array}\right.$\\
+Y la solución es $B=0$ y $C=-3$, con lo que nos queda que $\integral{\frac{2x^2 - 3x + 2}{x^3 + x}}{x} =
+\integral{\left(\frac{2}{x}  - \frac{3}{x^2 + 1}\right)}{x} = 2\ln x - 3 \atg x + C$.
+\end{solution}
+\end{questions}
+
+\section{Aplicaciones. La integral definida.}
+Si tenemos una función $f(x)$ y su primitiva $F(x)$, es decir $F(x) = \integral{f(x)}{x}$, \textbf{se llama integral definida a}:
+\[\int_a^b f(x) = F(b) - F(a)\]
+Y está relacionada directamente con el verdadero origen de las integrales, que es el cálculo de áreas. Así que, tras las propiedades, vamos a empezar a estudiar esta aplicación de las integrales.
+\subsection{Propiedades.}
+\begin{itemize}
+	\item $\integrald{f(x)}{x}{a}{b} = - \integrald{f(x)}{x}{b}{a}$.
+	\item $\integrald{f(x)}{x}{a}{a} = 0$.
+	\item Si $c \in (a,b)$ entonces
+	$\integrald{f(x)}{x}{a}{b} = \integrald{f(x)}{x}{a}{c} +
+	\integrald{f(x)}{x}{c}{b}$.
+	\item $\integrald{(f(x) + g(x))}{x}{a}{b} =
+	\integrald{f(x)}{x}{a}{b} + \integrald{g(x)}{x}{a}{b}$.
+	\item $\integrald{k*f(x)}{x}{a}{b} =
+	k*\integrald{f(x)}{x}{a}{b}$
+	\item Si $f(x) > 0$ y $a<b$ entonces
+	$\integrald{f(x)}{x}{a}{b} > 0$.
+	\item Si $f(x) < 0$ y $a<b$ entonces
+	$\integrald{f(x)}{x}{a}{b} < 0$.
+\end{itemize}
+\subsection{Cálculo de áreas.}
+La integral $\integrald{f(x)}{x}{a}{b}$ nos dice el área que se encuentra encerrada entre el eje $x$, la función y las verticales $x=a$ y $x=b$:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=.6\textwidth, height=.3\textwidth, axis x line=center, xmin= 0, xmax=5,, ymajorticks=false, xtick={1, 3}, xticklabels={$a$, $b$},
+  axis y line=none] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = 1:3,
+        samples = 100,
+        thick,
+        fill=gray!40
+        %blue,
+    ] (x, {x^2})\closedcycle;
+
+    \addplot[
+        domain = -.5:3.5,
+        samples = 100,
+        dashed
+        %blue,
+    ] (x, {x^2});
+	\draw[dashed](1, 0)--(1,12);
+	\draw[dashed](3, 0)--(3,12);
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Entonces \textbf{si nos piden}: calcula el área encerrada por la curva $y = x+2$ entre los puntos $x=-2$ y $x = 0$ lo que tendremos que hacer es:
+\[\integrald{(x + 2)}{x}{-2}{0} = \left[\frac{x}{2} + 2x\right]_{-2}^0 = \frac{0^2}{2} + 2*0 - \left(\frac{(-2)^2}{2} + 2*(-2) \right) = 2\,\text{u}^2\]
+Si lo observamos gráficamente:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[ axis x line=center, xmin= -3, xmax=1, ytick={2}, xtick={-2, 0},axis y line=center] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = -2:0,
+        samples = 2,
+        thick,
+        fill=gray!40
+        %blue,
+    ] (x, {x+2})\closedcycle;
+
+    \addplot[
+        domain = -3:1,
+        samples = 2,
+        dashed
+        %blue,
+    ] (x, {x+2});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Se ve que el área a calcular es un triángulo de base 2\,u y altura 2\,u, con lo que su área será $\frac{2\,\text{u}*2\,\text{u}}{2} = 2\,\text{u}^2$.\\
+Es evidente que ha salido lo mismo por los dos métodos y que el segundo es más sencillo, pero la integral definida nos sirve para calcular áreas que no se pueden calcular con fórmula.\\
+
+El problema más importante del cálculo de áreas, además de la dificultad de realizar la integral, es un problema de signos que procede de las propiedades.\\
+Estas me dicen que si la función está por encima del eje $x$ el área es positiva, mientras que si está por debajo es negativa.\\
+Pero las áreas siempre son positivas, por definición, con lo que en muchos casos tendremos que arreglar los cálculos para obtener el área de verdad.\\
+Vamos a verlo con un \textbf{ejemplo}: Calcula el área encerrado por la función seno y el eje $x$ entre los puntos 0 y $2\pi$.
+Primero veamos la gráfica:
+\begin{center}
+\begin{tikzpicture}
+\pgfmathsetmacro{\pidos}{2*pi}
+
+\begin{axis}[ axis x line=center, xmin= -1, xmax=7, axis y line=center,
+xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+    \addplot[
+        domain = 0:\pidos,
+        samples = 100,
+        thick,
+        fill=gray!40
+        %blue,
+    ] (x, {sin(deg(x))})\closedcycle;
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+El área que tenemos que calcular es la que se encuentra sombreada. Pero si calculamos la integral completa:
+\[\integrald{\sen x}{x}{0}{2\pi} = \left[\cos x\right]_0^{2\pi} = \cos 2\pi - \cos 0 = 1 - 1 = 0\,\text{u}^2\]
+Pero en la figura se ve claramente que ese área no es 0, y esto pasa porque en la integral definida el área por encima del eje es positiva y la de debajo es negativa haciendo que se anulen.\\
+La manera de solucionar esto dividiendo la integral en tantas partes como cortes tenga y sumar los valores absolutos de cada integral. Veamos el proceso:
+\begin{enumerate}
+	\item Primero calculamos los cortes de la función que estén entre los límites de integración.\\
+	Para el caso que nos ocupa sería $\sen x = 0$, que tiene de soluciones $x = 0 + \pi*k$ y de todas esas soluciones la única que está en el intervalo $(0,2\pi)$ es $x=\pi$.
+	\item Dividimos la integral en dos partes:
+	\[\integrald{\sen x}{x}{0}{2\pi} = \integrald{\sen x}{x}{0}{pi} +
+	\integrald{\sen x}{x}{\pi}{2\pi}\]
+	\item Y para asegurarnos de que nada falla cogemos el valor absoluto de cada integral. De manera que el área pedida ($S$) es:
+	\[S = \left|\integrald{\sen x}{x}{0}{\pi}\right| + \left|\integrald{\sen x}{x}{\pi}{2\pi}\right|\]
+\end{enumerate}
+Y de esta manera:
+\[S = \left|\integrald{\sen x}{x}{0}{\pi}\right| + \left|\integrald{\sen x}{x}{\pi}{2\pi}\right| = \left|\left[cos x\right]_0^\pi \right| +
+\left|\left[cos x\right]_\pi^{2\pi} \right| = |-1 -1| + |1 -(-1)| = 4\,\text{u}^2\]
+
+También podemos calcular el área comprendida entre dos curvas, ya que ésta será el área encerrada entre la de arriba y el eje $x$ menos el área encerrada entre la de abajo y el eje $x$. Gráficamente:
+
+\begin{center}
+\begin{tikzpicture}
+
+
+\begin{axis}[axis x line=center, xmin= -2, xmax=4, axis y line=none,
+xmajorticks=false, ymajorticks=false] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+	\addplot[
+        domain = -1:2,
+        samples = 100,
+        black,
+        name path=A
+        %fill=gray!40
+        %blue,
+    ] (x, {x+2});
+    
+    \addplot[
+        domain = -1:2,
+        samples = 100,
+        black,
+        name path=B
+        %blue,
+    ] (x, {x^2});
+    \addplot[gray!40] fill between[of=A and B];
+    
+    \addplot[
+        domain = -1.5:2.5,
+        samples = 100,
+        dashed
+        %fill=gray!40
+        %blue,
+    ] (x, {x+2});
+    
+    \addplot[
+        domain = -1.5:2.5,
+        samples = 100,
+        dashed
+        %blue,
+    ] (x, {x^2});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+En el caso mostrado en la gráfica se encuentra sombreado el área encerrado entre $y = x+2$ e $y = x^2$. Para calcular este área primero tenemos que encontrar los puntos de corte y eso lo hacemos igualando las $y$, con lo que queda:
+\[x + 2 = x^2\]
+Que tiene como soluciones $x= -1$ y $x = 2$, con lo que esos van a ser los límites de integración.\\
+Tendríamos que ver cuál está encima de cuál para ver cuál resta, pero eso nos lo podemos ahorrar poniendo un valor absoluto ya que $|a-b| = |b - a|$, con lo que:
+\begin{flalign*}
+S =& \left|\integrald{(x^2 - (x+2))}{x}{-1}{2}\right| = \left|\left[ \frac{x^3}{3} - \frac{x^2}{2} - 2x\right]_{-1}^2 \right|\\ 
+=& \left|\frac{2^3}{3} - \frac{2^2}{2} - 2*2 - \left(\frac{(-1)^3}{3} - \frac{(-1)^2}{2} - 2*(-1)\right)\right| = \frac{9}{2}\,\text{u}^2
+\end{flalign*}
+
+Pero aún se puede complicar más la cosa, si los cortes son más de dos tendremos que dividir la integral en tantos intervalos como nos indiquen los cortes (si los cortes son $n$ tendremos $n-1$ intervalos siempre).
+
+\subsection{Calculo de volúmenes de revolución.}
+Antes de nada recordemos lo que es un volumen de revolución:\\
+\textbf{Un volumen de revolución (o sólido de revolución) es el obtenido al girar una región del plano delimitada por una curva alrededor de una recta.}\\
+
+Vamos a verlo gráficamente:
+Tenemos la siguiente curva en el intervalo $(0,1)$:
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[title={$\boldsymbol{y =\sqrt{1-x^2}}$}, width=.4\textwidth, height=.4\textwidth, axis x line=center, xmin= -1.5, xmax=1.5, ymin=-1.5, ymax=1.5, axis y line=none,
+xtick={0,1}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+	\addplot[
+        domain = 0:1,
+        samples = 100,
+        thick
+        %fill=gray!40
+        %blue,
+    ] (x, {sqrt(1-x^2)});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+La región delimitada por la curva y el eje $x$ es un cuarto de círculo de radio 1.\\
+Si rotamos esa región alrededor del eje $x$ obtendremos media esfera:
+\begin{center}
+\begin{tikzpicture}[arrowhead/.style={->,>={Latex[angle=60:10pt]}}]
+\begin{axis}[ axis x line=center, axis z line=none, axis y line=none, xmin=-1.7,xmax=1.7,ymin=-1.5,ymax=1.5,zmin=-1.3,zmax=1.3, %con otros límites parece un semihuevo en vez de una semiesfera.
+xmajorticks=false, ymajorticks=false, zmajorticks=false,
+colormap = {whiteblack}{color(0cm)  = (white);color(1cm) = (black)}] %Con xmajorticks=false, ymajorticks=false no pone marcas.
+	\addplot3[
+        domain = 0:1,
+        surf,
+        shader=faceted,
+        gray!40,
+        samples = 20,
+        y domain=0:360,
+        z buffer=sort
+        %fill=gray!40
+        %blue,
+    ] (x, {sqrt(1-x^2)*cos(y)}, {sqrt(1-x^2)*sin(y)});
+    \addplot3[
+        domain = -40:40,
+        samples y=0,
+        thick,
+%        surf,
+%        shader=faceted,
+%        gray!40,
+%        samples = 20,
+%        y domain=0:45,
+%        z buffer=sort,
+        <-
+        %fill=gray!40
+        %blue,
+    ] (0, {1.5*sin(x)}, {1.5*cos(x)});
+\end{axis}
+\end{tikzpicture}
+\end{center}
+Y esa media esfera que acabamos de obtener es un sólido de revolución, puesto que ha sido obtenida al girar la región del plano indicada antes alrededor de una recta que es el eje $x$.
+
+Pues bien, con la integral definida podemos calcular el volumen obtenido, ya que este volumen viene dado por:
+\[V = \pi\integrald{(f(x))^2}{x}{a}{b}\quad\quad
+\text{Normalmente se escribe }f^2(x)\text{ en lugar de }(f(x))^2\]
+Y en este caso:
+\begin{itemize}
+	\item $f(x) = \sqrt{1 - x^2}$
+	\item $a = 0$
+	\item $b = 1$
+\end{itemize}
+Con lo que vamos a calcular el volumen de esta media esfera y multiplicando por dos obtendremos el volumen de la esfera entera:
+\[V = \pi\integrald{\left(\sqrt{1 - x^2}\right)^2}{x}{0}{1} =
+\pi\integrald{(1 -x^2)}{x}{0}{1} =\pi\left[x -\frac{x^3}{3}\right]_0^1 = 
+\frac{2}{3}\pi\,\text{u}^3\]
+
+Con lo que el volumen de una esfera de radio $1\,\text{u}$ será $\frac{4}{3}\pi\,\text{u}^3$.
+
+\subsection{Cálculo de longitudes de curvas.}
+Sí, además de para calcular áreas, la integral definida también sirve para calcular longitudes de curvas.\\
+Esta parte no se suele ver en bachillerato, pero tampoco es algo que se salga fuera de los conocimientos que se imparten en la asignatura.\\
+
+En este caso la expresión que nos da la longitud de la curva descrita por $f(x)$ en el intervalo $(a, b)$ es:
+\[\integrald{\sqrt{1 + \left(f'(x)\right)^2}}{x}{a}{b}\]
+
+Vamos a verlo con un ejemplo, \textbf{calcularemos la longitud de la circunferencia de radio 1\,u}.
+Como hemos recordado en el ejemplo del volumen de revolución, la expresión de un cuarto de circunferencia viene dado por $f(x) = \sqrt{1 -x^2}$ con $x \in (0, 1)$. Con lo cual solo tenemos que calcular $f'(x)$ y hacer la integral indicada.\\
+
+Calculamos $f'(x)$:
+\[f'(x) = \frac{1}{2\sqrt{1 -x^2}} *2x = \frac{x}{\sqrt{1 - x^2}}\]
+
+Sustituimos en la integral y la hacemos:
+\[\integrald{\sqrt{1+\left(\frac{x}{\sqrt{1-x^2}}\right)^2}}{x}{0}{1} =
+\integrald{\sqrt{1 + \frac{x^2}{1 - x^2}}}{x}{0}{1} =
+\integrald{\frac{1}{\sqrt{1-x^2}}}{x}{0}{1} =
+\left[\asen x \right]_0^1 = \frac{\pi}{2}\,\text{u}^2\]
+
+Y esto es la longitud de un cuarto de la circunferencia, con lo que solo tenemos que multiplicarlo por 4, y nos da que la longitud de la circunferencia de radio 1 es $2*\pi$.
+\end{document}

@@ -13,4 +13,4 @@ Si alguien considera que necesitan incluir o modificar algo, no tiene más que c
 # Compilación
 Para poder generar el PDF correspondiente es necesario utilizar una versión de LaTeX posterior a 2020, ya que se utilizan paquetes (como nicematrix) que necesitan versiones posteriores a esa fecha.
 
-
+No se necesita ningún archivo de imágen adicional ya que todos los gráficos y representaciones están creadas con tikz dentro de cada fuente y así es más sencillo modificarlos.

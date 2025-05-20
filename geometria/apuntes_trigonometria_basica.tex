@@ -8,7 +8,7 @@
 \usepackage[T1]{fontenc}
 %textcomp es para el símbolo del euro
 \usepackage{lmodern, textcomp}
-
+%\usepackage{textgreek}
 \usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
 %\usepackage{mathexam}
 \usepackage{amsmath}
@@ -130,10 +130,26 @@ Nombre:\hrulefill\relax
                                      {1.5ex \@plus .2ex}%
                                      {\normalfont\normalsize\bfseries}}
  \setcounter{secnumdepth}{4}
+
+                                   
  \makeatother
  % \setcounter{tocdepth}{3} %Solo parts, sections y subsections en el índice.
 
-\renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+ \renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+
+
+ %Para que nombre bien los anexos.
+ \makeatletter
+\newcommand\appendix@section[1]{%
+  \refstepcounter{section}%
+  \orig@section*{Anexo \@Roman\c@section: #1}%
+  \addcontentsline{toc}{section}{Anexo \@Roman\c@section: #1}%
+}
+\let\orig@section\section
+\g@addto@macro\appendix{\let\section\appendix@section}
+\makeatother
+
+ 
 \begin{document}
 
 
@@ -150,7 +166,7 @@ Nombre:\hrulefill\relax
 \end{center}
 \tableofcontents
 \newpage
-
+\setlength{\parindent}{0cm}
 \section{Razones trigonométricas.}\label{def_razones}
 Se puede hacer una introducción a la trigonometría a través de la semejanza geométrica
 (teorema de Tales), pero dado el carácter de estos apuntes y el objetivo que persiguen nos
@@ -379,7 +395,7 @@ A continuación vamos a ver una tabla con las razones de ángulos que aparecen m
   no podemos dividir entre 0)}
 
 \section{Trigonometría en la circunferencia.}
-\subsection{Razones trigonométricas en la circunferencia.}
+\subsection{Razones trigonométricas en la circunferencia.} \label{razones_circunferencia}
 Hasta ahora las razones trigonométricas hacían referencia a los catetos y la hipotenusa de un triángulo rectángulo, pero nos encontramos con el problema de que con el triángulo rectángulo el mayor ángulo que podemos tener es de $90\degree$ mientras que sabemos que existen ángulos mayores.\\
 Para resolver esto lo que se hace es trasladar los conceptos de la trigonometría a una circunferencia de la siguiente manera:
 \begin{center}
@@ -405,7 +421,9 @@ Por simplificar se hace que el radio de la circunferencia valga 1 ($r = 1$), y d
 \item $\sen \alpha = y$
 \item $\cos \alpha = x$
 \end{itemize}
-(Si $r \neq 1$ tendremos que $\sen \alpha = \frac{y}{r}$ y lo mismo para el coseno)
+(Si $r \neq 1$ tendremos que $\sen \alpha = \frac{y}{r}$ y lo mismo para el coseno.
+Las implicaciones de todo esto se encuentran explicadas con más detalle en el anexo
+\ref{apendice_goniometrica})
 \subsection{Signos y cuadrantes.}
 Tal y como hemos dibujado la circunferencia, con su centro en el origen de coordenadas, tenemos la circunferencia dividida en \textbf{cuatro partes iguales}. A cada una de estas partes se la llama \textbf{cuadrante}.\\
 Estos cuadrantes se nombran en sentido contrario a las agujas del reloj (o en el sentido de aflojar un tornillo) empezando desde el que se encuentra en la parte superior derecha:
@@ -637,11 +655,11 @@ En estos ángulos es fácil observar que la altura que alcanzan sobre el eje hor
 Con lo cual concluimos:
 \begin{itemize}
 \item Como la altura que alcanzan es la misma los senos han de ser iguales:
-  $\sen (180\degree - \alpha) = \sen \alpha$.
+  $\boldsymbol{\sen (180\degree - \alpha) = \sen \alpha}$.
 \item Como la distancia al eje vertical es la misma pero de sentido contrario los cosenos han de ser opuestos:
-  $\cos (180\degree - \alpha) = -\cos \alpha$.
+  $\boldsymbol{\cos (180\degree - \alpha) = -\cos \alpha}$.
 \item La tangente, al ser seno entre coseno, cambia también de signo:
-  $\tg (180\degree - \alpha) = -\tg \alpha$.
+  $\boldsymbol{\tg (180\degree - \alpha) = -\tg \alpha}$.
 \end{itemize}
 % \end{minipage}
 }
@@ -687,11 +705,11 @@ Se observa que la altura que alcanzan sobre el eje horizontal ($y$) es la misma 
 Con lo cual concluimos:
 \begin{itemize}
 \item Como alcanzan alturas opuestas los senos han de ser opuestos:
-  $\sen (180\degree + \alpha) = -\sen \alpha$.
+  $\boldsymbol{\sen (180\degree + \alpha) = -\sen \alpha}$.
 \item Como la distancia al eje vertical es la misma pero de sentido contrario los cosenos también han de ser opuestos:
-  $\cos (180\degree + \alpha) = -\cos \alpha$.
+  $\boldsymbol{\cos (180\degree + \alpha) = -\cos \alpha}$.
 \item Sin embargo la tangente, al ser seno entre coseno, tiene el mismo signo:
-  $\tg (180\degree + \alpha) = \tg \alpha$.
+  $\boldsymbol{\tg (180\degree + \alpha) = \tg \alpha}$.
 \end{itemize}
 % \end{minipage}
 }
@@ -734,14 +752,199 @@ Se observa que la altura que alcanzan sobre el eje horizontal ($y$) es la misma 
 Con lo cual concluimos:
 \begin{itemize}
 \item Como alcanzan alturas opuestas los senos han de ser opuestos:
-  $\sen (360\degree - \alpha) = -\sen \alpha$.
+  $\boldsymbol{\sen (360\degree - \alpha) = -\sen \alpha}$.
 \item Como la distancia al eje vertical es la misma:
-  $\cos (360\degree - \alpha) = \cos \alpha$.
+  $\boldsymbol{\cos (360\degree - \alpha) = \cos \alpha}$.
 \item Sin embargo la tangente, al ser seno entre coseno, tiene que ser opuesta:
-  $\tg (360\degree - \alpha) = \tg \alpha$.
+  $\boldsymbol{\tg (360\degree - \alpha) = \tg \alpha}$.
 \end{itemize}
 }
+\subsection{Otras relaciones importantes.}
+\textbf{Las dos relaciones que siguen son muy importantes} ya que relacionan las razones
+trigonométricas en situaciones en las que hay perpendicularidad, y estas situaciones van
+a ser bastante frecuentes en geometría analítica.
+
+\subsubsection{\texorpdfstring{Relaciones entre $\boldsymbol{\alpha}$ y $\boldsymbol{90\degree + \alpha}$.}{Relaciones entre $\alpha$  y 90\textdegree + $alpha$.}}
+Aquí hemos dibujado un ángulo $\alpha$ y el correspondiente a $90\degree + \alpha$ de manera que
+uno está en el primer cuadrante y al otro le corresponde el segundo..\\
+En esta situación es fácil ver que la altura sobre el eje horizontal de un corresponde con la
+distancia horizontal en el otro. Y los signos se conservan excepto en la distancia horizontal, que
+la de $90\degree + \alpha$ es negativa por estar a la derecha del eje vertical.
+{
+  \setlength\intextsep{0pt}
+\begin{wrapfigure}{r}{.45\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=\linewidth, height=\linewidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+      \coordinate (O) at (0,0);
+      \coordinate (OA) at (2,0);
+      \coordinate (O1) at (0,-.2);
+      \coordinate (A1) at (3.47, 2);
+      \coordinate (A2) at (-2, 3.47);
+      \coordinate (BO2) at (-2, 0);
+      \coordinate (BO1) at (3.47, 0);
+      \coordinate (B2) at (-2, -.2);
+      \coordinate (B1) at (3.47, -.2);
+      \draw (O) circle (4);
+      \draw[dashed, latex-latex] (A1)--(BO1) node[midway, left] {$y$};
+      \draw[dashed, latex-latex] (A2)--(BO2) node[midway, left] {$x$};
+      \draw[dashed, latex-latex] (O1)--(B2) node[midway, below] {$-y$};
+      \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {$x$};
+      \draw (OA)--(O)--(A2)
+      pic["$\scriptstyle 90\degree + \alpha$"{yshift=2mm}, draw=darkgray, angle eccentricity=1.2, angle radius=.8cm]
+      {angle=OA--O--A2};
+      \draw (O)--(A1)
+      pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+      {angle=OA--O--A1};
+    \end{axis}
+  \end{tikzpicture}
+
+\end{wrapfigure}
+Con lo cual concluimos:
+\begin{itemize}
+\item Como la altura que alcanza $90\degree + \alpha$ coincide con la distancia horizontal
+  que tiene $\alpha$, con lo que:\\
+  $\boldsymbol{\sen (90\degree + \alpha) = \cos \alpha}$.
+\item La distancia horizontal de $90\degree + \alpha$ es la altura que alcanza $\alpha$ pero
+  de signo contrario ya que está a la izquierda del eje vertical:\\
+  $\boldsymbol{\cos (90\degree + \alpha) = -\sen \alpha}$.
+\item Y la tangente:\\
+  $\boldsymbol{\tg (90\degree +  \alpha) =
+    \frac{\sen (90\degree + \alpha)}{\cos (90\degree+ \alpha)} =
+    \frac{\cos \alpha}{-\sen \alpha} = -\cotg \alpha}$.\\
+  Que también puede escribirse\\
+  $\boldsymbol{\tg (90\degree +  \alpha) = -\frac{1}{\tg \alpha}}$
+  
+\end{itemize}
 % \end{minipage}
+}
+
+\subsubsection{\texorpdfstring{Relaciones entre $\boldsymbol{\alpha}$ y $\boldsymbol{270\degree + \alpha}$.}{Relaciones entre $\alpha$  y 270\textdegree + $alpha$.}}
+Aquí hemos dibujado un ángulo $\alpha$ y el correspondiente a $90\degree + \alpha$ de manera que
+uno está en el primer cuadrante y al otro le corresponde el segundo..\\
+En esta situación es fácil ver que la altura sobre el eje horizontal de un corresponde con la
+distancia horizontal en el otro. Y los signos se conservan excepto en la distancia horizontal, que
+la de $90\degree + \alpha$ es negativa por estar a la derecha del eje vertical.
+{
+  \setlength\intextsep{0pt}
+\begin{wrapfigure}{r}{.45\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=\linewidth, height=\linewidth, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+      \coordinate (O) at (0,0);
+      \coordinate (OA) at (2,0);
+      \coordinate (O1) at (0,-3.47);
+      \coordinate (O11) at (0, -.2);
+      \coordinate (A1) at (3.47, 2);
+      \coordinate (A2) at (2, -3.47);
+      \coordinate (BO2) at (2, 0);
+      \coordinate (BO1) at (3.47, 0);
+      \coordinate (B2) at (2, -3.47);
+      \coordinate (B1) at (3.47, -.2);
+      \draw (O) circle (4);
+      \draw[dashed, latex-latex] (A1)--(BO1) node[midway, left] {$y$};
+      \draw[dashed, latex-latex] (A2)--(BO2) node[midway, right] {$-x$};
+      \draw[dashed, latex-latex] (O1)--(B2) node[midway, above] {$y$};
+      \draw[dashed, latex-latex] (O11)--(B1) node[midway, below] {$x$};
+      \draw (OA)--(O)--(A2)
+      pic["$\scriptstyle 270\degree + \alpha$"{yshift=4mm}, draw=darkgray, angle eccentricity=1.2, angle radius=.8cm]
+      {angle=OA--O--A2};
+      \draw (O)--(A1)
+      pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+      {angle=OA--O--A1};
+    \end{axis}
+  \end{tikzpicture}
+
+\end{wrapfigure}
+Con lo cual concluimos:
+\begin{itemize}
+\item Como la altura que alcanza $270\degree + \alpha$ coincide con la distancia horizontal
+  que tiene $\alpha$ pero de signo contrario por estar debajo del eje horizontal:\\
+  $\boldsymbol{\sen (270\degree + \alpha) = -\cos \alpha}$.
+\item La distancia horizontal de $270\degree + \alpha$ es la altura que alcanza $\alpha$,
+  ambas positivas:\\
+  $\boldsymbol{\cos (270\degree + \alpha) = \sen \alpha}$.
+\item Y la tangente:\\
+  $\boldsymbol{\tg (270\degree +  \alpha) =
+    \frac{\sen (270\degree + \alpha)}{\cos (270\degree+ \alpha)} =
+  \frac{-\cos \alpha}{\sen \alpha} = -\cotg \alpha}$.\\
+  Que también puede escribirse\\
+  $\boldsymbol{\tg (90\degree +  \alpha) = -\frac{1}{\tg \alpha}}$
+  
+\end{itemize}
+% \end{minipage}
+}
+
+\subsection{Razones inversas en la circunferencia y uso de la calculadora.}
+En los apartados anteriores hemos razonado como se relaciona el valor de las razones
+trigonométricas en los distintos cuadrantes y hemos llegado, entre otras, a las siguientes conclusiones:
+\begin{itemize}
+\item $\sen (180\degree - \alpha) = \sen \alpha$.
+\item $\cos (-\alpha) = \cos \alpha$\\
+  Ó también la podemos escribir:\\
+  $\cos (360\degree - \alpha) = \cos \alpha$
+\item $\tg (180\degree + \alpha) = \tg \alpha$
+\end{itemize}
+
+También hemos visto el significado de las razones inversas, que son las que nos dan el ángulo en
+función del valor de la razón, de manera que si en la siguiente situación nos piden calcular
+$\alpha$:
+\begin{center}
+  \begin{tikzpicture}
+    \draw (0,0) coordinate (O) -- (3,2) coordinate (B) node[midway, sloped, above] {10\,cm};
+    \draw (0,0) coordinate (O) -- (3,0) coordinate (C);
+    \draw (B) -- (C) node[midway, right] {5\,cm};
+    \pic["$\alpha$", draw=black, angle eccentricity=1.4,
+    angle radius=1cm] {angle=C--O--B};
+  \end{tikzpicture}
+\end{center}
+Lo que haremos sera:
+\[\sen \alpha = \frac{5\unidad{cm}}{10\unidad{cm}} = 0.5\]
+Y en la calculadora hacemos el arco de seno y obtenemos el ángulo:
+\[\alpha = \asen 0.5 = 30\degree\]
+
+Pero si tenemos esta situación:
+\begin{center}
+  \begin{tikzpicture}
+    \draw (0,0) coordinate (O) -- (-3,2) coordinate (B) node[midway, sloped, below right] {10\,cm};
+    \draw (0,0) coordinate (O) -- (3,0) coordinate (C);
+    \draw (B) -- (C);
+    \draw[dashed, latex-latex] (-3,0)-- (B) node[midway, left] {5\,cm};
+    \pic["$\beta$", draw=black, angle eccentricity=1.4,
+    angle radius=.5cm] {angle=C--O--B};
+  \end{tikzpicture}
+\end{center}
+Y hacemos lo mismo nos llevaremos la sorpresa de que al calcular el ángulo con la calculadora
+obtenemos
+\[\beta = \asen 0.5 = 30\degree\]
+Y sabemos que no puede ser porque $\beta$ es obtuso, tiene que ser mayor de $90\degree$.\\
+
+Esto es por las relaciones que hemos visto al principio de este apartado, para cada razón hay dos
+ángulos que tienen el mismo valor de ésta, pero la calculadora siempre nos va a dar resultados:
+\begin{itemize}
+\item De $-90\degree$ a $90\degree$ para el arco de seno y el arco de tangente.
+\item De $0\degree$ a $180\degree$ para el arco de coseno.
+\end{itemize}
+Esto es porque la calculadora no entiende de contexto, y tendremos que corregir el valor que nos
+dé según el siguiente criterio:
+\begin{itemize}
+\item Si al calcular el \textbf{arco de seno} el resultado es $\boldsymbol{\alpha}$,
+  el resultado puede ser $\boldsymbol{180\degree - \alpha}$ dependiendo del contexto.
+\item  Si al calcular el \textbf{arco de coseno} el resultado es $\boldsymbol{\alpha}$,
+  el resultado puede ser $\boldsymbol{360\degree - \alpha}$ dependiendo del contexto.
+\item Si al calcular el \textbf{arco de tangente} el resultado es $\boldsymbol{\alpha}$,
+  el resultado puede ser $\boldsymbol{180\degree + \alpha}$ dependiendo del contexto.
+\end{itemize}
+
+Entonces en la segunda situación caso aplicaríamos el criterio que acabamos de ver siguiendo los siguientes
+pasos:
+\begin{enumerate}
+\item Calculamos la razón inversa, en este caso el arco de seno y nos sale:
+  \[\alpha = \asen 0.5 = 30\degree\]
+\item Sabemos que no puede ser $30\degree$ porque es obtuso.
+\item Aplicamos la corrección para el arco de seno y obtenemos $\alpha = 180\degree - 30\degree =
+  150\degree$ que es el verdadero valor del ángulo para esta situación.
+\end{enumerate}
 \section{Resolución de triángulos.} \label{resolucion_triangulos}
 Resolver un triángulo consiste en calcular sus tres lados y sus tres ángulos a partir de los datos dados.\\
 Para hacer esto tenemos \textbf{dos herramientas}: el teorema de \textbf{Pitágoras} y
@@ -869,7 +1072,7 @@ Y no está de más indicar que para que estos teoremas nos den resultados fiable
 utilizar la nomenclatura indicada en el punto \ref{nomenclatura_triangulo} (página:
 \pageref{nomenclatura_triangulo}).
 \subsubsection{Teorema del seno.}
-\emph{(La demostración de este teorema es bastante sencilla y se incluye en
+\emph{(La demostración de este teorema es bastante sencilla y se incluye en el anexo
   \ref{apendice_teoremaseno}, página \pageref{apendice_teoremaseno}).}
 Si tenemos un triángulo cualquiera
 \begin{center}
@@ -1026,7 +1229,7 @@ Resuelve un triángulo del que conocemos lo siguiente:
 \end{solution}
 \paragraph{Conocemos dos lados y un ángulo opuesto a uno de ellos.}
 \textbf{IMPORTANTE: En este caso podemos tener dos soluciones válidas}, y es lo que nos va a suceder
-en el ejemplo que hemos escogido (se puede ver el porqué en
+en el ejemplo que hemos escogido (se puede ver el porqué en el anexo
 \ref{apendice_dossoluciones}, página \pageref{apendice_dossoluciones}).\\
 
 
@@ -1153,7 +1356,7 @@ Resuelve un triángulo del que conocemos lo siguiente:
     \end{tikzpicture}
   \end{center}
   \end{itemize}
-  Ver \ref{apendice_dossoluciones} (página \pageref{apendice_dossoluciones})
+  Ver anexo \ref{apendice_dossoluciones} (página \pageref{apendice_dossoluciones})
 \end{solution}
 
 \subsubsection{Conocemos un lado y dos ángulos.}
@@ -1287,9 +1490,11 @@ Resuelve el triángulo que tiene de lados:
   \end{center}
 \end{solution}
 
-\newpage
 \appendix
-\renewcommand{\thesection}{Apendice \Alph{section}}
+\renewcommand{\thepart}{}
+\renewcommand{\partname}{}
+\part{Anexos}
+\renewcommand{\thesection}{\Roman{section}}
 
 \section{Demostración del teorema del seno.} \label{apendice_teoremaseno}
 Tenemos un triángulo no rectángulo y trazamos una de sus alturas (la más evidente):
@@ -1372,25 +1577,28 @@ En el primer ejemplo que hemos visto teníamos los siguientes datos:
 \item $\widehat{A} = 55\degree$.
 \end{itemize}
 
-Si dibujamos el lado $c$, el lado $a$ tiene que estar en una circunferencia de radio $6\unidad{cm}$ con
+Si dibujamos el lado $c$, el lado $a$ tiene que estar en un círculo de radio $6\unidad{cm}$ con
 centro en uno de los extremos de $c$:
 \begin{center}
   \begin{tikzpicture}[scale=.6]
     \begin{scope}
+      
       \clip (-1,-1) rectangle (8,8);
       \coordinate (A) at (0,0);
       \coordinate (B) at (7,0);
-      \draw (A)--(B) node[below, midway] {${c}$};
+      \draw (A) --(B)  node[below, midway] {${c}$};
       \draw[dashed, draw=midgray] (B) circle(6);
-      \end{scope}
-    \end{tikzpicture}
-  \end{center}
-  Si en el otro extremo dibujamos el ángulo que nos dan (porque $\widehat{A}$ es opuesto a $a$ que es el
-  radio de la circunferencia) tenemos que corta a la circunferencia en dos puntos, que son los vértices
-  $C$ de las dos soluciones que hemos obtenido al resolver el ejemplo:
-  \begin{center}
-    \begin{tikzpicture}[scale=.6]
-      \begin{scope}
+      \draw[fill] (A) circle(2pt);
+      \draw[fill] (B) circle(2pt);
+    \end{scope}
+  \end{tikzpicture}
+\end{center}
+Si en el otro extremo dibujamos el ángulo que nos dan (porque $\widehat{A}$ es opuesto a $a$ que es el
+radio de la circunferencia que hemos dibujado) tenemos que corta a la circunferencia en dos puntos, que son los vértices
+$C$ de las dos soluciones que hemos obtenido al resolver el ejemplo:
+\begin{center}
+  \begin{tikzpicture}[scale=.6]
+    \begin{scope}
       \clip (-1,-1) rectangle (8,8);
       \coordinate (A) at (0,0);
       \coordinate (B) at (7,0);
@@ -1404,37 +1612,215 @@ centro en uno de los extremos de $c$:
       \draw (A)--(E);
       \draw (B)--(C) node[above, midway] {\Large{$a$}};
       \draw (B)--(D) node[above right, midway] {\Large{$a$}};
-      \end{scope}
-    \end{tikzpicture}
-  \end{center}
+    \end{scope}
+  \end{tikzpicture}
+\end{center}
 
-  Y de ahí las dos soluciones que hemos obtenido:
-  \begin{center}
-    \begin{tikzpicture}[scale=.6]
-      \coordinate (A1) at (0,0);
-      \coordinate (B1) at (7,0);
-      \coordinate (C1) at (1.29,1.84);
+Y de ahí las dos soluciones que hemos obtenido:
+\begin{center}
+  \begin{tikzpicture}[scale=.6]
+    \coordinate (A1) at (0,0);
+    \coordinate (B1) at (7,0);
+    \coordinate (C1) at (1.29,1.84);
 
-      \coordinate (A2) at (9,0);
-      \coordinate (B2) at (16,0);
-      \coordinate (C2) at (12.32,4.74);
-      
-      \draw (A1)--(B1) node[below, midway] {\Large{$c$}};
-      \draw (B1)--(C1) node[above right, midway] {\Large{$a$}};
-      \draw (A1)--(C1) node[above left, midway] {\Large{$b$}};
-      \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm
-      ] {angle=B1--A1--C1};
+    \coordinate (A2) at (9,0);
+    \coordinate (B2) at (16,0);
+    \coordinate (C2) at (12.32,4.74);
+    
+    \draw (A1)--(B1) node[below, midway] {\Large{$c$}};
+    \draw (B1)--(C1) node[above right, midway] {\Large{$a$}};
+    \draw (A1)--(C1) node[above left, midway] {\Large{$b$}};
+    \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm
+    ] {angle=B1--A1--C1};
 
-      
-      \draw (A2)--(B2) node[below, midway] {\Large{$c$}};
-      \draw (B2)--(C2) node[above right, midway] {\Large{$a$}};
-      \draw (A2)--(C2) node[above left, midway] {\Large{$b$}};
-      \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm
-      ] {angle=B2--A2--C2};
-    \end{tikzpicture}
-  \end{center}
+    
+    \draw (A2)--(B2) node[below, midway] {\Large{$c$}};
+    \draw (B2)--(C2) node[above right, midway] {\Large{$a$}};
+    \draw (A2)--(C2) node[above left, midway] {\Large{$b$}};
+    \draw pic["$\widehat{A}$",draw=darkgray, angle eccentricity=1.45, angle radius=.5cm
+    ] {angle=B2--A2--C2};
+  \end{tikzpicture}
+\end{center}
 
-  A la vista de la interpretación gráfica de lo que está pasando en ese caso es
-  fácil deducir que habrá casos en los que solo tengamos una solución y otros en los que no haya
-  solución.
+A la vista de la interpretación gráfica de lo que está pasando en ese caso es
+fácil deducir que habrá casos en los que solo tengamos una solución y otros en los que no haya
+solución.
+
+\section{Interpretación geométrica de todas  las relaciones trigonométricas.} \label{apendice_goniometrica}
+Este apéndice se incluye a modo de curiosidad y como ejercicio didáctico que puede ayudar a
+comprender y profundizar en el significado geométrico de las relaciones trigonométricas.\\
+
+La interpretación geométrica del seno y el coseno en la circunferencia ya la hemos visto en el
+apartado \ref{razones_circunferencia} (página \pageref{razones_circunferencia}), pero vamos a
+representarla otra vez como punto de partida para lo que sigue:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=8cm, height=8cm, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (3.52, 1.9);
+    \coordinate (B) at (3.52, 0);
+    \coordinate (B1) at (3.52, -.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$r$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, left] {\large{$y$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {\large{$x$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+Y sabemos que
+\begin{itemize}
+\item $\sen \alpha = \frac{y}{r}$
+\item $\cos \alpha = \frac{x}{r}$
+\end{itemize}
+Por tanto también lo podemos representar:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=11.5cm, height=8cm, xmin=-5, xmax=10, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (3.52, 1.9);
+    \coordinate (B) at (3.52, 0);
+    \coordinate (B1) at (3.52, -.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$r$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {\ \,\large{$r*\sen \alpha$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {\large{$r*\cos \alpha$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+
+Prolongamos el triángulo hasta la vertical que toca el borde derecho de la circunferencia, y queda:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=11.5cm, height=8cm, xmin=-5, xmax=10, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (4, 2.16);
+    \coordinate (B) at (4, 0);
+    \coordinate (B1) at (4, -.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$a$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {\large{$b = a*\sen \alpha$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {\large{$r = a*\cos \alpha$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+
+Hemos llamado $a$ y $b$ a las nuevas distancias que no conocemos. Lo único que sabemos es la
+relación que tienen con las razones de $\alpha$ y que el radio de la circunferencia sigue siendo
+$r$.\\
+
+Partiendo de que ahora la distancia horizontal vale $r$ podemos obtener $a$:
+\[r = a*\cos \alpha\]
+\[a = \frac{r}{\cos \alpha}\]
+\[\boldsymbol{a = r *\frac{1}{\cos \alpha} = r*\sec \alpha}\]
+Y una vez que tenemos $a$ podemos calcular $b$:
+\[b = a*\sen \alpha\]
+\[b = r*\sec \alpha*\sen \alpha\]
+\[\boldsymbol{b = r*\frac{1}{\cos \alpha} *\sen \alpha = r*\frac{\sen \alpha}{\cos \alpha} =
+    r*\tg \alpha}\]
+Y representadas quedan:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=11.5cm, height=8cm, xmin=-5, xmax=10, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (4, 2.16);
+    \coordinate (B) at (4, 0);
+    \coordinate (B1) at (4, -.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$r*\sec \alpha$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {\large{$r*\tg \alpha$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {\large{$r$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+
+
+Si hacemos el mismo razonamiento prolongando el triángulo hasta la horizontal que
+toca el borde superior de la circunferencia nos queda:
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[width=11.5cm, height=8cm, xmin=-5, xmax=10, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,4.2);
+    \coordinate (A) at (7.41, 4);
+    \coordinate (B) at (7.41, 0);
+    \coordinate (B1) at (7.41, 4.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$r*\cosec \alpha$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, left] {\large{$r$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, above] {\large{$r*\cotg \alpha$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+
+Y en caso de que el radio valga 1 se simplifica todo bastante, ya que queda:
+\begin{center}
+  \begin{tikzpicture}[scale=.6]
+  \begin{axis}[width=8.8cm, height=8cm, xmin=-5, xmax=6, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center, title={\textbf{Interpretación seno y coseno}}]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (3.52, 1.9);
+    \coordinate (B) at (3.52, 0);
+    \coordinate (B1) at (3.52, -.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$1$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {\ \,\large{$\sen \alpha$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {\large{$\cos \alpha$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}[scale=.6]
+  \begin{axis}[width=8.8cm, height=8cm, xmin=-5, xmax=6, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center, title={\textbf{Interpretación tangente y secante}}]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,-.2);
+    \coordinate (A) at (4, 2.16);
+    \coordinate (B) at (4, 0);
+    \coordinate (B1) at (4, -.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$\sec \alpha$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, right] {\large{$\tg \alpha$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, below] {\large{$1$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}  
+\begin{tikzpicture}[scale=.6]
+  \begin{axis}[width=11.5cm, height=8cm, xmin=-5, xmax=10, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center, title={\textbf{Interpretación cotangente y cosecante}}]
+    \coordinate (O) at (0,0);
+    \coordinate (O1) at (0,4.2);
+    \coordinate (A) at (7.41, 4);
+    \coordinate (B) at (7.41, 0);
+    \coordinate (B1) at (7.41, 4.2);
+    \draw (O) circle (4);
+    \draw (O)--(A) node[midway, above, sloped] {\large{$\cosec \alpha$}};
+    \draw[dashed, latex-latex] (A)--(B) node[midway, left] {\large{$1$}};
+    \draw[dashed, latex-latex] (O1)--(B1) node[midway, above] {\large{$\cotg \alpha$}};
+    \draw (A)--(O)--(B)
+    pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=B--O--A};
+  \end{axis}
+\end{tikzpicture}
+\end{center}
+
 \end{document}

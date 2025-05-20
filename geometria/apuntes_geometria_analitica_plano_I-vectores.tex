@@ -35,7 +35,6 @@ lang={spanish}]{doclicense}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat = newest}
-\pgfplotsset{compat=1.12}
 \usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
 \usetikzlibrary{arrows.meta,shapes,positioning}
 \usetikzlibrary{matrix}
@@ -102,7 +101,10 @@ Nombre:\hrulefill\relax
 \newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
 \newcommand\adjunto[1]{#1^\text{*}}
 \newcommand\rango[1]{\mathrm{rg}(#1)}
+
+%Geometría:
 \newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+\newcommand\distancia[2]{\text{d}(#1,#2)}
 %Para escribir explicaciones encima del igual:
 %\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
 %Parece que mejor con stackrel
@@ -289,7 +291,7 @@ A modo de regla tenemos que:
   Y vemos que el resultado gráfico de $B$ coincide con el calculado.
 \end{questions}
 
-\subsection{Propiedades de los vectores.}
+\subsection{Propiedades de los vectores.} \label{propiedades_vectores}
 Al estar compuestos de varios valores y tener el significado que tienen hace que los vectores
 tengan unas propiedades fundamentales que no tiene ningún otro objeto matemático que hayamos
 visto hasta ahora.\\
@@ -309,12 +311,14 @@ Estas propiedades son las siguientes:
   \end{center}
   Entonces podemos utilizar el teorema de Pitágoras para calcular el módulo del vector, que
   se escribe poniéndolo entre dos barras verticales:
-  \[|\vec{v}| = \sqrt{v_x^2 + v_y^2}\] 
+  \[|\vec{v}| = \sqrt{v_x^2 + v_y^2}\]
+  Es importante darse cuenta de que \textbf{el módulo es siempre positivo}, ya que es un tamaño
+  y no hay tamaños negativos.
 \item \textbf{Dirección}: la dirección de un vector es la recta que lo contiene. Para entenderlo
   mejor podemos imaginar que la dirección de un vector es la inclinación que tiene este con
   respecto a la horizontal.\\
   Muchas veces se utiliza como ``sinónimo'' \textbf{la pendiente}, que es \textbf{la tangente del
-    ángulo que forma el vector con la horizontal} y, teniendo en cuenta que el vector con sus
+    ángulo que forma el vector con la horizontal positiva} y, teniendo en cuenta que el vector con sus
   componentes forma un triángulo rectángulo, la pendiente se calcula como:
   \begin{center}
     Pendiente$=\tg \alpha = \frac{v_y}{v_x}$
@@ -334,18 +338,20 @@ no son el mismo vector ya que tienen igual módulo y dirección pero distinto se
 hemos dicho que son opuestos.
 
 \begin{questions}
-\question Calcula el módulo y el ángulo que forma con la horizontal el vector $\vec{v} = (-1,3)$.
+\question Calcula el módulo y el ángulo que forma con la horizontal positiva el vector $\vec{v} = (-1,3)$.
   \begin{solution}
     Por lo que hemos visto el módulo se calcula utilizando el teorema de Pitágoras:
     \[|\vec{v}| = \sqrt{(-1)^2 + 3^2} = \sqrt{10}\]
 
-    Y el ángulo que forma con la horizontal es el arco de tangente de su pendiente:
+    Y el ángulo que forma con la horizontal positiva es el arco de tangente de su pendiente:
     \[\tg \alpha = \frac{3}{-1} = -3\]
     \[\alpha = \atg (-3) \simeq -71.57\degree = 288.43\degree\]
-    El ángulo lo podemos dejar en negativo o positivo según nos convenga o nos diga el contexto.
+    El ángulo lo podemos dejar en negativo o positivo según nos convenga o nos diga el contexto.\\
+    Más adelante veremos que a veces hay que aplicar correcciones al resultado que nos
+    da la calculadora, como ya vimos en trigonometría.
   \end{solution}
 \end{questions}
-\subsection{Vectores unitarios.}
+\subsection{Vectores unitarios.}\label{vector_unitario}
 Se dice que que un vector es unitario cuando su módulo es $1$.\\
 Más adelante veremos como obtener un vector unitario en la dirección y sentido de otro vector.
 
@@ -409,7 +415,7 @@ Como se puede ver ambos tienen el mismo módulo y la misma dirección, pero dist
     \[\vec{w} = -\vec{v} = (2,-3)\]
   \end{solution}
 \end{questions}
-\subsection{Suma de punto y vector.}
+\subsection{Suma de punto y vector.} \label{suma_punto_vector}
 Esta operación ya se ha explicado en la definición de vector, ya que está íntimamente ligada
 a esta definición, pero no está de más volverla a contar, tanto de manera analítica como
 geométrica.\\
@@ -458,8 +464,8 @@ Tal y como indica el dibujo la operación geométrica es
   indicados en las componentes.
 \item El resultado es el punto en el que finaliza el vector.
 \end{enumerate}
-\subsection{Suma de vectores.}
-\textbf{La suma de vectores es otro vector cuya componente horizontal es la suma de las componentes horizontales y cuya componente vertical es la suma de componenetes verticales.}\\
+\subsection{Suma de vectores.} \label{suma_vectores}
+\textbf{La suma de vectores es otro vector cuya componente horizontal es la suma de las componentes horizontales y cuya componente vertical es la suma de componentes verticales.}\\
 Es decir, si $\boldsymbol{\vec{u} = (u_x, u_y)}$ y $\boldsymbol{\vec{v} = (v_x, v_y)}$ entonces:
 \[\boldsymbol{\vec{u} + \vec{v} = (u_x + v_x, u_y + v_y)}\]
 
@@ -604,7 +610,7 @@ Vamos a ver un par de ejemplos de manera analítica y gráfica.
     Y esta sería la interpretación geométrica de la resta de vectores.
   \end{solution}
 \end{questions}
-\subsubsection{Regla del paralelogramo.}
+\subsubsection{Regla del paralelogramo.} \label{regla_paralelogramo}
 Para entender bien esta regla vamos a utilizar los vectores de los ejemplos de la suma de
 vectores.\\
 
@@ -657,4 +663,852 @@ Y resulta que \textbf{el vector suma $\boldsymbol{\vec{u} + \vec{v}}$ es la diag
     \end{axis}
   \end{tikzpicture}
 \end{center}
+
+Y si juntamos mentalmente las dos representaciones tenemos que la suma y la recta de dos
+vectores son las diagonales del paralelogramo cuyos lados son los dos vectores.
+
+\subsubsection{Propiedades de la suma de vectores.}
+Es importante que conozcamos las propiedades de la suma para saber lo que podemos y no podemos
+hacer. Y además nos sirven para repasar los nombres de las propiedades de las operaciones
+con números.
+\begin{itemize}
+\item \textbf{Conmutativa}. La suma de vectores es conmutativa.
+  \[\boldsymbol{\vec{a} + \vec{b} = \vec{b} + \vec{a}}\]
+\item \textbf{Asociativa}.
+  \[\boldsymbol{(\vec{a} + \vec{b}) + \vec{c} = \vec{a} + (\vec{b} + \vec{c})}\]
+\item \textbf{Elemento neutro}. Existe el vector nulo: $\vec{o} = (0,0)$
+  \[\boldsymbol{\vec{a} + \vec{o} = \vec{o} + \vec{a} = \vec{a}}\]
+\item \textbf{Elemento opuesto o simétrico}. Dado $\vec{a} = (a_x, a_y)$ su opuesto es
+  $-\vec{a} = (-a_x, -a_y)$, ya que:
+  \[\boldsymbol{\vec{a} + (-\vec{a}) = (a_x + a_y) + (-a_x, -a_y) = (0,0) = \vec{o}}\]
+\end{itemize}
+\subsection{Producto de un vector por un número.} \label{producto_por_escalar}
+Vamos a aprovechar este punto para introducir un concepto, que es el concepto de \emph{escalar}.
+En el contexto en el que estamos, matemáticas de secundaria, \textbf{un escalar es un número}.\\
+Esta definición se hace necesaria porque en muchos textos se habla de ``producto de un escalar
+por un vector'', y también hablaremos de escalares en estos apuntes.\\
+Dicho esto vamos a ver cómo se hace esta operación:\\
+
+Para multiplicar un número por un vector lo tenemos que multiplicar por sus componentes, de tal
+manera que el resultado es otro vector.\\
+De manera simbólica, si $\vec{v} = (v_x, v_y)$ y $a \in \mathbb{R}$ entonces:
+\[\boldsymbol {a*\vec{v} = (a*v_x, a*v_y)}\]
+
+Vamos a ver la interpretación gráfica con un ejemplo, que en este caso va a hacer que se entienda mejor.\\
+\textbf{Multiplica $\vec{v} = (2, 1)$ por $3$ y por $-2$.}
+\begin{solution}
+  Por lo que hemos dicho:
+  \[3*\vec{v} = (6,3)\]
+  Y
+  \[-2*\vec{v} = (-4,-2)\]
+  Y si lo dibujamos tenemos:
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{axis}[axis equal, xmin=-1, xmax=7, ymin=-1, ymax=5, axis lines = middle,
+        axis line style={draw=lightgray}, xticklabel=\empty, yticklabel=\empty,
+        tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4, 5},
+        xtick={-1, 0, 1, 2, 3, 4, 5, 6, 7}]
+        \draw[thick, -Latex] (0,1) --(2,2) node[midway, sloped, above] {$\vec{v}$};
+        \draw[thick, -Latex] (0,2) --(6,5) node[midway, sloped, above] {$3*\vec{v}$};
+        \draw[thick, -Latex] (4,2) --(0,0) node[midway, sloped, above] {$-2*\vec{v}$};
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}\small{(Los hemos dibujado saliendo de distintos puntos porque son vectores
+      libres. Lo importante son sus propiedades)}\end{center}
+\end{solution}
+Vemos que el vector resultado de $3*\vec{v}$ tiene la misma dirección y el mismo sentido que el original, lo que cambia es el módulo. Y el resultado de $-2*\vec{v}$ tiene la misma dirección, distinto
+sentido y también ha cambiado el módulo.\\
+¿Y en \textbf{cuánto cambia el módulo}?. Pues vamos a deducirlo:\\
+
+Tenemos $a \in \mathbb{R}$ y $\vec{v} = (v_x, v_y)$, y por la definición:
+\[a*\vec{v} = (a*v_x, a*v_y)\]
+Entonces el módulo es:
+\[|a*\vec{v}| = \sqrt{(a*v_x)^2 + (a*v_y)^2}\]
+Por las propiedades de las potencias:
+\[|a*\vec{v}| = \sqrt{a^2*v_x^2 + a^2*v_y^2}\]
+Sacamos factor común en el radicando:
+\[|a*\vec{v}| = \sqrt{a^2*(v_x^2 + v_y^2)}\]
+Y finalmente extraemos $a$ del radical:
+\[|a*\vec{v}| = a*\sqrt{v_x^2 + v_y^2}\]
+Nos queda por ajustar algo, ya que puede ocurrir que $a<0$, y en \ref{propiedades_vectores} (página
+\pageref{propiedades_vectores}) hemos visto que el módulo tiene que ser positivo. Entonces:
+\[|a*\vec{v}| = |a|*\sqrt{v_x^2 + v_y^2}\]
+Con lo cual:
+\[\boldsymbol{|a*\vec{v}| = |a|*|\vec{v}|}\]
+
+Con \textbf{respecto al sentido} tenemos que $3*\vec{v}$ ha mantenido el sentido mientras que $-2*\vec{v}$ ha cambiado.\\
+
+De todo esto podemos concluir que \textbf{el resultado de multiplicar un escalar por un vector es
+  otro vector que:
+  \begin{itemize}
+  \item Tiene la misma dirección que el original.
+  \item Su módulo es el módulo del original multiplicado por el valor absoluto del número.
+  \item Su sentido se mantiene si el número es positivo y cambia si el número es negativo.
+  \end{itemize}
+}
+
+Con lo que la interpretación de los ejemplos sería:
+\begin{itemize}
+\item $3*\vec{v}$ es un vector que:
+  \begin{itemize}
+  \item Tiene la misma dirección que $\vec{v}$.
+  \item Su modulo es el triple del módulo de $\vec{v}$.
+  \item Al ser $3$ positivo tiene el mismo sentido que $\vec{v}$.
+  \end{itemize}
+\item $-2*\vec{v}$ es un vector que:
+  \begin{itemize}
+  \item Tiene la misma dirección que $\vec{v}$.
+  \item Su módulo es el doble del de $\vec{v}$.
+  \item Tiene sentido contrario a $\vec{v}$ por ser $-2$ negativo.
+  \end{itemize}
+\end{itemize}
+
+Y como conclusión final podemos decir que \textbf{el producto de un escalar por un vector
+  siempre nos da un vector paralelo}.
+
+\subsubsection{Propiedades del producto por un escalar.}
+Al igual que con la suma, tenemos que saber las propiedades para poder operar correctamente.\\
+
+Tenemos unos vectores $\vec{v}$, $\vec{w}$, \dots y varios números $a,b,\dots \in \mathbb{R}$:
+\begin{itemize}
+\item \textbf{Conmutativa.}
+  \[\boldsymbol{a*\vec{v} = \vec{v}*a}\]
+\item \textbf{Asociativa.}
+  \[\boldsymbol{a*(b*\vec{v}) = (a*b)*\vec{v}}\]
+\item \textbf{Distributiva respecto a la suma de vectores.}
+  \[\boldsymbol{a*(\vec{v} + \vec{w}) = a*\vec{v} + a*\vec{w}}\]
+\item \textbf{Distributiva respecto a la suma de números (o escalares).}
+  \[\boldsymbol{(a+b)*\vec{v} = a*\vec{v} + b*\vec{v}}\]
+\end{itemize}
+\subsection{División de un vector entre un escalar.}
+Es exactamente lo mismo que la multiplicación pero dividiendo:\\
+Si $\vec{v} = (v_x, v_y)$ y $a \in \mathbb{R}$ y distinto de cero:
+\[\frac{\vec{v}}{a} = \left(\frac{v_x}{a}, \frac{v_y}{a}\right)\]
+
+Realmente la división no difiere de la multiplicación, ya que a efectos de resultado
+dividir entre $2$ es lo mismo que multiplicar por $\frac{1}{2}$.\\
+Por tanto, la interpretación geométrica va a ser la misma que en la multiplicación
+(nos da un vector paralelo) salvo en el apartado del módulo, que en lugar de multiplicarse
+por el número se va a dividir entre él.\\
+
+Hay que decir que \emph{no se habla nunca de esta operación, ya que es más sencillo hacer la
+multiplicación por la fracción y utilizar las propiedades de la multiplicación}.
+
+\section{Combinaciones lineales. Bases.}
+\subsection{Combinación lineal de vectores.}
+Dados los vectores \{$\vec{v_1}, \vec{v_2}, \vec{v_3},\dots,\vec{v_n}$\} y los escalares
+\{$a_1, a_2, a_3, \dots, a_n$\}, se llama combinación lineal a la operación
+\[a_1*\vec{v_1} + a_2*\vec{v_2}+\dots+a_n*\vec{v_n}\]
+El resultado de esta operación es otro vector.
+
+\subsubsection{Dependencia e independencia lineal.}
+Se dice que un vector $\vec{w}$ es linealmente dependiente de un conjunto de vectores
+\{$\vec{v_1}, \vec{v_2}, \vec{v_3},\dots,\vec{v_n}$\} si se puede escribir como combinación lineal
+de ellos.\\
+
+En caso contrario se dice que es linealmente independiente.\\
+
+\begin{questions}
+\question Escribe el vector $\vec{w} = (3, 5)$ como combinación lineal de los vectores
+  $\vec{u} = (1,2)$ y $\vec{v} = (-1, 0)$.
+  \begin{solution}
+    Por lo visto en este apartado de combinaciones lineales, para que un vector sea combinación
+    lineal de otros dos tenemos que encontrar dos números $a$ y $b$ que hagan
+    \[\vec{w} = a*\vec{u} + b*\vec{v}\]
+    \[(3,5) = a*(1, 2) + b*(-1, 0)\]
+    \[(3,5) = (a, 2a) + (-b, 0)\]
+
+    Como sabemos que una componente es independiente de la otra podemos separarlo en dos ecuaciones:
+    \[
+      \begin{cases}
+        3 & = a+(-b)\\
+        5 &= 2a + 0
+      \end{cases}
+    \]
+    Con lo que el ejercicio se reduce a resolver un sistema de ecuaciones.\\
+
+    De la segunda obtenemos que $a =\frac{5}{2}$, sustituimos en la primera y
+    \[3 = a - \frac{5}{2}\]
+    \[a = 3 + \frac{5}{2}\]
+    \[a = \frac{11}{2}\]
+
+    Con lo que la combinación lineal es:
+    \[(3, 5) = \frac{11}{2}*(1, 2) + \frac{5}{2}*(-1, 0)\]
+  \end{solution}
+\question Indica si el vector $\vec{w} = (2, -3)$ es linealmente dependiente de los vectores
+  $\vec{u} = (-2, 4)$ y $\vec{v}= (3, -6)$.
+  \begin{solution}
+    Por la definición de linealmente dependiente tiene que ocurrir que podamos escribir $\vec{w}$
+    como combinación lineal de los otros dos. Se reduce a resolver un problema como el anterior:
+    \[(2, -3) = a*(-2, 4) + b*(3, -6)\]
+    \[
+      \begin{cases}
+        2 & = -2a + 3b\\
+        -3 &= 4a -6b
+      \end{cases}
+    \]
+    Si multiplicamos la primera por 2 nos queda:
+    \[
+      \begin{cases}
+        4 & = -4a + 6b\\
+        -3 &= 4a -6b
+      \end{cases}
+    \]
+    Y al reducir nos queda la ecuación
+    \[1 = 0\]
+    Y sabemos que esto quiere decir que \textbf{no hay solución}.\\
+    Y \textbf{si no hay solución es porque $\vec{w}$ no puede escribirse como combinación lineal de
+      $\vec{u}$ y $\vec{v}$}.\\
+    Y si no se puede escribir como combinación lineal es porque $\vec{w}$
+    \textbf{es linealmente independiente} de $\vec{u}$ y $\vec{v}$.
+  \end{solution}
+\end{questions}
+
+\subsection{Base de un espacio vectorial.}
+Se dice que \textbf{un conjunto de vectores linealmente independientes
+  \{$\vec{v_1}, \vec{v_2}, \vec{v_3},\dots,\vec{v_n}$\} es base
+  si cualquier vector se puede construir como combinación lineal de ellos}. A los escalares que
+multiplican a los vectores de la base se les llama componentes o coordenadas.\\
+
+En el caso del \textbf{plano} (que a veces también llamaremos $\mathbb{R}^2$) se llama
+\textbf{base canónica} al conjunto formado por los vectores $\boldsymbol{\vec{u_1} = (1, 0)}$ y
+$\boldsymbol{\vec{u_2} = (0,1)}$.\\
+\emph{(Los vectores de la base canónica reciben muchos nombres que puedes encontrar en otros
+  apuntes o libros: \{$\vec{e_1}, \vec{e_2}$\} ó \{$\vec{i},\vec{j}$\}. Estos últimos nombres los
+  usaremos mucho en bachillerato)}\\
+
+Es fácil ver cómo construir cualquier vector como combinación lineal de la base canónica.
+\begin{questions}
+\question Indica la combinación lineal de la base canónica para construir el vector
+  $\vec{v} = (-2, 5)$.
+  \begin{solution}
+    Es bastante sencillo:
+    \[(-2, 5) = -2*(1,0) + 5*(0,1)\]
+    O también
+    \[(-2, 5) = -2*\vec{u_1} + 5*\vec{u_2}\]
+  \end{solution}
+\question Dada la base $B=\{(1,2), (2,1)\}$, escribe las componentes del vector $\vec{v} = (1,1)$
+  en esa base.
+  \begin{solution}
+    Por lo que hemos dicho las componentes son los escalares que multiplican a los vectores
+    de la base en la combinación lineal, con lo que en este ejercicio tenemos que hacer lo mismo
+    que en los del apartado anterior. Escribimos la ecuación vectorial:
+    \[(1, 1) = a*(1, 2) + b*(2, 1)\]
+    Que en forma de sistema es:
+    \[
+      \begin{cases}
+        1 &=a + 2b\\
+        1 &=2a +b
+      \end{cases}
+    \]
+    Que vamos a resolver por sustitución. Despejamos $a$ en la primera
+    \[a = 1- 2b\]
+    Sustituimos en la segunda:
+    \[1 = 2(1-2b) + b\]
+    De donde se obtiene $b = \frac{1}{3}$.\\
+    Sustituimos $a = 1- 2*\frac{1}{3} = \frac{1}{3}$, con lo que las componentes de $\vec{v}$ en
+    la base del enunciado son:
+    \[a= \frac{1}{3},\ b=\frac{1}{3}\]
+  \end{solution}
+\end{questions}
+\section{Coordenadas rectangulares y polares.}
+Las \textbf{coordenadas rectangulares}, o cartesianas, son las que hemos utilizado en todo lo que hemos
+visto hasta ahora: \textbf{dos valores que indican el desplazamiento horizontal y vertical}, y se
+escribe poniendo esos dos valores entre paréntesis primero el horizontal y luego el vertical.
+\[\vec{v} = (v_x, v_y)\]
+
+Las \textbf{coordenadas polares} también son una pareja de valores, pero en este caso
+\textbf{son el módulo del vector y el ángulo que forma con la horizontal}. En este caso se escriben
+poniendo el ángulo como subíndice del módulo:
+\Large{\[\vec{v} = |\vec{v}|_{\,\alpha}\]}
+
+Si representamos el vector con sus distintas coordenadas tenemos:
+\begin{center}
+  \begin{tikzpicture}[scale=1.3]
+    \draw[-Latex] (0,0) coordinate (O) -- (3, 2) coordinate (A) node[midway, sloped, above]
+    {$\vec{v}$};
+    \draw[dashed, latex-latex] (3,0) -- (A) node[midway, right] {$v_y$};
+    \draw[dashed, latex-latex] (0,-.2)-- (3, -.2) node[midway, below] {$v_x$};
+    \draw[dashed, latex-latex] (0.2,0)-- (3, 1.9) node[midway, sloped, below] {$|\vec{v}|$};
+    \draw[color=gridgray] (-1, 0) -- (4,0) coordinate (B);
+    \pic["$\scriptstyle{\alpha}$", draw=black, angle eccentricity=1.4,
+        angle radius=.8cm] {angle=B--O--A};
+  \end{tikzpicture}
+\end{center}
+Es decir, el vector con sus componentes forman un triángulo rectángulo cuyo cateto vertical ($v_y$)
+es el cateto opuesto al ángulo que forma el vector con la horizontal, que es el ángulo que estamos
+utilizando.\\
+Echando mano de lo que recordamos de trigonometría y el teorema de Pitágoras tenemos las siguientes
+relaciones (algunas de las cuales ya las conocíamos):
+\begin{itemize}
+\item $|\vec{v}| = \sqrt{v_x^2 + v_y^2}$
+\item $\tg \alpha = \frac{v_y}{v_x}$
+\item $\cos \alpha = \frac{v_x}{|\vec{v}|}$
+\item $\sen \alpha = \frac{v_y}{|\vec{v}|}$
+\end{itemize}
+
+Y con esto ya podemos ver cómo convertir de coordenadas rectangulares y viceversa.\\
+
+Vamos a empezar por la conversión de polares a rectangulares que es la más sencilla.
+\subsection{De polares a rectangulares}
+Para ello vamos a utilizar las relaciones del seno y el coseno, que en trigonometría
+utilizábamos para calcular catetos.\\
+Como hemos visto que las componentes son los catetos se reduce a hacer lo mismo que hacíamos para
+calcular catetos:
+\begin{itemize}
+\item $\cos \alpha = \frac{v_x}{|\vec{v}|} \longrightarrow \boldsymbol{v_x = |\vec{v}|*\cos \alpha}$
+\item $\sen \alpha = \frac{v_y}{|\vec{v}|} \longrightarrow \boldsymbol{v_y = |\vec{v}|*\sen \alpha}$
+\end{itemize}
+Entonces:
+\[\boldsymbol{\vec{v} = |\vec{v}|_\alpha = \left(|\vec{v}|\cos \alpha, |\vec{v}|\sen \alpha\right)}\]
+
+\textbf{Hacemos un pequeño ejemplo:}\\
+Dado el vector $\vec{v} = 3_{\,40\degree}$ escríbelo en coordenadas cartesianas.
+\begin{solution}
+  \begin{itemize}
+  \item Calculamos la componente horizontal $v_x = 3*\cos 40\degree = 2.298$
+  \item Calculamos la componente vertical $v_y =3*\sen 40\degree = 1.928$
+  \end{itemize}
+  Por tanto tenemos que
+  \[\vec{v} = (2.298;1.928)\quad\text{\small{(Como hay decimales hemos puesto ';' para
+      separar las componentes)}}\]
+\end{solution}
+
+\subsection{De rectangulares a polares.}
+Para hacer la conversión de rectangulares a polares vamos a utilizar el cálculo del módulo y la
+pendiente:
+\begin{itemize}
+\item $\boldsymbol{|\vec{v}| = \sqrt{v_x^2 + v_y^2}}$
+\item $\tg \alpha = \frac{v_y}{v_x} \longrightarrow \boldsymbol{\alpha = \atg \frac{v_y}{v_x}}$
+\end{itemize}
+
+La complicación de esta conversión está en que para calcular el ángulo vamos a tener que utilizar
+el arco de tangente, y en trigonometría hemos visto que la calculadora no entiende de contexto y
+para el arco de tangente solo nos da resultados de $-90\degree$ a $90\degree$, es decir del primer
+y del cuarto cuadrante. Pero un vector puede estar en cualquier cuadrante, con lo que tendremos que
+tener en cuenta la situación para corregir el resultado de la calculadora según el criterio
+que vimos:
+\begin{itemize}
+\item Si el contexto nos dice que está en el primer o cuarto cuadrante no hay que corregir
+  el resultado de la calculadora.
+\item Si el contexto nos dice que está en el segundo o tercer cuadrante hay que sumar
+  $180\degree$ al resultado obtenido.
+\end{itemize}
+
+Como está conversión es más complicada vamos a hacer unos cuantos ejemplos.
+\begin{questions}
+\question Convierte el vector $\vec{u} = (4,-2)$ a coordenadas polares.
+  \begin{solution}
+    El cálculo del módulo es sencillo:
+    \[|\vec{v}| = \sqrt{4^2 + (-2)^2} = \sqrt{20} = 2\sqrt{5}\quad\text{\small{(recuerda como
+          se sacan factores de una raíz)}}\]
+    Calculamos ahora el ángulo, para ello utilizamos la calculadora:
+    \[\alpha = \atg \frac{-2}{4} = -26.57\degree\]
+    Este \textbf{ángulo es del cuarto cuadrante}, \emph{¿se corresponde con el ángulo que forma
+      el vector con el eje horizontal positivo?}\\
+    Representamos la situación:
+    \begin{center}
+      \begin{tikzpicture}
+	\begin{axis}[xmin=-1, xmax=5, ymin=-3, ymax=3, xticklabel=\empty, yticklabel=\empty, axis x line=center, axis y line=center, ytick={-3,-2,-1,0,1,2,3}, grid=both]
+          \draw[ultra thick, -Latex] (0,0) -- (4,-2) node[midway, sloped, below] {$\vec{u}$};
+	\end{axis}
+      \end{tikzpicture}
+    \end{center}
+    Vemos que si lo dibujamos empezando desde el origen \textbf{el vector se encuentra en el
+      cuarto cuadrante},con lo que \textbf{no necesitamos corregir nada} y por tanto el vector
+    en coordenadas polares es:
+    \[\vec{u} =2\sqrt{5}_{\,-26.57\degree}\]
+    Ó también se podría escribir:
+    \[\vec{u} =2\sqrt{5}_{\,333.43\degree}\]
+  \end{solution}
+\question Escribe el vector $\vec{a} = (-2, -1)$ en coordenadas polares.
+  \begin{solution}
+    Hacemos lo mismo que en el anterior, primero calculamos el módulo:
+    \[|\vec{a}| = \sqrt{2^2 + 1^2} = \sqrt{5}\]
+
+    Y el ángulo:
+    \[\alpha = \atg \frac{-1}{-2} = 26.565\degree\]
+    Que es un ángulo del primer cuadrante, mientras que nuestro vector:
+    \begin{center}
+      \begin{tikzpicture}
+	\begin{axis}[xmin=-3, xmax=3, ymin=-3, ymax=3, xticklabel=\empty, yticklabel=\empty, axis x line=center, axis y line=center, ytick={-3,-2,-1,0,1,2,3}, grid=both]
+          \draw[ultra thick, -Latex] (0,0) -- (-2,-1) node[midway, sloped, below] {$\vec{a}$};
+	\end{axis}
+      \end{tikzpicture}
+    \end{center}
+    está en el tercer cuadrante con lo que tenemos que corregir, $\alpha = 26.656\degree +
+    180\degree = 206.565\degree$.\\
+
+    Con esto el vector en coordenadas polares queda:
+    \[\vec{a} = \sqrt{5}_{\,206.565\degree}\]
+  \end{solution}
+\end{questions}
+A pesar de que en los dos ejemplos anteriores hemos representado el vector para ver en qué
+cuadrantes está, no es necesario hacerlo para pasar de rectangulares a polares. Solo debemos
+recordar los signos del coseno y el seno en los distintos cuadrantes y aplicarlos a las componentes
+del vector, obteniendo así el siguiente criterio:
+\begin{itemize}
+\item Horizontal y vertical positivas $(+,+)$: primer cuadrante.
+\item Horizontal negativa y vertical positiva $(-,+)$: segundo cuadrante.
+\item Horizontal y vertical negativas $(-,-)$: tercer cuadrante.
+\item Horizontal positiva y vertical negativa $(+,-)$: cuarto cuadrante.
+\end{itemize}
+
+\section{Ejercicios básicos.}
+A continuación se presentan una serie de ejemplos básicos para comprender como utilizar las
+operaciones y las propiedades de los vectores para resolver una serie de problemas básicos.
+
+\subsection{Aplicaciones de las propiedades de los vectores.}
+En el apartado \ref{propiedades_vectores} (página \pageref{propiedades_vectores}) hemos visto que
+las propiedades de los vectores eran tres:
+\begin{itemize}
+\item Módulo.
+\item Dirección.
+\item Sentido.
+\end{itemize}
+Vamos a utilizar esas propiedades para resolver algunos problemas geométricos.\\
+
+\begin{questions}
+\question Calcula la distancia entre los puntos $A(-1, 3)$, $B(2, 4)$.
+  \begin{solution}
+    Vamos a representar primero la situación aproximada para ver qué es lo que tenemos:
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[-Latex] (0,0) coordinate (A) -- (3,2) coordinate (B) node[midway, sloped, above]
+        {$\overrightarrow{AB}$};
+        \draw[fill] (A) circle(2pt) node[left] {$A$};
+        \draw[fill] (B) circle(2pt) node[right] {$B$};
+      \end{tikzpicture}
+    \end{center}
+    Al representar la situación vemos que \textbf{la distancia entre los puntos} $A$ y $B$ es el
+    tamaño del vector $\overrightarrow{AB}$.\\
+    Y ¿qué propiedad de los vectores nos dice cual es su tamaño? \textbf{El módulo del vector}.\\
+
+    Es decir, \textbf{el ejercicio se reduce a calcular el módulo del vector $\boldsymbol{
+        \overrightarrow{AB}}$.}.\\
+
+    Pues lo hacemos:
+    \[\overrightarrow{AB} = (2, 4) - (-1, 3) = (3, 1)\]
+    \[\distancia{A}{B} = |\overrightarrow{AB}| = \sqrt{3^2 + 1^2}\]
+    \[\distancia{A}{B} = \sqrt{10}\]
+    \begin{center}
+      \small{($\distancia{A}{B}$ es la distancia entre $A$ y $B$. Lo usaremos a menudo)}
+    \end{center}
+
+    Con lo cual la distancia entre los puntos $A$ y $B$ es de $\sqrt{10}$ unidades.
+  \end{solution}
+\question Indica si los vectores $\vec{u} = (3, -1)$ y $\vec{v} = (2, -2)$ son paralelos.
+  \begin{solution}
+    Por que lo hemos visto en el apartado \ref{propiedades_vectores}
+    (página \pageref{propiedades_vectores}) para que dos vectores sean paralelos tienen que tener
+    la misma dirección, formar el mismo ángulo con la horizontal, tener la misma pendiente:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (A) at (5, 0);
+        \draw[-Latex] (0,0) coordinate (O1) -- (3,2) coordinate (B1) node[midway, sloped, below]
+        {$\vec{u}$};
+        \draw[-Latex] (-1, 0) coordinate (O2) -- (3.5,3) coordinate (B2)
+        node[midway, sloped, above] {$\vec{v}$};
+        \pic["$\scriptstyle{\alpha}$", draw=black, angle eccentricity=1.3, angle radius=.6cm]
+        {angle=A--O1--B1};
+        \pic["$\scriptstyle{\alpha}$", draw=black, angle eccentricity=1.3, angle radius=.6cm]
+        {angle=A--O2--B2};
+        \draw[color=darkgray, dashed] (-2, 0)--(A);
+      \end{tikzpicture}
+    \end{center}
+
+    
+    Y la pendiente es lo que vamos a utilizar, teniendo en cuenta que  es la tangente del
+    ángulo que forma el vector con la horizontal, para tener la misma dirección esa tangente debe
+    ser la misma.\\
+    Recordemos de trigonometría que \emph{la tangente de un ángulo es el cociente del cateto opuesto
+      entre el cateto adyacente}, y en el caso del ángulo que forma el vector $\vec{v}$
+    con la horizontal su tangente es:
+    \[\tg \alpha = \frac{v_y}{v_x}\]
+
+    Por tanto si $\vec{u} = (u_x, u_y)$ y $\vec{v}= (v_x, v_y)$ son paralelos (se puede
+    escribir $\vec{u} \parallel \vec{v}$. El símbolo $\boldsymbol{\parallel}$ significa paralelos) entonces sus pendientes:
+    \[\frac{u_y}{u_x} = \frac{v_y}{v_x}\quad\text{\small{(las pendientes tienen que ser iguales)}}\]
+    Si despejamos para tener una componente a cada lado en vez de un vector nos queda:
+    \[\frac{v_x}{u_x} = \frac{v_y}{u_y}\]
+    Es decir, los vectores tienen que ser proporcionales, las componentes de uno de ellos tienen
+    que ser las del otro multiplicadas por el mismo número.\\
+    
+    Hacemos lo que acabamos de ver con los datos del enunciado, el cociente de las componentes
+    de $\vec{u} = (3, -1)$ y $\vec{v} = (2, -2)$:
+    \begin{itemize}
+    \item $\frac{u_x}{v_x} = \frac{3}{2}$
+    \item $\frac{u_y}{v_y} = \frac{-1}{-2}$
+    \end{itemize}
+    No obtenemos el mismo resultado, \textbf{no son proporcionales}, con lo que
+    $\vec{u}$ y $\vec{v}$ \textbf{no son paralelos}.
+  \end{solution}
+\question Calcula cuanto tiene que valer $\boldsymbol{k}$ para que el vector $\vec{u} = (-2, 3+2k)$
+  sea paralelo a $\vec{v} = (6, -4)$.
+  \begin{solution}
+    Por todo lo anterior, para que sean paralelos tiene que ocurrir que
+    \[\frac{-2}{6} = \frac{3+2k}{-4}\]
+    Así que resolvemos la ecuación.\\
+    Primero simplificamos:
+    \[-\frac{1}{3} = -\frac{3+2k}{4}\]
+    Simplificamos un poco más y hacemos denominador común:
+    \[\frac{4}{12} = \frac{9+6k}{12}\]
+    Con lo que:
+    \[4 = 9 + 6k\]
+    \[k = -\frac{5}{6}\]
+
+    \textbf{Para que sean paralelos tiene que ocurrir que $\boldsymbol{k = -\frac{5}{6}}$}.
+  \end{solution}
+\question Discute si los puntos $A(1,2)$, $B(3, -1)$ y $C(7, -7)$ están alineados.
+  \begin{solution}
+    Para ver como hacer este ejercicio vamos a ver gráficamente cual es la situación en caso
+    de que los puntos no estén alineados y en caso de que lo estén:
+    \newpage %He tenido que hacer una trampa porque no lo hace solo.
+    \begin{center}
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=0, xmax=5, ymin=-1, ymax=4, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4},
+          title={\textbf{No alineados}}]
+            \addplot[mark=*, only marks] coordinates {(0, 1) (1, 3) (3, -1)};
+            \node[left] at (0,1) {$A$};
+            \node[above] at (1,3) {$B$};
+            \node[above right] at (3,-1) {$C$};
+            \draw[-Latex] (0,1)--(1,3) node[midway, sloped, above] {$\overrightarrow{AB}$};
+            \draw[-Latex] (1,3)--(3,-1) node[midway, sloped, above] {$\overrightarrow{BC}$};
+            \draw[-Latex] (0,1)--(3,-1) node[midway, sloped, below] {$\overrightarrow{AC}$};
+        \end{axis}
+      \end{tikzpicture}
+      \quad
+      \begin{tikzpicture}[baseline=(current bounding box.center), scale=.9]
+        \begin{axis}[axis equal, xmin=0, xmax=5, ymin=-1, ymax=4, axis lines = middle,
+          axis line style={draw=gridgray}, xticklabel=\empty, yticklabel=\empty,
+          tick label style={major tick length=0pt}, grid=major, ytick={-1, 0, 1, 2, 3, 4},
+          title={\textbf{Alineados}}]
+            \addplot[mark=*, only marks] coordinates {(0, 0) (2, 1) (4, 2)};
+            \node[left] at (0,0) {$A$};
+            \node[above] at (2,1) {$B$};
+            \node[above right] at (4,2) {$C$};
+            \draw[-Latex] (0,0)--(2,1) node[midway, sloped, above] {$\overrightarrow{AB}$};
+            \draw[-Latex] (2,1)--(4,2) node[midway, sloped, below] {$\overrightarrow{BC}$};
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+
+    En el caso de \textbf{no alineados} vemos que los vectores $\overrightarrow{AB}$,
+    $\overrightarrow{AC}$ y $\overrightarrow{BC}$ \textbf{hay ninguna relación de paralelismo entre
+    ellos}.\\
+    En el caso de \textbf{alineados} tenemos que tanto $\overrightarrow{AB}$, como
+    $\overrightarrow{AC}$ y $\overrightarrow{BC}$ \textbf{son paralelos} (en realidad están
+    superpuestos, pero a la hora de hacer cálculos es lo mismo que si fuesen paralelos).\\
+
+    A la vista de esto lo que tenemos que hacer es calcular dos vectores con los tres puntos y ver
+    si son paralelos.\\
+    Vamos a calcular $\overrightarrow{AB}$ y $\overrightarrow{BC}$ (también podríamos hacerlo
+    con $\overrightarrow{AB}$ y $\overrightarrow{AC}$):
+    \begin{itemize}
+    \item $\overrightarrow{AB} = (3,-1) - (1,2) = (2,-3)$
+    \item $\overrightarrow{BC} = (7,-7) - (3,-1) = (4,-6)$
+    \end{itemize}
+    Si hacemos el cociente de las componentes vemos que dan el mismo resultado:
+    \[\frac{4}{2} = \frac{-6}{-3}\]
+    Por tanto $\overrightarrow{AB} \parallel \overrightarrow{BC}$, y por lo que hemos visto esto
+    quiere decir que $A$, $B$ y $C$ están alineados.
+  \end{solution}
+\question Discute si los puntos $P(-2, 3)$, $Q(5, 2)$ y $R(-1, 1)$ pueden ser los vértices de un
+  triángulo.
+  \begin{solution}
+    Si nos fijamos en la representación del ejemplo anterior la única manera en la que pueden ser
+    los vértices de un triángulo es no estando alineados, con lo que lo que tenemos que hacer es
+    lo mismo que en el ejercicio anterior.\\
+
+    Calculamos dos vectores:
+    \begin{itemize}
+    \item $\overrightarrow{PQ} = (7, -1)$
+    \item $\overrightarrow{PR} = (1, -2)$
+    \end{itemize}
+    Comprobamos su paralelismo:
+    \[\frac{7}{1} \neq \frac{-1}{-2}\]
+    Y resulta que \textbf{no son paralelos}, con lo que \textbf{no están alineados} y por lo tanto
+    \textbf{pueden ser los vértices de un triángulo}.
+  \end{solution}
+\question Calcula un vector perpendicular al vector $\vec{v} = (3, -2)$ (\textbf{\emph{Este
+      ejercicio es muy importante. Hay que aprenderse bien el razonamiento y el mecanismo}}).
+  \begin{solution}
+    \emph{¿Qué tiene que ocurrir para que dos vectores sean perpendiculares?} Que formen un ángulo
+    recto.\\
+    Como en casi todos los ejemplos anteriores, vamos a empezar por representar la situación:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (A) at (5, 0);
+        \draw[-Latex] (0,0) coordinate (O) -- (2,4) coordinate (B) node[midway, sloped, below]
+        {$\vec{v}$};
+        \draw[-Latex] (O) -- (-4,2) coordinate (C) node[midway, sloped, below]
+        {$\vec{w}$};
+        \pic["$\scriptstyle{\alpha}$", draw=black, angle eccentricity=1.3, angle radius=.6cm]
+        {angle=A--O--B};
+        \pic["$\scriptstyle{90\degree + \alpha}$"{xshift=-5mm}, draw=black, angle eccentricity=1.4,
+        angle radius=.5cm] {angle=A--O--C};
+        \draw[color=darkgray, dashed] (-5, 0)--(A);
+      \end{tikzpicture}
+    \end{center}
+    Se ve claramente que si $\vec{v} \perp \vec{w}$ (el símbolo $\boldsymbol{\perp}$ significa
+    que son perpendiculares) el ángulo que forma uno de ellos con la horizontal es $90\degree$
+    más el ángulo que forma el otro.\\
+    Calculamos las pendientes de esos ángulos:
+    \begin{itemize}
+    \item $\tg \alpha = \frac{v_y}{v_x}$
+    \item $\tg (90\degree + \alpha) = \frac{w_y}{w_x}$
+    \end{itemize}
+    Por lo que sabemos de trigonometría (relaciones entre $\alpha$ y $90\degree + \alpha$)
+    tenemos que:
+    \[\tg (90\degree + \alpha) = -\frac{1}{\tg \alpha}\]
+    \[\frac{w_y}{w_x} = -\ddfrac{1}{\ddfrac{v_y}{v_x}}\]
+    \[\frac{w_y}{w_x} = -\frac{v_x}{v_y}\]
+    Y para que se mantenga esa relación basta con que hagamos $w_y = -v_x$ y $w_x = v_y$ (o también
+    $w_y = v_x$ y $w_x = -v_y$, da igual cual cambie de signo).\\
+
+    Entonces tenemos que un vector perpendicular a $\vec{v} = (3, -2)$ puede ser
+    \begin{itemize}
+    \item $\vec{w} = (2, 3)$\\
+      ó
+    \item $\vec{w} = (-2, -3)$
+    \end{itemize}
+    Ó cualquiera proporcional a ellos.\\
+
+    Y por dar una respuesta concreta elegimos el primero, $\vec{w} = (2, 3)$.
+  \end{solution}
+\end{questions}
+\subsection{Aplicaciones del producto por un escalar.}
+En el apartado \ref{producto_por_escalar} hemos visto que el producto por un escalar nos da un
+vector paralelo que multiplica su tamaño por el número (también hemos visto que algo parecido
+sucede con la división).
+
+Y lo que vamos a hacer en este apartado es aprovechar esto junto con las propiedades de los vectores para resolver algunos ejercicios básicos.\\
+
+
+\begin{questions}
+
+\question Escribe un vector unitario con la dirección y el sentido de $\vec{v} = (1,-2)$.
+  \begin{solution}
+    Hemos visto que si dividimos $\vec{v}$ entre un número $a>0$ vamos a obtener un vector
+    con la misma dirección y el mismo sentido que $\vec{v}$ y con un módulo que será
+    \[|\vec{u}| = \left|\frac{\vec{v}}{a}\right| = \frac{|\vec{v}|}{a}\]
+    \begin{center}
+      \small{(No hemos puesto el valor absoluto a $a$ porque hemos dicho que $a>0$)}
+    \end{center}
+    Si queremos que $|\vec{u}| = 1$ para que sea unitario entonces:
+    \[\frac{|\vec{v}|}{a} = 1\]
+    Con lo que
+    \[a = |\vec{v}|\]
+    Es decir, tenemos que dividir el vector entre su módulo.\\
+
+    Calculamos el módulo del vector del enunciado:
+    \[|\vec{v}| = \sqrt{1^2 + (-2)^2} =\sqrt{5}\]
+    Y por lo que hemos visto
+    \[\vec{u} = \frac{\vec{v}}{\sqrt{5}}\]
+    Va a ser el vector unitario que nos piden.\\
+
+    Operamos y simplificamos:
+    \[\vec{u} = \left(\frac{3}{\sqrt{5}},-\frac{2}{\sqrt{5}}\right)\]
+    \[\vec{u} = \left(\frac{3\sqrt{5}}{5},-\frac{2\sqrt{5}}{5}\right)\]
+  \end{solution}
+\question Calcula el punto medio del segmento que tiene de extremos $A(2, -1)$ y $B(1, 1)$.
+  \begin{solution}
+    Vamos a representar la situación de manera aproximada llamando $M$ al punto medio:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (A) at (0,0);
+        \coordinate (M) at (3,2);
+        \coordinate (B) at (6,4);
+        \draw[fill] (A) circle(2pt) node [left] {$A$};
+        \draw[fill] (B) circle(2pt) node[right] {$B$};
+        \draw[fill] (M) circle(2pt) node[below right] {$M$};
+        \draw[-Latex] (A)--(B);
+        \draw[-Latex] (A)--(M);
+      \end{tikzpicture}
+    \end{center}
+    Claramente el vector $\overrightarrow{AM}$ tiene la misma dirección y sentido que el vector
+    $\overrightarrow{AB}$ pero su módulo será la mitad.\\
+    Es decir
+    \[\overrightarrow{AM} = \frac{\overrightarrow{AB}}{2}\]
+
+    Definamos las coordenadas de los puntos simbólicamente:
+    \begin{itemize}
+    \item $A(A_x,A_y)$
+    \item $B(B_x,B_y)$
+    \item $M(M_x,M_y)$
+    \end{itemize}
+    De esta manera tenemos que
+    \[\overrightarrow{AM} = \frac{\overrightarrow{AB}}{2} = \left(\frac{B_x-A_x}{2},
+        \frac{B_y-A_y}{2}\right)\]
+    Y como $\overrightarrow{AM} = M - A$ tenemos que
+    \[M = A + \overrightarrow{AM}\]
+    \[M = (A_x,A_y) + \left(\frac{B_x-A_x}{2},\frac{B_y-A_y}{2}\right)\]
+    \[M = \left(A_x + \frac{B_x-A_x}{2}, A_y + \frac{B_y-A_y}{2}\right)\]
+    Hacemos la resta de fracciones y resulta:
+    \[\boldsymbol{M = \left(\frac{B_x+A_x}{2},\frac{B_y+A_y}{2}\right)}
+      \quad\text{\small{(esta fórmula hay que aprendérsela)}}\]
+    Y con esto ya es fácil calcular el punto medio pedido:
+    \[M = \left(\frac{2+1}{2}, \frac{1-1}{2}\right)\]
+    \[M = \left(\frac{3}{2}, 0\right)\]
+  \end{solution}
+\question Calcula el simétrico de $A(-2, 3)$ respecto de $B(-1,1)$.
+  \begin{solution}
+    Antes de empezar a resolver vamos a repasar qué es eso del ``simétrico''.\\
+
+    El simétrico es el reflejo, como en un espejo. Y el punto con respecto al cual hacemos
+    el simétrico es el que actúa de espejo.\\
+    
+    Vamos a ver la representación que así se entiende mejor.\\
+    Tenemos el punto $A$, el punto $B$ que actúa de espejo, y el punto $A'$ que es el simétrico
+    que queremos calcular:
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[-Latex] (-3, -2) coordinate (A) -- (0,0) coordinate (B) node[midway, sloped,
+        above] {$\overrightarrow{AB}$};
+        \draw[Latex-] (3, 2) coordinate (A1) -- (0,0) coordinate (B) node[midway, sloped,
+        above] {$\overrightarrow{BA'}$};
+        \draw[fill] (A) circle(2pt) node[left] {$A$};
+        \draw[fill] (B) circle(2pt) node[below right] {$B$};
+        \draw[fill] (A1) circle(2pt) node[right] {$A'$};
+      \end{tikzpicture}
+    \end{center}
+    Y a partir de aquí vamos a sacar conclusiones.\\
+
+    La primera es que los vectores $\overrightarrow{AB}$ y $\overrightarrow{BA'}$ son paralelos,
+    ya que en otro caso lo que tendríamos no sería el reflejo.\\
+    La segunda es que para que sea el reflejo tiene que ser todo igual pero al otro lado, y ese
+    ``todo igual'' incluye el tamaño.\\
+    Por lo tanto, si los vectores $\overrightarrow{AB}$ y $\overrightarrow{BA'}$ tienen que tener
+    la misma dirección, el mismo módulo y, a la vista de la representación, el mismo sentido;
+    entonces tienen que ser iguales:
+    \[\overrightarrow{AB} = \overrightarrow{BA'}\]
+
+    Entonces podemos resolver el ejercicio de \emph{dos maneras}:
+    \begin{itemize}
+    \item El vector que va de $B$ al simétrico de $A$ es $\overrightarrow{AB}$ y por tanto:
+      \[A' = B + \overrightarrow{AB} = (-1,1) + (1,-2) = (0, -1)\]
+    \item El vector que va de $A$ a su simétrico $A'$ es el doble del vector $\overrightarrow{AB}$,
+      con lo que:
+      \[A' = A + 2*\overrightarrow{AB} = (-2, 3) + 2*(1, -2) = (0, -1)\]
+    \end{itemize}
+
+    \textbf{Otra interpretación}\\
+    También se puede interpretar de la siguiente manera: el punto que actúa de espejo es el
+    punto medio del segmento que une $A$ con su simétrico.\\
+    De esta manera se entiende que el vector que va de $A$ a su simétrico tiene que ser el
+    doble del que va de $A$ a $B$ por lo visto en el ejercicio anterior.
+    Si lo hacemos con esta interpretación tendríamos
+    \[A' = A + 2*\overrightarrow{AB}\]
+    Que es una operación que habíamos obtenido también con la interpretación anterior.
+  \end{solution}
+\end{questions}
+\subsection{Aplicaciones de la suma de vectores y la regla del paralelogramo.}
+En el apartado \ref{suma_vectores} hemos visto que el significado geométrico de la suma de
+vectores es el poner uno a continuación del otro.\\
+También hemos visto la \emph{regla del paralelogramo} (página \pageref{regla_paralelogramo}), que
+también nos va a servir para resolver situaciones.\\
+Y por supuesto también hay que acordarse del significado de la suma de un punto y un vector (
+página \pageref{suma_punto_vector}).\\
+
+\begin{questions}
+\question Calcula el simétrico de $A(-2, 3)$ respecto de $B(-1,1)$.
+  \begin{solution}
+    Este ejercicio lo hemos hecho en el apartado anterior, pero también se puede hacer utilizando
+    la interpretación geométrica de la suma de vectores.\\
+
+    Si observamos la representación anterior tenemos que para ir de $A$ a $A'$ tenemos que
+    poner dos veces el vector $AB$, una a continuación de otra.\\
+    De esta manera tenemos:
+    \[A' = A + \overrightarrow{AB} + \overrightarrow{AB}\]
+    que es equivalente a
+    \[A' = A + 2*\overrightarrow{AB}\]
+    que hemos utilizado en el apartado anterior.
+  \end{solution}
+\question Los puntos $A(0,2)$, $B(-1,1)$ y $D(2, 0)$ son los vértices de un paralelogramo. Calcula
+  el vértice que falta.
+  \begin{solution}
+    Como siempre, lo primero es hacer una representación de lo que tenemos y en este caso tenemos
+    que recordad que los vértices de un polígono se nombran en sentido contrario a las agujas del
+    reloj por orden alfabético.
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[-Latex] (0,4) coordinate (A) -- (-2, 2) coordinate (B) node[midway, sloped, above]
+        {$\overrightarrow{AB}$};
+        \draw[-Latex] (A) -- (4, 0) coordinate (D) node[midway, sloped, above]
+        {$\overrightarrow{AD}$};
+        \draw[dashed] (D) -- (2, -2) coordinate (C);
+        \draw[dashed] (B) -- (C);
+        \draw[fill] (A) circle(2pt) node[above] {$A$};
+        \draw[fill] (B) circle(2pt) node[left] {$B$};
+        \draw[fill] (C) circle(2pt) node[below] {$C$};
+        \draw[fill] (D) circle(2pt) node[right] {$D$};
+      \end{tikzpicture}
+    \end{center}
+    Y se ve claramente que es la misma situación que tenemos en la \emph{regla del paralelogramo}
+    (página \pageref{regla_paralelogramo}), con lo que
+    \[\overrightarrow{AC} = \overrightarrow{AB} + \overrightarrow{AC}\]
+    \[\overrightarrow{AC} = (-1,-1) + (2, -2) = (1, -3)\]
+    
+    Y por tanto el punto $C$ es:
+    \[\boldsymbol{C = A + \overrightarrow{AC} = (0,2) + (1, -3) = (1,-1)}\]
+
+    \vspace{1cm}\textbf{Otra manera de interpretarlo es la siguiente}:
+    Para ir desde $A$ hasta $C$ hay que aplicar primero el vector $\overrightarrow{AD}$ y
+    después el vector $\overrightarrow{DC}$.
+    \[C = A + \overrightarrow{AD} + \overrightarrow{DC}\]
+      
+    El vector $\overrightarrow{DC}$ tiene el mismo módulo, dirección y sentido que
+    $\overrightarrow{AB}$ (por la definición de paralelogramo). Sustituyendo en la expresión que
+    hemos obtenido antes:
+    \[C = A + \overrightarrow{AD} + \overrightarrow{AB}\]
+    Que es lo mismo que hemos obtenido con la regla del paralelogramo.\\
+    
+    \vspace{5mm}Si hacemos el mismo razonamiento pasando por $B$ llegaremos al mismo resultado
+    cambiado de orden, pero al ser la suma conmutativa es exactamente lo mismo.
+  \end{solution}
+\question Un triángulo tiene como lados a los vectores $\overrightarrow{AB} = (2, 1)$ y
+  $overrightarrow{AC} = (-1, 3)$. ¿Cuánto mide el lado que falta?. Si nos dicen que $A(0,3)$
+  calcula los otros dos vértices.
+  \begin{solution}
+    Representamos la situación:
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[-Latex] (0,0) coordinate (A) -- (2, 1) coordinate (B) node[midway, sloped, below]
+        {$\scriptstyle{\overrightarrow{AB}}$};
+        \draw[-Latex] (A) -- (-1, 3) coordinate (C) node[midway, sloped, below]
+        {$\scriptstyle{\overrightarrow{AC}}$};
+        \draw[dashed] (B) -- (C);
+        \draw[fill] (A) circle(2pt) node[left] {$A$};
+        \draw[fill] (B) circle(2pt) node[right] {$B$};
+        \draw[fill] (C) circle(2pt) node[above] {$C$};
+      \end{tikzpicture}
+    \end{center}
+
+    No es difícil ver que estamos en la interpretación de la resta en la \emph{regla del
+      paralelogramo} (página \pageref{regla_paralelogramo}), lo que:
+    \[\overrightarrow{BC} = \overrightarrow{AC} - \overrightarrow{AB}\]
+    \[\overrightarrow{BC} = (-3, 2)\]
+
+    Y como nos piden cuánto mide tenemos que calcular el módulo.
+    \[|\overrightarrow{BC}| = \sqrt{(-3)^2 + 2^2} = \sqrt{13}\]
+    Con lo que el lado que falta mide $\sqrt{13}$\,unidades.
+
+    \vspace{1cm}La segunda parte es aplicar el desplazamiento de un punto por un vector:
+    \[B = A + \overrightarrow{AB} = (0,3) + (2, 1) = (2,4)\]
+    \[B = A + \overrightarrow{AC} = (0,3) + (-1, 3) = (-1,6)\]
+    Y con esto ya tenemos los tres puntos del triángulo:
+    \begin{itemize}
+    \item $A(0, 3)$
+    \item $B(2, 4)$
+    \item $C(-1, 6)$
+    \end{itemize}
+  \end{solution}
+\end{questions}
+
 \end{document}
+
+
+% LocalWords:  escríbelo

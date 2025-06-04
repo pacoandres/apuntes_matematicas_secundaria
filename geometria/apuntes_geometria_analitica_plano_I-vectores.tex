@@ -147,7 +147,7 @@ Esta pareja de valores se escribe entre paréntesis y separada por una coma o un
 El primer valor siempre es la distancia horizontal y el segundo la altura, con el siguiente
 criterio de signos:
 \begin{itemize}
-\item En horzontal: positivo indica a la derecha del origen, negativo a la izquierda.
+\item En horizontal: positivo indica a la derecha del origen, negativo a la izquierda.
 \item En vertical: positivo indica por encima del origen, negativo por debajo.
 \end{itemize}
 
@@ -169,10 +169,13 @@ esta manera salvo en situaciones en las que consideremos que el dibujo de los ej
 pueda dificultar la comprensión de lo que pretendemos explicar.
 
 \section{El punto.}
-El punto es el elemento geométrico más elemental, todo se define a partir de él.\\
-El punto no tiene dimensiones, sin longitud, ni superficie ni volumen. Se corresponde con una
+El punto es el elemento geométrico más elemental, todo se define a partir de él y esto hace que
+su definición precisa no sea posible sin hacer referencia a otros objetos que dependen de él.
+Aún así vamos a dar una definición algo cogida por los pelos.\\
+
+El punto no tiene dimensiones, ni longitud, ni superficie ni volumen. Se corresponde con una
 posición en el espacio, de manera que se indica de la misma manera que ésta pero añadiéndole un
-nombre que siempre es una letra mayuscula.\\
+nombre que siempre es una letra mayúscula.\\
 
 De esta manera los puntos $A(3, 0)$, $B(-1, -1)$ y $C\left(2, -\frac{3}{2}\right)$ son:
 \begin{center}
@@ -197,7 +200,7 @@ La definición que vamos a utilizar aquí es una definición intuitiva, basada e
 \begin{center}
   \emph{\textbf{Un vector es el desplazamiento que hay que realizar para ir de un punto a otro.}}  
 \end{center}
-Y la ventaja de esta definición, además de ser fácilmente comprensible, es que lleva implicito
+Y la ventaja de esta definición, además de ser fácilmente comprensible, es que lleva implícito
 el mecanismo para calcular un vector, porque \textbf{¿cómo se calcula el desplazamiento de un lugar a otro?}.
 
 Pensemos en cómo calculamos el desplazamiento para ir del 2º al 5º piso, \textbf{lo que hacemos es
@@ -211,7 +214,7 @@ De esta manera el vector que nos lleva desde el punto $A$ al punto $B$ (que se e
 \end{center}
 
 Pero, ¿cómo podemos restar un punto a otro si tiene dos valores entre paréntesis?.\\
-Lo que tenemos que hacer es no mezclar la parte horizontal con la vértical, tenemos que operarlas
+Lo que tenemos que hacer es no mezclar la parte horizontal con la vertical, tenemos que operarlas
 siempre por separado.\\
 De esta manera, si $A(A_x, A_y)$ y $B(B_x,B_y)$ el vector $\overrightarrow{AB}$ será:
 \[\overrightarrow{AB} = B - A = (B_x,B_y) - (A_x,A_y) = (B_x - A_x, B_y - A_y)\]
@@ -298,7 +301,7 @@ visto hasta ahora.\\
 
 Estas propiedades son las siguientes:
 \begin{itemize}
-\item \textbf{Módulo}: que es el tamaño del vector. Es fácil ver que, geométricamente, el vector y sus componentes forman un triángulo rectángulo en el que el vector es la hiponenusa.
+\item \textbf{Módulo}: que es el tamaño del vector. Es fácil ver que, geométricamente, el vector y sus componentes forman un triángulo rectángulo en el que el vector es la hipotenusa.
   \begin{center}
     \begin{tikzpicture}
       \coordinate (O) at (0,0);
@@ -491,7 +494,7 @@ resultante tiene el mismo origen que el primero y el mismo destino que el segund
   \end{multicols}
 \end{center}
 
-En la represtación geométrica hemos puesto la operación en dos ordenes distintos y es fácil ver
+En la representación geométrica hemos puesto la operación en dos ordenes distintos y es fácil ver
 que el resultado es el mismo, lo que quiere decir que la suma de vectores es conmutativa.\\
 
 El igual que ocurre con los enteros, la resta de vectores es equivalente a la suma con el
@@ -1246,10 +1249,11 @@ Vamos a utilizar esas propiedades para resolver algunos problemas geométricos.\
         {$\vec{v}$};
         \draw[-Latex] (O) -- (-4,2) coordinate (C) node[midway, sloped, below]
         {$\vec{w}$};
-        \pic["$\scriptstyle{\alpha}$", draw=black, angle eccentricity=1.3, angle radius=.6cm]
+        \pic["$\scriptstyle{\alpha}$", draw=black, angle eccentricity=1.3, angle radius=1cm]
         {angle=A--O--B};
         \pic["$\scriptstyle{90\degree + \alpha}$"{xshift=-5mm}, draw=black, angle eccentricity=1.4,
-        angle radius=.5cm] {angle=A--O--C};
+        angle radius=.8cm] {angle=A--O--C};
+        \pic[draw=black, angle eccentricity=.5, angle radius=.4cm, pic text=.] {right angle=B--O--C};
         \draw[color=darkgray, dashed] (-5, 0)--(A);
       \end{tikzpicture}
     \end{center}
@@ -1506,9 +1510,103 @@ página \pageref{suma_punto_vector}).\\
     \item $C(-1, 6)$
     \end{itemize}
   \end{solution}
-\end{questions}
+\question Dado el vector $\vec{v} = (-2, 1)$ y el punto $P(1, -1)$ calcula y representa los puntos
+  que se obtienen al aplicar $\vec{v}$, $-\vec{v}$, $2*\vec{v}$ y $-2\vec{v}$ sobre $P$. ¿Qué
+  se obtiene si se unen todos los puntos?
+  \begin{solution}
+    Este ejercicio es sencillo pero tiene su importancia ya que la idea que contiene es
+    la que nos lleva a la ecuación de la recta que veremos más adelante.\\
 
+    En primer lugar vamos a calcular los puntos que pide y a darles un nombre:
+    \begin{itemize}
+    \item $P_1 = P + \vec{v} = (-1, 0)$.
+    \item $P_2 = P + (-\vec{v}) = P - \vec{v} = (3, -2)$.
+    \item $P_3 = P + 2\vec{v} = (-3,1)$.
+    \item $P_4 = P - 2\vec{v} = (5, -3)$.
+    \end{itemize}
+
+    Y una vez calculados podemos representarlos:
+    \begin{center}
+      \begin{tikzpicture}
+        \begin{axis}[axis equal, xmin=-4, xmax=5, ymin=-4, ymax=5, axis lines = middle,
+          grid=major, xtick distance=1, ytick distance=1,
+          tick label style={font=\scriptsize}]
+          \draw[dashed, color=gray] (-4.5, 1.75) -- (5.5, -3.25);
+          \draw[fill] (1, -1) circle(2pt) node[below] {\small{$P$}};
+          \draw[fill] (-1, 0) circle(2pt) node[above] {\small{$P_1$}};
+          \draw[fill] (3,-2) circle(2pt) node[below] {\small{$P_2$}};
+          \draw[fill] (-3, 1) circle(2pt) node[above] {\small{$P_3$}};
+          \draw[fill] (5, -3) circle(2pt) node[below] {\small{$P_4$}};
+        \end{axis}
+      \end{tikzpicture}
+    \end{center}
+    Es fácil ver que si unimos todos los puntos vamos a obtener una línea recta.\\
+    \vspace{7mm}Es decir, todos los puntos que obtengamos al hacer la operación 
+    \[P + a*\vec{v}\]
+    con $a \in \mathbb{R}$ van a estar en la misma línea recta.\vspace{5mm}\\
+    Con esto surgen varias preguntas:
+    ¿cualquier punto que esté en esa línea recta va se puede obtener con esa
+    operación? ¿Y si el punto no está en la recta se puede obtener con esa operación?\\
+    Vamos a contestar a esto con el próximo ejercicio.
+  \end{solution}
+\question Dados el punto y el vector del ejercicio anterior calcula $a$ para que la operación $P+a*
+  \vec{v}$ dé como resultado:
+  \begin{parts}
+  \part El punto $Q\left(2, -\frac{3}{2}\right)$ que está alineado con los obtenidos en el ejercicio
+    anterior.
+  \part El punto $R(-1, -1)$ que no está alineado con los del ejercicio anterior.
+  \end{parts}
+  \begin{solution}
+    \begin{parts}
+    \part Nos pide que calculemos $a$ para que
+      \[Q = P + a*\vec{v}\]
+      Entonces sustituimos:
+      \[\left(2, -\frac{3}{2}\right) = (1, -1) + a*(-2,1)\]
+      Y separando por componentes obtenemos el siguiente sistema:
+      \[
+        \begin{cases}
+          2 &= 1 - 2a\\
+          -\frac{3}{2} &= -1 + a\\
+        \end{cases}
+      \]
+      y es un sistema de ecuaciones con una incógnita que a lo mejor no hemos visto cómo resolverlo.\\
+      La idea es la misma que en todos los sistemas, todas las ecuaciones tienen que cumplirse
+      con los mismos valores de las incógnitas. Es decir:
+      \begin{itemize}
+      \item Las dos ecuaciones tienen la misma
+        solución, esa es la solución.
+      \item Cada ecuación tiene una solución, entonces no hay solución.
+      \end{itemize}
+      
+      
+      Pues resolvemos el sistema y obtenemos que para ambas ecuaciones la solución es $a = -\frac{1}{2}$.\\
+      El sistema tiene solución y es $a = -\frac{1}{2}$.
+    \part Tenemos que hacer lo mismo que en el apartado anterior.\\
+      \[R = P + a\vec{v}\]
+      \[(-1, -1) = (1, -1) + a*(-2, 1)\]
+      Lo convertimos en sistema:
+      \[
+        \begin{cases}
+          -1 &= 1 - 2a\\
+          -1 &= -1 + a
+        \end{cases}
+      \]
+      Y al resolverlo obtenemos que:
+      \begin{itemize}
+      \item La solución de la primera es $a = 1$.
+      \item La solución de la segunda es $a = 0$.
+      \end{itemize}
+      Como las soluciones no coinciden este apartado no tiene solución.\\
+      
+      Es decir, con esa operación no podemos construir puntos que no estén alineados.\\
+      Más adelante
+      utilizaremos algo parecido a esto para saber si un punto está contenido en una recta o no.
+    \end{parts}
+  \end{solution}
+\end{questions}
 \end{document}
 
 
-% LocalWords:  escríbelo
+% LocalWords:  escríbelo º geométricamente cuadritos cuadradito v x R
+% LocalWords:  w b n j AB k C AC BC P Q PQ PR M AM BA DC
+% LocalWords:  overrightarrow

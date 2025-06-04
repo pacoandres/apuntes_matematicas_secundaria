@@ -1,0 +1,1153 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+%\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+%\usepackage{tgbonum} %TeX Gyre Bonum
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows.meta,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de geometría analítica en el plano II.\\Rectas.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+
+%Para trigonometría
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+\newcommand{\degree}{^\circ}
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+
+%Geometría:
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+\newcommand\distancia[2]{\text{d}(#1,#2)}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+
+%Para las unidades:
+\newcommand{\unidad}[1]{\,\text{#1}}
+
+
+\renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+
+%Colores
+\definecolor{gridgray}{gray}{0.7}
+\pgfplotsset{grid style={color=gridgray}}
+
+% Aumenta el interlineado en aligns y demás
+\setlength{\jot}{1.5em}
+
+\begin{document}
+%Como cargo dos fuentes tengo que decirle cual usar porque si no usa la última cargada.
+%\fontfamily{lmr}\selectfont 
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\tableofcontents
+\newpage
+
+% Para quitar las sangrías que me vuelven loco.
+\setlength{\parindent}{0cm}
+
+\section{La recta. Definición.}
+Junto con el punto y el plano, las rectas son los objetos fundamentales de la geometría y por esto
+son complicados (o imposibles) de definir sin acudir a otros objetos que dependen de ellos.\\
+
+Al igual que hicimos con la definición de punto vamos a dar una definición un poco cogida por
+los pelos, pero que intuitivamente comprenda las propiedades de la recta que vamos a utilizar.\\
+
+Vamos a definir la recta como \textbf{una línea en la que no hay cambio de dirección}. Es decir,
+cualquier segmento recto de la línea que cojamos va a formar el mismo ángulo con la horizontal.\\
+
+\begin{center}
+  \begin{tikzpicture}[scale=0.7]
+    \draw (-6, -4) -- (6,4);
+    \draw[ultra thick, -Latex] (-4,-2.67) coordinate (P1) -- (-1.51,-1) coordinate (P2);
+    \draw[ultra thick, -Latex] (0, 0) coordinate (P3) -- (4,2.67) coordinate (P4);
+    \draw[fill] (P1) circle(2pt) node[above] {$P_1$};
+    \draw[fill] (P2) circle(2pt) node[above] {$P_2$};
+    \draw[fill] (P3) circle(2pt) node[above] {$P_3$};
+    \draw[fill] (P4) circle(2pt) node[above] {$P_4$};
+    \draw[dashed, color=darkgray] (P1) -- (-2, -2.67) coordinate (A1);
+    \draw[dashed, color=darkgray] (P3) -- (2, 0) coordinate (A3);
+    \pic["$\alpha$", draw=darkgray, angle eccentricity=1.2, angle radius=1cm]
+    {angle=A1--P1--P2};
+    \pic["$\alpha$", draw=darkgray, angle eccentricity=1.2, angle radius=1cm]
+    {angle=A3--P3--P4};
+    \node[text width=12cm, align=center, below] at (0,-4)
+    {\small{\emph{Los segmentos se pueden representar como vectores, y se ve que al estar en
+      la misma recta forman el mismo ángulo con la horizontal}}};
+  \end{tikzpicture}
+\end{center}
+
+Y con esta definición vamos empezar a sacar conclusiones y así poder hacer operaciones.
+\section{La ecuación vectorial de la recta.} \label{sec:ecuacion-vectorial}
+En la definición hemos dicho que la recta no cambia de dirección, por tanto una de sus propiedades
+es la dirección que tiene.\\
+Hemos visto que la dirección se indica con la pendiente, que es la tangente del ángulo que forma
+con la horizontal, pero el trabajar con ángulos es un poco engorroso.\\
+Otra manera de describir la dirección es mediante un vector, porque en sus componentes está
+la pendiente de manera implícita (recuerda que la pendiente en un vector venía dada por el cociente
+$\frac{v_y}{v_x}$).
+Entonces para describir una recta vamos a necesitar \textbf{un vector que indique la dirección} de
+esta recta. A este vector se le llama \textbf{vector director de la recta} y le vamos a llamar
+$\vec{v}$ por simplicidad.\\
+
+En la definición que hemos hecho también hemos hablado de segmentos rectos que son fragmentos de
+recta limitados por dos puntos, con lo que necesitamos dos puntos para dar indicar cada segmento. A estos puntos los vamos a llamar $X(x, y)$ y $P(P_x, P_y)$, también por simplicidad.\\
+
+Como el segmento que forman $X$ y $P$ tiene la dirección del vector $\overrightarrow{PX}$, este
+tiene que ser paralelo a $\vec{v}$, tiene que ser proporcional:
+\[\boldsymbol{\overrightarrow{PX} = t*\vec{v}\quad \text{con } t \in \mathbb{R}}\]
+\begin{center}
+  \begin{tikzpicture}
+    \draw (0,0) -- (6,4);
+    \draw[ultra thick, -Latex] (1,0.67) coordinate (P) -- (3,2) coordinate (X)
+    node[sloped, midway, above] {$t*\vec{v}$};
+    \draw[ultra thick, -Latex] (1,-.33) -- (2, .33) node[sloped, midway, above] {$\vec{v}$};
+    \draw[fill] (P) circle(2pt) node[above] {$P$};
+    \draw[fill] (X) circle(2pt) node[above] {$X$};
+  \end{tikzpicture}
+\end{center}
+
+Si tenemos en cuenta que $\overrightarrow{PX} = X -P$ nos queda:
+\[X - P = t*\vec{v}\]
+
+Entonces:
+\[\boldsymbol{X = P + t*\vec{v}} \label{eq:ecuacion-vectorial}
+  \tag{\small{\textbf{Ecuación vectorial de la recta}}}\]
+
+Que se puede escribir:
+\[\boldsymbol{(x,y) = (P_x, P_y) + t*\vec{v}}\]
+
+Y lo que esta ecuación nos dice es que \textbf{si tenemos un punto $\boldsymbol{P}$ de una recta
+  y un vector $\boldsymbol{\vec{v}}$ en la dirección de ésta, podemos conseguir cualquier otro
+  punto de la recta sumando al punto $\boldsymbol{P}$ un vector proporcional a
+  $\boldsymbol{\vec{v}}$}.\\
+A punto $P$ no se le da ningún nombre en especial y ya hemos visto que al vector con la dirección
+de la recta se le llama vector director.\\
+
+Esta ecuación es muy importante ya que, como vamos a ver a continuación, es de donde salen el
+resto de las ecuaciones de la recta.
+
+\section{Las otras ecuaciones de la recta.}
+Una recta tiene varias maneras de describirse matemáticamente y a cada una de esas descripciones se
+la llama ecuación porque tiene una igualdad entre dos expresiones.\\
+
+\emph{Es importante saberse todas las ecuaciones de la recta y como pasar de una a otra}, ya que
+dependiendo del contexto nos convendrá usar una u otra.\\
+Por ejemplo, para calcular el punto de corte de dos rectas tenemos que resolver un sistema y
+dependiendo del tipo de ecuación que tengamos será más sencillo o más complicado el resolverlo.
+Pero si sabemos pasar de una ecuación a otra podremos utiliza la más sencilla.\\
+Y \textbf{lo fundamental} para poder hacer estas conversiones \textbf{es
+  tener identificado dónde está el punto y donde está el vector director en cada ecuación}.\\
+
+
+Una vez dicho esto vamos a por el resto de ecuaciones de la recta \textbf{partiendo de la
+  ecuación vectorial}:
+\[(x,y) = (P_x, P_y) + t*\vec{v}\]
+
+\subsection{Ecuación paramétrica.} \label{sec:ecuacion-parametrica}
+Cuando hemos practicado las operaciones con vectores hemos visto que si nos aparece una ecuación
+la separamos por componentes obteniendo un sistema. Pues aquí vamos a hacer lo mismo, y nos queda:
+\[
+  \boldsymbol{\begin{cases}
+    x & = P_x + t*v_x\\
+    y &= P_y + t*v_y
+  \end{cases}} \label{eq:ecuacion-parametrica} \tag{\small{\textbf{Ecuación paramétrica de la
+      recta}}}
+\]
+Al igual que la ecuación vectorial, esta ecuación nos \textbf{permite obtener cualquier punto de la
+  recta} si conocemos un punto de esta y el vector director, solo tenemos que dar
+\textbf{distintos valores al parámetro $\boldsymbol{t}$}.\\
+También nos permite saber si un punto está en la recta o no dependiendo de si el sistema
+tiene solución o no, veremos ejemplos más adelante.\\
+
+Y, tal y como hemos dicho antes es fundamental tener identificado el punto y el vector director\\
+En esta ecuación \textbf{las componentes del vector director se encuentran multiplicando al
+  parámetro y el punto sumando a esta multiplicación}.
+
+Esta ecuación es muy útil a la hora de hacer un uso automatizado de las rectas, para utilidades
+gráficas, herramientas automáticas (tornos, sierras, \dots).
+
+\subsection{Ecuación continua.} \label{sec:ecuacion-continua}
+En la ecuación paramétrica podemos despejar $t$ en ambas ecuaciones, con lo que queda:
+\[
+  \begin{cases}
+    t &= \frac{x - P_x}{v_x}\\
+    t &= \frac{y - P_y}{v_y}
+  \end{cases}
+\]
+Utilizamos igualación y queda:
+\[\boldsymbol{\frac{x - P_x}{v_x} = \frac{y - P_y}{v_y}}\label{eq:ecuacion-continua}
+  \tag{\small{\textbf{Ecuación continua de la recta}}}\]
+Con esta ecuación podemos conocer una de las coordenadas de un punto de la recta a partir de la
+otra coordenada.\\
+También se puede comprobar si un punto pertenece a la recta porque si pertenece tenemos que
+obtener el mismo resultado a ambos lados del igual.\\
+
+En esta ecuación \textbf{el punto se encuentra restando en el numerador y el vector director en
+  el denominador. Cada componente está en un lado de la igualdad}.\\
+
+Al igual que la ecuación anterior, con esta ecuación podemos obtener una coordenada a partir de la
+otra, y también nos sirve para saber si un punto está en la recta porque tiene que salir lo mismo a
+ambos lados.\\
+Es una ecuación fácil de construir y de la que es sencillo pasar a otras formas.\\
+
+\large{\emph{\textbf{Nota sobre la ecuación continua}}}: esta ecuación es la única situación en matemáticas en la
+que se puede dejar un signo en el denominador, por ejemplo:
+\[\frac{x - 3}{-2} = \frac{y + 1}{3}\]
+porque así sabemos que el vector director es $\vec{v} = (-2, 3)$.\\
+
+También es la única situación en la que puede haber un cero en el denominador, por ejemplo:
+\[\frac{x}{0} = \frac{y - 2}{3}\]
+cuando el vector director es $\vec{v} = (0, 3)$.
+
+\subsection{Ecuación punto-pendiente.} \label{sec:ecuacion-puntopendiente}
+Partiendo de la ecuación continua:
+\[\frac{y - P_y}{v_y} = \frac{x - P_x}{v_x}\]
+Pasamos $v_y$ al otro lado multiplicando:
+\[y - P_y = v_y*\frac{x - P_x}{v_x}\]
+Que podemos escribir así;
+\[y - P_y = \frac{v_y}{v_x}*(x - P_x)\]
+Y haciendo $m = \frac{v_y}{v_x}$, que es la \textbf{pendiente}, nos queda:
+\[\boldsymbol{y -P_y = m*(x-P_x)}\label{eq:ecuacion-puntopendiente}
+  \tag{\small{\textbf{Ecuación punto-pendiente}}}\]
+
+En esta ecuación \textbf{el vector director se puede identificar como
+  $\boldsymbol{\vec{v} = (1, m)}$ y el punto es el que está restando a la $\boldsymbol{x}$ y a
+  la $\boldsymbol{y}$}.\\
+
+Esta ecuación tiene la misma utilidad que las anteriores.\\
+Es también muy fácil de construir y es de la que se parte para la forma siguiente.
+
+\subsection{Ecuación explícita.} \label{sec:ecuacion-explicita}
+Ahora partimos de la punto-pendiente:
+\[y -P_y = m*(x-P_x)\]
+Desarrollamos el paréntesis y despejamos la $y$:
+\[y = mx -m*P_x+P_y\]
+Hacemos $n = P_y - m*P_x$ y la ecuación queda:
+\[\boldsymbol{y = mx + n}\label{eq:ecuacion-explicita}\tag{\small{\textbf{Ecuación explícita}}}\]
+En esta ecuación $m$ es la \textbf{pendiente} y a $n$ se la llama $ordenada en el origen$.\\
+
+En esta ecuación \textbf{el vector director de la recta es $\boldsymbol{\vec{v} = (1, m)}$
+  y el punto por el que pasa es $\boldsymbol{P(0, n)}$}.\\
+
+Esta ecuación es la más reducida de todas las ecuaciones de la recta, es la mejor cuando necesitamos
+construir una tabla de valores, ya que la obtención de $y$ para distintos valores de $x$ es casi inmediata.
+
+\subsection{Ecuación implícita.} \label{sec:ecuacion-implicita}
+Partiendo de la ecuación continua:
+\[\frac{y - P_y}{v_y} = \frac{x - P_x}{v_x}\]
+Quitamos los denominadores
+\[v_x*(y - P_y) = v_y*(x-P_x)\]
+Desarrollamos y llevamos todo a un lado
+\[v_xy -v_xP_y - v_yx+v_yP_x = 0\]
+
+Hacemos
+\begin{itemize}
+\item $a = -v_y$
+\item $b = v_x$
+\item $c = v_yP_x - v_xP_y$
+\end{itemize}
+Y nos queda
+\[\boldsymbol{ax+by+c = 0}\label{eq:ecuacion-implicita}
+  \tag{\small{\textbf{Ecuación implícita}}}\]
+
+En esta ecuación \textbf{el vector director es $\boldsymbol{\vec{v} = (-b,a)}$} (o
+  $\vec{v} = (b, -a)$ porque lo que nos interesa es la dirección y el sentido
+  nos da igual) \textbf{pero aquí la obtención del punto no es inmediata (daríamos un valor a una
+coordenada para obtener la otra)}.\\
+
+La mayor utilidad de esta ecuación es cuando necesitamos resolver sistemas para encontrar puntos de
+corte.
+
+Esta ecuación se puede obtener a partir de la punto-pendiente o de la explícita, pero haciendo
+denominador común y quitando todos los denominadores.
+
+\section{Nomenclatura de las rectas.}
+A las rectas también se las da nombre, al igual que todo en matemáticas, ya que esto nos permite
+identificar de manera unívoca a qué nos estamos refiriendo en cada situación y evitamos equívocos.\\
+
+\textbf{Las rectas se nombran con una recta minúscula que generalmente empieza desde la $r$}, y a
+continuación se escribe una de las ecuaciones, de esta manera:
+\[\boldsymbol{r: \frac{y - 2}{5} = \frac{x+4}{3}}\]
+
+Da igual qué ecuación de las anteriores sea, la que conozcamos.\\
+
+También se puede escribir de la siguiente manera:
+
+\[\boldsymbol{r\equiv \frac{y - 2}{5} = \frac{x+4}{3}}\]
+\begin{center}
+  \small{(el símbolo $\equiv$ significa equivalente, que es lo mismo.)}
+\end{center}
+
+Por ver otro ejemplo, si la ecuación de $s$ que conocemos es la paramétrica quedará:
+\[s \equiv
+  \begin{cases}
+    x &= 3 + t\\
+    y &= -1 -5t
+  \end{cases}
+\]
+Donde solo cambia el tipo de ecuación, pero la manera de nombrarla es la misma.
+
+\section{Rectas especiales.}
+Existen dos tipos de rectas que son especiales, las \textbf{rectas horizontales} y las
+\textbf{rectas verticales}.\\
+
+Para estas dos rectas solo vamos a utilizar un tipo de ecuación que además es bastante sencilla,
+pero tenemos que ver de dónde sale y sus consecuencias.
+
+\subsection{Rectas horizontales.} \label{sec:recta-horizontal}
+Una recta horizontal es aquella cuya dirección es horizontal así que \textbf{su vector director}
+tiene que ser horizontal, con lo que \textbf{no puede tener componente vertical}.
+\[\vec{v} = (v_x, 0)\]
+Con lo que si pasa por el punto $P(P_x, P_y)$ su ecuación vectorial será:
+\[(x, y) = (P_x, P_y) + t*(v_x, 0)\]
+La paramétrica:
+\[
+  \begin{cases}
+    x &= P_x + t*v_x\\
+    y &= P_y
+  \end{cases}
+\]
+Y a partir de aquí empezamos a tener problemas, ya que para obtener la ecuación continua deberíamos
+despejar $t$ en ambas ecuaciones pero en la segunda no tenemos.\\
+A menos que la escribamos de la siguiente manera:
+\[
+  \begin{cases}
+    x &= P_x + t*v_x\\
+    y &= P_y + t*0
+  \end{cases}
+\]
+Y aquí ya podemos despejar $t$, aunque nos va a quedar algo un poco raro ya que aparece un cero
+en el denominador:
+\[
+  \begin{cases}
+    t &= \frac{x - P_x}{v_x}\\
+    t &= \frac{y - P_y}{0}
+  \end{cases}
+\]
+Y al pasar a la continua:
+\[\frac{y - P_y}{0} = \frac{x - P_x}{v_x}\]
+En general esto no tiene sentido matemáticamente, pero en la ecuación de la recta se puede hacer ya
+que nos aporta información acerca del vector director.\\
+Y si pasamos el cero al otro lado multiplicando queda (esto tampoco se puede hacer, salvo en el
+caso de la recta):
+\[y - P_y = 0*\frac{x -P_x}{v_x}\]
+\[y -P_y = 0\]
+\[\boldsymbol{y = P_y}\]
+\emph{¿Qué quiere decir esto?}. Pues quiere decir que en la recta horizontal la $x$ puede tomar
+el valor que sera, la única restricción es que la $y$ solo puede tener un valor.\\
+Una explicación gráfica:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[xmin=-5, xmax=5, ymin=-3, ymax=3, ytick=\empty,
+      axis x line=center, axis y line=center, grid=none]
+      \draw[ultra thick] (-5, 1.5) -- (5,1.5);
+      \draw[fill] (-2, 1.5) circle(2pt) node[above] {$(-2, P_y)$};
+      \draw[fill] (1, 1.5) circle(2pt) node[above] {$(1, P_y)$};
+      \draw[fill] (3.8, 1.5) circle(2pt) node[above] {$(3.8; P_y)$};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+Con lo cual \textbf{la construcción de la ecuación de una recta horizontal} es muy sencilla:\\
+
+\emph{Escribe la ecuación de la recta horizontal que pasa por el punto $P(3, -2)$.}
+\begin{solution}
+  Basta con hacer
+  \[y = -2\]
+  Y ya está.
+\end{solution}
+
+\subsection{Recta vertical.}
+Haciendo un razonamiento similar al de la recta horizontal llegamos a la ecuación:
+\[\boldsymbol{x = P_x}\]
+Y gráficamente:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[xmin=-5, xmax=5, ymin=-5, ymax=5, xtick=\empty,
+      axis x line=center, axis y line=center, grid=none]
+      \draw[ultra thick] (-1.5, -5) -- (-1.5,5);
+      \draw[fill] (-1.5, -3) circle(2pt) node[left] {$(P_x, -3)$};
+      \draw[fill] (-1.5, 1) circle(2pt) node[left] {$(P_x, 1)$};
+      \draw[fill] (-1.5, 2.5) circle(2pt) node[left] {$(P_x; 2,5)$};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+Es decir, la coordenada vertical de un punto de la recta puede ser cualquier valor, pero la
+horizontal es la misma para todos.\\
+
+Y escribir la ecuación de una recta vertical es igual de sencillo que construir la de la recta
+horizontal:\\
+
+
+\emph{Escribe la ecuación de la recta vertical que pasa por el punto $P\left(-\frac{1}{2},
+    \frac{2}{13} \right)$.}
+\begin{solution}
+  Solo tenemos que hacer:
+  \[x = -\frac{1}{2}\]
+\end{solution}
+
+\section{Aplicaciones de la ecuación de la recta.}
+En este apartado vamos a ver una serie de ejemplos en los que haremos uso de las distintas formas
+de la ecuación de la recta.\\
+
+Aunque no hace falta, no está de más insistir en que para entender estos ejemplos hay que haberse
+estudiado todo lo anterior referente a la obtención de las distintas formas así como de la
+localización del vector director y un punto por el que pasa en cada una de las ecuaciones.\\
+
+Y sin más empezamos por los ejemplos:
+\begin{questions}
+\question Escribe todas las ecuaciones de la recta que pasa por los puntos $P(-1,2)$ y $Q(3,0)$.
+  \begin{solution}
+    Por lo que hemos visto, para escribir cualquiera de las ecuaciones de la recta necesitamos
+    un punto y un vector mientras que aquí nos dan dos puntos. Pero es fácil obtener el vector
+    entre esos dos puntos:
+    \[\overrightarrow{PQ} = (4, -2)\]
+
+    De este vector solo nos interesa la dirección, con lo que podemos dividirlo entre $2$ obteniendo
+    un vector con la misma dirección pero con números más sencillos (\emph{esto no es obligatorio,
+      pero va a hacer las cosas más sencillas}).\\
+    Entonces el vector director va a ser:
+    \[\vec{v} = \frac{\overrightarrow{PQ}}{2} = (2, -1)\]
+
+    Con respecto al punto, nos da igual hacer las ecuaciones con $P$ que con $Q$. Vamos a hacerlas
+    con ambos puntos a la vez y veremos que algunas acaban siendo iguales (en este caso lo lógico
+    sería hacerlas con $Q$ porque es más sencillo ya que una de sus coordenadas es cero).
+    \begin{center}
+      \renewcommand{\arraystretch}{2}
+      \begin{longtable}{cc}
+        \multicolumn{2}{l}{Empezamos por la \textbf{ecuación vectorial}}\\
+        \textbf{\tiny{Con $P(-1,2)$}} & \textbf{\tiny{Con $Q(3,0)$}} \\
+        $\boldsymbol{(x,y) = (-1,2) + t*(2,-1)}$&$\boldsymbol{(x,y) = (3, 0) + t*(2,-1)}$ \\
+        \multicolumn{2}{l}{Pasamos a la \textbf{ecuación paramétrica}:}\\
+        \textbf{\tiny{Con $P(-1,2)$}} & \textbf{\tiny{Con $Q(3,0)$}} \\
+        $
+        \boldsymbol{\begin{cases}
+          x &= -1 + 2t\\
+          y&= 2-t
+        \end{cases}}$ &
+                       $
+                       \boldsymbol{\begin{cases}
+                         x &= 3 + 2t\\
+                         y&= -t
+                       \end{cases}}$\\
+        \multicolumn{2}{l}{Despejamos $t$ e igualamos para obtener la
+        \textbf{ecuación continua}.}\\
+        \textbf{\tiny{Con $P(-1,2)$}} & \textbf{\tiny{Con $Q(3,0)$}} \\
+        $
+        \begin{cases}
+          t&=\frac{x+1}{2}\\
+          t &= \frac{y-2}{-1}
+        \end{cases}$ &
+                       $
+                       \begin{cases}
+                         t&=\frac{x-3}{2}\\
+                         t &= \frac{y}{-1}
+                       \end{cases}$\\
+        $\boldsymbol{\frac{y-2}{-1} = \frac{x+1}{2}}$
+                                      &$\boldsymbol{\frac{y}{-1} = \frac{x-3}{2}}$\\
+        \multicolumn{2}{l}{Llevamos $v_y$ al otro lado para obtener la \textbf{ecuación
+        punto-pendiente}.}\\
+        \textbf{\tiny{Con $P(-1,2)$}} & \textbf{\tiny{Con $Q(3,0)$}} \\
+        $\boldsymbol{y - 2 = \frac{-1}{2}*(x+1)}$&$\boldsymbol{y = \frac{-1}{2}(x-3)}$\\
+        \multicolumn{2}{l}{\parbox{\columnwidth}{Desarrollamos, despejamos $y$ y reducimos para obtener la
+        \textbf{ecuación explícita} (en ésta ya coinciden).}}\\
+        \textbf{\tiny{Con $P(-1,2)$}} & \textbf{\tiny{Con $Q(3,0)$}} \\
+        $y = -\frac{1}{2}x -\frac{1}{2} + 2$&$y = -\frac{1}{2}x + \frac{3}{2}$\\
+        $\boldsymbol{y = -\frac{1}{2}x + \frac{3}{2}}$&$\boldsymbol{y = -\frac{1}{2}x + \frac{3}{2}}$\\
+        \multicolumn{2}{l}{\parbox{\columnwidth}{Y para obtener la \textbf{ecuación implícita}
+        volvemos a partir de la ecuación continua.}}\\
+        \textbf{\tiny{Con $P(-1,2)$}} & \textbf{\tiny{Con $Q(3,0)$}} \\
+        $\frac{x+1}{2} = \frac{y-2}{-1}$&$\frac{x-3}{2} = \frac{y}{-1}$\\
+        $-1*(x+1) = 2*(y -2)$&$-1*(x-3) = 2*y$\\
+        $-x - 1 = 2y -4$&$-x+3 = 2y$\\
+        $\boldsymbol{-x - 2y + 3 = 0}$&$\boldsymbol{-x-2y+3 = 0}$\\
+        $x + 2y - 3 = 0$&$x+2y-3 = 0$\\
+      \end{longtable}
+    \end{center}
+
+    Si nos fijamos bien las únicas en las que coinciden son en la implícita y en la explícita
+    (y si no coinciden es porque podemos simplificarlas), pero aunque en las otras no coincidan
+    siguen siendo ecuaciones de la misma recta y van a dar los mismos valores.
+  \end{solution}
+\question Con la recta del ejercicio anterior, calcula la coordenada que falta utilizando la
+  ecuación que indica en cada uno.
+  \begin{parts}
+  \part $x = -2$ con la continua.
+  \part $y = 1$ con la paramétrica.
+  \part $x = 0$ con la implícita.
+  \end{parts}
+  \begin{solution}
+    La idea de este ejercicio es comprobar que se obtiene el mismo valor para la coordenada que
+    falta utilicemos la ecuación que utilicemos y la hayamos calculado con el punto que sea,
+    mientras sea de la misma recta vamos a obtener el mismo valor.
+    \begin{parts}
+    \part En este apartado nos falta la $y$, y nos pide que lo calculemos con la continua.\\
+      Para comprobar que da lo mismo vamos a utilizar las dos ecuaciones continuas que hemos
+      obtenido en el ejercicio anterior.\\
+      
+      Habíamos obtenido las ecuaciones $\frac{y-2}{-1} = \frac{x+1}{2}$ y
+      $\frac{y}{-1} = \frac{x-3}{2} $.
+      \begin{itemize}
+      \item Con $\frac{x+1}{2} = \frac{y-2}{-1}$ sustituimos el valor que nos dan de la $x$ y
+        despejamos la $y$:
+        \[\frac{y-2}{-1} = \frac{-2+1}{2}\]
+        \[-y + 2 = -\frac{1}{2} \]
+        \[y = 2 + \frac{1}{2}\]
+        \[\boldsymbol{y = \frac{5}{2}}\]
+      \item Ahora hacemos lo mismo con $\frac{y}{-1} = \frac{x-3}{2} $:
+        \[\frac{y}{-1} = \frac{-2-3}{2}\]
+        \[-y = -\frac{5}{2} \]
+        \[\boldsymbol{y = \frac{5}{2}}\]
+      \end{itemize}
+      Es decir, nos da igual qué ecuación utilicemos que el resultado va a ser el mismo.\\
+      A partir de ahora solo lo haremos con una para no ser demasiado pesados.
+
+      Y el resultado es que la recta pasa por el punto $\left(-2, \frac{5}{2}\right)$.
+      
+    \part Aquí nos falta la $x$ y nos pide que la obtengamos con la paramétrica. De las dos
+      paramétricas que habíamos obtenido vamos a coger la más sencilla:
+      \[
+        \begin{cases}
+          x &= 3 + 2t\\
+          y&= -t
+        \end{cases}
+      \]
+      La ecuación paramétrica no es la más adecuada para este tipo de ejercicios,
+      ya que para calcular $x$ primero tenemos que obtener $t$.\\
+      En este caso es sencillo, ya que al sustituir el valor del enunciado $y=1$ nos queda:
+      \[
+        \begin{cases}
+          x &= 3 + 2t\\
+          1&= -t
+        \end{cases}
+      \]
+      Con lo que $t=-1$ y entonces
+      \[x = 3 + 2*(-1)\]
+      \[x = 1\]
+
+      Entonces la recta pasa por el punto $(1,1)$.
+    \part Cogemos la ecuación implícita simplificada:
+      \[x+2y-3 = 0\]
+      Y sustituimos el valor del enunciado $x = 0$:
+      \[0 + 2y - 3 = 0\]
+      \[2y= 3\]
+      \[y = \frac{3}{2}\]
+
+      Con lo que la recta pasa por el $\left(0,\frac{3}{2}\right)$.
+    \end{parts}
+  \end{solution}
+\question Discute por cuales de estos puntos pasa la recta $r: y = 2x - 1$:
+  \begin{parts}
+  \part $A(1,1)$.
+  \part $B\left(\frac{5}{2}, 4\right)$.
+  \part $C(3, 1)$.
+  \part $D\left(-\frac{5}{4}, -\frac{7}{2}\right)$.
+  \end{parts}
+  \begin{solution}
+    Tal y como hemos indicado antes, y también como conclusión del ejercicio anterior, si un
+    punto pertenece a una recta debe cumplir la ecuación de la recta.\\
+    Entonces solo tendremos que sustituir cada punto y comprobar si cumple la ecuación o no.
+    \begin{parts}
+    \part Sustituimos el punto:
+      \[1 = 2*1 - 1\]
+      \[ 1 =1\]
+      Con lo que cumple la ecuación, entonces $A \in r$ (el punto $A$ está en la recta $r$).
+    \part Lo mismo con el punto $B$:
+      \[4 = 2*\frac{5}{2} - 1\]
+      \[4 = 5 - 1\]
+      Y también cumple la ecuación, entonces $B \in r$.
+    \part Sustituimos $C$ en la ecuación de la recta:
+      \[1 = 2*3 - 1\]
+      \[1 = 6 -1\]
+      Y eso es falso, con lo que este punto no cumple la ecuación, así que $C \notin r$
+    \part Y para $D$:
+      \[-\frac{7}{2} = 2*\frac{-5}{4} - 1\]
+      \[-\frac{7}{2} = -\frac{5}{2} - 1\]
+      Que sí es cierto. Por tanto $D \in r$.
+    \end{parts}
+
+    Resumiendo, nos ha salido que $A$, $B$ y $D$ están en la recta, mientras que $C$ no está.
+  \end{solution}
+\question Dada la recta $r: y = -x + \frac{1}{2}$, escribe su ecuación paramétrica.
+  \begin{solution}
+    La dificultad de resolución de este ejercicio radica en que hay que saberse todas las ecuaciones
+    de la recta y lo que significan los parámetros que tiene cada una de ellas.\\
+
+    En este caso la ecuación $y = -x + \frac{1}{2}$ es la explícita (apartado
+    \ref{sec:ecuacion-explicita}, página \pageref{sec:ecuacion-explicita}), que tiene la forma:
+    \[y = mx + n\]
+    Donde $m$ es la pendiente y $n$ es la ordenada en el origen.\\
+
+    La ecuación que nos piden es la paramétrica (apartado \ref{sec:ecuacion-parametrica},
+    página \pageref{sec:ecuacion-parametrica}) y hemos visto que los parámetros que tiene son
+    el vector director y el punto por el que pasa.\\
+
+    En el apartado de la ecuación explícita vimos que el vector director se puede construir como
+    $\vec{v} = (1, m)$ y el punto por el que pasa es $P(0, n)$, con lo que el vector director
+    de $r$ es $\vec{v} = (1, -1)$ y el punto es $P\left(0, \frac{1}{2}\right)$, con lo que
+    sustituimos en la paramétrica y queda:
+    \[r:
+      \begin{cases}
+        x &= 0 + 1*t\\
+        y &= \frac{1}{2} + (-1)* t
+      \end{cases}
+    \]
+    Y como sabemos que los ceros sumando y los unos multiplicando no se escriben, nos quedará:
+    \[\boldsymbol{r:
+        \begin{cases}
+          x &= t\\
+          y &= \frac{1}{2} - t
+        \end{cases}}
+    \]
+    
+    Siempre que tengamos que cambiar de ecuación de la recta tendremos que obtener el vector
+    director y un punto a partir de la ecuación que nos den, y con eso ya podemos construir la que
+    sea.
+  \end{solution}
+\question Dada la recta $s: 3x - 2y + 2 = 0$, escribe el resto de sus ecuaciones.
+  \begin{solution}
+    La ecuación que nos dan es la implícita (apartado \ref{sec:ecuacion-implicita}, página
+    \pageref{sec:ecuacion-implicita}) y en ésta sabemos que un vector director es
+    $\vec{v} = (2, 3)$. Para obtener un punto tenemos que dar un valor a una de las coordenadas,
+    aunque lo normal es dar varios valores sencillos para coger el punto que salga más sencillo.\\
+    Vamos a ver que nos sale con un par de intentos:
+    \begin{itemize}
+    \item Si hacemos $y = 0$ queda
+      \[3x +2 = 0\]
+      \[x = -\frac{2}{3}\]
+      Con lo que el punto sería $\left(-\frac{2}{3}, 0\right)$.
+      
+    \item Si hacemos $x = 0$ queda:
+      \[-2y + 2 = 0\]
+      \[y = 1\]
+      Con lo que el punto sería $(0 , 1)$.
+    \end{itemize}
+    Evidentemente vamos a utilizar el segundo que es mucho más sencillo, con lo que procedemos a
+    construir todas las ecuaciones de la recta que tiene la dirección de $\vec{v} =(2, 3)$ y que
+    pasa por el punto $(0,1)$.
+    \begin{itemize}
+    \item Ecuación vectorial:
+      \[\boldsymbol{s: (x, y) = (0,1) + t*(2,3)}\]
+    \item Ecuación paramétrica:
+      \[\boldsymbol{s:
+          \begin{cases}
+            x &= 2t\\
+            y &= 1 + 3t
+          \end{cases}
+        }
+      \]
+    \item Ecuación continua:
+      \[\boldsymbol{s: \frac{y - 1}{3} = \frac{x}{2}}\]
+    \item Ecuación punto-pendiente:
+      \[\boldsymbol{s: y - 1 = \frac{3}{2}*x}\]
+    \item Ecuación explícita:
+      \[\boldsymbol{s: y = \frac{3}{2}x + 1}\]
+    \end{itemize}
+    La ecuación implícita no hay que construirla porque es la que nos dan en el enunciado.
+  \end{solution}
+\question Escribe un vector director y un punto de cada una de las siguientes rectas:
+  \begin{parts}
+  \part $r: y = -4x + 2$
+  \part $s: 3y = 2x -5$
+  \part $t: y = -1$
+  \part $a:
+    \begin{cases}
+      x &= 5 - 2t\\
+      y &=\frac{t}{3}
+    \end{cases}$
+  \part $b: (x, y) = (2-5t, 2t)$
+  \end{parts}
+  \begin{solution}
+    Vamos a ver la solución de este ejercicio suponiendo que ya nos sabemos las ecuaciones de la
+    recta bastante bien, incluidas las especiales.
+    \begin{parts}
+    \part La recta $r$ está en forma explícita, con lo que un vector director es
+      $\vec{v} = (1, -4)$ y un punto por el que pasa es $(0, 2)$.
+    \part La recta $s$ no tiene ninguna de las formas que hemos visto, pero si pasamos todo al
+      lado izquierdo se convierte en la implícita:
+      \[3y -2x + 5 = 0\]
+      Con lo que un vector director es el $\vec{v} = (3, 2)$ y para obtener un punto hacemos
+      $y = 1$, con lo que queda:
+      \[3 - 2x + 5 = 0\]
+      \[-2x = -8\]
+      \[x = 4\]
+      Y un punto por el que pasa es el $(4, 1)$.
+    \part La recta $t$ es una recta especial, en concreto es una recta horizontal.\\
+      Por lo que vimos en el apartado \ref{sec:recta-horizontal} (página
+      \pageref{sec:recta-horizontal}) cualquier vector horizontal es director,
+      por ejemplo $\vec{v} = (1,0)$, y como punto podemos coger cualquiera cuya coordenada
+      vertical sea $-1$, por ejemplo el $(0, -1)$.
+    \part Como la recta $a$ nos la dan en paramétricas es sencillo obtener lo que nos piden,
+      un vector director es $\vec{v} = \left(-2, \frac{1}{3}\right)$ y pasa por el $(5, 0)$.
+    \part La ecuación de la recta $b$ se parece a la vectorial pero no tiene exactamente la forma.
+      Lo que hacemos es separarla de la siguiente manera:
+      \[(x,y) = (2, 0) + t*(-5, 2)\]
+      Y ya sí que coincide con la vectorial, y sacar de ella el punto y el vector es trivial.
+    \end{parts}
+  \end{solution}
+\question Escribe la ecuación de la recta $s$ que es paralela a $r: y +1 = 3(x -2)$ y pasa por el
+  punto $A(1, 0)$.
+  \begin{solution}
+    Como vimos ya en la parte de vectores, si dos direcciones son paralelas tienen la misma
+    pendiente, y sabiendo esto es fácil resolver el ejercicio.\\
+
+    El verdadero problema de este ejercicio es que hay que recordar todas las ecuaciones de las
+    rectas y qué significa cada parámetro en cada una de ellas.\\
+
+    La ecuación en la que nos dan $r$ es la \emph{ecuación punto-pendiente} (apartado
+    \ref{sec:ecuacion-puntopendiente}, \pageref{sec:ecuacion-puntopendiente}),
+    y en el caso de $r$ la pendiente es $m= 3$ y para el resto del ejercicio el punto no nos
+    interesa.\\
+    
+    Con lo cual la ecuación de $s$ tiene que tener la misma pendiente pero pasando por el punto
+    $A(1, 0)$, con lo que la ecuación de $s$ con las condiciones que nos piden es:
+    \[\boldsymbol{s: y - 0 = 3(x - 1)}\]
+    Que se puede simplificar a
+    \[s: y = 3(x-1)\]
+
+    Como no nos han pedido ninguna ecuación en concreto con esto bastaría. Si nos piden otra
+    ecuación habría que pasar de la que tenemos a la que nos piden.
+  \end{solution}
+\question Dada la recta $r: 2x - y + 4 = 0$ escribe la ecuación continua de la perpendicular a
+  $r$ que pasa por el $(1, 0)$.
+  \begin{solution}
+    Para escribir la ecuación que nos piden necesitamos un vector director y un punto.\\
+    El punto nos lo dan en el enunciado, solo nos falta el vector director.\\
+
+    De la recta $r$ sacamos su vector director $\vec{v}_r = (1, 2)$, así que vamos a ver un
+    recordatorio de la parte de vectores sobre cómo se obtiene una dirección perpendicular
+    a otra:
+    \begin{quote}
+      \emph{%\fontfamily{qcr}\selectfont
+        Si tenemos un vector $\vec{u} = (u_x, u_y)$ los vectores
+        \begin{itemize}
+        \item $\vec{w}_1 = (-u_y, u_x)$
+        \item $\vec{w}_2 = (u_y, -u_x)$
+        \end{itemize}
+        Son perpendiculares a $\vec{u}$
+      }
+    \end{quote}
+    Con lo que cogemos como vector director de $s$ a $\vec{v}_s = (-2,1)$.\\
+
+    Entonces ya tenemos todo para poder escribir la ecuación continua de $s \perp r$:
+    \[\boldsymbol{s: \frac{y}{1} = \frac{x - 1}{-2}} \]
+  \end{solution}
+\end{questions}
+
+\section{Posiciones relativas de dos rectas.}
+Si tenemos dos rectas, $r$ y $s$, sabemos que pueden ser:
+\begin{center}
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \draw (0,0) -- (4,3) node[above, sloped] {$r$};
+    \draw (0,2) -- (3.5,1.5) node[above, sloped] {$s$};
+    \node[font=\bfseries] at (2,3.5) {Secantes};
+  \end{tikzpicture}
+  \quad
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+
+    \draw (0,0) -- (4,3) node[above, sloped] {$r$};
+    \draw (0,1) -- (4,4) node[above, sloped] {$s$};
+    \node[font=\bfseries] at (2,4) {Paralelas};
+  \end{tikzpicture}
+  \quad
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+
+    \draw (0,0) -- (4,3) node[above, sloped] {$r$};
+    \draw (0,0) -- (4,3) node[below, sloped] {$s$};
+    \node[font=\bfseries] at (2,3.5) {Coincidentes};
+  \end{tikzpicture}
+\end{center}
+Es decir:
+\begin{itemize}
+\item Las rectas \textbf{secantes tienen un punto en común}.
+\item Las rectas \textbf{paralelas no tienen puntos en común}.
+\item Las rectas \textbf{coincidentes tienen todos sus puntos en común}.
+\end{itemize}
+
+\emph{¿Cómo relacionamos esto con las ecuaciones que estamos viendo?}\\
+Vamos a pensar un poco en lo que significan las ecuaciones y la relación saldrá fácil.\\
+
+Uno de los usos que hemos dado a las ecuaciones es el de saber si un punto está en la recta o no.
+Es decir, podemos considerar que la ecuación de una recta es un criterio que deben cumplir los
+puntos que están en ella.\\
+
+Cuando dos rectas son secantes tienen un punto en común, hay un punto que cumple las ecuaciones
+de las dos rectas. \textbf{La manera de encontrar un punto que cumpla dos ecuaciones es resolver
+  el sistema que forman estas ecuaciones}.\\
+
+Si recordamos la teoría que vimos en los sistemas de ecuaciones lineales (porque las ecuaciones de
+las rectas son lineales ya que solo tienen monomios de primer grado) teníamos que podían pasar tres cosas:
+\begin{itemize}
+\item El sistema tenga una solución. Sistema compatible determinado.
+\item El sistema tenga infinitas soluciones. Sistema compatible indeterminado.
+\item El sistema no tenga solución. Sistema incompatible.
+\end{itemize}
+que coinciden con las tres situaciones en las que pueden estar dos rectas:
+\begin{itemize}
+\item \textbf{Rectas secantes}: un punto en común que es la única solución del sistema,
+  \textbf{sistema compatible determinado}.
+\item \textbf{Rectas paralelas}: ningún punto en común, el sistema no tiene solución, \textbf{
+    sistema incompatible}.
+\item \textbf{Rectas coincidentes}: todos sus puntos en común, el sistema tiene infinitas
+  soluciones, \textbf{sistema compatible indeterminado}.
+\end{itemize}
+
+Vamos a ver unos cuantos ejemplos de esto:
+\begin{questions}
+\question Discute la posición relativa de las siguientes rectas:
+  \begin{parts}
+  \part $r: -x + 2y + 3 = 0$, $s: 2x - y +3 =0$.
+  \part $r: x - y +2 = 0$, $s: 2y - 2x - 3 = 0$.
+  \part $r: 2x-3y +1 = 0$, $s: -4x + 6y - 2 = 0$.
+  \end{parts}
+  \begin{solution}
+    Pues tal y como acabamos de ver, lo que tenemos que hacer es resolver el sistema que forman
+    las dos rectas e interpretar el resultado.
+    \begin{parts}
+    \part Escribimos el sistema para resolverlo:
+      \[
+        \begin{cases}
+          -x + 2y &= -3\\
+          2x - y &= -3
+        \end{cases}
+      \]
+      Multiplicamos la primera por dos y hacemos reducción:
+      \[\left\lbrace
+        \begin{array}{rrrcr}
+          &-2x &+ 4y &=& -6\\
+          +&&&&\\
+          &2x &- y &=&-3\\
+          \hline
+          &&3y &=& -9
+        \end{array}
+        \right.
+      \]
+      Ya tenemos que $y= -3$ y es fácil obtener que $x = -3$, con lo que las rectas
+      \textbf{son secantes} y se cortan en el punto $(-3, -3)$.
+    \part Escribimos el sistema:
+      \[
+        \begin{cases}
+          x-y &= -2\\
+          -2x + 2y &= 3
+        \end{cases}
+      \]
+      En este caso vamos a resolver por sustitución, despejamos en la primera $x = y -2$ y
+      sustituimos en la segunda:
+      \[-2*(y - 2) + 2y = 3\]
+      \[-2y +4 + 2y = 3\]
+      \[0 = -1\]
+      Y sabemos que cuando nos sale algo así es porque es un \textbf{sistema incompatible}, que no
+      tiene solución y por tanto \textbf{las rectas son paralelas}.
+    \part Procedemos igual que en los otros dos:
+      \[
+        \begin{cases}
+          2x-3y&= -1\\
+          -4x + 6y&= 2
+        \end{cases}
+      \]
+      Multiplicamos la primera por dos y reducimos:
+      \[\left\lbrace
+        \begin{array}{rrrcr}
+          &4x&-6y&=&-2\\
+          +&&&&\\
+          &-4x&+6y&=&2\\
+          \hline
+          &&0&=&0
+        \end{array}
+        \right.
+      \]
+      Que quiere decir que el sistema tiene \textbf{infinitas soluciones}, con lo que son
+      \textbf{rectas coincidentes}.
+    \end{parts}
+  \end{solution}
+\end{questions}
+
+\section{Ejemplos de ejercicios típicos.}
+Gran parte de la utilidad de toda la teoría que acabamos de ver necesita de un poco de práctica
+con el razonamiento espacial relacionado con el álgebra, algo que a primera vista no es evidente.\\
+Además hay que tener en cuenta que hay que acordarse de bastantes cosas que se han visto en otros
+momentos, como puede ser la trigonometría o la resolución de ecuaciones.\\
+
+Por esto, y porque a veces no es evidente cómo utilizar las ecuaciones de la recta, vamos a ver
+unos cuantos ejemplos de ejercicios típicos para practicar todo lo que hemos visto hasta ahora.
+\begin{questions}
+\question Escribe la ecuación de la bisectriz del segundo cuadrante.
+  \begin{solution}
+    En primer lugar vamos a recordar qué es la bisectriz de un ángulo: \emph{``La bisectriz
+      de un ángulo es la recta que divide el ángulo en dos partes iguales''}.\\
+
+    Entonces tenemos que escribir la ecuación de una recta que forme el mismo ángulo con el eje
+    horizontal negativo que con el vertical positivo y que pase por el origen de coordenadas.\\
+    Vamos a verlo gráficamente con todos los ángulos implicados:
+    \begin{center}
+      \begin{tikzpicture}
+        \begin{axis}[xmin=-3, xmax=3, ymin=-3, ymax=3, ytick=\empty, xtick=\empty,
+          axis x line=center, axis y line=center, grid=none]
+          \draw[ultra thick] (-2.5,2.5) --(2.5, -2.5);
+          \coordinate (A) at (-1,1);
+          \coordinate (O) at (0,0);
+          \coordinate (B) at (-1, 0);
+          \coordinate (C) at (0, 1);
+          \coordinate (D) at (1, 0);
+          \pic["$45\degree$", draw=darkgray, angle eccentricity=1.25, angle radius=1cm]
+          {angle=A--O--B};
+          \pic["$45\degree$", draw=darkgray, angle eccentricity=1.25, angle radius=.8cm]
+          {angle=C--O--A};
+          \pic["$135\degree$", draw=black, angle eccentricity=1.25, angle radius=1.5cm]
+          {angle=D--O--A};
+        \end{axis}
+      \end{tikzpicture}\\
+      \small{\emph{(No está de más que recordemos que en todos los ejercicios
+        es necesario dibujar para entender qué está pasando para saber qué tenemos que hacer)}}
+    \end{center}
+
+    Es evidente que el ángulo que tiene que formar la recta es $135\degree$,
+    con lo que la pendiente de la recta tiene que ser $m = \tg 135\degree = -1$.
+    Y como conocemos además un punto por el que tiene
+    que pasar, el $(0,0)$ lo más lógico es utilizar la ecuación punto pendiente ya que no nos piden
+    ninguna en concreto.\\
+    
+    La ecuación de la bisectriz es entonces:
+    \[\boldsymbol{y - 0 = -1*(x - 0)}\]
+    O más simple:
+    \[\boldsymbol{y = -x}\]
+  \end{solution}
+\question Escribe la ecuación de la mediatriz del segmento que tiene por extremos los puntos
+  $A(2,-1)$ y $B(4, 5)$.
+  \begin{solution}
+    Empecemos por recordar qué es la mediatriz: \emph{``la mediatriz de un segmento es una
+      recta perpendicular a este que pasa por su punto medio''}.
+    Y ahora vamos a dibujar la situación para ver qué tenemos que hacer:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (A) at (2, -1);
+        \coordinate (B) at (4,5);
+        \coordinate (M) at (3, 2);
+        \coordinate (C) at (0,3);
+        \coordinate (D) at (6,1);
+
+        \draw (A)--(B);
+        \draw[fill] (A) circle(2pt) node[left] {$A$};
+        \draw[fill] (B) circle(2pt) node[right] {$B$};
+        \draw[fill] (M) circle(2pt) node[below left] {$M$};
+        \draw[dashed] (C)--(D) node[right] {$r$};
+        \pic[draw=black, angle eccentricity=.5, angle radius=.4cm, pic text=.]
+        {right angle=B--M--C};
+      \end{tikzpicture}
+    \end{center}
+
+    Hemos dibujado la mediatriz punteada y la hemos llamado $r$.\\
+    Para escribir la ecuación de esta recta \textbf{necesitamos el punto $M$ y un vector
+      en la dirección de la recta}
+    (o la pendiente si queremos escribir la ecuación punto-pendiente).\\
+
+    El punto $M$ sabemos calcularlo, hemos visto el método cuando explicábamos vectores. Y también
+    podemos obtener un vector director porque sabemos calcular un vector perpendicular al vector
+    $\overrightarrow{AB}$. Así que vamos a por ello.
+
+    El punto medio se calcula con la fórmula:
+    \[M = \frac{A+B}{2}\]
+    Con lo cual:
+    \[M = (3,2)\]
+
+    Obtenemos el vector $\overrightarrow{AB} = (2, 6)$, con lo que un vector $\vec{v} \perp
+    \overrightarrow{AB}$ es:
+    \[\vec{v} = (-6,2)\]
+
+    Y con esto podemos escribir, por ejemplo, la ecuación continua (ya que no nos piden ninguna en
+    concreto):
+    \[\boldsymbol{r: \frac{y - 2}{2} = \frac{x - 3}{-6}}\]
+
+    Y esa es la ecuación de la mediatriz del segmento $\overline{AB}$.\\
+
+    Se podría simplificar, ya que del vector director solo nos interesa la dirección, con lo que
+    podríamos elegir:
+    \[\vec{u} = \frac{\vec{v}}{2} = (-3, 1)\]
+    y la ecuación continua quedaría así:
+    \[r: \frac{y -2}{1} = \frac{x-3}{-3}\]
+  \end{solution}
+\question Los puntos $A(0, 1)$, $B(3, -2)$ y $C(1, 3)$ forman un triángulo. Calcula la altura sobre
+  el lado $\overline{AB}$\\
+  \small{(Tal y como vamos a ver en la resolución, éste es un ejercicio bastante completo, en el que
+  hay que aplicar distintos conocimientos de vectores y rectas, geometría y álgebra, aparte
+  de hacer razonamiento espacial).}
+  \begin{solution}
+    Empecemos por recordar qué es exactamente la altura de un triángulo: \emph{``una altura de
+      un triángulo es la distancia de un lado al vértice opuesto siguiendo la perpendicular
+      al lado''}.
+
+    Así que la situación que tenemos es la siguiente:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (A) at (0,1);
+        \coordinate (B) at (3,-2);
+        \coordinate (C) at (1,3);
+        \coordinate (H) at (-.5, 1.5);
+
+        \coordinate (A1) at (-1,2);
+        \coordinate (B1) at (4,-3);
+        \coordinate (C1) at (2,4);
+        \coordinate (H1) at (-1, 1);
+
+        \draw (A)--(B);
+        \draw (A)--(C);
+        \draw (B)--(C);
+        \draw[thick] (H)--(C) node[midway, sloped, above] {$\boldsymbol{h}$};
+
+        \draw[dashed] (A1)--(B1) node[below] {$r$};
+        \draw[dashed] (H1)--(C1) node[above] {$s$};
+        \pic[draw=black, angle eccentricity=.5, angle radius=.4cm, pic text=.]
+        {right angle=A--H--C};
+
+        \draw[fill] (A) circle(2pt) node[below left] {$A$};
+        \draw[fill] (B) circle(2pt) node[below left] {$B$};
+        \draw[fill] (C) circle(2pt) node[above] {$C$};
+        \draw[fill] (H) circle(2pt) node[left] {$H$};
+      \end{tikzpicture}
+    \end{center}
+
+    Nos piden calcular cuanto mide el segmento $h$, que es la distancia entre el punto que hemos
+    llamado $H$ y el vértice $C$.\\
+    Entonces necesitamos saber qué coordenadas tiene el punto $H$.\\
+
+    Teniendo en cuenta la definición de la altura que acabamos de recordar, el punto $H$ es
+    la intersección entre la recta que contiene el lado $\overline{AB}$ y la recta que contiene
+    la altura sobre ese lado.\\
+    Y para calcular la intersección de dos rectas tenemos que resolver el sistema que forman, con
+    lo que necesitamos escribir sus ecuaciones.\\
+
+    Vamos a empezar por la ecuación de $r$, que contiene el lado $\overline{AB}$. 
+    Conocemos dos puntos, con lo que podemos calcular un vector director y ya estaría.\\
+    El vector director:
+    \[\overrightarrow{AB}= (3,-3)\]
+    Que lo podemos simplificar a:
+    \[\vec{u} = (1, -1)\]
+    Y cogiendo el punto $A$ la ecuación de la recta $r$ queda:
+    \[\boldsymbol{r: \frac{y - 1}{-1} = \frac{x}{1}}\]
+
+    Para la recta $s$ tenemos que es perpendicular a $r$ y pasa por $C$.\\
+    Un vector perpendicular a $r$ es:
+    \[\vec{v} = (1,1)\]
+    Y al pasar por $C$ su ecuación continua queda:
+    \[\boldsymbol{s: \frac{y -3}{1} = \frac{x-1}{1}}\]
+
+    Para calcular $H$ tenemos que resolver el sistema que forman las dos rectas:
+    \[
+      \begin{cases}
+        \frac{y - 1}{-1} &= \frac{x}{1}\\
+        \frac{y -3}{1} &= \frac{x-1}{1}
+      \end{cases}
+    \]
+    Como es un sistema bastante sencillo no lo vamos a resolver aquí (además de que alargaría mucho
+    el ejercicio). Tras resolverlo nos sale que el punto de corte es $\boldsymbol{
+      H\left(-\frac{1}{2},
+        \frac{3}{2}\right)}$.\\
+
+    Ya solo nos queda obtener $h$, que es $h = |\overrightarrow{HC}|$, entonces:
+    \[h = \left|\left(\frac{3}{2}, \frac{3}{2}\right)\right|\]
+    \[h = \sqrt{\left(\frac{3}{2}\right)^2 + \left(\frac{3}{2}\right)^2}\]
+    \[h = \sqrt{\frac{18}{4}}\]
+    \[h = \frac{\sqrt{18}}{2}\]
+    \[\boldsymbol{h = \frac{3\sqrt{2}}{2}}\]
+  \end{solution}
+\end{questions}
+\end{document}
+

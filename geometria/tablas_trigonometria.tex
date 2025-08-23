@@ -1,13 +1,12 @@
 \documentclass[a4paper,9pt,answers]{exam}
 
 \usepackage{graphicx}
-\usepackage{pstricks}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage[T1]{fontenc}
 %textcomp es para el símbolo del euro
 \usepackage{lmodern, textcomp}
-
+\usepackage{hyperref} %Para que no chille con otro paquete que no sé cual es.
 \usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
 %\usepackage{mathexam}
 \usepackage{amsmath}
@@ -206,12 +205,18 @@ Los posibles resultados para cada razón son:
 \section{Razones del ángulo mitad.}
 Aquí tendremos que elgir el $+$ o el $-$ dependiendo del contexto.
 \begin{itemize}
-	\item $\sen \frac{\alpha}{2} = \pm \sqrt{\frac{1 - \cos \alpha}{2}}$
-	\item $\cos \frac{\alpha}{2} = \pm \sqrt{\frac{1 + \cos \alpha}{2}}$
-	\item $\tg \frac{\alpha}{2} = \pm \sqrt{\frac{1 - \cos \alpha}{1 + \cos \alpha}} = \pm \frac{\sen \alpha}{1 + \cos \alpha}$
+\item $\sen \frac{\alpha}{2} = \pm \sqrt{\frac{1 - \cos \alpha}{2}}$
+\item $\cos \frac{\alpha}{2} = \pm \sqrt{\frac{1 + \cos \alpha}{2}}$
+\item $\tg \frac{\alpha}{2} = \pm \sqrt{\frac{1 - \cos \alpha}{1 + \cos \alpha}} = \pm \frac{\sen \alpha}{1 + \cos \alpha}$
+\end{itemize}
+\section{Transformaciones de productos en sumas.}
+\begin{itemize}
+\item $\cos x \cos y = \frac{\cos (x+y) + \cos (x-y)}{2}$
+\item $\sen x \sen y = \frac{\cos (x-y) - \cos (x+y)}{2}$
+\item $\sen x \cos y = \frac{\sen (x+y) + \sen (x-y)}{2}$
+\item $\cos x \sen y = \frac{\sen (x+y) - \sen (x-y)}{2}$
 \end{itemize}
 \section{Transformaciones de sumas en productos.}
-Y viceversa.
 \begin{itemize}
 	\item $\sen A + \sen B = 2 \sen \frac{A + B}{2} \cos\frac{A -B}{2}$
 	\item $\sen A - \sen B = 2 \sen \frac{A-B}{2} \cos \frac{A+B}{2}$

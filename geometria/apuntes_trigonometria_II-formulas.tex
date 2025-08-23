@@ -1,0 +1,1675 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+%\usepackage{textgreek}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de trigonometría II.\\Fórmulas trigonométricas.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+\newcommand{\degree}{^\circ}
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+\newcommand\unidad[1]{\,\text{#1}}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+
+%Colores
+\definecolor{midgray}{rgb}{0.4,0.4,0.4}
+
+
+% Aumenta el interlineado en aligns y demás
+\setlength{\jot}{1.5em}
+
+% Permite poner textos a las etiquetas: \labeltext{texto}{etiqueta}
+\makeatletter
+\newcommand{\labeltext}[2]{%
+  \@bsphack
+  \MakeLinkTarget*{#1}%
+  \def\@currentlabel{#1}{\label{#2}}%
+  \@esphack%
+}\makeatother
+
+% paragraphs como subsubsubsections
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+% display heading, like subsubsection
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+ \setcounter{secnumdepth}{4}
+
+                                   
+ \makeatother
+ % \setcounter{tocdepth}{3} %Solo parts, sections y subsections en el índice.
+
+ \renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+
+
+ %Para que nombre bien los anexos.
+ \makeatletter
+\newcommand\appendix@section[1]{%
+  \refstepcounter{section}%
+  \orig@section*{Anexo \@Roman\c@section: #1}%
+  \addcontentsline{toc}{section}{Anexo \@Roman\c@section: #1}%
+}
+\let\orig@section\section
+\g@addto@macro\appendix{\let\section\appendix@section}
+\makeatother
+
+ 
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\tableofcontents
+\newpage
+\setlength{\parindent}{0cm}
+
+\section{Introducción.}
+Esta es la continuación avanzada de los apuntes de trigonometría básica.\\
+
+Como bien indicamos en la frase anterior estos apuntes pertenecen a lo que se podría llamar
+matemáticas avanzadas, que requieren de métodos y destrezas que hasta ahora apenas se utilizaban
+por parte del alumnado.\\
+
+Es por esto que cosas como las demostraciones y las deducciones, en las que apenas se entraba en
+los apuntes de ESO, son importantes ya que muestran la manera de hacer las cosas en las matemáticas
+avanzadas.\\
+No es necesario que el alumnado memorice estas demostraciones o deducciones pero sí que haga el
+esfuerzo de entenderlas, preguntando todas las dudas que surjan, ya que habrá ejercicios en los que
+haya que utilizar razonamientos y/o metodologías parcialmente similares a las utilizadas en ellas.\\
+
+Y para empezar vamos a ver los radianes, que es algo relativamente sencillo y muy útil.
+
+\section{Grados y radianes.}
+Hasta ahora hemos utilizado los grados para medir ángulos, pero a partir de ahora tenemos que
+utilizar una unidad que tiene una serie de ventajas que vamos a ver ahora (además de que es la
+unidad con la que funciona el análisis que veremos en cursos posteriores).
+
+Con los grados tenemos la circunferencia dividida en $360\degree$ de la siguiente manera:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[width=8cm, height=8cm, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+      \draw (0,0) circle(3.5);
+      \node[above right] at (3.5,0) {$0\degree$};
+      \node[above left] at (0,3.5) {$90\degree$};
+      \node[above left] at (-3.5,0) {$180\degree$};
+      \node[below right] at (0,-3.5) {$270\degree$};
+      \node[below right] at (3.5,0) {$360\degree$};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+Y si el ángulo es mayor de $360\degree$ es porque estamos dando más de una vuelta.
+
+Además sabemos que si $r$ es el radio de la circunferencia la longitud de ésta viene dada por:
+\[\boldsymbol{l = 2\pi r}\]
+Y el área del círculo que encierra es:
+\[\boldsymbol{S = \pi r^2}\]
+
+Cada uno de los cuadrantes es un cuarto de la circunferencia, con lo que su longitud y su área
+serían las correspondientes a $360\degree$ divididas entre cuatro.
+
+Si tenemos un sector con un ángulo $\alpha$:
+\begin{center}
+  \begin{tikzpicture}
+    \draw (0,0) coordinate (O) -- (3.5,0) coordinate (A)
+    arc[start angle=0, end angle=60,radius=3.5cm] coordinate (B) -- (0,0);
+    \draw (0:0.5) arc (0:60:0.5) node[right, midway] {$\alpha$};
+  \end{tikzpicture}
+\end{center}
+la longitud y el área de ese arco serán la parte proporcional de la longitud y el área totales:
+\[l = \frac{\alpha}{360\degree}*2\pi r\]
+\[S = \frac{\alpha}{360\degree}*\pi r^2\]
+
+Para evitar esa fracción tan fea podemos hacer lo siguiente, dividir la circunferencia en ángulos
+que van de $0$ a $2\pi$ de la siguiente manera:
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[width=8cm, height=8cm, xmin=-5, xmax=5, ymin=-5, ymax=5, ticks=none, axis x line=center, axis y line=center]
+      \draw (0,0) circle(3.5);
+      \node[above right] at (3.5,0) {$0$};
+      \node[above left] at (0,3.5) {$\frac{\pi}{2}$};
+      \node[above left] at (-3.5,0) {$\pi$};
+      \node[below right] at (0,-3.5) {$\frac{3\pi}{2}$};
+      \node[below right] at (3.5,0) {$2\pi$};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+Como ahora la circunferencia entera es un ángulo de $2\pi$, las fórmulas para la longitud
+y la superficie del arco que veíamos antes quedan así:
+\[l = \frac{\alpha}{2\pi}*2\pi r = \boldsymbol{\alpha*r}\]
+\[S = \frac{\alpha}{2\pi}*\pi r^2 = \boldsymbol{\frac{\alpha*r^2}{2}}\]
+que son mucho más sencillas que las que obteníamos con los grados.
+
+\textbf{Las unidades que dividen la circunferencia en ángulos de $0$ a $2\pi$ se llaman radianes}
+y tienen una relación directamente proporcional con los grados, con lo que es fácil pasar de
+una unidad a otra.\\
+Si $\alpha_r$ es la medida del ángulo en radianes y $\alpha_g$ es el mismo ángulo en grados
+la relación de proporcionalidad es:
+\[\boldsymbol{\frac{\alpha_g}{180\degree} = \frac{\alpha_r}{\pi}}\]
+
+Vamos a ver un par de ejemplos de conversión:
+\begin{questions}
+\question Escribe la medida en radianes de un ángulo de $135\degree$.
+  \begin{solution}
+    Simplemente tenemos que aplicar la proporcionalidad indicada y resolver:
+    \[\frac{135\degree}{180\degree} = \frac{\alpha}{\pi}\]
+    \[\frac{3}{4}*\pi = \alpha\]
+    Con lo que $135\degree$ son $\frac{3}{4}\pi$ radianes.
+  \end{solution}
+\question Convierte a grados un ángulo de $\frac{\pi}{3}$ radianes.
+  \begin{solution}
+    Pues hacemos lo mismo que en el anterior:
+    \[\frac{\alpha}{180\degree} = \dfrac{\frac{\pi}{3}}{\pi}\]
+    \[\alpha = \frac{1}{3}*180\degree\]
+    \[\alpha = 60\degree\]
+    Entonces $\frac{\pi}{3}$ radianes son $60\degree$.
+  \end{solution}
+\end{questions}
+
+En principio a los radianes no se les pone ningún circulito ($\degree$) ni otra unidad. En caso de
+que necesiten algún tipo de desambiguación se les pone el diminutivo \textbf{rad}, por ejemplo
+``$\frac{\pi}{4}$\,rad'', pero lo normal es no ponerles nada.
+
+\section{Deducción de razones trigonométricas.}
+Cuando explicamos trigonometría básica vimos que había una tabla con las razones trigonométricas
+de ángulos famosos que no dijimos de donde salían.\\
+Pues este es el momento en el que conviene que veamos de donde salen, ya que implican una serie
+de formas de razonar matemáticas y geométricas que es conveniente conocer para poder entender
+el tema principal de estos apuntes.\\
+
+\textbf{NOTA}: \emph{este apartado va a ser el último en el que utilicemos grados, después
+  todo será en radianes.}
+
+\subsection{Deducción de las razones del ángulo de $30\degree$
+  $\left( \frac{\pi}{6}\text{ en radianes} \right)$.}
+Empecemos por dibujar un triángulo rectángulo con un ángulo de $30\degree$.
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (5.196, 0);
+    \coordinate (B) at (5.196,3);
+    \draw (A)--(O) node[midway, below] {$x$};
+    \draw (B)--(O) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$y$};
+    \pic["$30\degree$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=A--O--B};
+  \end{tikzpicture}
+\end{center}
+Y por definición
+\begin{itemize}
+\item $\cos 30\degree = \frac{x}{h}$
+\item $\sen 30\degree = \frac{y}{h}$
+\end{itemize}
+Pero desconocemos cuanto valen $x$, $y$, y $h$.\\
+
+Si hacemos el simétrico del triángulo respecto del cateto horizontal nos queda:
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (5.196, 0);
+    \coordinate (B) at (5.196,3);
+    \coordinate (B1) at (5.196,-3);
+    \draw (A)--(O);
+    \draw (B)--(O) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$y$};
+    \draw[dashed] (A)--(B1) node[midway, right] {$y$};
+    \draw[dashed] (B1)--(O) node[midway, sloped, below] {$h$};
+    \pic["\scriptsize{$30\degree$}"xshift=-1mm, draw=darkgray, angle eccentricity=1.4,
+    angle radius=1cm] {angle=A--O--B};
+    
+    \pic["$60\degree$"yshift=-3mm, draw=darkgray, angle eccentricity=1.2, angle radius=1.6cm]
+    {angle=B1--O--B};
+
+    \pic["\scriptsize{$\alpha$}"color=midgray, draw=midgray, angle eccentricity=1.4,
+    angle radius=.6cm] {angle=O--B--A};
+    \pic["\scriptsize{$\alpha$}"color=midgray, draw=midgray, angle eccentricity=1.4,
+    angle radius=.6cm] {angle=A--B1--O};
+  \end{tikzpicture}
+\end{center}
+que es un triángulo isósceles cuyo ángulo formado por los lados iguales es de $60\degree$.\\
+Al ser isósceles los ángulos sobre el lado desigual tienen que ser iguales, con lo que:
+\[60\degree + 2\alpha = 180\degree\]
+\[\alpha = 60\degree\]
+Y si tiene todos sus ángulos iguales es porque es equilátero, con lo que los tres lados son
+iguales y por tanto:
+\[2y = h\]
+\[\boldsymbol{y = \frac{h}{2}}\]
+
+Llevando esto al triángulo original nos queda:
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (5.196, 0);
+    \coordinate (B) at (5.196,3);
+    \draw (A)--(O) node[midway, below] {$x$};
+    \draw (B)--(O) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$y = \frac{h}{2}$};
+    \pic["$30\degree$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=A--O--B};
+  \end{tikzpicture}
+\end{center}
+Con lo que:
+\[\sen 30\degree = \frac{y}{h} = \dfrac{\frac{h}{2}}{h}\]
+\[\boldsymbol{\sen 30\degree = \frac{1}{2}}\]
+
+Y para obtener el coseno utilizamos la relación fundamental de la trigonometría:
+\[\sen^2 30\degree + \cos^2 30\degree = 1\]
+\[\frac{1}{4} + \cos^2 30\degree = 1\]
+\[\cos^2 30\degree = \frac{3}{4}\]
+\[\cos 30\degree = \pm\sqrt{\frac{3}{4}}\]
+Como estamos en el primer cuadrante nos quedamos con la raíz positiva, con lo que:
+\[\boldsymbol{\cos 30\degree = \frac{\sqrt{3}}{2}}\]
+Y la tangente
+\[\tg 30\degree = \frac{\sen 30\degree}{\cos 30\degree}\]
+\[\boldsymbol{\tg 30\degree = \frac{\sqrt{3}}{3}}\]
+
+\subsection{Deducción de las razones del ángulo de $60\degree$
+  $\left( \frac{\pi}{3} \right)$.}
+Para deducir las razones del ángulo de $60\degree$ solo tenemos que tener en cuenta que es el
+complementario de $30\degree$ y cuando estudiábamos la parte básica de trigonometría vimos que
+las relaciones entre las razones de ángulos complementarios son:
+\begin{itemize}
+\item $\sen (90\degree - \alpha) = \cos \alpha$
+\item $\cos (90\degree - \alpha) = \sen \alpha$
+\end{itemize}
+Entonces tenemos que:
+\begin{itemize}
+\item $\boldsymbol{\sen 60\degree = \frac{\sqrt{3}}{2}}$
+\item $\boldsymbol{\cos 60\degree = \frac{1}{2}}$
+\item $\boldsymbol{\tg 60\degree = \sqrt{3}}$
+\end{itemize}
+
+\subsection{Deducción de las razones del ángulo de $45\degree$
+  $\left( \frac{\pi}{4} \right)$.}
+Tenemos un triángulo rectángulo que tiene un ángulo de $45\degree$:
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (4, 0);
+    \coordinate (B) at (4,4);
+    \draw (A)--(O) node[midway, below] {$x$};
+    \draw (B)--(O) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$y$};
+    \pic["$45\degree$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=A--O--B};
+    \pic["$\alpha$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=O--B--A};
+  \end{tikzpicture}
+\end{center}
+El ángulo que nos falta es $\alpha = 180\degree - 90\degree - 45\degree =
+\boldsymbol{45\degree}$, con lo que es un triángulo isósceles y por tanto $y = x$:
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (4, 0);
+    \coordinate (B) at (4,4);
+    \draw (A)--(O) node[midway, below] {$x$};
+    \draw (B)--(O) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$x$};
+    \pic["$45\degree$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=A--O--B};
+    \pic["$45\degree$", draw=darkgray, angle eccentricity=1.4, angle radius=1cm]
+    {angle=O--B--A};
+  \end{tikzpicture}
+\end{center}
+Y por la definición de seno y coseno tenemos que tienen que ser iguales, $\sen 45\degree =
+\cos 45\degree$.\\
+Y además tienen que cumplir la relación fundamental, con lo que tenemos un sistema de ecuaciones:
+\[
+  \begin{cases}
+    \sen 45\degree = \cos 45\degree\\
+    \sen^2 45\degree + \cos^2 45\degree = 1
+  \end{cases}
+\]
+
+Resolvemos por sustitución:
+\[\sen^2 45\degree + \sen^2 45\degree = 1\]
+\[2\sen^2 45\degree =1\]
+\[\sen 45\degree = \pm \sqrt{\frac{1}{2}}\]
+
+Como es el primer cuadrante nos quedamos con el positivo, y además lo arreglamos un poco:
+\[\boldsymbol{\sen 45\degree = \frac{\sqrt{2}}{2}}\]
+
+Entonces las razones de $45\degree$ son:
+\begin{itemize}
+\item $\boldsymbol{\sen 45\degree = \frac{\sqrt{2}}{2}}$
+\item $\boldsymbol{\cos 45\degree = \frac{\sqrt{2}}{2}}$
+\item $\boldsymbol{\tg 45\degree = 1}$
+\end{itemize}
+
+\subsection{Deducción de las razones del ángulo de $0\degree$.}
+Para este caso vamos a hacer un razonamiento dinámico, vamos a ver qué pasa con el cateto
+adyacente y el cateto opuesto cuando el ángulo estando cada vez más cerca de $0\degree$:
+\begin{center}
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (2.9,0);
+    \coordinate (B) at (2.9,0.78);
+    \draw (O)--(B) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$y$};
+    \draw (O)--(A) node[midway, below] {$x$};
+    \pic[draw=darkgray, angle radius=.7cm]
+    {angle=A--O--B};
+  \end{tikzpicture}
+  \quad
+  $\longrightarrow$
+  \quad
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (2.95,0);
+    \coordinate (B) at (2.95,0.52);
+    \draw (O)--(B) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$y$};
+    \draw (O)--(A) node[midway, below] {$x$};
+    \pic[draw=darkgray, angle radius=.7cm]
+    {angle=A--O--B};
+  \end{tikzpicture}
+  \quad
+  $\longrightarrow$
+  \quad
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \coordinate (O) at (0,0);
+    \coordinate (A) at (2.99,0);
+    \coordinate (B) at (2.99,0.26);
+    \draw (O)--(B) node[midway, sloped, above] {$h$};
+    \draw (A)--(B) node[midway, right] {$y$};
+    \draw (O)--(A) node[midway, below] {$x$};
+    \pic[draw=darkgray, angle radius=.7cm]
+    {angle=A--O--B};
+  \end{tikzpicture}
+\end{center}
+
+Es fácil observar que según el ángulo se va acercando a $0\degree$ el cateto opuesto va
+desapareciendo, mientras que el adyacente va midiendo lo mismo que la hipotenusa.\\
+De esta manera cuando el ángulo llegue a $0\degree$ el cateto opuesto habrá desaparecido ($y = 0$)
+y el cateto adyacente sera exactamente igual que la hipotenusa ($x = h$), con lo que:
+\begin{itemize}
+\item $\boldsymbol{\cos 0\degree = \frac{h}{h} = 1}$
+\item $\boldsymbol{\sen 0\degree = \frac{0}{h} = 0}$
+\item $\boldsymbol{\tg 0\degree = 0}$
+\end{itemize}
+
+\subsection{Deducción de las razones del ángulo de $90\degree$
+  $\left( \frac{\pi}{2} \right)$.}
+Para deducir las razones del ángulo de $90\degree$ vamos a utilizar el ángulo complementario,
+como hicimos con las de $60\degree$, ya que $90\degree$ es el complementario de $0\degree$.\\
+Y así tenemos:
+\begin{itemize}
+\item $\boldsymbol{\sen 90\degree = \cos 0\degree = 1}$
+\item $\boldsymbol{\cos 90\degree = \sen 0\degree = 0}$
+\item $\boldsymbol{\tg 90\degree = \frac{1}{0}} = \nexists$ \textbf{no se puede hacer}.
+\end{itemize}
+
+\subsection{Deducción de las razones de otros ángulos.}
+Como regla general, deducir las razones para otros ángulos no es algo sencillo salvo para casos
+concretos.\\
+
+Estos casos concretos son las transformaciones de los ángulos que acabamos de ver, $\frac{\pi}{6}$,
+$\frac{\pi}{4}$, $\frac{\pi}{3}$, a ángulos de otros cuadrantes utilizando las transformaciones
+de cuadrante que vimos en trigonometría básica.\\
+Por ejemplo las razones de $\frac{5\pi}{6}$:
+\begin{itemize}
+\item $\sen \frac{5\pi}{6} = \sen \left(\pi - \frac{\pi}{6}\right) = \sen \frac{\pi}{3} =
+  \frac{1}{2}$
+\item $\cos \frac{5\pi}{6} = \cos \left(\pi - \frac{\pi}{6}\right) = -\cos \frac{\pi}{3} =
+  -\frac{\sqrt{3}}{2}$
+\item $\tg \frac{5\pi}{6} = \tg \left(\pi - \frac{\pi}{6}\right) = -\tg \frac{\pi}{3} =
+  -\frac{\sqrt{3}}{2}$
+\end{itemize}
+
+Sin embargo son muy pocos los ángulos que podemos formar así, en concreto todos los del primer
+cuadrante que no hemos visto.\\
+
+Pero estos últimos ángulos se pueden construir de otras maneras, por ejemplo el ángulo
+$\frac{\pi}{12}$ lo podemos construir como
+\begin{itemize}
+\item $\frac{\pi}{12} = \ddfrac{\frac{\pi}{6}}{2}$
+\item $\frac{\pi}{12} = \frac{\pi}{4} - \frac{\pi}{6}$
+\end{itemize}
+
+Pero para calcular las razones de una operación con ángulos no podemos operar con la misma operación
+que con los ángulos, no hay proporcionalidad. Se ve claramente porque
+\begin{itemize}
+\item $\sen \frac{\pi}{3} \neq 2*\sen \frac{\pi}{6}$
+\item $\cos \pi \neq \cos \frac{\pi}{2} + \cos \frac{\pi}{2}$
+\end{itemize}
+Así que vamos a ver cómo tenemos que hacer para calcular las razones de las operaciones con
+ángulos.
+\section{Fórmulas trigonométricas.} \label{fórmulas_trigonométricas}
+\subsection{Razones de la suma y de la resta de ángulos.}
+Empezamos por calcular cuando vale el \textbf{seno de la suma} de dos ángulos.\\
+Tenemos la siguiente situación (hemos indicado todos los elementos que vamos a necesitar para
+hacer la deducción):
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (A) at (0, 0);
+    \coordinate (B) at (6, 3);
+    \coordinate (C) at (6, 0);
+    \coordinate (D) at (4.5, 6);
+    \coordinate (F) at (4.5, 0);
+    \coordinate (E) at (6, 6);
+
+    \draw (A)--(B)--(C)--cycle;
+    \draw (A)--(B)--(D)--cycle;
+    \draw[dotted, color=midgray] (F)--(D);
+    \draw[dashed] (D)--(E)--(B)--cycle;
+    \node[left] at (A) {$A$};
+    \node[right] at (B) {$B$};
+    \node[right] at (C) {$C$};
+    \node[above] at (D) {$D$};
+    \node[above] at (E) {$E$};
+
+    \node[below, color=midgray] at (F) {$F$};
+ 
+    \pic["$\alpha$", draw=darkgray, angle eccentricity=1.4, angle radius=7mm]
+    {angle=C--A--B};
+    \pic["$\beta$", draw=darkgray, angle eccentricity=1.4, angle radius=8mm]
+    {angle=B--A--D};
+    \pic[draw=darkgray, angle eccentricity=.5, angle radius=5mm, "."]
+    {right angle=D--B--A};
+    \pic[draw=darkgray, angle eccentricity=.5, angle radius=5mm, "."]
+    {right angle=B--C--A};
+    \pic[draw=darkgray, angle eccentricity=.5, angle radius=3mm, "."]
+    {right angle=D--E--B};
+
+    \pic["$\widehat{B_1}$", draw=darkgray, angle eccentricity=1.6, angle radius=7mm]
+    {angle=A--B--C};
+    \pic["$\widehat{B_2}$", draw=darkgray, angle eccentricity=1.5, angle radius=7mm]
+    {angle=E--B--D};
+    \pic["$\widehat{D_1}$", draw=darkgray, angle eccentricity=1.4, angle radius=8mm]
+    {angle=A--D--B};
+    \pic["$\widehat{D_2}$", draw=darkgray, angle eccentricity=1.5, angle radius=7mm]
+    {angle=B--D--E};
+  \end{tikzpicture}
+\end{center}
+Queremos calcular el seno del ángulo $\alpha + \beta$, y por la definición
+\[\sen (\alpha + \beta) = \frac{\overline{FD}}{\overline{AD}}\]
+Pero para hacer la deducción vamos a utilizar el hecho de que $\overline{CE}$ mide lo mismo que
+$\overline{FD}$, con lo que:
+\[\sen (\alpha + \beta) = \frac{\overline{CE}}{\overline{AD}}\]
+
+$\overline{CE}$ lo podemos descomponer como
+$\boldsymbol{\overline{CE} = \overline{CB}+\overline{BE}}$.
+
+Por trigonometría sabemos que $\boldsymbol{\overline{CB} = \overline{AB}*\sen \alpha}$, pero
+¿cuánto vale $\overline{BE}$. Para ello vamos a utilizar razonamientos con ángulos.\\
+
+Tenemos que $\widehat{B_1} = \frac{\pi}{2} - \alpha$ y además tenemos que $\widehat{B_1} +
+\widehat{B_2} + \frac{\pi}{2} = \pi$, con lo que $\widehat{B_2} = \alpha$ y entonces
+\[\boldsymbol{\overline{BE} = \overline{BD}*\cos \alpha}\]
+
+De manera que al sustituir $\overline{CE}$ en el seno queda:
+
+\[\sen (\alpha + \beta) = \frac{\overline{AB}*\sen \alpha + \overline{BD}*
+    \cos \alpha}{\overline{AD}}\]
+
+Utilizando las propiedades de las fracciones vamos a separarlo de esta manera:
+\[\sen (\alpha + \beta) = \sen \alpha * \frac{\overline{AB}}{\overline{AD}} +
+  \cos \alpha*\frac{\overline{BD}}{\overline{AD}}\]
+
+Por la definición de las razones trigonométricas tenemos que
+\begin{itemize}
+\item $\frac{\overline{AB}}{\overline{AD}} = \cos \beta$
+\item $\frac{\overline{BD}}{\overline{AD}} = \sen \beta$
+\end{itemize}
+Y al sustituir nos queda que:
+\[\boldsymbol{\sen (\alpha + \beta) = \sen \alpha * \cos \beta +
+    \cos \alpha*\sen \beta}\]
+
+Y para el \textbf{seno de la resta}:
+\[\sen (\alpha - \beta) = \sen \alpha * \cos (-\beta) +
+  \cos \alpha*\sen (-\beta)\]
+Recordando que $\cos (-\beta) = \cos \beta$ y $\sen (-\beta) = -\sen \beta$:
+\[\boldsymbol{\sen (\alpha - \beta) = \sen \alpha * \cos \beta -
+    \cos \alpha*\sen \beta}\]\vspace{3mm}
+
+El \textbf{coseno de la suma} es más sencillo de calcular ya que vamos a aprovechar la relación con las
+razones del ángulo complementario, que nos dicen que:
+\[\cos \alpha = \sen \left( \frac{\pi}{2} - \alpha \right)\]
+Entonces:
+\[\cos (\alpha + \beta) = \sen \left( \frac{\pi}{2} - (\alpha + \beta) \right)\]
+\[\cos (\alpha + \beta) = \sen \left( \frac{\pi}{2} - \alpha - \beta \right)\]
+Que lo podemos agrupar de la siguiente manera:
+\[\cos (\alpha + \beta) = \sen \left( \left(\frac{\pi}{2} - \alpha\right) - \beta \right)\]
+Donde podemos aplicar la fórmula de la resta que hemos visto un poco más arriba y nos queda:
+\[\cos (\alpha + \beta) = \sen \left(\frac{\pi}{2} - \alpha\right) *\cos \beta
+  -\cos \left(\frac{\pi}{2} - \alpha\right) *\sen \beta\]
+Que por las relaciones con el ángulo complementario se transforma en:
+\[\boldsymbol{\cos (\alpha + \beta) =\cos \alpha * \cos \beta - \sen \alpha *\sen \beta}\]
+Y entonces el \textbf{coseno de la resta}:
+\[\boldsymbol{\cos (\alpha - \beta) =\cos \alpha * \cos \beta + \sen \alpha *\sen \beta}\]\vspace{3mm}
+
+La deducción de la \textbf{tangente de la suma} requiere de un dominio importante de las reglas
+algebraicas y de las fracciones.\\
+Partimos de la definición:
+\[\tg (\alpha + \beta) = \frac{\sen (\alpha +  \beta)}{\cos (\alpha + \beta)}\]
+\[\tg (\alpha + \beta) = \frac{\sen \alpha * \cos \beta +
+    \cos \alpha*\sen \beta}{\cos \alpha * \cos \beta - \sen \alpha *\sen \beta}\]
+Que podemos separar en:
+\[\tg (\alpha + \beta) = \frac{\sen \alpha * \cos \beta
+  }{\cos \alpha * \cos \beta - \sen \alpha *\sen \beta} +
+  \frac{\cos \alpha*\sen \beta}{\cos \alpha * \cos \beta - \sen \alpha *\sen \beta}\]
+
+Ahora vamos a simplificar las dos fracciones entre $\cos \alpha *\cos \beta$:
+\[\tg (\alpha + \beta) = \ddfrac{
+    \ddfrac{\sen \alpha * \cancel{\cos \beta}}{\cos \alpha *\cancel{\cos \beta}}}
+  {\ddfrac{\cancel{\cos \alpha * \cos \beta}}{\cancel{\cos \alpha *\cos \beta}} -
+    \ddfrac{\sen \alpha *\sen \beta}{\cos \alpha *\cos \beta}} +
+  \ddfrac{\ddfrac{\cancel{\cos \alpha}*\sen \beta}{\cancel{\cos \alpha} *\cos \beta}}
+  {\ddfrac{\cancel{\cos \alpha * \cos \beta}}{\cancel{\cos \alpha *\cos \beta}} -
+    \ddfrac{\sen \alpha *\sen \beta}{\cos \alpha *\cos \beta}}\]
+Que aplicando la definición de la tangente se puede escribir:
+\[\tg (\alpha + \beta) = \frac{\tg \alpha}{1 - \tg \alpha * \tg \beta}
+  + \frac{\tg \beta}{1 - \tg \alpha * \tg \beta}\]
+Y juntándolo todo:
+\[\boldsymbol{\tg (\alpha + \beta) = \frac{\tg \alpha + \tg \beta}{1 - \tg \alpha * \tg \beta}}\]
+Para calcular la \textbf{tangente de la resta} utilizamos que $\tg (-\beta) = -\tg \beta$:
+\[\boldsymbol{\tg (\alpha - \beta) = \frac{\tg \alpha - \tg \beta}{1 + \tg \alpha * \tg \beta}}\]\vspace{3mm}
+
+A veces estas fórmulas vienen agrupadas de la siguiente manera:
+\[\sen (\alpha \pm \beta) = \sen \alpha * \cos \beta \pm \cos \alpha *\sen \beta\]
+\[\cos (\alpha \pm \beta) = \cos \alpha * \cos \beta \mp \sen \alpha *\sen \beta\]
+\[\tg (\alpha \pm \beta) = \frac{\tg \alpha \pm \tg \beta}{1 \mp \tg \alpha * \tg \beta}\]
+\begin{center}
+  \small{\emph{(Es importante darse cuenta de que en el coseno y en la tangente algunos signos del
+      miembro derecho están cambiados respecto a los del izquierdo).}}
+\end{center}\vspace{1cm}
+
+Vamos a ver un ejemplo de cómo utilizar estas fórmulas:\\
+\textbf{Calcula las razones del ángulo de $\frac{5\pi}{12}$ ($75\degree$) a partir de la
+  tabla de ángulos famosos.}
+\begin{solution}
+  Tenemos que construir el ángulo que nos piden con ángulos famosos, y es fácil llegar a que
+  $\frac{5\pi}{12} = \frac{\pi}{4} + \frac{\pi}{6}$.\\
+  Y ya solo tenemos que aplicar las fórmulas y operar un poco.
+  \[\sen \frac{5\pi}{12} = \sen \left(\frac{\pi}{4} + \frac{\pi}{6}\right) = \sen \frac{\pi}{4}*\cos \frac{\pi}{6} +
+    \cos \frac{\pi}{4}*\sen \frac{\pi}{6}\]
+  \[\sen \frac{5\pi}{12} = \frac{\sqrt{2}}{2} *\frac{\sqrt{3}}{2} + \frac{\sqrt{2}}{2}*\frac{1}{2}\]
+  \[\boldsymbol{\sen \frac{5\pi}{12} = \frac{\sqrt{6}+\sqrt{2}}{4}}\]\vspace{3mm}
+
+  De la misma manera obtenemos el coseno:
+  \[\cos \frac{5\pi}{12} = \cos \frac{\pi}{4}*\cos \frac{\pi}{6} -
+    \sen \frac{\pi}{4}*\sen \frac{\pi}{6}\]
+  \[\cos \frac{5\pi}{12} = \frac{\sqrt{2}}{2} *\frac{\sqrt{3}}{2} -
+    \frac{\sqrt{2}}{2}*\frac{1}{2}\]
+  \[\boldsymbol{\cos \frac{5\pi}{12} = \frac{\sqrt{6}-\sqrt{2}}{4}}\]\vspace{3mm}
+
+  Y para la tangente vamos a utilizar la definición en vez de la fórmula y así recordamos
+  racionalización y operaciones con radicales:
+  \[\tg \frac{5\pi}{12} = \frac{\sen \frac{5\pi}{12}}{\cos \frac{5\pi}{12}} =
+    \frac{\sqrt{6}+\sqrt{2}}{\sqrt{6}-\sqrt{2}}\]
+  Recordamos que para racionalizar hay que multiplicar por el conjugado del denominador:
+  \[\tg \frac{5\pi}{12} = \frac{(\sqrt{6}+\sqrt{2})^2}{(\sqrt{6}-\sqrt{2})(\sqrt{6}+\sqrt{2})}\]
+  \[\tg \frac{5\pi}{12} = \frac{6 + 2 + 2\sqrt{12}}{6-2}\]
+  Sacamos factores de $\sqrt{12}$:
+  \[\tg \frac{5\pi}{12} = \frac{8 + 4\sqrt{3}}{4}\]
+  Y al simplificar queda:
+  \[\boldsymbol{\tg \frac{5\pi}{12} = 2 + \sqrt{3}}\]
+  
+\end{solution}
+
+\subsection{Razones del ángulo doble.}
+Con las fórmulas que acabamos de ver vamos a hacer una deducción rápida de las razones del ángulo
+doble, ya que $2\alpha = \alpha + \alpha$.\\
+
+Entonces el \textbf{seno del ángulo doble}:
+\[\sen 2\alpha = \sen \alpha * \cos \alpha + \cos \alpha * \sen \alpha\]
+\[\boldsymbol{\sen 2\alpha = 2\sen \alpha \cos \alpha}\]\vspace{3mm}
+
+El \textbf{coseno del ángulo doble}:
+\[\cos 2\alpha = \cos \alpha *\cos \alpha - \sen \alpha*\sen \alpha\]
+\[\boldsymbol{\cos 2\alpha = \cos^2 \alpha - \sen^2 \alpha}\]\vspace{3mm}
+
+Y la \textbf{tangente del ángulo doble}:
+\[\tg 2\alpha = \frac{\tg \alpha + \tg \alpha}{1 - \tg \alpha * \tg \alpha}\]
+\[\boldsymbol{\tg 2\alpha = \frac{2\tg \alpha }{1 - \tg^2 \alpha}}\]\vspace{1cm}
+
+Al igual que con las formulas del punto anterior vamos a ver un ejemplo:\\
+\textbf{Calcula las razones del ángulo $\frac{\pi}{3}$ a partir de las de $\frac{\pi}{6}$ y
+  comprueba que el resultado coincide con lo que tenemos en la tabla de ángulos famosos.}
+\begin{solution}
+  De la tabla de ángulos famosos tenemos:
+  \begin{itemize}
+  \item $\sen \frac{\pi}{6} = \frac{1}{2}$
+  \item $\cos \frac{\pi}{6} = \frac{\sqrt{3}}{2}$
+  \item $\tg \frac{\pi}{6} = \frac{\sqrt{3}}{3}$
+  \end{itemize}
+  Y esto es lo que tenemos que aplicar, porque $\frac{\pi}{3} = 2*\frac{\pi}{6}$.\\
+
+  Empezamos por el seno:
+  \[\sen \frac{\pi}{3} = 2*\sen \frac{\pi}{6}*\cos \frac{\pi}{6}\]
+  \[\sen \frac{\pi}{3} = 2*\frac{1}{2}*\frac{\sqrt{3}}{2}\]
+  \[\boldsymbol{\sen \frac{\pi}{3} = \frac{\sqrt{3}}{2}}\]
+
+  El coseno:
+  \[\cos \frac{\pi}{3} = \cos^2 \frac{\pi}{6} - \sen^2 \frac{\pi}{6}\]
+  \[\cos \frac{\pi}{3} = \left(\frac{\sqrt{3}}{2}\right)^2 -
+    \left( \frac{1}{2}\right)^2\]
+  \[\cos \frac{\pi}{3} = \frac{3}{4} - \frac{1}{4}\]
+  \[\boldsymbol{\cos \frac{\pi}{3} = \frac{1}{2}}\]
+  
+  Y la tangente:
+  \[\tg \frac{\pi}{3} = \frac{2\tg \frac{\pi}{6} }{1 - \tg^2 \frac{\pi}{6}}\]
+  \[\tg \frac{\pi}{3} = \frac{2*\frac{\sqrt{3}}{3} }{1 - \left(\frac{\sqrt{3}}{3}\right)^2}\]
+  \[\tg \frac{\pi}{3} = \frac{\frac{\sqrt{3}*2}{3} }{1 - \frac{1}{3}}\]
+  \[\tg \frac{\pi}{3} = \frac{\sqrt{3}*\frac{2}{3} }{\frac{2}{3}}\]
+  \[\boldsymbol{\tg \frac{\pi}{3} = \sqrt{3}}\]
+\end{solution}
+
+\subsection{Razones del ángulo mitad.}
+Ahora vamos a deducir las razones de el ángulo mitad utilizando las siguiente sustitución:
+\[\beta = 2\alpha\]
+\[\frac{\beta}{2} = \alpha\]
+
+Con lo que el coseno de $2\alpha$ queda:
+\[\cos \beta = \cos^2 \frac{\beta}{2} - \sen^2 \frac{\beta}{2}\]
+Y a partir de aquí vamos a deducir el \textbf{seno del ángulo doble}
+utilizando la relación fundamental de la trigonometría:
+\[\cos \beta = 1 - \sen^2 \frac{\beta}{2} - \sen^2 \frac{\beta}{2}\]
+\[\cos \beta = 1 - 2\sen^2 \frac{\beta}{2}\]
+Intercambiamos de miembro seno y coseno:
+\[2\sen^2 \frac{\beta}{2} = 1 - \cos \beta\]
+Y despejado queda:
+\[\boldsymbol{\sen \frac{\beta}{2} = \pm\sqrt{\frac{1 -\cos \beta}{2}}}\]
+
+Si en
+\[\cos \beta = \cos^2 \frac{\beta}{2} - \sen^2 \frac{\beta}{2}\]
+aplicamos la relación de la trigonometría en el seno vamos a obtener
+\[\cos \beta = \cos^2 \frac{\beta}{2} - \left(1 - \cos^2 \frac{\beta}{2} \right)\]
+que nos sirve para calcular el \textbf{coseno del ángulo mitad}:
+\[\cos \beta = \cos^2 \frac{\beta}{2} - 1 + \cos^2 \frac{\beta}{2}\]
+\[\cos \beta = 2\cos^2 \frac{\beta}{2} - 1\]
+Y operando llegamos a
+\[\boldsymbol{\cos \frac{\beta}{2} = \pm \sqrt{\frac{1+\cos \beta}{2}}}\]
+
+Y aplicando la definición de la tangente con los dos anteriores se obtiene la
+\textbf{tangente del ángulo mitad}:
+\[\boldsymbol{\tg \frac{\beta}{2} = \pm \sqrt{\frac{1 - \cos \beta}{1+\cos \beta}}}\]
+
+Podemos ver que en todas hay un $\pm$ delante de la raíz, esto nos quiere decir que tendremos que elegir el signo dependiendo del cuadrante en el que este el ángulo resultante.\\
+Vamos a verlo con un ejemplo:\\
+\textbf{Calcula las razones del ángulo que es la mitad de $\frac{5\pi}{3}$.}
+\begin{solution}
+  Primero necesitamos saber cuanto valen las razones del ángulo que nos dan, $\frac{5\pi}{3}$.\\
+  Tenemos claro que ese ángulo no está en la tabla de ángulos famosos, ni es del primer cuadrante.\\
+  Entonces vamos a ver de qué cuadrante es, y vemos que es mayor de $\frac{3\pi}{2}$ y menor
+  que $2\pi$, con lo que está en el tercer cuadrante.\\
+
+  Si le restamos $\frac{3\pi}{2}$ queda:
+  \[\frac{5\pi}{3} - \frac{3\pi}{2} = \frac{\pi}{6}\]
+  Que sí está en la tabla de ángulos famosos, con lo cual podemos obtener las razones de
+  $\frac{5\pi}{3}$ aplicando las relaciones entre cuadrantes, en donde obtuvimos que:
+  \begin{itemize}
+  \item $\sen \left(\frac{3\pi}{2} + \alpha \right) = -\cos \alpha$
+  \item $\cos \left(\frac{3\pi}{2} + \alpha \right) = \sen \alpha$
+  \item $\tg \left(\frac{3\pi}{2} + \alpha \right) = -\cotg \alpha$
+  \end{itemize}
+
+  Con lo que:
+  \begin{itemize}
+  \item $\sen \frac{5\pi}{3} = -\cos \frac{\pi}{6} = -\frac{\sqrt{3}}{2}$
+  \item $\cos \frac{5\pi}{3} = \sen \frac{\pi}{6} = \frac{1}{2}$ (realmente ésta es la única que
+    necesitamos)
+  \item $\tg \frac{5\pi}{3} = -\cotg \frac{\pi}{6} = -\sqrt{3}$
+  \end{itemize}
+
+  Y ahora ya podemos resolver las razones del ángulo $\frac{\frac{5\pi}{3}}{2} = \frac{5\pi}{6}$
+  que es lo que nos pide el ejercicio.\\
+
+  En los ejercicios que involucran al ángulo mitad siempre tenemos que saber en qué cuadrante
+  está el ángulo para elegir los signos, y para ello comparamos con los límites de cada cuadrante.\\
+  En este caso tenemos que $\frac{\pi}{2} < \frac{5\pi}{6} < \pi$, con lo que está en el
+  segundo cuadrante:
+  \begin{itemize}
+  \item El seno es positivo.
+  \item El coseno es negativo.
+  \item La tangente es negativa.
+  \end{itemize}
+  Con lo que ya sabemos qué signo tenemos que coger en cada uno.\\
+
+  Empezamos con el seno:
+  \[\sen \frac{5\pi}{6} = \sqrt{\frac{1 - \cos \frac{5\pi}{3}}{2}}\]
+  \[\sen \frac{5\pi}{6} = \sqrt{\frac{1 - \frac{1}{2}}{2}}\]
+  \[\sen \frac{5\pi}{6} = \sqrt{\frac{\ \frac{1}{2}\ }{2}}\]
+  \[\sen \frac{5\pi}{6} = \sqrt{\frac{1}{4}}\]
+  \[\boldsymbol{\sen \frac{5\pi}{6} = \frac{1}{2}}\]
+
+  El coseno (este es negativo)
+  \[\cos \frac{5\pi}{6} = -\sqrt{\frac{1 + \cos \frac{5\pi}{3}}{2}}\]
+  \[\cos \frac{5\pi}{6} = -\sqrt{\frac{1 + \frac{1}{2}}{2}}\]
+  \[\cos \frac{5\pi}{6} = -\sqrt{\frac{\ \frac{3}{2}\ }{2}}\]
+  \[\cos \frac{5\pi}{6} = -\sqrt{\frac{3}{4}}\]
+  \[\boldsymbol{\cos \frac{5\pi}{6} = -\frac{\sqrt{3}}{2}}\]
+
+  Y la tangente (también es negativa):
+  \[\tg \frac{5\pi}{6} = -\sqrt{\frac{1 - \cos \frac{5\pi}{3}}
+      {1 + \cos \frac{5\pi}{3}}}\]
+  \[\tg \frac{5\pi}{6} = -\sqrt{\frac{1 - \frac{1}{2}}
+      {1 + \frac{1}{2}}}\]
+  \[\tg \frac{5\pi}{6} = -\sqrt{\frac{\ \frac{1}{2}\ }
+      {\frac{3}{2}}}\]
+  \[\tg \frac{5\pi}{6} = -\sqrt{\frac{1}{3}}\]
+  Y tras racionalizar
+  \[\boldsymbol{\tg \frac{5\pi}{6} = -\frac{\sqrt{3}}{3}}\]
+\end{solution}
+
+\subsection{Transformaciones de productos en sumas.}
+En principio estas fórmulas pueden parecer un capricho o un intento de volver todo más farragoso
+si cabe, pero no es así.\\
+En niveles posteriores (o puede que en el que estemos ahora porque haya tocado repasar) veremos
+algo llamado \emph{cálculo integral}, que es razonablemente sencillo de hacer cuando hay sumas
+pero que se a veces es imposible cuando hay productos.\\
+Es por esto que a veces es necesario poder convertir un producto en una suma, así que vamos a ver
+cómo se puede hacer esto en trigonometría.\\
+
+Empezamos por tener dos ángulos, $x$ e $y$, y hemos visto las razones de su suma y su resta.\\
+Vamos a fijarnos en el coseno:
+\begin{itemize}
+\item $\cos (x+y) = \cos x \cos y - \sen x \sen y$
+\item $\cos (x-y) = \cos x \cos y + \sen x \sen y$
+\end{itemize}
+Si sumamos ambas igualdades nos queda:
+\[\cos (x+y) + \cos (x-y) = 2*\cos x \cos y\]
+Que arreglándolo un poco queda:
+\[\boldsymbol{\cos x \cos y = \frac{\cos (x+y) + \cos (x-y)}{2}}\]
+Ésta es la primera transformación de producto en suma que vamos a ver.\\
+
+Si en vez de sumar restamos las igualdades de los cosenos y lo arreglamos nos va a quedar:
+\[\boldsymbol{\sen x \sen y = \frac{\cos (x-y) - \cos (x+y)}{2}}\]
+
+Ahora vamos a hacer lo mismo pero con las fórmulas del seno de la suma y la resta:
+\begin{itemize}
+\item $\sen (x+y) = \sen x \cos y + \cos x \sen y$
+\item $\sen (x-y) = \sen x \cos y - \cos x \sen y$
+\end{itemize}
+Sumamos las igualdades, las arreglamos y queda:
+\[\boldsymbol{\sen x \cos y = \frac{\sen (x+y) + \sen (x-y)}{2}}\]
+
+Y al restarlas llegamos a
+\[\boldsymbol{\cos x \sen y = \frac{\sen (x+y) - \sen (x-y)}{2}}\]
+
+Más adelante haremos algunos ejemplos en los que tendremos que utilizar estas fórmulas.
+
+\subsection{Transformaciones de sumas en productos.}
+También puede ser que nos interese hacer justamente lo contrario que en el apartado anterior,
+convertir una suma en un producto.\\
+Obtener estas transformaciones a partir de las vistas en el apartado anterior es sencillo, basta
+con que hagamos el siguiente cambio de variables:
+\begin{itemize}
+\item $a = x+y$
+\item $b = x-y$
+\end{itemize}
+Y el cambio inverso es:
+\begin{itemize}
+\item $x =\frac{a + b}{2}$
+\item $y =\frac{a - b}{2}$
+\end{itemize}
+Entonces cogemos la primera transformación del apartado anterior y aplicamos el cambio:
+\[\cos x \cos y = \frac{\cos (x+y) + \cos (x-y)}{2}\]
+\[\cos \frac{a+b}{2} \cos \frac{a-b}{2} = \frac{\cos a + \cos b}{2}\]
+\[\boldsymbol{\cos a + \cos b = 2\cos \frac{a+b}{2} \cos \frac{a-b}{2}}\]
+
+Haciendo el mismo cambio de variables en el resto de transformaciones del apartado anterior
+llegamos a:
+\[\boldsymbol{\cos a - \cos b = -2\sen \frac{a+b}{2} \sen \frac{a-b}{2}}\]
+\[\boldsymbol{\sen a + \sen b = 2\sen \frac{a+b}{2} \cos \frac{a-b}{2}}\]
+\[\boldsymbol{\sen a - \sen b = 2\sen \frac{a-b}{2} \cos \frac{a+b}{2}}\]
+
+\section{Recopilación.}
+Por ahora hemos visto bastantes cosas y estaría bien tenerlo todo recopilado en una chuleta
+o algo parecido.\\
+Lo ideal sería que cada cual confeccione la suya ya que es una buena manera de estudiar. Pero
+para situaciones en las que es imposible hacerse una se puede acceder a ella a través del
+siguiente enlace (si el visor de PDF lo permite):
+\href{https://cloud.educa.madrid.org/s/5dDbEPyXYa8WWgt}{\underline{Tablas trigonométricas}}.\\
+
+O copiando el siguiente enlace en el navegador:
+https://cloud.educa.madrid.org/s/5dDbEPyXYa8WWgt
+
+\section{Ejercicios de ejemplo.}
+Lógicamente, todo esto que hemos visto nos va a servir para resolver ejercicios.\\
+El problema es que los ejercicios que se refieren a todo esto no suelen ser sencillos, hay que
+tener en cuenta muchas cosas y acordarse de todas las definiciones y las fórmulas.\\
+
+Los ejercicios de ejemplo que vamos a ver se dividen en dos tipos, \emph{identidades
+  trigonométricas} y \emph{ecuaciones trigonométricas}.\\
+En ambas vamos a tener una igualdad, pero en el caso de las igualdades tenemos que demostrar que
+son lo mismo independientemente del valor del ángulo (o los ángulos) mientras que en el caso de
+las ecuaciones hay que hallar el valor del ángulo (o los ángulos).\\
+
+Vamos a empezar con las ecuaciones que nos suenan más y así vamos calentando.
+
+\subsection{Calculo de razones trigonométricas.}
+Vamos a ver unos cuantos ejercicios sobre cómo usar las fórmulas que hemos visto para calcular
+las razones de diversos ángulos.
+\begin{questions}
+\question Sabiendo que $\cos 84\degree = 0.1$ calcula el resto de razones de $84\degree$ y del
+  ángulo de $42\degree$.
+  \begin{solution}
+    Para calcular el resto de razones de $84\degree$ vamos a utilizar la relación fundamental de
+    la trigonometría:
+    \[\sen^2 84\degree + \cos^2 84\degree = 1\]
+    \[\sen^2 84\degree + 0.01 = 1\]
+    \[\sen^2 84\degree = 0.99\]
+    \[\boldsymbol{\sen 84\degree \simeq 0.995}\]
+    \[\boldsymbol{\tg 84\degree \simeq \frac{0.1}{0.995} \simeq 0.1005 }\]\vspace{3mm}
+
+    Y ahora calculamos las razones de $42\degree$ utilizando las fórmulas del ángulo mitad. Como
+    está en el primer cuadrante todas son positivas.
+    \[\sen 42\degree = \sqrt{\frac{1 -  \cos 84\degree}{2}}\]
+    \[\sen 42\degree = \sqrt{\frac{1 -  0.1}{2}}\]
+    \[\sen 42\degree = \sqrt{0.45}\]
+    \[\boldsymbol{\sen 42\degree \simeq 0.671}\]
+
+    \[\cos 42\degree = \sqrt{\frac{1 +  \cos 84\degree}{2}}\]
+    \[\cos 42\degree = \sqrt{\frac{1 +  0.1}{2}}\]
+    \[\cos 42\degree = \sqrt{0.55}\]
+    \[\boldsymbol{\cos 42\degree \simeq 0.742}\]
+
+    Y la tangente es muy sencilla:
+    \[\boldsymbol{\tg 42\degree \simeq 0.905}\]
+    
+  \end{solution}
+\question Sabiendo que $\sen 5\degree = 0.087$ y que $\cos 20\degree = 0.9397$ calcula las razones
+  de $15\degree$ y $50\degree$.
+  \begin{solution}
+    Está claro que vamos a tener que utilizar varias de las fórmulas que hemos visto, ya que
+    \begin{itemize}
+    \item $15\degree = 20\degree - 5\degree$
+    \item $50\degree = 2*(20\degree + 5\degree)$
+    \end{itemize}
+
+    Como en todas esas fórmulas aparecen tanto el seno como el coseno de los dos ángulos, lo primero
+    que tenemos que hacer es calcular lo que nos falta de cada uno utilizando la relación
+    fundamental de la trigonometría.
+
+    Empezamos con el coseno de $5\degree$:
+    \[\cos^2 5\degree = 1 - 0.087^2\]
+    \[\cos 5\degree = \sqrt{0.992431} \simeq 0.9962\]
+
+    Y el seno de $20\degree$:
+    \[\sen^2 20\degree = 1 - 0.9397^2\]
+    \[\sen 20\degree \simeq 0.342\]
+
+    Con esto ya podemos empezar a calcular las razones de los ángulos que nos piden.
+    \begin{itemize}
+    \item Para el ángulo de $15\degree$:\\
+      \[\sen 15\degree = \sen 20\degree \cos 5\degree - \cos 20\degree sen 5\degree\]
+      \[\sen 15\degree \simeq 0.342*0.9962 - 0.9397*0.087\]
+      \[\boldsymbol{\sen 15\degree \simeq 0.25894}\]\vspace{1mm}
+      \[\cos 15\degree = \cos 20\degree \cos 5\degree + \sen 20\degree \sen 5\degree\]
+      \[\cos 15\degree \simeq 0.9397*0.9962 + 0.342*0.087\]
+      \[\boldsymbol{\cos 15\degree \simeq 0.9659}\]\vspace{1mm}
+      Y por último:
+      \[\boldsymbol{\tg 15\degree \simeq \frac{0.25894}{0.9659} \simeq 0.2681}\]
+      
+    \item Para el ángulo de $50\degree$ primero necesitamos conocer el seno y el coseno de
+      $25\degree$, así que eso es lo primero que tenemos que calcular:
+      \[\sen 25\degree = \sen 20\degree \cos 5\degree + \cos 20\degree sen 5\degree\]
+      \[\sen 25 \simeq 0.4225\]\vspace{1mm}
+      \[\cos 25\degree = \cos 20\degree \cos 5\degree - \sen 20\degree \sen 5\degree\]
+      \[\cos 25\degree \simeq 0.9064\]
+
+      Y con esto ya podemos calcular las razones de $50\degree$:
+      \[\sen 50\degree = 2\sen 25\degree \cos 25\degree\]
+      \[\sen 50\degree \simeq 2*0.4225*0.9064\]
+      \[\boldsymbol{\sen 50\degree \simeq 0.7659}\]\vspace{1mm}
+      \[\cos 50\degree = \cos^2 25\degree - \sen^2 25\degree\]
+      \[\cos 50\degree \simeq 0.9064^2 - 0.4225^2\]
+      \[\boldsymbol{\cos 50\degree \simeq 0.6431}\]\vspace{1mm}
+      \[\boldsymbol{\tg 50\degree \simeq 1.191}\]
+    \end{itemize}
+  \end{solution}
+\end{questions}
+\subsection{Ecuaciones trigonométricas.}
+Antes de empezar a resolver ecuaciones trigonométricas tenemos que ver unos detalles importantes
+acerca de las soluciones de las ecuaciones trigonométricas.\\
+
+A la hora de resolver una ecuación trigonométrica, en el paso final vamos a tener que hallar el ángulo que resuelve la ecuación utilizando una razón inversa, por ejemplo:
+\[\alpha = \asen 0\]
+
+Para ello acudiremos a la calculadora, o las tablas, y obtendremos que
+\[\boldsymbol{\alpha = 0}\]
+
+Pero, ¿es 0 el único ángulo que tiene un seno que vale cero?.\\
+No, sabemos que $\boldsymbol{\sen \pi = 0}$, y también $\boldsymbol{\sen 2\pi = 0}$ y si
+seguimos dando vueltas vamos a obtener muchos otros ángulos cuyo seno vale cero.\\
+
+La conclusión es que una ecuación trigonométrica no va a tener solución única, sino infinitas
+soluciones. La regla es que o no tiene solución o tiene infinitas y, en el caso de que tenga
+infinitas, estás están determinadas por si la última operación es un arco de seno, de coseno o de
+tangente.\\
+
+Cuando vimos la trigonometría en la circunferencia en la parte de trigonometría básica, vimos las
+relaciones entre las razones de ángulos de distintos cuadrantes, y de ahí es fácil obtener que:
+\begin{itemize}
+\item Hay dos ángulos que tienen el \textbf{mismo seno}:
+  $\boldsymbol{\alpha}$ y $\boldsymbol{\pi - \alpha}$.
+\item Hay dos ángulos que tienen el \textbf{mismo coseno}:
+  $\boldsymbol{\alpha}$ y $\boldsymbol{2\pi - \alpha}$ (o también $-\alpha$).
+\item Hay dos ángulos que tienen la \textbf{misma tangente}: $\boldsymbol{\alpha}$ y
+  $\boldsymbol{\pi + \alpha}$.
+\end{itemize}
+Y esto es sin dar ninguna vuelta a la circunferencia, que si se la damos tendremos que a cada
+uno de los anteriores le podemos sumar $2\pi$, $4\pi$, $6\pi$, \dots, según el número de vueltas
+que demos. Esto se escribe $\boldsymbol{2\pi*k}$, donde $\boldsymbol{k}$ es el \textbf{número
+  de vueltas}.\\
+
+De modo que nos queda que \textbf{las soluciones de una ecuación trigonométrica vienen dadas de
+  la siguiente manera según el arco que hay que obtener}:
+\begin{itemize}
+\item Si es un \textbf{arco de seno} las soluciones son:
+  \begin{itemize}
+  \item $\boldsymbol{\alpha + 2\pi*k}$\\
+    y
+  \item $\boldsymbol{\pi - \alpha + 2\pi*k}$
+  \end{itemize}
+\item Si es un \textbf{arco de coseno} las soluciones son:
+  \begin{itemize}
+  \item $\boldsymbol{\alpha + 2\pi*k}$\\
+    y
+  \item $\boldsymbol{2\pi - \alpha + 2\pi*k}$\quad(que también se puede escribir  $\boldsymbol{-\alpha + 2\pi*k}$).
+  \end{itemize}
+\item Si es un \textbf{arco de tangente} las soluciones son $\boldsymbol{\alpha + \pi*k}$.
+\end{itemize}
+
+Lo anterior es la regla general, pero hay un par de situaciones que se pueden particularizar a
+partir de lo anterior para obtener unas reglas más sencillas que incluyan todas las soluciones
+posibles:
+\begin{itemize}
+\item $\boldsymbol{\asen 0 = \pi k}$.
+\item $\boldsymbol{\acos 0 = \frac{\pi}{2} + \pi k}$.
+\end{itemize}
+
+Y con todo esto y las fórmulas anteriores ya podemos empezar a resolver ecuaciones trigonométricas.
+\begin{questions}
+\question Escribe las soluciones de la ecuación $\sen x = \frac{1}{2}$.
+  \begin{solution}
+    Si echamos mano a la tabla vemos que el ángulo que tiene de seno $\frac{1}{2}$ es
+    $\frac{\pi}{6}$, de manera que las soluciones de la ecuación son:
+    \begin{itemize}
+    \item $\boldsymbol{x = \frac{\pi}{6} + 2\pi k}$.\\
+      y
+    \item $\boldsymbol{x = \frac{5\pi}{6} + 2\pi k}$.
+    \end{itemize}
+  \end{solution}
+\question Resuelve la ecuación $\cos \left(2\alpha + \frac{\pi}{4} \right) = \frac{1}{2}$.
+  \begin{solution}
+    Hacemos lo mismo que en el anterior ya que es un coseno que tenemos en la tabla, y
+    obtenemos las soluciones
+    \begin{itemize}
+    \item $2\alpha + \frac{\pi}{4} = \frac{\pi}{3} + 2\pi k$
+    \item $2\alpha + \frac{\pi}{4} = \frac{2\pi}{3} + 2\pi k$
+    \end{itemize}
+    
+    Pero lo que buscamos es $\alpha$, con lo que tenemos que despejar en cada una de ellas.
+    \begin{itemize}
+    \item Para la primera solución
+      \[2\alpha = \frac{\pi}{3} - \frac{\pi}{4} + 2\pi k\]
+      \[2\alpha = \frac{\pi}{12}+ 2\pi k\]
+      \[\alpha = \ddfrac{\ddfrac{\pi}{12} + 2\pi k}{2}\]
+      \[\boldsymbol{\alpha = \frac{\pi}{24} + \pi k}\]
+    \item Y para la segunda:
+      \[2\alpha = \frac{5\pi}{12}+ 2\pi k\]
+      \[\boldsymbol{\alpha = \frac{5\pi}{24} + \pi k}\]
+    \end{itemize}
+  \end{solution}
+\question Resolver la ecuación $\sen a + \frac{4}{3} \cos^2 a = \frac{3}{2}$.
+  \begin{solution}
+    Aquí tenemos una ecuación en la que aparecen un seno y un coseno y para poder resolverla
+    haciendo un arco solo podemos tener una razón, con lo que tenemos que convertir el seno
+    en coseno o al revés (o los dos en tangente, pero no es el caso).\\
+    Para ello vamos a aprovechar la relación fundamental de la trigonometría:
+    \[\sen^2 a + \cos^2 a = 1\]
+    \[\cos^2 a = 1 - \sen^2 a\]
+    Y la ecuación se convierte en:
+    \[\sen a + \frac{4}{3}(1 - \sen^2 a) = \frac{3}{2}\]
+    
+    Para escribir menos vamos a hacer el cambio de variable $\sen a = x$, y la ecuación queda:
+    \[x + \frac{4}{3}(1 - x^2) = \frac{3}{2}\]
+    que es mucho más amigable para resolver.
+
+    Quitamos paréntesis:
+    \[x + \frac{4}{3} - \frac{4}{3}x^2 = \frac{3}{2}\]
+    Quitamos denominadores:
+    \[6x + 8 - 8x^2 = 9\]
+    Reordenamos y ajustamos signos:
+    \[8x^2 - 6x + 1 = 0\]
+    Y las soluciones de esta ecuación de segundo grado son:
+    \begin{itemize}
+    \item $x = \frac{1}{2}$.
+    \item $x = \frac{1}{4}$.
+    \end{itemize}
+
+    Y ahora tenemos que deshacer el cambio para obtener todas las soluciones del ángulo $a$:
+    \begin{itemize}
+    \item Para $x = \frac{1}{2}$
+      \[a = \asen \frac{1}{2}\]
+      Y por lo que hemos visto al principio de este apartado, tras recordar la tabla de
+      ``ángulos famosos'':
+      \begin{itemize}
+      \item $\boldsymbol{a = \frac{\pi}{6} + 2\pi k}$
+      \item $a = \pi - \frac{\pi}{6} + 2 \pi k$\\
+        $\boldsymbol{a= \frac{5\pi}{6} + 2\pi k}$
+      \end{itemize}
+    \item Y para $x = \frac{1}{4}$
+      \[a = \asen \frac{1}{4}\]
+      Este no está en la tabla, con lo que hay que utilizar la calculadora. Y ésta nos dice que:
+      \[\asen \frac{1}{4} \simeq 0.2527\quad\text{(en radianes, por eso no tienen unidad)}\]
+      Con lo que las soluciones son:
+      \begin{itemize}
+      \item $\boldsymbol{a \simeq 0.2527 + 2\pi k}$
+      \item $\boldsymbol{a \simeq \pi - 0.2527 + 2\pi k}$
+      \end{itemize}
+    \end{itemize}\vspace{3mm}
+
+    Y por recopilar y tenerlas todas juntas:
+    \begin{itemize}
+    \item $\boldsymbol{a = \frac{\pi}{6} + 2\pi k}$
+    \item $\boldsymbol{a= \frac{5\pi}{6} + 2\pi k}$
+    \item $\boldsymbol{a \simeq 0.2527 + 2\pi k}$
+    \item $\boldsymbol{a \simeq \pi - 0.2527 + 2\pi k}$
+    \end{itemize}
+  \end{solution}
+\question Resuelve $\tg x + \sen 2x = 0$
+  \begin{solution}
+    Aquí tenemos varios problemas, tenemos dos razones distintas y dos ángulos distintos, con lo
+    que lo mejor es abordar los problemas de uno en uno e ir viendo cual será el siguiente
+    paso cada vez.\\
+
+    Empezamos por convertir todo al mismo ángulo recordando que $\sen 2x = 2\sen x \cos x$:
+    \[\tg x + 2\sen x \cos x = 0\]
+    Aplicamos la definición de tangente:
+    \[\frac{\sen x}{\cos x} + 2\sen x \cos x = 0\]
+    \[\sen x + 2\sen x \cos^2 x = 0\]
+    Sacamos factor común:
+    \[\sen x * (1 + 2\cos^2 x) = 0\]
+
+    Nos ha quedado un producto cuyo resultado es cero, y es solo es posible si uno de los
+    factores es cero.\\
+    Es decir:
+    \begin{itemize}
+    \item Ó $\sen x = 0$
+    \item Ó $1 + 2\cos^2 x = 0$
+    \end{itemize}
+    Así que tenemos que resolver esas dos ecuaciones y la solución será la unión de las soluciones
+    de las dos.\\
+    \begin{itemize}
+    \item La solución de $\sen x =0$ la hemos visto ya en la introducción de este apartado:
+      \[x = \pi k\]
+    \item Al despejar en la segunda llegamos a $\cos x = \sqrt{-\frac{1}{2}}$ que no podemos hacer.
+    \end{itemize}
+    Por tanto, las soluciones de $\tg x + \sen 2x = 0$ son $\boldsymbol{x= \pi k}$.
+  \end{solution}
+\question Resuelve la ecuación $\sen 2x - \cos 3x = 0$.
+  \begin{solution}
+    Tenemos que resolver una ecuación que a simple vista no es nada sencilla, entre otras cosas
+    porque no hemos visto que hacer con las razones del ángulo triple. Pero tenemos que uno
+    de los miembros de la ecuación es cero, y hay una
+    operación con la que si es sencillo resolver ecuaciones que tienen 0 en uno de sus miembros,
+    y es el producto ya que si $a*b =0$ tiene que ocurrir que $a$ o $b$ sean 0.\\
+
+    Pero, ¿podemos escribir esa resta como un producto? Sí, con las transformaciones de sumas
+    en productos. Así que buscamos cual nos viene bien y vemos que no hay ninguna que mezcle
+    seno y coseno.\\
+    Pero podemos utilizar las relaciones entre cuadrantes y convertirlo así:
+    \[\sen 2x - \cos 3x = \sen 2x + \sen \left( \frac{3\pi}{2} + 3x \right)\]
+    Y ahora utilizamos $\sen a + \sen b = 2\sen \frac{a+b}{2} \cos \frac{a-b}{2}$
+    para convertirlo en producto:
+    \[\sen 2x + \sen \left( \frac{3\pi}{2} + 3x \right) = 2\sen \dfrac{2x + 3x +\frac{3\pi}{2}}{2}
+      \cos \dfrac{2x - 3x -\frac{3\pi}{2}}{2}\]
+
+    De esta manera la ecuación queda:
+    \[2\sen \dfrac{2x + 3x +\frac{3\pi}{2}}{2}
+      \cos \dfrac{2x - 3x -\frac{3\pi}{2}}{2} = 0\]
+
+    Con lo que tiene que ocurrir que el seno o el coseno sean cero para que el producto valga cero.\\
+    Entonces tenemos que resolver dos ecuaciones:
+    \begin{itemize}
+    \item $\sen \dfrac{5x +\frac{3\pi}{2}}{2} = 0$
+    \item $\cos \dfrac{-x -\frac{3\pi}{2}}{2} = 0$\\Y teniendo en cuenta que $\cos \alpha =
+      \cos (-\alpha)$ podemos escribirla: $\cos \dfrac{x +\frac{3\pi}{2}}{2} = 0$
+    \end{itemize}
+
+    Que vamos a resolver por separado, y la solución a la ecuación del problema será la unión de
+    las soluciones de las dos. Empezamos por la del seno.
+    \begin{itemize}
+    \item Aplicamos el arco de seno obteniendo:
+      \[\dfrac{2x + 3x +\frac{3\pi}{2}}{2} = \asen 0\]
+      y por lo que hemos visto de las soluciones al principio de este apartado (es algo que hay
+      que saberse):
+      \[\dfrac{5x +\frac{3\pi}{2}}{2} = \pi k\]
+      \[5x +\frac{3\pi}{2} = 2\pi k\]
+      \[\boldsymbol{x = \dfrac{2\pi k - \frac{3\pi}{2}}{5}}\]
+
+    \item Y para la segunda, con el arco de coseno se tiene que:
+      \[\dfrac{x +\frac{3\pi}{2}}{2} = \acos 0\]
+    \[\dfrac{x +\frac{3\pi}{2}}{2} = \frac{\pi}{2} + \pi k\]
+    \[x +\frac{3\pi}{2} = \pi + 2\pi k\]
+    \[\boldsymbol{x = -\frac{\pi}{2} + 2\pi k}\]
+  \end{itemize}
+
+  Entonces las soluciones de $\sen 2x - \cos 3x = 0$ son
+  \begin{itemize}
+  \item $x = \dfrac{2\pi k - \frac{3\pi}{2}}{5}$
+  \item $x = -\frac{\pi}{2} + 2\pi k$
+  \end{itemize}
+  \end{solution}
+\question Resolver la ecuación $\sen 2x * \cos x = 6 \sen^3 x$.
+  \begin{solution}
+    Al igual que hemos hecho con las ecuaciones anteriores, vamos a convertir el seno de $2x$ en
+    razones de $x$ aplicando la fórmula. La ecuación queda:
+    \[2 \sen x \cos x *\cos x = 6 \sen^3 x\]
+    \[2 \sen x \cos^2 x = 6 \sen^3 x\]
+    Podemos simplificar entre $2$ y llevar todo al lado izquierdo:
+    \[\sen x \cos^2 x - 3 \sen^3 x = 0\]
+    \small{\emph{\textbf{IMPORTANTE}: podríamos tener la tentación de simplificar entre $\sen x$, pero
+      nunca podemos simplificar una ecuación entre algo que contiene la incógnita ya que si un
+      de las soluciones es cero el simplificar entre ella puede llevar a resultados inconsistentes}}\vspace{2mm}\\
+  Si sacamos factor común nos queda
+  \[\sen x *(\cos^2 x - 3 \sen^2 x) = 0\]
+  Con lo que tenemos que un producto de dos factores tiene que ser cero y lo dividimos en dos
+  ecuaciones que resolvemos por separado:
+  \begin{itemize}
+  \item $\sen x = 0$\\
+    La solución de esta ecuación es $x = \pi k$.
+  \item $\cos^2 x - 3\sen^2 x = 0$.\\
+    Aplicamos la relación fundamental:
+    \[1 - \sen^2 x - 3\sen^2 x = 0\]
+    \[\sen^2 x = \frac{1}{4}\]
+    \[\sen x = \pm \frac{1}{2}\]
+    Y ahora tenemos que hacer el arco para el positivo y para el negativo:
+    \begin{itemize}
+    \item Para $\sen x = \frac{1}{2}$ las soluciones son $x = \frac{\pi}{6} + 2\pi k$ y $x =
+      \frac{5\pi}{6} + 2\pi k$.
+    \item Para $\sen x = -\frac{1}{2}$ las soluciones son $x = -\frac{\pi}{6} + 2\pi k$ y $x =
+      \frac{7\pi}{6} + 2\pi k$.
+    \end{itemize}
+  \end{itemize}
+  \end{solution}
+\question Resuelve la ecuación $\cos 8x + \cos 6x = 2 \cos \frac{7\pi}{6}*\cos x$
+  \begin{solution}
+    Como en algún otro caso que hemos visto, nos vuelven a aparecer razones de operaciones sobre
+    ángulos para las que no hemos visto fórmula, en este caso son $6x$ y $8x$.\\
+    
+    Tal y como hemos visto en casos anteriores, la transformación de sumas en productos a veces
+    ayuda, con lo que vamos a probar a ver.\\
+    En este caso tenemos una suma de cosenos, y la transformación es:
+    \[\cos a + \cos b = 2\cos \frac{a+b}{2} *\cos \frac{a - b}{2}\]
+
+    Y al aplicarla a la ecuación la convierte en:
+    \[2 \cos \frac{8x + 6x}{2} *\cos \frac{8x - 6x}{2} = 2\cos \frac{7\pi}{6} \cos x\]
+    \[2 \cos 7x \cos x = 2\cos \frac{7\pi}{6} \cos x\]
+
+    Podemos simplificar el $2$, pero el $\cos x$ no porque ya hemos visto que nos puede llevar
+    a resultados incorrectos, lo que hacemos es llevar todo a un lado y dejar cero al otro.
+    \[\cos 7x \cos x - \cos \frac{7\pi}{6}\cos x = 0\]
+    \[\cos x \left(\cos 7x - \cos \frac{7\pi}{6}\right) = 0\]
+    Y volvemos a tener un producto cuyo resultado es cero.\\
+    
+    Lo separamos en dos ecuaciones que resolvemos por separado:
+    \begin{itemize}
+    \item $\cos x = 0$\\
+      Sabemos que las soluciones de esta ecuación son $x = \frac{\pi}{2} + \pi k$.
+    \item $\cos 7x - \cos \frac{7\pi}{6} = 0$.\\
+      La reescribimos con el valor del coseno del ángulo conocido:
+      \[\cos 7x - \left(-\frac{\sqrt{3}}{2} \right) = 0\]
+      \[\cos 7x = -\frac{\sqrt{3}}{2}\]
+      \[7x = \acos -\frac{\sqrt{3}}{2}\]
+      Para hacer este arco de coseno podemos utilizar la calculadora o recordar (mirar) la tabla,
+      y obtendremos que una solución es:
+      \[7x = \frac{5\pi}{6} + 2 \pi k\]
+      \[\boldsymbol{x = \dfrac{\frac{5\pi}{6} + 2 \pi k}{7}}\]
+      Y la otra solución:
+      \[7x = 2\pi - \frac{5\pi}{6} + 2 \pi k\]
+      \[7x = \frac{7\pi}{6} + 2 \pi k\]
+      \[\boldsymbol{x = \frac{\pi}{6} +\frac{2 \pi k}{7}}\]
+
+      Y haciendo una compilación como solemos hacer, tenemos que las soluciones son:
+      \begin{itemize}
+      \item $\boldsymbol{x = \frac{\pi}{2} + 2 \pi k}$.
+      \item $\boldsymbol{x = \dfrac{\frac{5\pi}{6} + 2 \pi k}{7}}$.
+      \item $\boldsymbol{x = \frac{\pi}{6} +\frac{2 \pi k}{7}}$.
+      \end{itemize}
+    \end{itemize}
+  \end{solution}
+\question Indica las soluciones del la ecuación $\sen 2x - \tg x = 0$ estén en el intervalo
+  $\left[0, \frac{\pi}{2}\right]$
+  \begin{solution}
+    Tenemos que resolver la ecuación, como en los anteriores, y quedarnos solo con las soluciones
+    que estén en el primer cuadrante.\\
+
+    Como hay un seno de $2x$ y una tangente de $x$ vamos a utilizar la fórmula del ángulo doble:
+    \[2\sen x \cos x - \tg x = 0\]
+    Aplicamos la definición de la tangente:
+    \[2\sen x \cos x - \frac{\sen x}{\cos x} = 0\]
+    \[2\sen x \cos^2 x - \sen x = 0\]
+    Sacamos factor común:
+    \[\sen x (2 \cos^2 x -1) = 0\]
+
+    Y hacemos cómo el resto de veces que tenemos un producto que da de resultado cero, dividirlo
+    en ecuaciones a resolver por separado:
+    \begin{itemize}
+    \item $\sen x = 0$\\
+      Sabemos que las soluciones son $x = \pi k$, y para que esté en el intervalo indicado
+      solo puede ser $\boldsymbol{x = 0}$
+    \item $2\cos^2 x - 1= 0$.\\
+      Despejamos:
+      \[\cos^2 x = \frac{1}{2}\]
+      \[\cos x = \pm \frac{\sqrt{2}}{2}\]
+      Cuyas soluciones son:
+      \begin{itemize}
+      \item $x = \frac{\pi}{4} + 2\pi k$
+      \item $x = \frac{3\pi}{4} + 2\pi k$
+      \item $x = \frac{5\pi}{4} + 2\pi k$
+      \item $x = \frac{7\pi}{4} + 2\pi k$
+      \end{itemize}
+      Y de todas esas la única que está en el intervalo que nos piden es
+      $\boldsymbol{x = \frac{\pi}{4}}$
+    \end{itemize}
+    De modo que las soluciones de la ecuación que están en el intervalo $\left[0, \frac{\pi}{2}
+    \right]$ son:
+    \begin{itemize}
+    \item $\boldsymbol{x = 0}$
+    \item $\boldsymbol{x = \frac{\pi}{4}}$
+    \end{itemize}
+  \end{solution}
+\question Resuelve la ecuación $\sen 3x - {4} \sen x = -1$.
+  \begin{solution}
+    Volvemos a tener una razón para la que no tenemos fórmula, y convertir la resta en producto
+    tampoco nos sirve de mucho porque al otro lado no hay un cero.\\
+
+    Vamos a tratar de desarrollar el seno de $3x$ utilizando lo que conocemos. Empezamos por el
+    hecho de que $3x = x + 2x$:
+    \[\sen 3x = \sen (x + 2x) = \sen x*\cos 2x + \cos x*\sen 2x\]
+    Ahora podemos sustituir las razones de $2x$ por su fórmula:
+    \[\sen 3x = \sen x(\cos^2 x - \sen^2 x) + \cos x * 2\cos x \sen x\]
+    \[\sen 3x = \sen x \cos^2 x - \sen^3 x + 2\sen x \cos^2 x\]
+    \[\sen 3x = 3\sen x \cos^2 x - \sen^3 x\]
+    Aplicamos la relación fundamental:
+    \[\sen 3x = 3\sen x (1- \sen^2 x) - \sen^3 x\]
+    Y finalmente queda:
+    \[\sen 3x = 3\sen x - 4\sen^3 x\]
+
+    Aplicamos a la ecuación del enunciado y tenemos:
+    \[3\sen x - 4\sen^3 x -4 \sen x = -1\]
+    \[-\sen x - 4\sen^3 x = -1\]
+    Que reordenándola se convierte en
+    \[4\sen^3 x + \sen x - 1 = 0\]
+
+    Para resolverla vamos a hacer el cambio $t = \sen x$, de manera que queda:
+    \[4t^3 + t - 1 = 0\]
+    Una ecuación cúbica que vamos a tener que resolver tanteando por Ruffini. \emph{¿Con qué valores
+      tanteamos? Con los de las tablas de ángulos famosos}:
+    \begin{itemize}
+    \item $0$
+    \item $\pm 1$
+    \item $\pm \frac{1}{2}$
+    \end{itemize}
+    Con los de las raíces no vamos a tantear porque es excesivamente complicado para este nivel.\\
+
+    Es fácil comprobar que el único que funciona es $\frac{1}{2}$:
+    \begin{center}
+      \begin{tabular}{r|rrrr}
+        &$4$&$0$&$1$&$-1$\\
+        $\frac{1}{2}$&&$2$&$1$&$1$\\
+        \hline
+        &$4$&$2$&$2$&$0$
+      \end{tabular}
+    \end{center}
+    El polinomio que queda, $4t^2 + 2t + 1$ no tiene raíces reales.\\
+
+    Como hemos obtenido que $t=\frac{1}{2}$ las soluciones que
+    estamos buscando son las que hacen $\sen x = \frac{1}{2}$, y estas son:
+    \begin{itemize}
+    \item $\boldsymbol{x = \frac{\pi}{6} + 2\pi k}$
+    \item $\boldsymbol{x = \frac{5\pi}{6} + 2\pi k}$
+    \end{itemize}
+  \end{solution}
+\end{questions}
+\subsubsection{Sobre la resolución de ecuaciones trigonométricas.}
+A la vista de los ejemplos que hemos hecho no se puede decir que haya un método (o varios) para
+resolver ecuaciones trigonométricas.\\
+
+Lo que sí que queremos dejar claro es que hay que tener en la cabeza un par de cosas para
+poder resolverlas:
+\begin{itemize}
+\item Acordarse bien de todo lo que hemos visto sobre resolución de ecuaciones en general: factores
+  comunes, productos que dan cero, uso de Ruffini, \dots
+\item Saberse razonablemente bien las fórmulas trigonométricas que hemos visto, además de
+  todas las relaciones entre cuadrantes, ángulos complementarios y demás.
+\end{itemize}
+
+Aparte de todo esto está el objetivo, que es obtener una o varias ecuaciones en las que solo
+aparezca una razón para poder utilizar el arco para sacar los ángulos que son solución de la
+ecuación.\\
+
+Evidentemente vamos a tener muchas ocasiones en las que el camino que hemos elegido en un principio
+complica más la ecuación o no nos lleva a nada. No pasa nada por empezar de nuevo con otro camino,
+de hecho es de lo más normal.\\
+
+Y cuando hayamos practicado lo suficiente seremos capaces de anticipar el resultado al que nos
+puede llevar un camino para ver si es el indicado o no.
+
+\subsection{Identidades trigonométricas y simplificaciones.}
+Quizá la palabra ``identidades'' nos traiga recuerdos, las famosas \emph{identidades notables} que
+tanta lucha nos han dado.\\
+
+Pues las identidades trigonométricas son algo parecido, son dos expresiones exactamente iguales.
+La diferencia es que en lugar de aprendérnoslas (aunque con el tiempo alguna se te quedará) lo que
+tenemos que hacer en estos ejercicios es demostrar que realmente son iguales.\\
+Es decir, \textbf{tenemos que demostrar que lo que nos dan en el enunciado es realmente una
+  identidad} utilizando las identidades que conocemos, que son todas las fórmulas que aparecen
+en estos apuntes y en los de \emph{trigonometría básica}.\\
+
+Y, ¿Cómo hacemos eso?. Pues podemos hacerlo de varias maneras:
+\begin{itemize}
+\item Partiendo de uno de los miembros de la igualdad llegar al otro mediante las operaciones
+  que conocemos.
+\item Operar con los dos miembros a la vez y comprobar que se llega al mismo resultado.
+\end{itemize}
+En unos casos una será la manera más rápida y en otros será la otra, pero la manera de que podamos
+hacer bien estos ejercicios es practicando.\\
+
+Tenemos que tener en cuenta que todas las fórmulas que hemos visto en el apartado \ref{fórmulas_trigonométricas} (que empieza en la página \pageref{fórmulas_trigonométricas}) no son otra cosa que
+identidades, con lo que el estudiar las distintas deducciones que se hacen en ese apartado es muy útil para poder resolver bien este tipo de ejercicios.\\
+
+En el caso de las simplificaciones vamos a tener que hacer algo parecido, pero tendremos que partir
+de la expresión que nos dan porque no hay otra. Y hay que hacer lo mismo, ir haciendo operaciones
+hasta que nos quede una relación trigonométrica o algo muy sencillo. Al igual que con las
+identidades la única manera de saber qué hacer es practicando.\\
+
+Así que vamos a ver unos cuantos ejemplos de cada tipo de ejercicio para que
+después podamos practicar.
+
+\begin{questions}
+\question Demuestra que $\sec^2 x = 1 + \tg^2 x$
+  \begin{solution}
+    Esta es la identidad trigonométrica más famosa con diferencia, y la más sencilla para empezar.\\
+
+    ¿Por dónde empezamos?, por el lado derecho que hay una operación que podemos hacer, una suma.
+    Para poder hacer esa suma vamos a cambiar la tangente por su definición.
+    \[\sec^2 x = 1 + \frac{\sen^2 x}{\cos^2 x}\]
+    Así que hacemos la suma de fracciones:
+    \[\sec^2 x = \frac{\cos^2 x}{\cos^2 x} + \frac{\sen^2 x}{\cos^2 x}\]
+    \[\sec^2 x = \frac{\cos^2 x + \sen^2 x}{\cos^2 x}\]
+    \[\sec^2 x = \frac{1}{\cos^2 x}\]
+    Y si cambiamos la secante por su definición nos queda:
+    \[\frac{1}{\cos^2 x} = \frac{1}{\cos^2 x}\]
+    Con lo que tenemos \textbf{lo mismo a ambos lados del igual}, es decir, \textbf{hemos
+      demostrado que es una identidad}.
+  \end{solution}
+\question Simplifica la expresión $\frac{2\cos \left(\frac{\pi}{4} - \alpha\right)
+    \cos \left(\frac{\pi}{4} + \alpha\right)}{\cos 2\alpha}$
+  \begin{solution}
+    Aquí tenemos razones trigonométricas de distintos ángulos, pero en todas aparece $\alpha$.
+    Así que lo que vamos a hacer es utilizar las fórmulas de la suma y la resta de ángulos, así como
+    la del ángulo doble, para que todas las razones sean de $\alpha$.\\
+    \[\frac{2\left(\cos \frac{\pi}{4}\cos \alpha +\sen \frac{\pi}{4}\sen \alpha\right)*
+        \left(\cos \frac{\pi}{4}\cos \alpha -\sen \frac{\pi}{4}\sen \alpha\right)}
+      {\cos^2 \alpha - \sen^2 \alpha}\]
+    De la tabla (que ya nos sabemos) tenemos que $\sen \frac{\pi}{4} = \frac{\sqrt{2}}{2}$ y
+    $\cos \frac{\pi}{4} = \frac{\sqrt{2}}{2}$, así que sustituimos:
+
+    \[\frac{2\left(\frac{\sqrt{2}}{2}\cos \alpha +\frac{\sqrt{2}}{2}\sen \alpha\right)*
+        \left(\frac{\sqrt{2}}{2}\cos \alpha -\frac{\sqrt{2}}{2}\sen \alpha\right)}
+      {\cos^2 \alpha - \sen^2 \alpha}\]
+    Y en el numerador tenemos una suma por diferencia, una identidad notable que nos sabemos, así
+    que la aplicamos y queda:
+    \[\frac{2\left(\frac{2}{4}\cos^2 \alpha - \frac{2}{4}\sen^2 \alpha\right)}
+      {\cos^2 \alpha - \sen^2 \alpha}\]
+    \[\frac{\cos^2 \alpha - \sen^2 \alpha}{\cos^2 \alpha - \sen^2 \alpha} = 1\]
+    Con lo que la expresión del enunciado se simplifica a $\boldsymbol{1}$.
+  \end{solution}
+\question Comprueba la igualdad $\frac{\tg a + \tg b}{\tg a - \tg b} =
+  \frac{\sen (a+b)}{\sen (a - b)}$.
+  \begin{solution}
+    Este ejemplo lo vamos a hacer dos veces, una partiendo del miembro izquierdo para llegar al
+    derecho y otra al revés. La idea es que veamos algunas de las técnicas que podemos utilizar
+    para hacer este tipo de ejercicios.
+    \begin{itemize}
+    \item \textbf{Empezando con el lado izquierdo}:\\
+      Aplicamos la definición de tangente, y queda:
+      \[\ddfrac{\ddfrac{\sen a}{\cos a} + \ddfrac{\sen b}{\cos b}}
+        {\ddfrac{\sen a}{\cos a} - \ddfrac{\sen b}{\cos b}} = \frac{\sen (a+b)}{\sen (a - b)}\]
+      
+      \[\ddfrac{\ \ddfrac{\sen a*\cos b}{\cos a \cos b} + \ddfrac{\cos a \sen b}{\cos a \cos b}\ }
+        {\ddfrac{\sen a*\cos b}{\cos a \cos b} - \ddfrac{\cos a \sen b}{\cos a \cos b}} =
+        \frac{\sen (a+b)}{\sen (a - b)}\]
+      
+      \[\ddfrac{\ \ddfrac{\sen a*\cos b + \cos a \sen b}{\cos a \cos b}\ }
+        {\ddfrac{\sen a*\cos b - \cos a \sen b}{\cos a \cos b}} =
+        \frac{\sen (a+b)}{\sen (a - b)}\]
+      
+      \[\frac{\sen a \cos b + \cos a \sen b}{\sen a \cos b - \cos a \sen b} =
+        \frac{\sen (a+b)}{\sen (a - b)}\]
+      
+      Y lo que tenemos en el numerador y denominador del miembro izquierdo son las fórmulas
+      del seno de la suma y resta de ángulos respectivamente, con lo que la identidad ya está
+      demostrada.
+    \item \textbf{Empezando con el miembro derecho}:\\
+      En este caso aplicamos las fórmulas del seno de la suma y de la resta de ángulos:
+      \[\frac{\tg a + \tg b}{\tg a - \tg b} =
+        \frac{\sen a\cos b + \cos a \sen b}{\sen a \cos b - \cos a \sen b}\]
+      En el lado izquierdo tenemos tangentes, que en realidad son una fracción.
+      Como nos hace falta este denominador se lo tenemos que poner en el numerador y el denominador
+      de la derecha, para que siga siendo una fracción equivalente.\\
+      Por tanto dividimos el numerador y el denominador de la derecha entre $\cos a \cos b$, y
+      queda:
+      \[\frac{\tg a + \tg b}{\tg a - \tg b} =
+        \frac{\dfrac{\sen a\cos b + \cos a \sen b}{\cos a \cos b}}
+        {\dfrac{\sen a \cos b - \cos a \sen b}{\cos a \cos b}}\]
+      Separamos los numeradores:
+      \[\frac{\tg a + \tg b}{\tg a - \tg b} =
+        \frac{\dfrac{\sen a\cos b}{\cos a \cos b} + \dfrac{\cos a \sen b}{\cos a \cos b}}
+        {\dfrac{\sen a \cos b}{\cos a \cos b} - \dfrac{\cos a \sen b}{\cos a \cos b}}\]
+      Y simplificamos:
+      \[\frac{\tg a + \tg b}{\tg a - \tg b} =
+        \frac{\dfrac{\sen a}{\cos a} + \dfrac{\sen b}{\cos b}}
+        {\dfrac{\sen a}{\cos a} - \dfrac{\sen b}{\cos b}}\]
+      Y es fácil ver que tenemos lo mismo en ambos lados, con lo que la identidad está demostrada.
+    \end{itemize}
+  \end{solution}
+\question Simplifica la expresión $\cos^4 y - \sen^4 y$.
+  \begin{solution}
+    En este caso no tenemos más remedio que hacer uso también de las identidades notables,
+    y con ellas podemos escribir:
+    \[\cos^4 y - \sen^4 y = \left(\cos^2 y + \sen^2 y\right)*\left(\cos^2 y - \sen^2 y\right)\]
+    Teniendo en cuenta la relación fundamental de la trigonometría, queda:
+    \[\left(\cos^2 y + \sen^2 y\right)*\left(\cos^2 y - \sen^2 y\right) = \cos^2 y - \sen^2 y\]
+    Que no es más que la fórmula del coseno del ángulo doble, con lo que:
+    \[\boldsymbol{\cos^4 y - \sen^4 y = \cos 2y}\]
+  \end{solution}
+\question Simplifica la expresión $(\cos x + \sen x )^2$.
+  \begin{solution}
+    Desarrollamos la identidad notable:
+    \[(\cos x + \sen x )^2 = \cos^2 x + \sen^2 x + 2\sen x \cos x\]
+    Que teniendo en cuenta la relación fundamental de la trigonometría y el seno del ángulo
+    doble, resulta ser:
+    \[\boldsymbol{(\cos x + \sen x )^2 = 1 + \sen 2x}\]
+  \end{solution}
+\question Simplifica $\frac{1 - \cos 2\alpha}{\cos^2 \alpha}$
+  \begin{solution}
+    Vamos a empezar por poner todo con $\alpha$:
+    \[\frac{1 - \cos 2\alpha}{\cos^2 \alpha} =
+      \frac{1 - \left(\cos^2 \alpha - \sen^2 \alpha\right)}{\cos^2 \alpha} =
+      \frac{1 - \cos^2 \alpha + \sen^2 \alpha}{\cos^2 \alpha}\]
+  
+  Teniendo en cuenta la relación fundamental:
+  \[\frac{1 - \cos^2 \alpha + \sen^2 \alpha}{\cos^2 \alpha} =
+    \frac{\sen^2 \alpha + \sen^2 \alpha}{\cos^2 \alpha} = 2\tg^2 \alpha\]
+  Con lo que la simplificación es:
+  \[\boldsymbol{\frac{1 - \cos 2\alpha}{\cos^2 \alpha}  = 2\tg^2 \alpha}\]
+  \end{solution}
+\question Demuestra que $\sen^2 a - \cos^2 b = \sen^2 b - \cos^2 a$
+  \begin{solution}
+    Teniendo en cuenta la relación fundamental de la trigonometría podemos escribir:
+    \[\left(1 - \cos^2 a \right) - \left( 1 - \sen^2 b \right) = \sen^2 b - \cos^2 a\]
+    Quitamos los paréntesis:
+    \[1 - \cos^2 a - 1 + \sen^2 b = \sen^2 b - \cos^2 a\]
+    Y está claro que en ambos miembros tenemos lo mismo.
+  \end{solution}
+\question Comprueba que $\sen \alpha = \frac{2 \tg \dfrac{\alpha}{2}}
+  {1 + \tg^2 \dfrac{\alpha}{2}}$
+  \begin{solution}
+    Aquí poco podemos hacer en el lado izquierdo, ya que solo tenemos el seno de un ángulo simple.
+    Así que vamos a por el lado izquierdo, utilizando las fórmulas del ángulo mitad queda:
+    \[\sen \alpha = \frac{\pm 2 \sqrt{\dfrac{1 - \cos \alpha}{1+\cos \alpha}}}
+      {1 + \dfrac{1 - \cos \alpha}{1+\cos \alpha}} =
+      \frac{\pm 2 \sqrt{\dfrac{1 - \cos \alpha}{1+\cos \alpha}}}
+      {\dfrac{1+\cos \alpha}{1 + \cos \alpha} + \dfrac{1 - \cos \alpha}{1+\cos \alpha}} =
+      \frac{\pm 2 \sqrt{\dfrac{1 - \cos \alpha}{1+\cos \alpha}}}
+      {\dfrac{2}{1+\cos \alpha}}\]
+    Simplificamos la fracción grande y queda:
+    \[\sen \alpha = \pm (1+\cos \alpha)*\sqrt{\frac{1 - \cos \alpha}{1+\cos \alpha}}
+      =\pm \sqrt{\frac{(1+\cos \alpha)^2 (1-\cos \alpha)}{1 + \cos \alpha}} =
+      \pm \sqrt{(1 + \cos \alpha) (1 - \cos \alpha)}\]
+    Utilizamos la identidad notable:
+    \[\sen \alpha = \pm \sqrt{1 - \cos^2 \alpha} = \pm \sqrt{\sen^2 \alpha}\]
+    Y en este caso tendríamos que es una identidad que solo se cumple a veces, cuando el seno
+    del ángulo mitad sea el mismo que el del seno del ángulo. Es decir, se cumplirá siempre que
+    $0 \leq \alpha \leq \pi$, ya que en otro caso el seno del ángulo mitad va a ser positivo
+    mientras que el seno del ángulo va a ser negativo.
+  \end{solution}
+\question Demuestra la siguiente identidad: $\sen x + \cos x = \frac{1 + \tg x}{\sec x}$.
+  \begin{solution}
+    Vamos a empezar por utilizar la definición de la secante, $\sec x = \frac{1}{\cos x}$:
+    \[\sen x + \cos x = \ddfrac{1+ \tg x}{\ddfrac{1}{\cos x}}\]
+    \[\sen x + \cos x = \cos x * (1 + \tg x)\]
+    \[\sen x + \cos x = \cos x + \cos x* \tg x\]
+    Y teniendo en cuenta que $\tg x = \frac{\sen x}{\cos x}$ ya hemos demostrado que ambos lados
+    son iguales, con lo cual es una identidad.
+  \end{solution}
+\question Simplifica la siguiente expresión:
+  \[\frac{\sen 2a}{\sen a} + \frac{1 + \cos 2a}{\cos a}\]
+  \begin{solution}
+    En primer lugar vamos a sustituir las razones de los ángulos dobles por sus fórmulas:
+    \[\frac{2\sen a \cos a}{\sen a} + \frac{1 + \cos^2 a - \sen^2 a}{\cos a}\]
+    Teniendo en cuenta que $1 - \sen^2 a = \cos^2 a$ nos queda:
+    \[2*\cos a + \frac{\cos^2 + \cos^2 a}{\cos a}\]
+    \[2*\cos a + 2\cos a = \boldsymbol{4\cos a}\]
+  \end{solution}
+\question Comprueba si es cierta la identidad $\frac{\tg x}{\tg 2x - \tg x} = \cos 2x$.
+  \begin{solution}
+    Empezamos por aplicar las fórmulas del ángulo doble:
+    \[\ddfrac{\tg x}{\ddfrac{2\tg x}{1-\tg^2 x} -\tg x} = \cos^2 x - \sen^2 x\]
+    \[\ddfrac{\tg x}{\ddfrac{2\tg x - \tg x +\tg^3 x}{1 - \tg^2 x}} = \cos^2 x - \sen^2 x\]
+    \[\left( 1 - \tg^2 x \right)*\frac{\tg x}{\tg x + \tg^3 x} = \cos^2 x - \sen^2 x\]
+    \[\frac{1 - \tg^2 x}{1 + \tg^2 x} = \cos^2 x- \sen^2 x\]
+    En el primer ejercicio de este punto hemos visto que $1 + \tg^2 x = \sec^2 x$, con lo que:
+    \[\ddfrac{1 - \tg^2 x}{\ddfrac{1}{\cos^2 x}} = \cos^2 x - \sen^2 x\]
+    \[\cos^2 x - \cos^2 x * \tg^2 x = \cos^2 x - \sen^2 x\]
+    Y como $\tg^2 x = \frac{\sen^2 x}{\cos^2 x}$ acabamos obteniendo lo mismo en los dos lados, con
+    lo que la identidad queda demostrada.
+  \end{solution}
+\end{questions}
+Creemos que con los ejemplos anteriores se puede entender el mecanismo de simplificación y de
+demostración de identidades trigonométricas, pero la única manera de que salgan bien es practicando.
+En internet es fácil encontrar ejercicios para hacer, muchos de los cuales están con su solución.\\
+Y siempre puedes preguntar a tu profesor/a por más ejercicios para practicar.
+\end{document}

@@ -1,0 +1,721 @@
+\documentclass[a4paper,11pt,answers]{exam}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+%para la última página
+\usepackage{lastpage}
+\usepackage[normalem]{ulem}
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de proporcionalidad y porcentajes 3º ESO}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+\renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+\newcommand{\eur}{\,\text{€}}
+
+\begin{document}
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\tableofcontents
+\newpage
+% Para quitar el sangrado
+\setlength{\parindent}{0cm}
+
+
+
+\section{Proporcionalidad simple.}
+\subsection{Magnitud.}
+A lo largo de gran parte de este tema vamos a estar hablando de magnitudes, con lo que conviene
+definir primero lo que es para poder entender bien de qué estamos hablando tanto en la teoría como
+en los ejemplos.
+\begin{quote}
+\emph{\textbf{Una magnitud es algo que puede ser medido de una forma numérica y expresado con
+    una unidad.}}
+\end{quote}
+
+Las unidad en la que midamos puede ser cualquiera: las unidades del sistema métrico, euros, personas, o lo que sea.
+
+\subsection{Magnitudes proporcionales.}
+Se dice que \textbf{dos magnitudes son proporcionales cuando aumentan o disminuyen de la misma manera}, es decir, si una se multiplica por dos la otra también se multiplica por dos, o se divide entre
+dos dependiendo del tipo de proporcionalidad.
+\subsubsection{Proporcionalidad directa.}
+Se dice que \textbf{dos magnitudes son directamente proporcionales si las dos aumentan de la misma
+  manera}, es decir, si una se multiplica por dos la otra también.\\
+
+Vamos a verlo con \textbf{un ejemplo}:\\
+Indica la relación que existe entre el número de animales de una granja y la cantidad de comida
+que necesitan.
+\begin{solution}
+  Aquí tenemos dos magnitudes:
+  \begin{itemize}
+  \item El número de animales, que se mide en animales.
+  \item La cantidad de comida, que se mide en kilogramos.
+  \end{itemize}
+  Es evidente que si el número de animales se multiplica por dos los kg de comida necesaria
+  también se multiplica por dos, con lo cual aumentan de la misma manera y tienen una relación de
+  proporcionalidad directa.
+\end{solution}
+\subsubsection{Proporcionalidad inversa.}
+Se dice que \textbf{dos magnitudes son directamente proporcionales si al aumentar una la otra
+  disminuye de la misma manera}, es decir, si una se multiplica por dos la otra se divide entre
+dos.\\
+
+Vamos a verlo con \textbf{un ejemplo}:\\
+Indica la relación que existe entre la velocidad a la que va un vehículo y el tiempo que tarda en
+recorrer una distancia determinada.
+\begin{solution}
+  Aquí tenemos dos magnitudes:
+  \begin{itemize}
+  \item La velocidad, que podemos medirla en km/h.
+  \item El tiempo, que se puede medir en h.
+  \end{itemize}
+  Es evidente que si la velocidad se duplica el tiempo que tardamos se va a reducir a la mitad.
+  Es decir, cuando una aumenta la otra disminuye de la misma manera, con lo que tienen una relación
+  de proporcionalidad inversa.
+\end{solution}
+
+\subsection{Resolución de problemas sencillos de proporcionalidad simple.}
+Los enunciados de los problemas de proporcionalidad simple son bastantes similares, normalmente
+siguen el siguiente esquema:
+\begin{itemize}
+\item Nos presentan una situación en la que aparecen dos magnitudes con valores conocidos entre las
+  que existe una relación de proporcionalidad. Las llamaremos $a_i$ y $b_i$ ($i$ de inicial).
+\item Nos preguntan cuanto debe valer una de estas magnitudes conociendo el valor de la otra. A
+  estas magnitudes finales las llamaremos $a_f$ y $b_f$ ($f$ de final).
+\item En algunos problemas nos pueden hacer varias preguntas que tendremos que tratar como problemas
+  independientes, no podemos contestarlas a todas a la vez.
+\end{itemize}
+
+Y el mecanismo para resolverlos es similar en todos:
+\begin{enumerate}
+\item En primer lugar tenemos que identificar las dos magnitudes que tenemos que manejar, que
+  por simplicidad las llamaremos $\boldsymbol{a}$ y $\boldsymbol{b}$.
+\item Una vez identificadas las magnitudes tenemos que averiguar qué relación de proporcionalidad
+  existe entre ellas haciéndonos la siguiente pregunta:\\
+  \emph{¿Al doble de $\boldsymbol{a}$ le corresponde el doble de $\boldsymbol{b}$ o la mitad?}
+  Y, por lo que hemos visto, si es \textbf{el doble} se trata de \textbf{proporcionalidad directa}
+  mientras que si es \textbf{la mitad} lo que tenemos es \textbf{proporcionalidad inversa}.
+\item Una vez identificado el tipo de proporcionalidad que tenemos aplicaremos el método que
+  corresponda.
+\end{enumerate}
+\subsubsection{Problemas de proporcionalidad directa.}
+Tal y como hemos indicado en el apartado anterior tenemos las magnitudes $a$ y $b$ y hemos
+deducido que tienen una relación de proporcionalidad directa.\\
+En este caso los valores iniciales y finales guardan la siguiente relación:
+\begin{Large}
+  \[\boldsymbol{\frac{b_i}{a_i} = \frac{b_f}{a_f}}\]
+\end{Large}
+Que podemos escribir también.
+\[\boldsymbol{\frac{a_f}{a_i} = \frac{b_f}{b_i}}\]
+Y esta relación es la que utilizaremos para resolver los problemas sencillos.\\
+
+Vamos a ver un par de ejemplos:
+\begin{questions}
+\question Hemos comprado $3$\,kg de manzanas por $5.40$\,€. ¿Cuánto nos costarán $5$\,kg?.
+  \begin{solution}
+    En este caso las magnitudes son el peso de las peras y el dinero que nos cuesta.\\
+    Para que sea más sencillo de entender asignamos los nombres que hemos puesto en el método:
+    \begin{itemize}
+    \item $a \equiv$ peso de las peras.
+    \item $b \equiv$ dinero que nos cuestan.
+    \end{itemize}
+    Y nos hacemos la pregunta:
+    \begin{quote}
+      \emph{¿El doble de peso de peras nos costará el doble o la mitad?}
+    \end{quote}
+    La respuesta es evidente, el doble, con lo que estamos en el caso de proporcionalidad directa
+    que es el que estamos estudiando ahora.\\
+
+    
+    Del enunciado sacamos que los valores iniciales y finales son:
+    \begin{itemize}
+    \item $a_i = 3\,\text{kg}\quad a_f = 5\,\text{kg}$
+    \item $b_i = 5.40\,\text{€}\quad b_f = x$
+    \end{itemize}
+    Sustituimos estos valores en la relación y tenemos:
+    \[\frac{5\,\text{kg}}{3\,\text{kg}} = \frac{x}{5.40\,\text{€}}\]
+    Y tenemos que despejar la $x$, con lo que el $5.40\,\text{€}$ que está dividiendo pasa al
+    otro lado multiplicando, con lo que queda:
+    \[x = 5.40\,\text{€}*\frac{5}{3} = 9.00\,\text{€}\]
+  \end{solution}
+\question Una persona es capaz de teclear 7 correos cada $35$\,min. ¿Cuántos escribirá en $10$\,
+  min? ¿Cuánto tardará en escribir 50 correos?
+  \begin{solution}
+    Aquí tenemos un ejemplo en el que hay dos preguntas, con lo que las trataremos como dos
+    problemas separados en los que los valores iniciales serán los mismos pero los finales no.\\
+
+    Las magnitudes que tenemos son los correos enviados y el tiempo, con lo que la pregunta es:
+    \begin{quote}
+      \emph{¿El doble de correos llevará el doble de tiempo o la mitad?}
+    \end{quote}
+    Lógicamente respuesta es el doble, con lo que volvemos a tener proporcionalidad directa.\\
+
+    Llamaremos $a$ a los correos y $b$ al tiempo, y dividiéndolo en dos preguntas tenemos:
+    \begin{parts}
+    \part Para la primera pregunta:
+      \begin{itemize}
+      \item $a_i = 7 \quad a_f = x$
+      \item $b_i = 35\,\text{min} \quad b_f = 10\,\text{min}$
+      \end{itemize}
+      Escribimos la relación:
+      \[\frac{x}{7} = \frac{10}{35}\]
+      Despejamos:
+      \[x = 7*\frac{10}{35} = 2\]
+      Con lo que en $10$\,min escribirá dos correos.
+    \part Para la segunda pregunta:
+      \begin{itemize}
+      \item $a_i = 7 \quad a_f = 50$
+      \item $b_i = 35\,\text{min} \quad b_f = x$
+      \end{itemize}
+      Escribimos la relación:
+      \[\frac{50}{7} = \frac{x}{35\,\text{min}}\]
+      Despejamos:
+      \[x = 35\,\text{min}*\frac{50}{7} = 250\,\text{min}\]
+      Con lo que en escribir $50$ correos tardará $250$\,min, que son $4$ horas y $10$ minutos.
+    \end{parts}
+  \end{solution}
+\end{questions}
+
+\subsubsection{Problemas de proporcionalidad inversa.}
+En este caso la relación que guardan los valores iniciales y finales es:
+\begin{Large}
+  \[\boldsymbol{a_i*b_i = a_f*b_f}\]
+\end{Large}
+Y la vamos a usar en \textbf{los siguientes ejemplos}:
+\begin{questions}
+\question Para construir un muro en tres días hacen falta cuatro personas. Calcula cuantas
+  personas harán falta para construirlo en dos días.
+  \begin{solution}
+    Llamaremos $\boldsymbol{a}$ a las personas y $\boldsymbol{b}$ con lo que los valores iniciales
+    y finales son:
+    \begin{itemize}
+    \item $a_i = 3\,\text{días}\quad a_f = 2\,\text{días}$
+    \item $b_i = 4\,\text{personas}\quad b_f=x$
+    \end{itemize}
+    Entonces la relación queda:
+    \[3\,\text{días}*4\,\text{personas} = 2\,\text{días}*x\]
+    Y despejando:
+    \[x = \frac{3\,\text{días}*4\,\text{personas}}{2\,\text{días}}\]
+    \[x = 6\,\text{personas}\]
+
+    Con lo que hacen falta $6$\,personas para construir un muro en $2$\,días.
+  \end{solution}
+\question Con un depósito de agua se abastece a $20$\,casas durante $15$\,días. Calcula cuantos días
+  durará si los habitantes de $8$\,casas se van de vacaciones.
+  \begin{solution}
+    En este caso llamaremos $\boldsymbol{a}$ a las casas y $b$ a los días que dura el depósito.\\
+    Los valores iniciales y finales son:
+    \begin{itemize}
+    \item $a_i = 20\,\text{casas}\quad a_f=(20 - 8)\,\text{casas} = 12\,\text{casas}$
+    \item $b_i = 15\,\text{días}\quad b_f = x$.
+    \end{itemize}
+    Con esto escribimos la relación:
+    \[20\,\text{casas}*15\,\text{días} = 12\,\text{casas}*x\]
+    Y despejando:
+    \[x = \frac{20\,\text{casas}*15\,\text{días}}{12\,\text{casas}}\]
+    \[x = 25\,\text{días}\]
+    Si se van $8$\,casas de vacaciones el depósito dura $25$\,días.
+  \end{solution}
+\end{questions}
+\section{Proporcionalidad compuesta.}
+En este tipo de proporcionalidad lo que tenemos es que hay más de dos magnitudes, con lo cual
+la cosa no es tan sencilla como en la simple, aunque tampoco se complica mucho más.\\
+
+Vamos a ver cómo se resuelven los problemas de proporcionalidad compuesta con un ejemplo:
+\begin{quote}
+\emph{En $8$\,días, $6$\,excavadoras hacen una zanja de $2\,100$\,m de largo. Calcula cuántas
+  máquinas serán necesarias para cavar una zanja de $525$\,m en $3$\,días.}
+\end{quote}
+Como hemos dicho ahora tenemos más de dos magnitudes, en este caso:
+\begin{itemize}
+\item Días.
+\item Número de excavadoras.
+\item Metros de zanja.
+\end{itemize}
+Y para resolverlo vamos a seguir los siguientes pasos:
+\begin{enumerate}
+\item \textbf{Identificamos las magnitudes del problema y por cual de ellas nos preguntan}.\\
+  En este caso hemos visto que las magnitudes son los días, las excavadoras y los metros de zanja,
+  y nos preguntan por el número de excavadoras.
+\item \textbf{Establecemos la relación que existe (directa o inversa) entre la magnitud por la que nos
+  preguntan y cada una de las demás}.
+  \begin{itemize}
+  \item \emph{Excavadoras $\longleftrightarrow$ días}: ¿el doble de excavadoras tardará el doble
+    o la mitad de días?. Tardará la mitad, con lo cual es inversa.
+  \item \emph{Excavadoras $\longleftrightarrow$ metros}: ¿el doble de excavadoras harán el doble
+    o la mitad de zanja?. Evidentemente harán el doble, entonces es directa.
+  \end{itemize}
+\item \textbf{Para cada magnitud construimos una fracción} de la siguiente manera:
+  \begin{itemize}
+  \item Si la \textbf{relación es inversa}: $\frac{\text{\textbf{valor inicial}}}
+    {\text{\textbf{valor final}}}$\vspace*{2mm}
+  \item Si la \textbf{relación es directa}: $\frac{\text{\textbf{valor final}}}
+    {\text{\textbf{valor inicial}}}$
+  \end{itemize}
+  Con lo cual en el ejemplo tendremos:
+  \begin{itemize}
+  \item Para los días, al ser inversa: $\frac{8\,\text{días}}{3\,\text{días}}$.\vspace*{2mm}
+  \item Para los metros, al ser directa: $\frac{525\,\text{m}}{2\,100\,\text{m}}$.
+  \end{itemize}
+\item Por último el valor de \textbf{la magnitud buscada es el resultado de multiplicar el valor inicial
+  de esta magnitud por las fracciones del paso anterior}.\\
+  De esta manera el número de excavadoras que harán falta es:
+  \[x = 6\,\text{excavadoras}*\frac{8}{3}*\frac{525}{2\,100} = 4\,\text{excavadoras}\]
+\end{enumerate}
+Vamos a ver un par de ejemplos más:
+\begin{questions}
+\question El alquiler de dos coches durante $9$ días cuesta $675$\,€. Calcula cuanto cuesta alquilar
+  tres coches durante $7$ días.
+  \begin{solution}
+    Identificamos cuales son las magnitudes y por cual nos preguntan:
+    \begin{itemize}
+    \item Coches.
+    \item Días.
+    \item Precio. Esta es por la que nos preguntan.
+    \end{itemize}
+    Averiguamos la relación que existe entre la magnitud por la que nos preguntan y las demás, y de
+    paso construimos las fracciones correspondientes:
+    \begin{itemize}
+    \item Precio $\longleftrightarrow$ coches, directa. La fracción es $\frac{3}{2}$.
+    \item Precio $\longleftrightarrow$ días, directa. La fracción es $\frac{7}{9}$
+    \end{itemize}
+    Y con esto ya tenemos que:
+    \[\text{Precio pedido} = 675\,\text{€} * \frac{3}{2}*\frac{7}{9}\]
+    \[\text{Precio pedido} = 787,50\,\text{€}\]
+  \end{solution}
+\question Dieciocho personas han tardado $6$ días en instalar $300$\,m de tubería trabajando $6$\,h/día. ¿Cuántas horas diarias tendrían que trabajar $24$ personas durante $14$ días para instalar
+  $700$\,m de tubería?.
+  \begin{solution}
+    A pesar de que haya más magnitudes el procedimiento es el mismo.\\
+
+    Identificamos las magnitudes:
+    \begin{itemize}
+    \item Personas.
+    \item Días.
+    \item Horas al día. Ésta es la preguntada.
+    \item Metros de tubería.
+    \end{itemize}
+    Averiguamos las relaciones y construimos las fracciones:
+    \begin{itemize}
+    \item h/día $\longleftrightarrow$ personas, inversa. La fracción es $\frac{18}{24}$.
+    \item h/día $\longleftrightarrow$ días, inversa. La fracción: $\frac{6}{14}$.
+    \item h/día $\longleftrightarrow$ metros de tubería, directa. La fracción: $\frac{700}{300}$
+    \end{itemize}
+    Entonces:
+    \[\text{Horas al día} = 6\,\text{h/día}\,* \frac{18}{24} * \frac{6}{14} * \frac{700}{300} =
+      4,5\,\text{h/día}\]
+  \end{solution}
+
+\end{questions}
+No tiene mucho sentido poner más ejemplos porque todos estos problemas se resuelven dando los mismos
+pasos. La manera de aprender a hacerlos lo mejor posible es practicando.
+\section{Repartos proporcionales.}
+AL igual que todo lo que estamos viendo en este tema, los repartos proporcionales son algo que
+se utiliza mucho en el mundo real, veamos un ejemplo:
+\begin{quote}
+  Tres personas ponen en marcha una empresa aportando $1\,500$, $2\,000$ y $3\,000\eur$ respectivamente.\\
+  \emph{Si la empresa obtiene unos beneficios de $3\,900\eur$ ¿cuánto le corresponde a cada una?}
+\end{quote}
+Lo que corresponde a cada una tiene que guardar una relación de proporcionalidad con el dinero que
+ha aportado, y sería una proporcionalidad directa (al doble de dinero aportado le corresponde
+el doble de beneficio). También se podría hacer un reparto conforma a las horas trabajadas o con
+respecto a otros parámetros que entre esas tres personas considerasen justos.\\
+
+Con lo cual tenemos que: \textbf{en un reparto proporcional tenemos dos magnitudes: una con un
+  valor para repartir y otra con distintos valores que es la magnitud que reparte.}
+\begin{itemize}
+\item Si al \textbf{doble de la magnitud que reparte} le corresponde \textbf{el doble de la magnitud
+    repartida} es un \textbf{reparto directamente proporcional}.
+\item Si al \textbf{doble de la magnitud que reparte} le corresponde \textbf{la mitad de la magnitud
+    repartida} es un \textbf{reparto inversamente proporcional}.
+\end{itemize}
+Pues vamos a ver cuales son los mecanismos para realizar estos repartos.
+
+\subsection{Repartos directamente proporcionales.}
+El ejemplo que acabamos de poner es un buen ejemplo para definir y ver cómo se hace un reparto
+directamente proporcional.\\
+Y como siempre vamos a verlo por pasos.
+\begin{enumerate}
+\item Llamemos $a$ a la magnitud repartida y $b_1$, $b_2$, \dots, a los valores de la magnitud que
+  reparte.\\
+  En el ejemplo tenemos:
+  \begin{itemize}
+  \item $a=3\,900\eur$, que es el beneficio que queremos repartir.
+  \item $b_1 = 1\,500\eur$, $b_2 = 2\,000\eur$, $b_3 = 3\,000\eur$ son los valores de la magnitud
+    que reparte.
+  \end{itemize}
+\item \textbf{Dividimos la magnitud repartida entre la suma de los valores que reparten}.
+  Al resultado se le llama ``\emph{razón del reparto}''\\
+  \[\boldsymbol{r = \frac{a}{b_1 + b_2 + \dots + b_n}}\]
+  En el ejemplo tenemos:
+  \[r = \frac{3\,900\eur}{1\,500\eur + 2\,000\eur + 3\,000\eur}\]
+  Con lo que la razón del reparto es:
+  \[r = 0.6\]
+\item \textbf{Multiplicamos cada valor de la magnitud que reparte por la razón del reparto}, el resultado
+  es lo que corresponde a cada una de las que participa en el reparto.\\
+  Siguiendo con el ejemplo:
+  \begin{itemize}
+  \item A la que puso $1\,500\eur$ la corresponden $1\,500\eur*0.6 = 900\eur$.
+  \item A la que puso $2\,000\eur$ la corresponden $2\,000\eur*0.6 = 1\,200\eur$.
+  \item A la que puso $3\,000\eur$ la corresponden $3\,000\eur*0.6 = 1\,800\eur$.
+  \end{itemize}
+\item \textbf{Comprobamos que está bien sumando los valores que corresponden a cada una} y viendo que
+  \textbf{coinciden con el valor de la magnitud repartida} (salvo errores propagados por el redondeo).\\
+  Sumamos los resultados del reparto del ejemplo:
+  \[900\eur + 1\,200\eur + 1\,800\eur = 3\,900\eur\]
+  y vemos que coincide con el valor de los beneficios que había que repartir.
+\end{enumerate}
+
+\subsection{Repartos inversamente proporcionales.}
+En este caso sucede lo contrario que en el anterior, a menor valor de la magnitud que reparte le
+corresponde mayor valor de la magnitud a repartir.\\
+Vamos a ver los pasos que hay que dar con un ejemplo.\\
+\begin{quote}
+  \emph{Tenemos tres gatos a los que queremos  una ración extra de $121$\,g de comida repartida
+    de manera inversamente proporcional a la cantidad que han comido hoy. Si el primero comió
+  $60$\,g, el segundo $80$\,g y el tercero $60$\,g, ¿Cuánto corresponde a cada uno?}
+\end{quote}
+\begin{enumerate}
+\item Llamemos $a$ a la magnitud repartida y $b_1$, $b_2$, \dots, a los valores de la magnitud que
+  reparte.\\
+  En el ejemplo tenemos:
+  \begin{itemize}
+  \item $a=121$\,g, que es el la comida que queremos repartir.
+  \item $b_1 = 60$\,g, $b_2 = 80$\,g, $b_3 = 60$\,g son los valores de la magnitud que reparte.
+  \end{itemize}
+\item \textbf{Dividimos la magnitud a repartir entre la suma de las inversas de la
+    magnitud que reparte}. A este resultado también se le llama ``\emph{razón el reparto}''.
+  \[\boldsymbol{r = \ddfrac{a}{\ddfrac{1}{b_1} + \ddfrac{1}{b_2} + \dots + \ddfrac{1}{b_n}}}\]
+  Con los datos del ejemplo:
+  \[r = \ddfrac{121}{\ddfrac{1}{60} + \ddfrac{1}{80} + \ddfrac{1}{60}}\]
+  Operamos las fracciones como ya sabemos:
+  \[r = \ddfrac{121}{\ddfrac{4}{240} + \ddfrac{3}{240} + \ddfrac{4}{240}}\]
+  \[r = \ddfrac{\ 121\ }{\ddfrac{11}{240}} = 121:\frac{11}{240}\]
+  \[r = 2\,640\]
+\item \textbf{Dividimos la razón del reparto entre cada uno de los valores que reparten} para
+  obtener lo que corresponde a cada uno.\\
+  En nuestro ejemplo:
+  \begin{itemize}
+  \item Al primero le corresponde $\frac{2\,640}{60} = 44$\,g.
+  \item Al segundo $\frac{2\,640}{80} = 33$\,g.
+  \item Y al tercero lo mismo que al primero, $44$\,g.
+  \end{itemize}
+\item \textbf{Comprobamos que está bien sumando los valores que corresponden a cada una} y viendo que
+  \textbf{coinciden con el valor de la magnitud repartida} (salvo errores propagados por el redondeo).\\
+  Sumamos los resultados del ejemplo:
+  \[44\,\text{g}+33\,\text{g} + 44\,\text{g} = 121\,\text{g}\]
+\end{enumerate}
+\section{Porcentajes.}
+El hecho de que un porcentaje es una parte de algo es algo que se aprende desde muy pequeños en el
+mundo en el que vivimos, ya que hay porcentajes por todas partes. Esto hace que sea necesario saber manejarlos lo mejor posible para ser conscientes de qué manera pueden afectarnos.\\
+
+Para ello vamos a empezar por definir qué es exactamente un porcentaje:
+\begin{quote}
+  \textbf{\emph{Un porcentaje es una fracción cuyo denominador es 100.}}
+\end{quote}
+Es decir, al hacer un porcentaje de algo estamos dividiéndolo en cien partes y cogiendo las que
+indica el valor del porcentaje.\\
+
+El hecho de que sea una fracción nos simplifica bastantes cosas, ya que podemos aplicar lo que
+sabemos de fracciones, de manera que para calcular un porcentaje vamos a utilizar la relación que
+usamos en fracciones que nos dice:
+\[\text{Fracción}*\text{Valor total} = \text{Valor de la parte}\]
+Con lo que calcular un porcentaje se reduce a multiplicar por una fracción. Por ejemplo, calcular el $37\%$ de $2\,500$ es:
+\[\frac{37}{100}*2\,500 = 0.37*2\,500 = 925\]
+\subsection{Tanto por uno.}
+En el cálculo del ejemplo anterior se puede observar que lo primero que hemos hecho es la división
+$\frac{37}{100} = 0.37$.\\
+A este resultado se le llama tanto por uno y es lo que más se utiliza para calcular porcentajes de
+una manera efectiva, ya que simplifica los cálculos y la escritura de relaciones y ecuaciones.\\
+
+\textbf{\emph{De aquí en adelante los porcentajes que utilicemos en los cálculos serán siempre en
+    tanto por uno.}}
+Los porcentajes ``clásicos'' solo los utilizaremos en los textos escritos, como enunciados y respuestas.
+
+\subsection{Ejemplos de cálculo de porcentajes simples.}
+Con lo que hemos visto en la definición de porcentajes junto con lo del tanto por uno, el resolver
+problemas de porcentajes se convierte en algo bastantes sencillo.\\
+Vamos a verlo en unos ejemplos.
+
+\begin{questions}
+\question Un pantano tiene una capacidad de $5$ millones de metros cúbicos. Si ahora mismo está al
+  $63\%$ de su capacidad ¿cuántos $\text{m}^3$ contiene?
+  \begin{solution}
+    Pues tenemos que el total son $5\,000\,000\,\text{m}^3$, el porcentaje es $0.63$ y nos piden
+    el valor de la parte. Es aplicación directa de la relación que hemos visto:
+    \[\text{parte} = 0.63*5\,000\,000\,\text{m}^3 = 3\,150\,000\,\text{m}^3\]
+    Y esa es la cantidad de agua que contiene.
+  \end{solution}
+\question El $35\%$ de los habitantes de una población tienen menos de $40$ años. Si hay $1\,430$
+  personas con más de $40$ años, ¿cuántos habitantes tiene en total?
+  \begin{solution}
+    En este caso conocemos el valor de una parte, pero no de la que indica el porcentaje y
+    necesitamos que ambas signifiquen lo mismo para poder utilizar la misma relación que en el
+    anterior.\\
+    En la citada población solo hay dos posibilidades, tener menos de $40$ años o más, de manera
+    que la suma de esos dos porcentajes tiene que ser el $100\%$.\\
+    Por lo tanto tenemos que:
+    \begin{itemize}
+    \item Hay un $35\%$ que tiene menos de $40$ años.
+    \item Hay un $65\%$ que tiene más de $40$ años.
+    \end{itemize}
+    Y como el valor que nos dan corresponde a los que tienen más de 40 años tenemos que utilizar el
+    porcentaje que se corresponda, que este caso es $65\%$.\\
+
+    Escribimos la relación con los datos que tenemos:
+    \[0.65*\text{total} = 1\,430\]
+    El $0,65$ pasa al otro lado dividiendo.
+    \[\text{total} = \frac{1\,430}{0.65} = 2\,200\]
+    \[\text{total} = 2\,200\]
+  \end{solution}
+\question En un edificio viven $56$ personas de las cuales $14$ proceden de Teruel. ¿Qué porcentaje representan?
+  \begin{solution}
+    Escribimos la relación con los datos que tenemos:
+    \[\text{porcentaje}*56 = 14\]
+    El $56$ pasa al otro lado dividiendo.
+    \[\text{porcentaje} = \frac{14}{56} = 0.25\]
+    Entonces el $25\%$ son de Teruel.
+  \end{solution}
+\end{questions}
+
+\section{Variaciones porcentuales.}
+Este es, probablemente, la manera de la que más se utilizan los porcentajes en el mundo actual: para
+expresar variaciones.\\
+
+Es difícil que no hayamos oído hablar de unas rebajas del $x\%$, o del IVA, o del IPC, o del PIB,
+o de los intereses bancarios, \dots\\
+Todas las variaciones que se producen en los valores que acabamos de mencionar, y en muchos otros
+más, se miden porcentualmente.\\
+
+La manera de calcular cómo queda un valor después de una variación porcentual es la siguiente:
+\begin{enumerate}
+\item Calculamos el porcentaje del valor que varia.
+\item Se lo sumamos, o restamos, al valor original de manera que obtenemos el valor tras la
+  variación.
+\end{enumerate}
+Con un ejemplo:
+\begin{quote}
+\emph{El precio de los tomates ha subido un $7\%$. Si antes valían a $3.50$\,€/kg, ¿cuánto cuesta
+  el kg ahora?}
+\begin{enumerate}
+\item Calculamos el $7\%$ de $3.50$\,€:
+  \[0.07*3.50\,\text{€/kg} = 0.245\,\text{€/kg}\]
+\item Como es una subida, se lo sumamos al valor original:
+  \[3.50\,\text{€/kg} + 0.245\,\text{€/kg} = 3.745\,\text{€/kg cuestan ahora.}\]
+\end{enumerate}
+\end{quote}
+
+Así que hemos visto que no es excesivamente complicado de hacer. Pero si nos esforzamos un poco
+podemos hacer que sea aún más sencillo.\\
+
+Para ello vamos a utilizar variables en vez de números, que es la mejor manera de sacar conclusiones
+válidas para cualquier caso:\\
+Tenemos una cantidad inicial, que llamaremos $c_i$, que sufre una variación porcentual, que
+llamaremos $i$, indice de variación. Este indice de variación será positivo o negativo según sea un aumento (como el ejemplo que acabamos de ver) o una disminución (como son unas rebajas).\\
+Si llamamos $c_f$ a la cantidad final, podemos escribir las operaciones que hemos realizado en el
+ejemplo de la siguiente manera:
+\[c_f = c_i + i*c_i\]
+Y si recordamos la técnica de sacar factor común nos queda:
+\begin{Large}
+  \[\boldsymbol{c_f = c_i*(1+i)}\]
+\end{Large}
+Que es la \textbf{relación} que vamos a utilizar en las \textbf{variaciones porcentuales} a partir de ahora.\\
+
+Si utilizamos los datos del ejemplo nos queda:
+\[c_f = 3.50\,\text{€/kg}*(1+0.07)\]
+\[c_f = 3.50\,\text{€/kg}*1.07\]
+\[c_f= 3.745\,\text{€/kg}\]
+La suma se ha reducido a sumar $1$ al tanto por uno del indice de variación, con lo que le hemos quitado
+parte de la complejidad. Y además hemos obtenido una relación que nos permite jugar con las variables para hacer cálculos más complejos.\\
+Vamos a ver unos ejemplos:
+\begin{questions}
+\question Un pantalón que tiene una rebaja del $30\%$ cuesta $24.5$\,€.
+  ¿Cuánto costaba antes de la rebaja?.
+  \begin{solution}
+    Lo importante es este tipo de problemas es identificar bien si la cantidad que nos dan es la
+    cantidad inicial o la final.\\
+    En este caso \textbf{el precio que nos dan es después de la rebaja}, así que tiene que ser la
+    \textbf{cantidad final}, con lo que $c_f = 24.5\,\text{€}$.\\
+    Además hay que tener en cuenta que \textbf{es una rebaja}, con lo que la variación es negativa:
+    $i = -0.3$.\\
+    Con esto, la relación de las variaciones porcentuales queda:
+    \[24.5\,\text{€} = c_i*(1-0.3)\]
+    \[24.5\,\text{€} = c_i*0.7\]
+    El $0.7$ pasa al otro lado dividiendo y nos queda:
+    \[\frac{24.5\,\text{€}}{0.7} = c_i\]
+    \[c_i = 35\,\text{€}\]
+    Con lo que los pantalones costaban $35$\,€ antes de la rebaja.
+  \end{solution}
+\question El beneficio de una empresa han pasado de $105\,300$\,€ el año pasado a $112\,107$\,€
+  este año. Calcula cual ha sido el porcentaje de variación.
+  \begin{solution}
+    En este caso el tiempo nos dice cual es el inicial y cual es el final.\\
+    \begin{itemize}
+    \item La cantidad inicial será la del año pasado: $c_i = 105\,300$\,€.\\
+    \item La cantidad final es el beneficio de este año: $c_f = 112\,107$\,€.
+    \end{itemize}
+    Con lo que la relación de las variaciones queda:
+    \[112\,107\eur = 105\,300\eur*(1 + i)\]
+    Si recordamos un poco de cómo se resuelven ecuaciones de primer grado con paréntesis sabemos
+    que lo primero que tenemos que hacer es desarrollar el paréntesis:
+    \[112\,107\eur = 105\,300\eur + 105\,300\eur*i\]
+
+    Luego llevamos los términos con la incógnita (en este caso $i$) a un lado y lo que no tiene
+    incógnita al otro, y lo que cambia de lado hace la operación contraria:
+    \[112\,107\eur - 105\,300\eur = 105\,300\eur*i\]
+    \[6\,807\eur= 105\,300\eur*i)\]
+    Y finalmente despejamos la incógnita:
+    \[\frac{6\,807\eur}{105\,300\eur} = i\]
+    \[i \simeq 0.065\]
+    Es decir, el beneficio ha subido (porque $i$ ha salido positiva) un $6.5\%$.
+  \end{solution}
+\end{questions}
+\subsection{Variaciones porcentuales encadenadas. Indice de variación total.}
+En el mundo actual son muchos los casos en los que las variaciones porcentuales de algo son
+consecutivas.\\
+Un ejemplo claro de ello es la variación de los precios, cada cierto tiempo las cosas suben o
+bajan (rara vez) un porcentaje, con lo que a lo largo de un año han tenido unas cuantas variaciones
+y a veces nos interesa estudiarlas todas juntas como una sola variación ya que hace que todo sera
+más sencillo.\\
+
+¿Qué hay que hacer para estudiarlo como una sola variación,
+\sout{sumar las subidas y restar las bajadas}?\\
+Si hacemos esto que está tachado está completamente mal. Vamos a verlo con un ejemplo sencillo:
+\begin{quote}
+  \emph{Un artículo que costaba $100\eur$ en enero, subió un $10\%$ en febrero y bajó
+    un $10\%$ en marzo. ¿Cuánto cuesta en abril?}\\
+  Es fácil pensar que si subió un $10\%$ y bajó otro $10\%$ uno anula al otro y al final se quedó
+  como estaba, pero \textbf{no se queda como estaba}. Vamos a hacerlo paso a paso:
+  \begin{enumerate}
+  \item Primero subió el $10\%$, con lo que si costaba $100\eur$ subió $10\eur$ y entonces
+    después de febrero cuesta $110\eur$.
+  \item Empieza marzo costando $110\eur$ y baja un $10\%$, pero un $10\%$ de $110\eur$ son $11\eur$,
+    con lo que al restárselo tenemos que $100\eur - 11\eur = 99\eur$.
+  \end{enumerate}
+  Es decir, \textbf{no se queda como estaba}, en realidad \textbf{todo junto hace una bajada del}
+  $\boldsymbol{1\%}$.
+\end{quote}
+\subsubsection{Cálculo de variaciones encadenadas.}
+El método para calcular variaciones porcentuales encadenadas es el siguiente:
+\begin{itemize}
+\item Llamaremos $c_i$ a la cantidad inicial, antes de cualquier variación.
+\item Llamaremos $i_1$ a la primera variación, $i_2$ a la segunda, $i_3$ a la tercera, \dots
+\end{itemize}
+Entonces la relación entre la cantidad final y la inicial después de todas las variaciones es:
+\begin{Large}
+  \[\boldsymbol{c_f = c_i *(1+ i_1)*(1+i_2)*(1+i_3) \cdots (1+i_n)}\]
+\end{Large}
+Si aplicamos esto al ejemplo tenemos:
+\begin{itemize}
+\item La cantidad inicial es $c_i=100\eur$.
+\item La primera variación es una subida del $10\%$: $i_1 = 0.1$.
+\item La segunda variación es una bajada del $10\%$: $i_2 = -0.1$.
+\end{itemize}
+De manera que la relación queda:
+\[c_f = 100\eur*(1 + 0.1)*(1-0.1)\]
+\[c_f = 100\eur*1.1*0.9\]
+\[c_f= 99\eur\]
+Que es lo que habíamos obtenido al hacer paso a paso el cálculo.
+\subsubsection{Indice de variación total. Cálculo.}
+Al principio del punto de las variaciones porcentuales encadenadas hemos dicho que todo esto
+tenía el objetivo de tratar todas las variaciones juntas como si se tratasen de una sola.\\
+Para eso tenemos que definir y calcular el \emph{indice de variación total} ($i_t$).\\
+
+Este indice es el que nos va a permitir calcular la cantidad final a partir de la inicial con una
+sola variación:
+\[c_f = c_i *(1 + i_t)\]
+Y tenemos que para calcularlo con todas las variaciones hay que usar:
+\[c_f = c_i *(1+ i_1)*(1+i_2)*(1+i_3) \cdots (1+i_n)\]
+Como las $c_f$ de las dos relaciones son iguales y lo mismo sucede con las $c_i$ tendrá que
+ocurrir que:
+\[1 + i_t = (1+ i_1)*(1+i_2)*(1+i_3) \cdots (1+i_n)\]
+Con lo que
+\begin{Large}
+  \[\boldsymbol{i_t = (1+ i_1)*(1+i_2)\cdots (1+i_n) -1}\]
+\end{Large}
+También se puede utilizar, porque es equivalente:
+\begin{Large}
+  \[\boldsymbol{i_t = \frac{c_f}{c_i} - 1}\]
+\end{Large}
+
+Si aplicamos las dos fórmulas al artículo del ejemplo anterior que costaba $100\eur$ tenemos que
+\begin{itemize}
+\item Con la primera fórmula:
+  \[i_t = (1+0.1)*(1-0.1)-1\]
+  \[i_t = 1.1*0.9-1\]
+  \[i_t = 0.99 - 1\]
+  \[i_t = -0.01\]
+  Es decir, el artículo baja (porque nos ha salido negativo) un $1\%$.
+\item Con la segunda fórmula:
+  \[i_t = \frac{99\eur}{100\eur} -1\]
+  \[i_t = 0.99 - 1\]
+  \[i_t = -0.01\]
+  Tenía que salirnos lo mismo porque hemos dicho que es equivalente.
+\end{itemize}
+El usar una u otra dependerá del contexto en el que nos encontremos y los datos de los que
+dispongamos.
+\end{document}
+
+
+
+

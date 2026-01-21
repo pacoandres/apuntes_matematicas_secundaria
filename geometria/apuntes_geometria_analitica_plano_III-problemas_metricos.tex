@@ -1,0 +1,1190 @@
+\documentclass[a4paper,11pt,answers]{exam}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+%\usepackage{pstricks}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+%textcomp es para el símbolo del euro
+\usepackage{lmodern, textcomp}
+
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+%\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{longtable}
+%para la última página
+%\usepackage{lastpage}
+
+%Para padding en celdas
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{1mm}
+\setlength\cellspacebottomlimit{1mm}
+
+%Para hacer tachados
+\usepackage[makeroom]{cancel}
+
+%Creative commons
+%\usepackage{ccicons}
+\usepackage[type={CC}, modifier={by-nc-sa}, version={4.0}, %imagemodifier={-eu-80x25},
+lang={spanish}]{doclicense}
+
+%Para las gráficas:
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\usetikzlibrary{babel} %Si no da errores con algunas cosas al compilar los gráficos.
+\usetikzlibrary{arrows.meta,shapes,positioning}
+\usetikzlibrary{matrix}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{quotes,angles}
+%\usepackage{nicematrix}
+
+\usepackage{color,colortbl}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{g}{>{\columncolor{Gray}}c}
+\usepackage{arydshln} %Este pone la línea punteada en la matriz ampliada. TIENE QUE ESTAR DESPUÉS DEL colortbl porque si no casca.
+%\pagestyle{headandfoot}
+\pagestyle{headandfoot}
+\newcommand\ExamNameLine{
+\par
+\vspace{\baselineskip}
+Nombre:\hrulefill\relax
+\par}
+
+\renewcommand{\solutiontitle}{\noindent\textbf{Solución:}\par\noindent}
+
+\everymath{\displaystyle}
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+\def \autor{Paco Andrés}
+\def \titulo{Apuntes de geometría analítica en el plano III.\\Producto escalar.
+Problemas métricos.}
+\def \titulofichas {\textbf {\titulo}}
+\def \cursofichas {}
+\def \fechaexamen {}
+%\firstpageheader{\cursofichas}{\titulofichas}{\fechaexamen}
+\header{\cursofichas}{\begin{small}
+\titulofichas
+\end{small}}{\fechaexamen}
+%\header{\cursofichas}{\titulofichas}{\fechaexamen}
+%\firtspagefooter{}{\thepage}{}
+%Por alguna razón no sale lo del cc en el pie
+\firstpagefootrule
+\footrule
+\footer{\autor}{\thepage}{\doclicenseIcon}
+\pointpoints{punto}{puntos}
+
+\shadedsolutions
+%\definecolor{SolutionColor}{rgb}{0.99,0.99,.99}
+\renewcommand{\baselinestretch}{1.3}
+
+%Use * instead of \cdot
+\mathcode`\*="8000
+{\catcode`\*\active\gdef*{\cdot}} 
+\newcommand{\Card}{\,\mathrm{Card}}
+
+%For e number
+\newcommand{\e}{\,\mathrm{e}}
+
+%Para trigonometría
+\newcommand{\asen}{\,\mathrm{asen}\,}
+\newcommand{\acos}{\,\mathrm{acos}\,}
+\newcommand{\atg}{\,\mathrm{atg}\,}
+\newcommand{\degree}{^\circ}
+%Para el diferencial y la integral:
+\newcommand\dif[1]{\mathrm{d}#1}
+\newcommand\integral[2]{\int #1\,\dif{#2}}
+\newcommand\integrald[4]{\int_{#3}^{#4} #1\,\dif{#2}}
+\newcommand\adjunto[1]{#1^\text{*}}
+\newcommand\rango[1]{\mathrm{rg}(#1)}
+
+%Geometría:
+\newcommand\vectort[3]{#1*\vec i + #2*\vec j + #3*\vec k}
+\newcommand\distancia[2]{\text{d}(#1,#2)}
+%Para escribir explicaciones encima del igual:
+%\newcommand\igexpl[1]{{\mathrel{\overset{\makebox{\mbox{\normalfont\tiny\sffamily $#1$}}}{=}}}}
+%Parece que mejor con stackrel
+
+%Para las unidades:
+\newcommand{\unidad}[1]{\,\text{#1}}
+
+
+\renewcommand{\questionlabel}{\textbf{Ejemplo \thequestion:}}
+
+%Colores
+\definecolor{gridgray}{gray}{0.7}
+\pgfplotsset{grid style={color=gridgray}}
+\begin{document}
+
+
+%\author{Paco Andrés}
+\title{\titulo}
+\date{}
+\author{\autor}
+\maketitle
+
+\begin{center}
+\doclicenseLongText\\
+\vspace{.25cm}
+\doclicenseImage
+\end{center}
+\tableofcontents
+\newpage
+\setlength{\parindent}{0cm}
+
+\section{Producto escalar.}
+El producto escalar de dos vectores, $\vec{v}$ y $\vec{w}$, se define de la siguiente manera:
+\[\boldsymbol{\vec{v}*\vec{w} = |\vec{v}|*|\vec{w}|*\cos \alpha}\]
+Donde $\alpha$ es el ángulo que forman los dos vectores.
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (O) at (0,0);
+    \coordinate (V) at (2,1);
+    \coordinate (W) at (1,3);
+    \draw[-latex] (O)--(V) node[midway, sloped,below] {$\vec{v}$};
+    \draw[-latex] (O)--(W) node[midway, sloped,above] {$\vec{w}$};
+    \pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=V--O--W};
+  \end{tikzpicture}
+\end{center}
+\subsection{Propiedades del producto escalar.}\label{propiedades}
+El producto escalar de dos vectores tiene las siguientes propiedades:
+\begin{itemize}
+\item Es conmutativo: $\vec{v}*\vec{w} = \vec{w}*\vec{v}$
+\item Propiedad asociativa con respecto al producto por un escalar: $(a*\vec{v})*\vec{w} =
+  a*(\vec{v}*\vec{w})$
+\item Es fácil comprobar que $\vec{v}*\vec{v} = |\vec{v}|^2$
+\item Cumple la propiedad distributiva respecto de la suma: $\vec{u}*(\vec{v}+\vec{w}) =
+  \vec{u}*\vec{v} + \vec{u}*\vec{w}$.
+\item Si $\vec{v}\perp\vec{w}$ tenemos que $\cos \frac{\pi}{2}= 0$ con lo que $\vec{v}*\vec{w} = 0$.\\
+  Es decir, si $\vec{v}*\vec{w} = 0$ y ninguno de los dos es el vector nulo entonces son
+  perpendiculares.
+\end{itemize}
+
+\subsection{Producto escalar por componentes.}
+Tal y como está definido el producto escalar tiene pinta de que es un poco complicado calcularlo
+ya que, además de los módulos de los vectores, necesitamos conocer el ángulo que forma y eso no
+tiene pinta de ser sencillo.\\
+
+Además tenemos que tener en cuenta que normalmente solemos operar con los vectores utilizando sus
+componentes en lugar de sus módulos.\\
+
+Si recordamos lo que vimos sobre las bases tenemos qué:
+\[\boldsymbol{\vec{v} = (v_x, v_y) = v_x*\vec{u}_x + v_y*\vec{u}_y}\]
+Donde $\vec{u}_x$ y $\vec{u}_y$ son la base ortonormal del plano (ortonormal quiere decir perpendicular y de
+módulo 1):
+\begin{itemize}
+\item $\vec{u}_x = (1,0)$
+\item $\vec{u}_y = (0,1)$
+\end{itemize}
+Y es fácil comprobar que el producto escalar con la base ortonormal cumple:
+\begin{itemize}
+\item $\vec{u}_x*\vec{u}_x = |\vec{u}_x|*|\vec{u}_x|*\cos 0 = 1$
+\item $\vec{u}_y*\vec{u}_y = 1$
+\item $\vec{u}_x*\vec{u}_y = |\vec{u}_x|*|\vec{u}_y|*\cos \frac{\pi}{2} = 0$
+\end{itemize}
+
+De esta manera tenemos que los vectores $\vec{v}$ y $\vec{w}$ se pueden escribir como:
+\begin{itemize}
+\item $\vec{v} = v_x*\vec{u}_x + v_y*\vec{u}_y$
+\item $\vec{w} = w_x*\vec{u}_x + w_y*\vec{u}_y$
+\end{itemize}
+De manera que
+\[\vec{v}*\vec{w} = (v_x*\vec{u}_x + v_y*\vec{u}_y)*(w_x*\vec{u}_x + w_y*\vec{u}_y)\]
+que desarrollado se convierte en:
+\[\vec{v}*\vec{w} = v_x*w_x*\overbrace{\vec{u}_x*\vec{u}_x}^{\boldsymbol{1}} +
+  v_x*w_y*\overbrace{\vec{u}_x*\vec{u}_y}^{\boldsymbol{0}} +
+  v_y*w_x*\overbrace{\vec{u}_y*\vec{u}_x}^{\boldsymbol{0}} +
+  v_y*w_y*\overbrace{\vec{u}_y*\vec{u}_y}^{\boldsymbol{1}}\]
+Y simplificando nos queda que el producto escalar por componentes se calcula así:
+\[\boldsymbol{\vec{v}*\vec{w} = v_x*w_x + v_y*w_y}\]\label{por_componentes}
+
+\subsection{Interpretación geométrica del producto escalar.} \label{interpretacion_producto_escalar}
+Tenemos dos vectores $\vec{v}$ y $\vec{w}$ de la siguiente manera:
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (O) at (0,0);
+    \coordinate (V) at (5,0);
+    \coordinate (W) at (2,2);
+    \coordinate (P) at (2,0);
+    \draw[-latex] (O)--(V) node[midway, below] {$\vec{v}$};
+    \draw[-latex] (O)--(W) node[midway, above, sloped] {$\vec{w}$};
+    \draw[ultra thick] (O)--(P) node[midway, above] {$p$};
+    \draw[dashed] (P)--(W);
+    \pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+    {angle=V--O--W};
+  \end{tikzpicture}
+\end{center}
+Se ve que podemos construir un triángulo rectángulo proyectando el extremo de $\vec{w}$ sobre
+$\vec{v}$ (para proyectar se traza una perpendicular, con lo que ya tenemos el ángulo recto).
+Por lo que recordamos de trigonometría tenemos que el tamaño de la proyección $p$ es:
+\[\boldsymbol{p = |\vec{w}|*\cos \alpha}\]
+
+Si atendemos a la definición de producto escalar tenemos:
+\[\vec{v}*\vec{w} = |\vec{v}|*\overbrace{|\vec{w}|*\cos \alpha}^{p} = |\vec{v}|*p\]
+Como $p$ es la proyección de $\vec{w}$ sobre $\vec{v}$ se llega a la conclusión de que \emph{
+  \textbf{el producto escalar de dos vectores coincide con la proyección de un vector sobre la dirección del otro
+    multiplicada por el módulo del otro}}.\\
+
+
+\section{Problemas métricos.}
+\subsection{Problemas métricos con vectores.}
+En este punto vamos a ver cómo resolver una serie de problemas utilizando todo lo que hemos visto
+hasta ahora de geometría analítica, que comprende:
+\begin{itemize}
+\item Vectores y operaciones.
+\item Rectas, propiedades y posiciones relativas.
+\item Producto escalar y su interpretación geométrica.
+\end{itemize}
+Para resolver algunos de ellos vamos a tener que utilizar conceptos que corresponden a varios de los
+puntos anteriores y, por supuesto, de trigonometría ya que es la base de todos ellos.\\
+
+Empezamos:
+\begin{questions}
+\question Dados los vectores $\vec{a}=(-3,4)$ y $\vec{b}=(5,-1)$, calcula:
+  \begin{parts}
+  \part El producto escalar $\vec{a}*\vec{b}$.
+  \part $|\vec{a}|$.
+  \part $|\vec{b}|$.
+  \part El angulo que forman los vectores $\vec{a}$ y $\vec{b}$.
+  \end{parts}
+  \begin{solution}
+    Es un ejercicio básico. Está desglosado en apartados pero la idea es aprender a calcular el
+    ángulo que forman dos vectores y los apartados están dispuestos en el orden en el que hay que
+    dar los pasos para llegar a calcular el ángulo.
+    \begin{parts}
+    \part Para calcular el producto escalar utilizamos el método que hemos visto para calcularlo
+      por componentes en el punto \ref{por_componentes} (página \pageref{por_componentes}).
+      \[\vec{a}*\vec{b} = (-3,4)*(5,-1) = -3*5 + 4*(-1) = -15-4 = -19\]
+    \part El módulo de $\vec{a}$ es $|\vec{a}| = \sqrt{(-3)^2 + 4^2} = \sqrt{25} = 5$
+    \part El módulo de $\vec{b}$ es $|\vec{b}| = \sqrt{5^2 + (-1)^2} = \sqrt{26}$
+    \part Con esto ya podemos calcular el coseno del ángulo que forman, al que llamaremos $\alpha$,
+      ya partiendo de la definición de producto escalar
+      \[\vec{a}*\vec{b} = |\vec{a}|*|\vec{b}|*\cos \alpha\]
+      \[\cos \alpha = \frac{\vec{a}*\vec{b}}{|\vec{a}|*|\vec{b}|}\]
+      Sustituyendo:
+      \[\cos \alpha = \frac{-19}{5*\sqrt{26}}\simeq -0.7452\]
+      Y para calcular el ángulo solo tenemos que utilizar el arco de coseno en la calculadora:
+      \[\boldsymbol{\alpha = \acos -0.7452 \simeq 138.176\degree}\]
+      Aunque ya tenemos que empezar a acostumbrarnos a usar siempre radianes, de manera que
+      \[\alpha \simeq 138.176\degree \simeq 2.412\quad\text{\small{(aprovechamos para recordar
+            que los radianes no tienen unidad)}}\]
+
+      También sabemos que para el arco de coseno podemos tener dos soluciones, la que nos da la calculadora que
+      llamaremos $\boldsymbol{\alpha}$, y $\boldsymbol{2\pi - \alpha}$. Que sea uno u otro depende del sentido
+      en el que midamos el ángulo, tal y como se puede apreciar en la siguiente representación gráfica:
+      \begin{center}
+        \begin{tikzpicture}
+          \coordinate (O) at (0,0);
+          \coordinate (V) at (2,1);
+          \coordinate (W) at (1,3);
+          \draw[-latex] (O)--(V) node[midway, sloped,below] {$\vec{a}$};
+          \draw[-latex] (O)--(W) node[midway, sloped,above] {$\vec{b}$};
+          \pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+          {angle=V--O--W};
+          \pic["$2\pi - \alpha$", draw=darkgray, angle eccentricity=1.7, angle radius=.5cm]
+          {angle=W--O--V};
+        \end{tikzpicture}
+      \end{center}
+    \end{parts}
+  \end{solution}
+\question Dado el vector $\vec{v} = (-5, 3)$ calcula los vectores que cumplan cada una de las condiciones siguientes:
+  \begin{parts}
+  \part Unitarios y de la misma dirección que $\vec{v}$.
+  \part Ortogonales a $\vec{v}$ y con su mismo módulo.
+  \part Ortonormales a $\vec{v}$.
+  \end{parts}
+  \begin{solution}
+    Este ejercicio es un breve repaso de otros que ya hemos hecho y nos va a servir para repasar
+    algunos conceptos y mecanismos.
+    \begin{parts}
+    \part Un vector unitario es el que tiene módulo 1, y para calcular el vector unitario en la
+      dirección y sentido de uno dado lo que tenemos que hacer es dividir el vector entre su
+      módulo:
+      \[\vec{u} = \frac{\vec{v}}{|\vec{v}|}\]
+      
+      Entonces lo primero es calcular el módulo:
+      \[|\vec{v}| = \sqrt{(-5)^2 + 3^2} = \sqrt{34}\]
+
+      Con lo que el vector unitario con la dirección y el sentido de $\vec{v}$ es:
+      \[\vec{u} = \left(\frac{-5}{\sqrt{34}}, \frac{3}{\sqrt{34}}\right)\]
+
+      El otro vector que cumple las condiciones de este apartado es el vector
+      \[-\vec{u} = \left(\frac{5}{\sqrt{34}}, \frac{-3}{\sqrt{34}}\right)\]
+    \part Recordemos que ortogonal es lo mismo que perpendicular.\\
+      En su momento vimos que si tenemos un vector $\vec{v} = (v_x, v_y)$ los vectores
+      $\vec{w}_1 = (-v_y, v_x)$ y $\vec{w}_2 = (v_y, -v_x)$ son perpendiculares a $\vec{v}$ (es
+      fácil comprobarlo con el producto escalar.\\
+      Además estos vectores tienen el mismo módulo que $\vec{v}$ ya que tiene las mismas componentes
+      (aunque en distinto orden y con distinto signo, pero al ir elevadas al cuadrado no importa).
+
+      De esta manera los vectores pedidos en este apartado son:
+      \begin{itemize}
+      \item $\vec{w}_1 = (3, 5)$
+      \item $\vec{w}_2 = (-3,-5)$
+      \end{itemize}
+      \begin{center}
+        \begin{tikzpicture}[scale=.5]
+          \coordinate (O) at (0,0);
+          \coordinate (V) at (-5,3);
+          \coordinate (W1) at (3,5);
+          \coordinate (W2) at (-3,-5);
+          \draw[-latex] (O)--(V) node[midway, sloped, above] {$\vec{v}(-5,3)$};
+          \draw[-latex] (O)--(W1) node[midway, sloped,above] {$\vec{w}_1(3,5)$};
+          \draw[-latex] (O)--(W2) node[midway, sloped,above] {$\vec{w}_2(-3,-5)$};
+        \end{tikzpicture}
+      \end{center}
+    \part Recordemos que ortonormal significa ``ortogonal y de módulo 1''.\\
+      Entonces solo tenemos que dividir los vectores del apartado anterior entre su módulo, y
+      como éste es el mismo que el de $\vec{v}$ ya lo tenemos del primer apartado, con lo que si
+      los llamamos $\vec{n}_1$ y $\vec{n}_2$ sus componentes son:
+      \begin{itemize}
+      \item $\vec{n}_1 = \left(\frac{3}{\sqrt{34}}, \frac{5}{\sqrt{34}}\right)$
+      \item $\vec{n}_2 = \left(\frac{-3}{\sqrt{34}}, \frac{-5}{\sqrt{34}}\right)$
+      \end{itemize}
+    \end{parts}
+  \end{solution}
+\question Tenemos dos vectores $\vec{a}$ y $\vec{b}$ de los que sabemos que:
+  \begin{itemize}
+  \item $|\vec{a}| = 3$.
+  \item $|\vec{b}| = 2$.
+  \item Forman un ángulo de $30\degree$.
+  \end{itemize}
+  Calcula cuanto valen $|\vec{a}+\vec{b}|$ y $|\vec{a}-\vec{b}|$.
+  \begin{solution}
+    En las propiedades del producto escalar (apartado \ref{propiedades}, página \pageref{propiedades})
+    vimos que $\vec{v}*\vec{v} = |\vec{v}|^2$, con lo que
+    \[|\vec{a}+\vec{b}|^2 = (\vec{a}+\vec{b})*(\vec{a}+\vec{b}) =
+      \vec{a}*\vec{a} + \vec{b}*\vec{b}+2\vec{a}*\vec{b} =
+      |\vec{a}|^2 + |\vec{b}|^2 + 2|\vec{a}|*|\vec{b}|*\cos \alpha\]
+    Y sustituyendo obtenemos que
+    \[|\vec{a}+\vec{b}|^2 = 3^2 + 2^2 + 2*3*2*\cos 30\degree = 13+6\sqrt{3} \simeq 23.39\]
+    \[|\vec{a}+\vec{b}| \simeq \sqrt{23.39} \simeq 4,84\]
+
+    Haciendo lo mismo para la el otro módulo:
+    \[|\vec{a}-\vec{b}|^2 = 3^2 + 2^2 - 2*3*2*\cos 30\degree = 13-6\sqrt{3} \simeq 1.732\]
+    \[|\vec{a}-\vec{b}| \simeq \sqrt{1.732} \simeq 1,316\]
+  \end{solution}
+\question Dados los vectores $\vec{v} = (-2,-1)$ y $\vec{w}=(2,-2)$ calcula cuanto vale la proyección de
+  $\vec{v}$ sobre la dirección de $\vec{w}$.
+  \begin{solution}
+    Tal y como vimos en el punto \ref{interpretacion_producto_escalar} (página \pageref{interpretacion_producto_escalar}) el producto escalar de dos vectores se puede interpretar como la proyección de uno de ellos sobre la
+    dirección del otro multiplicada por el módulo del otro.\\
+    Es decir, si llamamos $p_w$ a la proyección de $\vec{v}$ sobre la dirección de $\vec{w}$
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (O) at (0,0);
+        \coordinate (V) at (5,0);
+        \coordinate (W) at (2,2);
+        \coordinate (P) at (2,0);
+        \draw[-latex] (O)--(V) node[midway, below] {$\vec{v}$};
+        \draw[-latex] (O)--(W) node[midway, above, sloped] {$\vec{w}$};
+        \draw[ultra thick] (O)--(P) node[midway, above] {$p_w$};
+        \draw[dashed] (P)--(W);
+        \pic["$\alpha$", draw=darkgray, angle eccentricity=.7, angle radius=.7cm]
+        {angle=V--O--W};
+      \end{tikzpicture}
+    \end{center}
+    tenemos que según lo dicho ocurre que:
+    \[\vec{v}*\vec{w} = p_w*|\vec{w}|\]
+    Con lo que:
+    \[p_w = \frac{\vec{v}*\vec{w}}{|\vec{w}|}\]
+
+    Así que calculamos el producto escalar:
+    \[\vec{v}*\vec{w} = -2*2+(-1)*(-2) = -2\]
+    El módulo de $\vec{w}$
+    \[|\vec{w}| = \sqrt{2^2 + (-2)^2} = \sqrt{8} = 2\sqrt{2}\]
+
+    Con lo que la proyección es:
+    \[p_w = \frac{-2}{2\sqrt{2}} = -\frac{\sqrt{2}}{2}\]
+
+    Si lo que queremos es el tamaño de la proyección entonces tenemos que quitar el signo.
+  \end{solution}
+\question Calcula el valor de $x$ para que los vectores $\vec{a} = (2, 5)$ y $\vec{b} = (x, 3)$ sean perpendiculares.
+  \begin{solution}
+    Sabemos que si dos vectores son perpendiculares su producto escalar vale cero (punto \ref{propiedades}, página
+    \pageref{propiedades}), con lo que:
+    \[\vec{a}*\vec{b} = 2x + 15 = 0\]
+    Y resolviendo la ecuación queda que $x = -\frac{15}{2}$.
+  \end{solution}
+\question Calcula un vector ortonormal al vector $\vec{v} = (-3, 4)$.
+  \begin{solution}
+    Por lo que hemos visto anteriormente un vector \emph{ortonormal} es el que tiene módulo 1 y es perpendicular
+    a la vez.\\
+
+    Sabemos que para conseguir un vector perpendicular a otro solo tenemos que intercambiar las componentes
+    y cambiar el signo a una de ellas. Por ejemplo, el vector
+    \[\vec{w} = (4,3)\]
+    es perpendicular a $\vec{v}$. El problema que tiene es que su módulo no es 1.\\
+
+    Ahora tenemos que utilizar el cálculo del vector unitario, y:
+    \[vec{n} = \frac{\vec{w}}{|\vec{w}|} = \frac{(4,3)}{\sqrt{4^2 + 3^2}} = \left(\frac{4}{5}, \frac{3}{5}\right)\]
+    ya cumple las dos cosas, con lo que ese es un vector ortonormal a $\vec{v}$.
+  \end{solution}
+\end{questions}
+\subsection{Problemas métricos con puntos y rectas.}
+Antes de empezar a resolver problemas que involucran puntos y rectas vamos a introducir un par de fórmulas que
+van a ser de mucha utilidad. Y dado el nivel al que nos encontramos vamos a deducir las fórmulas, ya que a lo largo
+de estos apuntes hemos visto toda la teoría para poder hacerlo.
+\subsubsection{Distancia entre punto y recta.}
+Si tenemos un punto $P$ y una recta $r$ podemos tener muchas distancias, tal y como indica el dibujo con $d_1$,
+$d_2$, \dots
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (A) at (-2, -2);
+    \coordinate (B) at (2, 2);
+    \coordinate (P) at (-1,3);
+    \draw (A)--(B) node[right] {$r$};
+    \draw[fill=black] (P) circle(2pt) node[above] {$P$};
+    \draw[latex-latex, dashed, color=gray] (P)--(-1.5,-1.5) node[midway, above left, sloped] {$d_1$};
+    \draw[latex-latex, dashed, color=gray] (P)--(-0.3,-0.3) node[midway, above right, sloped] {$d_2$};
+    \draw[latex-latex] (P)--(1,1) node[midway, below right, sloped] {$\boldsymbol{d}$};
+    \draw[latex-latex, dashed, color=gray] (P)--(1.7,1.7) node[midway, above right, sloped] {$d_3$};
+  \end{tikzpicture}
+\end{center}
+Pero, tal y como hemos marcado en el dibujo, vamos a definir la \textbf{distancia de un punto a una recta} como \textbf{\emph{la distancia que está medida sobre la perpendicular a la recta que pasa por el punto}}.\\
+
+Una vez definida cual es la distancia que tenemos que utilizar vamos a empezar a razonar con las herramientas que
+tenemos, y vamos a calcular la distancia entre:
+\begin{itemize}
+\item $P(P_x, P_y)$
+\item $r:\,Ax + By + C = 0$
+\end{itemize}
+Como acabamos de decir que la distancia se mide en la dirección perpendicular a la recta necesitamos un vector en
+esa dirección, y este vector es:
+\[\vec{n} = (A, B)\quad \text{\small(Si no lo recordamos tenemos que repasar los apuntes de rectas)}\]
+
+Con esto tenemos:
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (A) at (-2, -2);
+    \coordinate (B) at (2, 2);
+    \coordinate (P) at (-1,3);
+    \coordinate (R) at (-1.5, -1.5);
+    \draw (A)--(B) node[right] {$r$};
+    \draw[fill=black] (P) circle(2pt) node[above] {$P$};
+    \draw[fill=black] (R) circle(2pt) node[below, right] {$R(R_x,R_y)$};
+    \draw (P)--(1,1) node[midway, below right, sloped] {$\boldsymbol{d}$};
+    \draw[-Latex] (R)--(P) node[midway, sloped, above left] {$\overrightarrow{RP}$};
+    \draw[-Latex] (1.2,1.2)--(0.2,2.2) node[midway, sloped, above right] {$\vec{n}$};
+    \node at (-2, -2.5) {\scriptsize{El punto $R$ es un punto cualquiera de la recta}};
+  \end{tikzpicture}
+\end{center}
+Y del dibujo se puede deducir que la distancia a la recta es la proyección de $\overrightarrow{RP}$ sobre la
+dirección perpendicular a la recta.\\
+
+Si $R$ es un punto de la recta lo podemos obtener dando valor a una de las coordenadas,
+por ejemplo haciendo $x=0$ (podemos darle cualquier otro valor, pero este es el más sencillo):
+\[A*0 + B*y + C = 0\]
+\[y = -\frac{C}{B}\]
+Con lo que $R\left(0, -\frac{C}{B}\right)$ es el punto de la recta que vamos a utilizar.\\
+
+Por lo que hemos visto, la proyección sobre la dirección perpendicular se va a calcular como:
+\[p=\frac{\overrightarrow{RP}*\vec{n}}{|\vec{n}|}\]
+Sustituyendo y desarrollado:
+\[p=\frac{\left(P_x, P_y + \frac{C}{B}\right)*(A,B)}{\sqrt{A^2 + B^2}}\]
+\[p = \frac{P_x*A + P_y * B + \frac{C}{B}*B}{\sqrt{A^2 + B^2}}\]
+\[p = \frac{A*P_x + B*P_y + C}{\sqrt{A^2 + B^2}}\]
+Y la distancia sería el tamaño de esta proyección, para lo cual tenemos que poner un valor absoluto.\\
+
+De manera que la distancia entre el punto $P(P_x, Py)$ y la recta $r:\,Ax + By + C = 0$ se calcula con la
+fórmula:
+\[\boldsymbol{d(P, r) = \frac{|A*P_x + B*P_y + C|}{\sqrt{A^2 + B^2}}}\]
+Y ésta es la fórmula que vamos a utilizar para resolver los problemas.
+
+\subsubsection{Distancia entre dos rectas.}
+Partiendo de la definición que hemos dado para la distancia entre un punto y una recta, el
+concepto de \textbf{distancia entre dos rectas solo tiene sentido si las dos rectas son paralelas}.\\
+\emph{En ese caso la distancia va a ser la medida sobre la perpendicular común a las dos rectas.}
+\begin{center}
+  \begin{tikzpicture}
+    \coordinate (A) at (-2, -2);
+    \coordinate (B) at (2, 2);
+    \coordinate (P) at (-2,2);
+    \coordinate (Q) at (0,0);
+    \draw (A)--(B) node[right] {$r$};
+    %\draw[fill=black] (P) circle(2pt) node[above] {$P$};
+    \draw[latex-latex] (P)--(Q) node[midway, below right, sloped] {$\boldsymbol{d}$};
+    %\draw[fill=black] (Q) circle(2pt) node[below] {$Q$};
+    \coordinate (A1) at (-4, 0);
+    \coordinate (B1) at (0, 4);
+    \draw (A1)--(B1) node[right] {$s$};
+  \end{tikzpicture}
+\end{center}
+
+Reutilizando el resultado del apartado anterior, podemos calcular la distancia entre las rectas $r$
+y $s$ calculando la distancia de $r$ a un punto cualquiera de $s$.\\
+
+Partamos del las ecuaciones de las dos rectas:
+\begin{itemize}
+\item $r:\, Ax+By+C=0$
+\item $s:\, Ax+By+C'=0$ (como son paralelas $A$ y $B$ tienen que ser iguales si ambas ecuaciones
+  están lo más simplificadas posible).
+\end{itemize}
+Entonces vamos a calcular un punto $P$ de $s$ y después calcular su distancia a $r$.\\
+Para calcular $P$ hacemos $x=0$ en $s$ (vale cualquier otro valor, pero este es el más sencillo).
+\[A*0 + B*y + C' = 0\]
+Con lo que
+\[y = -\frac{C'}{B}\]
+Con lo que el punto es $P\left(0, -\frac{C'}{B}\right)$.\\
+Sustituimos en la fórmula de la distancia:
+\[d(r,s) = \frac{\left|A*0 + B*\left(-\frac{C'}{B}\right) + C\right|}{\sqrt{A^2 + B^2}}\]
+Y simplificando queda:
+\[\boldsymbol{d(r,s) = \frac{|C - C'|}{\sqrt{A^2 + B^2}}}\]
+
+\emph{\textbf{Lógicamente, para resolver problemas hace falta saberse de memoria esta fórmula
+    y la de la distancia de un punto a una recta.}}\\
+
+Una vez vistas estas dos fórmulas vamos a ver unos cuantos ejemplos de resolución de problemas
+en los que se ven implicados puntos y rectas.
+\subsubsection{Ejercicios de ejemplo.}
+\begin{questions}
+\question Calcula la distancia del punto $P(3,7)$ y la recta $r:\,2x-y + 3 = 0$.
+  \begin{solution}
+    En primer lugar obtenemos el vector perpendicular a la recta, que es:
+    \[\vec{n} = (A, B) = (2, -1)\]
+    Y ahora aplicamos la fórmula que hemos visto:
+    \[d(P, r) = \frac{|2*3 -1*7 + 3|}{\sqrt{2^2 + (-1)^2}}\]
+    \[d(P, r) = \frac{2}{\sqrt{5}} = \frac{2\sqrt{5}}{5}\]
+    Y con esto ya habríamos resuelto el problema.
+  \end{solution}
+\question Calcula la distancia entre las rectas $r:\,3x +2y -5 = 0$ y
+  $s:\,
+  \begin{cases}
+    x =& 1+2t\\
+    y =& 2-3t
+  \end{cases}$
+  \begin{solution}
+    En primer lugar \emph{tenemos que escribir las dos rectas con su ecuación implícita}, ya que la
+    fórmula solo funciona si tenemos las dos rectas escritas de esa forma.\\
+    La recta $r$ ya está en forma implícita.\\
+    Para la recta $s$ primero pasamos de la paramétrica a la continua:
+    \[s:\, \frac{x-1}{2} = \frac{y - 2}{-3}\]
+    Eliminamos denominadores:
+    \[s:\, -3(x-1) = 2(y - 2)\]
+    Desarrollamos y lo llevamos todo al lado izquierdo del la ecuación:
+    \[s:\, -3x - 2y +7 = 0\]
+    Vemos que los parámetros $A$ y $B$ son de signo contrario a los de $r$, con lo que cambiamos de
+    signo toda la ecuación:
+    \[s:\, 3x + 2y -7 = 0\]
+
+    Ahora deberíamos comprobar si son paralelas, pero como los parámetros $A$ y $B$ son iguales en
+    las dos rectas está claro que son paralelas.\\
+    Aplicamos la fórmula de la distancia entre dos rectas:
+    \[d(r,s) = \frac{|-5-(-7)|}{\sqrt{2^2 + 3^2}}\]
+    \[d(r,s) = \frac{2}{\sqrt{13}} = \frac{2\sqrt{13}}{13}\]
+
+    Esa es la distancia entre las dos rectas.
+  \end{solution}
+\question Calcula la distancia entre las rectas $r:\,2x - y + 3 = 0$ y $s:\,4x - 2y + 5 = 0$.
+  \begin{solution}
+    En este caso las dos rectas están en su forma implícita, no tenemos que hacer ninguna
+    transformación en ninguna de ellas.\\
+    Tenemos que comprobar si son paralelas, y lo vamos a hacer a través de sus vectores
+    perpendiculares, ya que si son paralelas sus vectores perpendiculares también tienen que serlo.\\
+
+    Hemos visto que el obtener un vector perpendicular a partir de la ecuación implícita es
+    sencillo, siendo $\vec{n} = (A,B)$, con lo que los vectores perpendiculares a cada recta
+    son:
+    \begin{itemize}
+    \item $\vec{n_r} = (2, -1)$.
+    \item $\vec{n_s} = (4, -2)$.
+    \end{itemize}
+    Comprobamos que son proporcionales para saber si son paralelos:
+    \[\frac{4}{2} = \frac{-2}{-1}\]
+    y resulta que lo son, con lo que $\boldsymbol{r \parallel s}$ y podemos calcular la distancia
+    porque tiene sentido.\\
+
+    Ahora se nos presenta un problema, que tal y como hemos deducido la fórmula necesitamos que los
+    coeficientes de $x$ e $y$ sean iguales en las dos rectas, y eso es algo que ahora mismo no
+    está pasando.
+    \begin{itemize}
+    \item $r:\,2x - y + 3 = 0$
+    \item $s:\,4x - 2y + 5 = 0$
+    \end{itemize}
+    Pero es fácil ver que si dividimos la ecuación de $s$ entre $2$ vamos a tener los mismos
+    coeficientes en $x$ y en $y$ en ambas ecuaciones.
+    \begin{itemize}
+    \item $r:\,2x - y + 3 = 0$
+    \item $s:\,2x - y + \frac{5}{2} = 0$
+    \end{itemize}
+
+    Con lo que la distancia entre las dos rectas es:
+    \[d(r,s) = \frac{\left|3 - \frac{5}{2}\right|}{\sqrt{2^2 + 1^2}} = \frac{\frac{1}{2}}{
+      \sqrt{5}} = \frac{\sqrt{5}}{10}\]
+  \end{solution}
+\question Calcula la distancia entre las rectas $r:\,y-2 = 3x+1$ y $s:\,\frac{x}{3} = \frac{y-2}{2}$
+  \begin{solution}
+    Como hemos visto en alguno de los ejercicios anteriores lo primero es escribir ambas rectas en
+    forma implícita y comprobar si son paralelas.
+    \begin{itemize}
+    \item Para $r$:
+      \[r:\, y-2 = 3x + 1\]
+      Llevamos todo a la izquierda:
+      \[r:\,-3x + y -3 = 0\]
+    \item Para $s$:
+      \[s:\,\frac{x}{3} = \frac{y-2}{2}\]
+      Cambiamos los denominadores al otro lado multiplicando:
+      \[s:\, 2x = 3(y-2)\]
+      Desarrollamos y llevamos todo a la izquierda:
+      \[s:\,2x-3y+6 = 0\]
+    \end{itemize}
+    Comprobamos si los vectores perpendiculares son proporcionales para ver si las rectas son
+    paralelas:
+    \[\frac{-3}{2}\neq\frac{1}{-3}\]
+    Con lo cual \textbf{no son paralelas} y \textbf{no podemos calcular la distancia}.
+  \end{solution}
+\question Los puntos $A(0, 1)$, $B(3, -2)$ y $C(1, 3)$ forman un triángulo. Calcula la altura sobre
+  el lado $\overline{AB}$
+  \begin{solution}
+    Con lo que sabemos ahora este problema va a ser mucho más sencillo que como lo hicimos en
+    los apuntes de rectas.\\
+    
+    Lo primero es comprobar que esos tres puntos forman un triángulo viendo que los vectores que
+    van de uno de los puntos a los otros dos no son proporcionales.\\
+    Tenemos que $\overrightarrow{AB} = (3,-3)$ y que $\overrightarrow{AC} = (1, -2)$, con lo que no
+    son proporcionales, no están alineados y forman un triángulo.
+
+    Nos pide la altura sobre el lado $\overline{AB}$, que es la distancia de $C$ sobre el lado
+    $\overline{AB}$. Y para ello vamos a utilizar la fórmula de la distancia de un punto a una
+    recta.\\
+    
+    Escribimos ecuación punto-pendiente de la recta que pasa por $A$ y $B$:
+    \[r_{AB}:\,y - 1 = -x\]
+    Y la pasamos a la implícita:
+    \[r_{AB}:\,x+y-1 = 0\]
+    Con lo que la altura del triángulo es:
+    \[h = d(C,r_{AB}) = \frac{|1+3-1|}{\sqrt{2}} = \frac{3\sqrt{2}}{2}\]
+    Se puede comprobar que es la misma solución que la obtenida en los ejemplos de los
+    apuntes de rectas.    
+  \end{solution}
+\question Dados los puntos $A(-2,3)$, $B(2,2)$ y $C(10, 0)$ calcula la recta que pasa por los
+  puntos $A$ y $B$ y calcula la distancia de $C$ a la recta calculada.
+  \begin{solution}
+    Como nos piden la distancia de $C$ a la recta que pasa por $A$ y $B$ vamos a escribir esta
+    última directamente en su forma implícita.\\
+
+    Hemos visto que en la ecuación implícita $Ax+By+C=0$ el vector $\vec{n} =(A,B)$ es perpendicular
+    a la recta, con lo que vamos a construir un vector perpendicular a la recta para llegar a la
+    ecuación implícita directamente.\\
+    El vector $\overrightarrow{AB}=(4,-1)$ es un vector director de la recta, con lo que si
+    hacemos $\vec{n} = (1, 4)$ ya tenemos un vector perpendicular a la recta.\\
+    Entonces la ecuación de la recta es $x+4y+C=0$ y tenemos que calcular $C$.\\
+    Teniendo en cuenta que la recta tiene que pasar por $A$ se tiene que cumplir:
+    \[(-2) + 4*3+C=0\]
+    Con lo que $C=-10$\\
+
+    Una vez que tenemos la ecuación de la recta, $r:\,x+4y-10=0$, ya podemos calcular su distancia a
+    $C(10, 0)$
+    \[d(C, r) = \frac{|10+4*0-10|}{\sqrt{17}} = 0\]
+    Con lo que $C$ es un punto de la recta, ya que es la única manera de la que puede estar a una
+    distancia 0.
+  \end{solution}
+\question Calcula el ángulo que forman las rectas $r:\,3x-y + 2 = 0$ y $s:\,y =2x - 1$.
+  \begin{solution}
+    Con el producto escalar podemos calcular el ángulo que forman dos vectores, y si estos son
+    vectores directores de las rectas el ángulo que calculemos va a ser el ángulo que formen
+    esas dos rectas.
+    \begin{itemize}
+    \item Para $r$, como tenemos la ecuación implícita podemos sacar un vector perpendicular, que
+      es $\vec{n} = (3, -1)$, y de hay sacamos un vector director para $r$ que es
+      \[\vec{v} = (1,3)\]
+    \item Para $s$, es la ecuación explícita, con lo que el coeficiente de $x$ es la pendiente de
+      recta, y como la pendiente es $m=\frac{w_y}{w_x}=\frac{2}{1}$ tenemos que un vector director
+      de $s$ es:
+      \[\vec{w} = (1, 2)\]
+    \end{itemize}
+    Con todo esto el ángulo que forman las dos rectas es:
+    \[\alpha = \acos \frac{\vec{v}*\vec{w}}{|\vec{v}|*|\vec{w}|}\]
+    \[\alpha = \acos \frac{1*1 + 3*2}{\sqrt{1^2+3^2}*\sqrt{1^2+2^2}}\]
+    \[\alpha = \acos \frac{7}{\sqrt{10}\sqrt{5}} = \acos \frac{7}{\sqrt{50}}\]
+    \[\alpha \simeq 0.1419\]
+    \small{(Esto son $8.13\degree$ aproximadamente, pero ya estamos trabajando con radianes)}\\
+    Con lo que el ángulo que forman $r$ y $s$ es de $0.1419$\,radianes aproximadamente.
+  \end{solution}
+\question Calcula el simétrico de $P(2,3)$ respecto de la recta $r:\,2x - y +2 = 0$ \label{punto_simetria_axial}
+  \begin{solution}
+    El simétrico de $P$ respecto de $r$ es un punto $P'$ que se encuentra en la perpendicular a
+    $r$ que pasa por $P$ y cuya distancia a $r$ es la misma que la de $P$.\\
+    Cuando el objeto respecto del cual se hace una simetría es una recta, como es el caso, estamos hablando
+    de una \emph{simetría axial}.\\
+    Gráficamente:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (P) at (-1,1);
+        \coordinate (A) at (-2,-2);
+        \coordinate (B) at (2,2);
+        \coordinate (P1) at (1, -1);
+        \coordinate (M) at (0,0);
+        \draw (A)--(B) node[right] {$r$};
+        \draw[fill=black] (P) circle(1pt) node[left] {$P$};
+        \draw[fill=black] (P1) circle(1pt) node[right] {$P'$};
+        \draw[dashed, color=darkgray] (P)--(P1);
+        \draw[fill=darkgray,color=darkgray] (M) circle(1pt) node[left,xshift=-2] {\small{$M$}};
+      \end{tikzpicture}
+    \end{center}
+    En el dibujo se puede observar que la recta que une $P$ y $P'$ es perpendicular a $r$ y que la
+    distancia de ambos puntos a la recta es la misma.\\
+
+    En gris hemos dibujado un punto $M$, que es el punto de corte de la recta $r$ con la que une
+    $P$ y su simétrico, ya que la idea que vamos a seguir es la siguiente: como $P$ y $P'$ se
+    encuentran a la misma distancia de $r$ el punto de corte de la recta que los une es el punto
+    medio del segmento que forman $P$ y $P'$.\\
+
+    Entonces vamos a calcular la recta que pasa por $P$ y $P'$, que es perpendicular a $r$ por la
+    definición de simétrico.\\
+    De la ecuación de $r$ obtenemos el vector perpendicular $\vec{n} = (2, -1)$, que va a ser vector
+    director de la recta que une $P$ y $P'$ a la que vamos a llamar $s$.\\
+    Como $s$ tiene que pasar por $P$ escribimos la ecuación punto pendiente de $s$:
+    \[s:\,y-3=\frac{-1}{2}(x-2)\]
+    El punto $M$ es el punto de corte de $r$ y $s$, para poder calcularlo mejor pasamos $s$ a
+    forma implícita:
+    \[s:\, y - 3 = -\frac{x}{2} +1\]
+    \[s:\, x +2y -8 = 0\]
+    Y resolvemos el sistema para obtener $M$:
+    \[
+      \begin{cases}
+        2x - y &=-2\\
+        x + 2y &= 8
+      \end{cases}\]
+    Que nos da $M\left(\frac{4}{5},\frac{18}{5}\right)$.\\
+
+    Por la fórmula del punto medio sabemos que:
+    \[M = \frac{P+P'}{2}\]
+    Con lo que
+    \[P' = 2M -P\]
+    \[P' = 2*\left(\frac{4}{5},\frac{18}{5}\right) - (2,3) = \left(\frac{-6}{5}, \frac{3}{5}
+      \right)\]
+    Y ya tenemos al simétrico de $P$ respecto de $r$.
+  \end{solution}
+\question Calcula las bisectrices de las rectas $r:\, 2x -3y  = 0$ y $s:\,-x+y -2 = 0$.
+  \begin{solution}
+    \textbf{IMPORTANTE}: para empezar a resolver este problema hay que comprobar que las rectas no
+    son paralelas, porque si son paralelas no tendría sentido. Es fácil ver que los vectores
+    perpendiculares que se obtienen de las ecuaciones no son proporcionales, con lo que las rectas
+    no son paralelas.\\
+    
+    Una vez hecha esta comprobación vamos a  recordar lo que es la bisectriz de un ángulo:
+    \emph{la bisectriz de un ángulo
+      es la recta que divide el ángulo en dos ángulos iguales.}.\\
+    Entonces la bisectriz de dos rectas hablamos de la recta que divide el ángulo que forman en
+    dos partes iguales, gráficamente:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (R) at (2,1.15);
+        \coordinate (R1) at (-2,-1.15);
+        \coordinate (S) at (1.15,2);
+        \coordinate (S1) at (-1.15,-2);
+
+        \coordinate (B11) at (2,2);
+        \coordinate (B12) at (-2,-2);
+
+        \coordinate (B21) at (-2,2);
+        \coordinate (B22) at (2,-2);
+
+        \draw (R)--(R1) node[left] {$r$};
+        \draw (S)--(S1) node[left] {$s$};
+
+        \draw[dashed] (B11)--(B12) node[left] {$b_1$};
+        \draw[dashed] (B21)--(B22) node[below right] {$b_2$};
+      \end{tikzpicture}
+    \end{center}
+    Como dos rectas secantes dividen el plano en cuatro ángulos iguales dos a dos, vamos a tener dos
+    bisectrices: $b_1$ y $b_2$, que van a ser perpendiculares.\\
+
+    Para calcular estas dos bisectrices vamos a tener en cuenta que, al dividir el ángulo en dos
+    partes iguales, cada uno de los puntos de estas rectas se encuentra a la misma distancia de $r$
+    que de $s$.\\
+    Entonces utilizaremos un punto genérico $P(x,y)$, de manera que su distancia a $r$ es:
+    \[d(P,r) = \frac{|2x - 3y|}{\sqrt{13}}\]
+    y a la recta $s$:
+    \[d(P,s) = \frac{|-x + y - 2|}{\sqrt{2}}\]
+    Y por lo que acabamos de decir tiene que ocurrir:
+    \[d(P,r) = d(P,s)\]
+    \[\frac{|2x - 3y|}{\sqrt{13}} = \frac{|-x + y - 2|}{\sqrt{2}}\]
+
+    Como tenemos una ecuación con valores absolutos se va a dividir en dos ecuaciones que
+    resolveremos por separado y cada una de ellas nos llevará a una de las dos bisectrices que
+    hemos visto que tienen que salir.
+    \begin{itemize}
+    \item La primera ecuación va a ser quitando los valores absolutos sin hacer nada más:
+      \[\frac{2x - 3y}{\sqrt{13}} = \frac{-x + y - 2}{\sqrt{2}}\]
+      \[2\sqrt{2}x - 3\sqrt{2}y = -\sqrt{13}x + \sqrt{13}y - 2\sqrt{13}\]
+      \[(2\sqrt{2} + \sqrt{13})x -(3\sqrt{2}+\sqrt{13})y +2\sqrt{13} = 0\]
+      Que será la ecuación de la bisectriz $b_1$, por ejemplo (el orden da igual).
+    \item La segunda ecuación es quitando los valores absolutos y cambiando de signo uno de los
+      lados de la igualdad:
+      \[\frac{2x - 3y}{\sqrt{13}} = -\frac{-x + y - 2}{\sqrt{2}}\]
+      \[2\sqrt{2}x - 3\sqrt{2}y = \sqrt{13}x - \sqrt{13}y + 2\sqrt{13}\]
+      \[(2\sqrt{2} - \sqrt{13})x -(3\sqrt{2}-\sqrt{13})y -2\sqrt{13} = 0\]
+      Que será la ecuación de la segunda bisectriz, $b_2$.
+    \end{itemize}
+  \end{solution}
+\question Calcula la recta simétrica de $r:\,x-y = 7$ respecto de la recta $s:\,x-y = 4$.
+  \begin{solution}
+    Empecemos por entender qué es eso de la recta simétrica de una respecto de otra:\\
+    \emph{La simétrica de $r$ respecto de $s$ es una la recta $r'$ construida con los simétricos de cada punto de
+      $r$.}
+    En el caso que nos ocupa es fácil ver que las rectas son paralelas, con lo que la situación sería la siguiente:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (Ar) at (-1,-2);
+        \coordinate (Br) at (2, 1);
+        \coordinate (As) at (-1,-1);
+        \coordinate (Bs) at (2, 2);
+        \coordinate (Ar1) at (-1,0);
+        \coordinate (Br1) at (2, 3);
+        \draw (Ar)--(Br) node[right] {$r$};
+        \draw (As)--(Bs) node[right] {$s$};
+        \draw (Ar1)--(Br1) node[right] {$r'$};
+        \coordinate (Pr) at (1,0);
+        \coordinate (Ps) at (.5,.5);
+        \coordinate (Pr1) at (0,1);
+        \draw[dashed,latex-latex] (Pr)--(Ps) node[midway, above right] {$d$};
+        \draw[fill=black] (Pr) circle (2pt) node[below] {$P$};
+        \draw[dashed,latex-latex] (Pr1)--(Ps) node[midway, above right] {$d$};
+        \draw[fill=black] (Pr1) circle (2pt) node[above] {$P'$};
+      \end{tikzpicture}
+    \end{center}
+    Según se ve en el gráfico, cada punto $P$ de $r$ tiene su simétrico $P'$ en la recta $r'$.
+
+    Al ser rectas paralelas podemos utilizar la fórmula de la distancia entre rectas: si $r:\,Ax + By + C_r = 0$ y
+    $s:\,Ax + By + C_s = 0$ ($A$ y $B$ son iguales por ser paralelas) su distancia es:
+    \[d(r, s) = \frac{|C_r - C_s}{\sqrt{A^2 + B^2}}\]
+    Entonces la distancia de $r$ a $s$ es:
+    \[d(r, s) = \frac{|-(7) - (-4)|}{\sqrt{1^2 + (-1)^2}} = \frac{3}{\sqrt{2}}\]
+    Y la distancia de $s$ a $r'$ es:
+    \[d(s, r') = \frac{|-4 - C_{r'}|}{\sqrt{2}}\]
+    Y por la definición de la simetría axial esas distancias tienen que ser iguales:
+    \[\frac{|4 - C_{r'}|}{\sqrt{2}} = \frac{3}{\sqrt{2}}\]
+    Como hay un valor absoluto hay que separarlo en dos ecuaciones, una quitando el valor absoluto sin más y otra
+    quitándole y cambiando lo de dentro de signo.
+    \begin{itemize}
+    \item Quitando el valor absoluto sin más:
+      \[\frac{-4-C_{r'}}{\sqrt{2}} = \frac{3}{\sqrt{2}}\]
+      Quitamos denominadores:
+      \[-4-C_{r'} = 3\]
+      \[C_{r'} = -7\]
+      Con lo que quedaría que una posible recta simétrica es $x - y -7 = 0$, que es la misma que $r$, con lo que esta
+      solución no nos vale.
+    \item Quitando el valor absoluto y cambiando de signo lo de dentro:
+      \[\frac{-(-4-C_{r'})}{\sqrt{2}} = \frac{3}{\sqrt{2}}\]
+      Quitamos denominadores:
+      \[-(-4 - C_{r'} ) = 3\]
+      \[4+C_{r'} = 3\]
+      \[C_{r'} = -1\]
+      Que nos da como solución la recta $x -y -1 = 0$, que sí es una solución válida.
+    \end{itemize}
+    Por tanto la recta simétrica que nos piden es:
+    \[\boldsymbol{r':\,x-y = 1}\]
+  \end{solution}
+\question Calcula la simétrica de $r:\,x+2y - 2= 0$ respecto de $s:\,x - y = 2$.
+  \begin{solution}
+    El problema es similar al anterior solo que esta vez las rectas no son paralelas, la situación es:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (As) at (-2,-2);
+        \coordinate (Bs) at (2,2);
+        \coordinate (Ar) at (-2,-1);
+        \coordinate (Br) at (2,1);
+        \coordinate (Ar1) at (-1,-2);
+        \coordinate (Br1) at (1,2);
+
+        \draw (Ar)--(Br) node[right] {$r$};
+        \draw (As)--(Bs) node[right] {$s$};
+        \draw (Ar1)--(Br1) node[right] {$r'$};
+        \coordinate (Pr) at (1,0.5);
+        \coordinate (Ps) at (.75,.75);
+        \coordinate (Pr1) at (0.5,1);
+        \draw[dashed,latex-latex] (Pr)--(Ps) node[midway, above right] {$d$};
+        \draw[fill=black] (Pr) circle (2pt) node[below] {$P$};
+        \draw[dashed,latex-latex] (Pr1)--(Ps) node[midway, above right] {$d$};
+        \draw[fill=black] (Pr1) circle (2pt) node[above] {$P'$};
+
+        \coordinate (C) at (0,0);
+        \draw[fill=black] (C) circle(1pt) node[below right] {\scriptsize{$C$}};
+      \end{tikzpicture}
+    \end{center}
+    Se ve que $s$ es el eje de simetría y cada punto $P$ de $r$ tiene su simétrico con respecto a $s$, $P'$ de $r'$.\\
+    
+    
+    El método que tenemos que utilizar aquí es un poco más largo que el anterior, que va a consistir en calcular $r'$
+    a partir de dos de sus puntos.\\
+    Uno de ellos va a ser el común a las tres rectas, que en el dibujo lo hemos llamado $C$, y para calcularlo
+    resolvemos el sistema que forman $r$ y $s$.
+    \[
+      \begin{cases}
+        x+ 2y & = 2\\
+        x-y &= 2
+      \end{cases}
+    \]
+    Es un sistema sencillo que tiene de solución el punto $C(2, 0)$.\\
+
+    Nos hace falta otro punto más, y para ello vamos a calcular el simétrico respecto de $s$ de un punto $P$ de $r$.
+    Para ello vamos a hacer $x=0$ en la ecuación de $r$, y obtenemos el punto $P(0,1)$. Calculamos el simétrico con
+    lo visto en el \emph{ejemplo \ref{punto_simetria_axial}} (página \pageref{punto_simetria_axial}):
+    \begin{enumerate}
+    \item Calculamos un vector perpendicular a $s$: $\vec{n} = (1, -1)$.
+    \item Calculamos la recta perpendicular a $s$ que pasa por $P$ (vamos a empezar desde la punto-pendiente):
+      \[y - 1 = -1*(x - 0)\]
+      \[x + y = 1\]
+    \item Calculamos el corte ($M$) de $s$ y su perpendicular:
+      \[
+        \begin{cases}
+          x - y &= 2\\
+          x+y & = 1
+        \end{cases}
+      \]
+      De donde $M\left(\frac{3}{2}, -\frac{1}{2}\right)$
+    \item Calculamos $P'$ simétrico de $P$ respecto de $M$ (utilizando que $M$ es el punto medio de $P$ y $P'$):
+      \[M= \frac{P + P'}{2}\]
+      \[\left(\frac{3}{2}, -\frac{1}{2}\right) = \frac{(0, 1) + P'}{2}\]
+      \[(3, -1) = (0,1) + P'\]
+      \[P' = (3, -2)\]
+    \end{enumerate}
+    Con esto ya tenemos los dos puntos por los que pasa $r'$, $C(2, 0)$ y $P'(3, -2)$, con lo que la ecuación de $r'$
+    es (vamos a repasar el método del cálculo la recta que pasa por dos puntos):
+    \begin{enumerate}
+    \item Calculamos un vector director: $\vec{v} = P' - C = (1, -2)$
+    \item Escribimos la punto-pendiente (o cualquier otra que sepamos) con el punto $C$:
+      \[y = -2(x - 2)\]
+    \item Y la transformamos en la que queramos (por ejemplo la implícita):
+      \[y = -2x + 4\]
+      \[2x + y = 4\]
+    \end{enumerate}
+    Con lo que la recta que nos piden es $\boldsymbol{r':\,2x + y = 4}$
+  \end{solution}
+\question Dada la recta $r:\, 2x - 3y = 0$ y el punto $C(1, 1)$ escribe la ecuación de la recta simétrica de $r$ con
+  respecto a $C$.
+  \begin{solution}
+    En este caso, en el que el objeto respecto al cual se hace la simetría es un punto, se habla de \emph{
+      simetría central o radial}.\\
+    En este caso la recta simétrica $r'$ es la formada por los puntos $P'$ simétricos a los puntos $P$ de $r$\\
+    Gráficamente:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (C) at (0,0);
+        \coordinate (A) at (-2, -3);
+        \coordinate (B) at (2, 1);
+        \coordinate (A1) at (-2, -1);
+        \coordinate (B1) at (2, 3);
+        \coordinate (P) at (1, 0);
+        \coordinate (P1) at (-1, 0);
+
+        \draw[fill=black] (C) circle (2pt) node[above] {$C$};
+        \draw[fill=black] (P) circle (2pt) node[right] {$P$};
+        \draw[fill=black] (P1) circle (2pt) node[left] {$P'$};
+        \draw (A)--(B) node[right] {$r$};
+        \draw (A1)--(B1) node[right] {$r'$};
+
+        \draw[dashed, latex-latex] (P)--(C) node[midway, above] {$d$};
+        \draw[dashed, latex-latex] (P1)--(C) node[midway, below] {$d$};
+      \end{tikzpicture}
+    \end{center}
+    Que es como habíamos dicho, cada punto $P$ de $r$ tiene su simétrico respecto de $C$, $P'$, en $r'$.\\
+
+    Con lo que podemos utilizar el mecanismo para calcular un punto simétrico respecto a otro sobre los puntos de
+    $r$. Para ello escribimos $r$ en forma paramétrica, ya que así tenemos la expresión de todos los puntos de $r$.\\
+    \begin{enumerate}
+    \item Un vector perpendicular a $r$ es $\vec{n}=(2, -3)$, con lo que un vector director es $\vec{v} = (3,2)$.
+    \item Haciendo $x=0$ en $r$ obtenemos
+      \[0 - 3y = 0\]
+      Con lo que un punto de $r$ es el $(0,0)$.
+    \item Con lo anterior construimos las ecuaciones paramétricas de $r$:
+      \[r:\,
+        \begin{cases}
+          x &=3t\\
+          y &= 2t
+        \end{cases}
+      \]
+    \end{enumerate}
+    Entonces cualquier punto de $r$ es $P(3t, 2t)$.\\
+
+    Si $P'$ es el simétrico de $P$ respecto de $C$, entonces $C$ es el punto medio de $P$ y $P'$:
+    \[C = \frac{P + P'}{2}\]
+    \[(1, 1) = \frac{(3t, 2t) + P'}{2}\]
+    \[(2, 2) = (3t, 2t) + P'\]
+    \[P' = (2-3t, 2-2t)\]
+    Con lo que las ecuaciones paramétricas de $r'$ son:
+    \[r':\,
+      \begin{cases}
+        x &= 2-3t\\
+        y &= 2- 2t
+      \end{cases}
+    \]
+    Y si lo pasamos a la forma implícita:
+    \[r':\,\frac{x-2}{-3} = \frac{y-2}{-2}\quad\text{\small{Ecuación continua}}\]
+    \[r':\,2x - 4 = 3y - 6\]
+    \[r':\,2x-3y = -2\]
+  \end{solution}
+\question Dada la recta $r:\, x - 3y +1= 0$ y el punto $C(2, 1)$ escribe la ecuación de la recta simétrica de $r$ con respecto
+a $C$.
+\begin{solution}
+  El enunciado de este problema es idéntico al anterior, con lo que habrá que hacer lo mismo.
+  Escribimos la ecuación de $r$ en paramétricas:
+  \begin{enumerate}
+    \item Un vector perpendicular a $r$ es $\vec{n}=(1, -3)$, con lo que un vector director es $\vec{v} = (3,1)$.
+    \item Haciendo $y=0$ en $r$ obtenemos
+      \[x - 3*0 + 1= 0\]
+      Con lo que un punto de $r$ es el $(-1,0)$.
+    \item Con lo anterior construimos las ecuaciones paramétricas de $r$:
+      \[r:\,
+        \begin{cases}
+          x &=-1 + 3t\\
+          y &= t
+        \end{cases}
+      \]
+    \end{enumerate}
+    Entonces cualquier punto de $r$ es $P(-1+ 3t, t)$.\\
+
+    Tal y como vimos en el anterior, los puntos de la recta simétrica $r'$ están a la misma distancia de $C$ que los de $r$, con lo que:
+    \[C = \frac{P+P'}{2}\]
+    \[(2,1) = \frac{(-1+3t, t) + (x, y)}{2}\]
+    \[(4, 2) = (-1+3t, t) + (x, y)\]
+    \[(x, y) = (9-3t,2 - t)\]
+    Con lo que las paramétricas de $r'$ son:
+    \[r':\,
+      \begin{cases}
+        x &= 5-3t\\
+        y &= 1 - t
+      \end{cases}\]
+    Y pasándola a la implícita queda:
+    \[r':\,\frac{x-5}{-3} = \frac{y-2}{-1}\]
+    \[r':\, -x+5 = -3y +6\]
+    \[r':\, -x + 3y - 1 = 0\]
+    O, lo que es lo mismo:
+    \[r':\,x - 3y + 1 = 0\]
+
+    Es decir, hemos obtenido que $r$ y $r'$ son la misma recta. ¿Por qué?\\
+    Porque en este caso el punto $C$ pertenece a $r$, y \textbf{la recta simétrica con respecto a un punto que pertenece a esa
+      recta es ella misma}.\\
+
+    De aquí se saca una \textbf{conclusión}: \emph{si en primer lugar comprobamos si el centro de simetría pertenece a la recta, nos ahorramos
+      el resto del cálculo ya que en este caso la simétrica es ella misma}.
+\end{solution}
+\question Dados los puntos $A(1,4)$, $B(-3,0)$ y $C(3, -2)$, calcula las coordenadas del punto que equidista de los
+  tres.
+  \begin{solution}
+    Si $P$ es equidistante de $A$ y $B$ tiene que estar en la mediatriz del segmento $\overline{AB}$, ya que esta
+    contiene todos los puntos que equidistan de $A$ y $B$.\\
+
+    Por la misma razón tiene que estar en la mediatriz de $\overline{BC}$ (se podría hacer el mismo
+    razonamiento con la mediatriz de $\overline{AC}$).\\
+
+    Y si está en ambas mediatrices no tiene más remedio que ser el corte de las dos.\\
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (A) at (-1, 1);
+        \coordinate (B) at (0, 0);
+        \coordinate (C) at (1, 0);
+        \coordinate (M11) at (-2, -1);
+        \coordinate (M12) at (2, 3);
+        \coordinate (M21) at (.5, -1);
+        \coordinate (M22) at (.5, 3);
+        \coordinate (P) at (.5, 1.5);
+
+        \draw[dotted] (M11)--(M12);
+        \draw[dashed] (M21)--(M22);
+
+        \draw[fill=black] (A) circle (2pt) node[left] {$A$};
+        \draw[fill=black] (B) circle (2pt) node[below] {$B$};
+        \draw[fill=black] (C) circle (2pt) node[right] {$C$};
+        \draw[fill=black] (P) circle (2pt) node[left] {$P$};
+        \node at (5, 1) {\parbox[t]{6cm}{\small{
+              \begin{itemize}
+              \item $\cdots\cdots$ Mediatriz de $\overline{AB}$
+              \item $---$ Mediatriz de $\overline{BC}$
+              \item $P$ es equidistante a $A$, $B$ y $C$
+              \end{itemize}
+              
+            }
+          }
+        };
+      \end{tikzpicture}
+
+    \end{center}
+
+    Este razonamiento nos conduce a que si los tres puntos están alineados no va a existir el punto equidistante,
+    ya que las mediatrices son paralelas:
+    \begin{center}
+      \begin{tikzpicture}
+        \coordinate (A) at (-1, 1);
+        \coordinate (B) at (0, 0);
+        \coordinate (C) at (1, -1);
+        \coordinate (M11) at (-2, -1);
+        \coordinate (M12) at (2, 3);
+        \coordinate (M21) at (-1, -2);
+        \coordinate (M22) at (2, 1);
+
+
+        \draw[dotted] (M11)--(M12);
+        \draw[dashed] (M21)--(M22);
+
+        \draw[fill=black] (A) circle (2pt) node[left] {$A$};
+        \draw[fill=black] (B) circle (2pt) node[below] {$B$};
+        \draw[fill=black] (C) circle (2pt) node[right] {$C$};
+
+        \node at (5, 1) {\parbox[t]{6cm}{\small{
+              \begin{itemize}
+              \item $\cdots\cdots$ Mediatriz de $\overline{AB}$
+              \item $---$ Mediatriz de $\overline{BC}$
+              \end{itemize}
+              
+            }
+          }
+        };
+      \end{tikzpicture}
+
+    \end{center}
+    Con lo cual vamos a comprobar si están alineados:
+    \begin{itemize}
+    \item $\overrightarrow{AB} = (-4, -4)$
+    \item $\overrightarrow{BC} = (6, -2)$
+    \end{itemize}
+    Y vemos que no lo están ya que no son proporcionales, con lo que podemos continuar con el ejercicio.\\
+
+    Calculamos la mediatriz de $A$ y $B$, que llamaremos $r$:
+    \[\sqrt{(x-1)^2 + (y -4)^2} = \sqrt{(x+3)^2 + y^2}\]
+    \[(x-1)^2 + (y -4)^2 = (x+3)^2 + y^2\]
+    \[x^2 - 2x + 1 + y^2 - 8y + 16 = x^2 + 6x + 9 + y^2\]
+    \[-8x -8 y + 8 = 0\]
+    Que simplificamos a
+    \[r:\, x + y - 1 = 0\]
+
+    La mediatriz de $\overline{BC}$, que llamaremos $s$:
+    \[\sqrt{(x-3)^2 + (y +2)^2} = \sqrt{(x+3)^2 + y^2}\]
+    \[(x-3)^2 + (y +2)^2 = (x+3)^2 + y^2\]
+    \[x^2 - 6x + 9 + y^2 + 4y + 4 = x^2 + 6x + 9 + y^2\]
+    \[-12x + 4y +4 = 0\]
+    Que se simplifica a
+    \[s:\, 3x - y - 1 = 0\]
+
+    El el punto pedido es el corte de las dos rectas:
+    \[
+      \begin{cases}
+        x + y - 1 &= 0\\
+        3x - y - 1 = 0
+      \end{cases}
+    \]
+    Si sumamos ambas ecuaciones queda:
+    \[4x - 2 = 0\]
+    \[x = \frac{1}{2}\]
+    Y sustituyendo en $r$:
+    \[\frac{1}{2} + y - 1 = 0\]
+    \[y = \frac{1}{2}\]
+
+    Con lo que el punto $P\left(\frac{1}{2}, \frac{1}{2}\right)$ equidista de $A$, $B$ y $C$.
+  \end{solution}
+  
+\end{questions}
+\end{document}
+
+
+% LocalWords:  escríbelo º geométricamente cuadritos cuadradito v x R
+% LocalWords:  w b n j AB k C AC BC P Q PQ PR M AM BA DC
+% LocalWords:  overrightarrow

@@ -1013,64 +1013,115 @@ unos cuantos ejemplos de ejercicios típicos para practicar todo lo que hemos vi
 \question Escribe la ecuación de la mediatriz del segmento que tiene por extremos los puntos
   $A(2,-1)$ y $B(4, 5)$.
   \begin{solution}
-    Empecemos por recordar qué es la mediatriz: \emph{``la mediatriz de un segmento es una
-      recta perpendicular a este que pasa por su punto medio''}.
-    Y ahora vamos a dibujar la situación para ver qué tenemos que hacer:
-    \begin{center}
-      \begin{tikzpicture}
-        \coordinate (A) at (2, -1);
-        \coordinate (B) at (4,5);
-        \coordinate (M) at (3, 2);
-        \coordinate (C) at (0,3);
-        \coordinate (D) at (6,1);
+    Este problema se puede resolver de dos maneras, dependiendo de el punto de vista desde el
+    que definamos mediatriz.
+    \begin{itemize}
+    \item La primera forma es definiendo la mediatriz de la siguiente manera:
+      \emph{``la mediatriz de un segmento es una
+        recta perpendicular a este que pasa por su punto medio''}.
+      Y ahora vamos a dibujar la situación para ver qué tenemos que hacer:
+      \begin{center}
+        \begin{tikzpicture}
+          \coordinate (A) at (2, -1);
+          \coordinate (B) at (4,5);
+          \coordinate (M) at (3, 2);
+          \coordinate (C) at (0,3);
+          \coordinate (D) at (6,1);
 
-        \draw (A)--(B);
-        \draw[fill] (A) circle(2pt) node[left] {$A$};
-        \draw[fill] (B) circle(2pt) node[right] {$B$};
-        \draw[fill] (M) circle(2pt) node[below left] {$M$};
-        \draw[dashed] (C)--(D) node[right] {$r$};
-        \pic[draw=black, angle eccentricity=.5, angle radius=.4cm, pic text=.]
-        {right angle=B--M--C};
-      \end{tikzpicture}
-    \end{center}
+          \draw (A)--(B);
+          \draw[fill] (A) circle(2pt) node[left] {$A$};
+          \draw[fill] (B) circle(2pt) node[right] {$B$};
+          \draw[fill] (M) circle(2pt) node[below left] {$M$};
+          \draw[dashed] (C)--(D) node[right] {$r$};
+          \pic[draw=black, angle eccentricity=.5, angle radius=.4cm, pic text=.]
+          {right angle=B--M--C};
+        \end{tikzpicture}
+      \end{center}
 
-    Hemos dibujado la mediatriz punteada y la hemos llamado $r$.\\
-    Para escribir la ecuación de esta recta \textbf{necesitamos el punto $M$ y un vector
-      en la dirección de la recta}
-    (o la pendiente si queremos escribir la ecuación punto-pendiente).\\
+      Hemos dibujado la mediatriz punteada y la hemos llamado $r$.\\
+      Para escribir la ecuación de esta recta \textbf{necesitamos el punto $M$ y un vector
+        en la dirección de la recta}
+      (o la pendiente si queremos escribir la ecuación punto-pendiente).\\
 
-    El punto $M$ sabemos calcularlo, hemos visto el método cuando explicábamos vectores. Y también
-    podemos obtener un vector director porque sabemos calcular un vector perpendicular al vector
-    $\overrightarrow{AB}$. Así que vamos a por ello.
+      El punto $M$ sabemos calcularlo, hemos visto el método cuando explicábamos vectores. Y también
+      podemos obtener un vector director porque sabemos calcular un vector perpendicular al vector
+      $\overrightarrow{AB}$. Así que vamos a por ello.
 
-    El punto medio se calcula con la fórmula:
-    \[M = \frac{A+B}{2}\]
-    Con lo cual:
-    \[M = (3,2)\]
+      El punto medio se calcula con la fórmula:
+      \[M = \frac{A+B}{2}\]
+      Con lo cual:
+      \[M = (3,2)\]
 
-    Obtenemos el vector $\overrightarrow{AB} = (2, 6)$, con lo que un vector $\vec{v} \perp
-    \overrightarrow{AB}$ es:
-    \[\vec{v} = (-6,2)\]
+      Obtenemos el vector $\overrightarrow{AB} = (2, 6)$, con lo que un vector $\vec{v} \perp
+      \overrightarrow{AB}$ es:
+      \[\vec{v} = (-6,2)\]
 
-    Y con esto podemos escribir, por ejemplo, la ecuación continua (ya que no nos piden ninguna en
-    concreto):
-    \[\boldsymbol{r: \frac{y - 2}{2} = \frac{x - 3}{-6}}\]
+      Y con esto podemos escribir, por ejemplo, la ecuación continua (ya que no nos piden ninguna en
+      concreto):
+      \[\boldsymbol{r: \frac{y - 2}{2} = \frac{x - 3}{-6}}\]
 
-    Y esa es la ecuación de la mediatriz del segmento $\overline{AB}$.\\
+      Y esa es la ecuación de la mediatriz del segmento $\overline{AB}$.\\
 
-    Se podría simplificar, ya que del vector director solo nos interesa la dirección, con lo que
-    podríamos elegir:
-    \[\vec{u} = \frac{\vec{v}}{2} = (-3, 1)\]
-    y la ecuación continua quedaría así:
+      Se podría simplificar, ya que del vector director solo nos interesa la dirección, con lo que
+      podríamos elegir:
+      \[\vec{u} = \frac{\vec{v}}{2} = (-3, 1)\]
+      y la ecuación continua quedaría así:
+      \[r: \frac{y -2}{1} = \frac{x-3}{-3}\]
+    \item La segunda manera es definiendo la mediatriz como \emph{la recta que contiene los
+        puntos que equidistan de los extremos del segmento}.\\
+      Entonces tenemos que encontrar los puntos que se encuentran a la misma distancia de $A(2,-1)$
+      y $B(4, 5)$.\\
+      Llamaremos $P(x,y)$ a uno de esos puntos.\\
+      Recordamos que la distancia entre dos puntos es el módulo del vector que los une, con lo que
+      para que las distancias a $A$ y $B$ sean iguales tiene que ocurrir que:
+      \[|\overrightarrow{AP}| = |\overrightarrow{BP}|\]
+      Calculamos los vectores:
+      \begin{itemize}
+      \item $\overrightarrow{AP} = (x-2, y + 1)$
+      \item $\overrightarrow{BP} = (x-4, y -5)$
+      \end{itemize}
+      Igualamos los módulos:
+      \[\sqrt{(x-2)^2 + (y+1)^2} = \sqrt{(x-4)^2 + (y-5)^2}\]
+      Quitamos las raíces:
+      \[(x-2)^2 + (y+1)^2 = (x-4)^2 + (y-5)^2\]
+      Desarrollamos:
+      \[x^2 - 4x + 4 + y^2 + 2y + 1 = x^2 -8x + 16 +y^2 -10x +25\]
+      Llevamos todo a la izquierda y reducimos:
+      \[4x + 12y -36 = 0\]
+      \[x + 3y -9 = 0\]
+      Y ésta es la ecuación implícita de la mediatriz.
+    \end{itemize}
+    Para comprobar si hemos obtenido lo mismo vamos a pasar la ecuación continua que hemos obtenido
+    con la primera forma para ver si coincide con la obtenida en la segunda forma (es más sencillo
+    pasar de continua a implícita que al revés).\\
+    Habíamos obtenido que la mediatriz tiene de ecuación continua:
     \[r: \frac{y -2}{1} = \frac{x-3}{-3}\]
+    Quitamos denominadores:
+    \[-3(y - 2) = 1*(x-3)\]
+    Desarrollamos y lo llevamos todo a la izquierda:
+    \[-x - 3y + 9 = 0\]
+    Y vemos que son iguales si cambiamos los signos, con lo que ambos métodos son válidos para
+    calcular la mediatriz.
   \end{solution}
 \question Los puntos $A(0, 1)$, $B(3, -2)$ y $C(1, 3)$ forman un triángulo. Calcula la altura sobre
   el lado $\overline{AB}$\\
   \small{(Tal y como vamos a ver en la resolución, éste es un ejercicio bastante completo, en el que
   hay que aplicar distintos conocimientos de vectores y rectas, geometría y álgebra, aparte
   de hacer razonamiento espacial).}
-  \begin{solution}
-    Empecemos por recordar qué es exactamente la altura de un triángulo: \emph{``una altura de
+\begin{solution}
+  Siempre que tengamos un problema en el que nos dan tres puntos formando un triángulo hay que
+  comprobar que forman un triángulo de verdad.\\
+  Si tres puntos están alineados, en la misma recta, no pueden formar un triángulo. Con lo que
+  tenemos que ver si están en la misma recta, y para esto vamos a utilizar los vectores que unen
+  uno de los puntos con los otros dos, y si están en la misma línea tienen que ser proporcionales.
+  \begin{itemize}
+  \item $\overrightarrow{AB} = (3, -3)$
+  \item $\overrightarrow{AC} = (1, 2)$
+  \end{itemize}
+  Y claramente \textbf{no son proporcionales} $\left(\frac{3}{1}\neq\frac{-3}{2}\right)$, con lo que \textbf{SÍ forman triángulo}.\\
+  
+  Una vez que hemos comprobado que es un triángulo vamos a recordar qué es exactamente la
+  altura de un triángulo: \emph{``una altura de
       un triángulo es la distancia de un lado al vértice opuesto siguiendo la perpendicular
       al lado''}.
 
